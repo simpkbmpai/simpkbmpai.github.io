@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PKBM Pelita Aushaf Indonesia - Pendaftaran Murid Baru</title>
+  <meta name="description" content="Web profil dan pendaftaran murid baru PKBM Pelita Aushaf Indonesia. Daycare, PAUD Non Formal, Kelompok Bermain, Paket A, Paket B, Paket C, dan Home Schooling." />
+  <style>
+    :root{
+      --green:#0f766e;
+      --green2:#047857;
+      --soft:#ecfdf5;
+      --soft2:#f7fee7;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --line:#d1fae5;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,var(--soft),#fff,var(--soft2));
+      line-height:1.6;
+    }
+    a{text-decoration:none;color:inherit}
+    .container{max-width:1120px;margin:auto;padding:0 20px}
+    header{
+      position:sticky;top:0;z-index:10;
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:blur(10px);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:54px;height:54px;border-radius:18px;
+      background:linear-gradient(135deg,#bbf7d0,#a7f3d0);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 8px 24px rgba(15,118,110,.15);
+      font-size:28px;
+    }
+    .brand b{display:block;color:var(--green);font-size:15px}
+    .brand span{display:block;color:var(--muted);font-size:12px}
+    .navlinks{display:flex;align-items:center;gap:16px;font-size:14px;color:#374151}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      background:var(--green);color:#fff;padding:12px 18px;border-radius:16px;
+      font-weight:700;border:0;cursor:pointer;box-shadow:0 12px 24px rgba(15,118,110,.18);
+    }
+    .btn:hover{background:#115e59}
+    .btn.secondary{background:#fff;color:var(--green);border:1px solid var(--line);box-shadow:none}
+    .hero{padding:72px 0 46px;position:relative;overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:36px;align-items:center}
+    .badge{
+      display:inline-flex;gap:8px;align-items:center;
+      border:1px solid var(--line);background:#fff;color:var(--green);
+      padding:8px 12px;border-radius:999px;font-weight:700;font-size:13px;
+      box-shadow:0 8px 20px rgba(15,118,110,.08);
+    }
+    h1{font-size:52px;line-height:1.05;margin:18px 0;color:#111827;letter-spacing:-1.5px}
+    h2{font-size:34px;line-height:1.2;margin:0 0 14px;color:#111827}
+    h3{margin:0 0 8px;color:#111827}
+    .lead{font-size:18px;color:#4b5563;max-width:650px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .visual-card{
+      background:#fff;border:1px solid var(--line);border-radius:34px;padding:24px;
+      box-shadow:0 28px 70px rgba(15,118,110,.15);
+    }
+    .visual-inner{
+      background:linear-gradient(135deg,#d1fae5,#ecfccb);
+      border-radius:28px;padding:22px;
+    }
+    .people{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .person{background:rgba(255,255,255,.72);border-radius:24px;padding:16px;text-align:center}
+    .head{width:54px;height:54px;border-radius:999px;background:#bbf7d0;margin:0 auto 7px}
+    .body{width:48px;height:62px;border-radius:18px 18px 12px 12px;background:#6ee7b7;margin:0 auto}
+    .person small{display:block;margin-top:9px;color:#064e3b;font-weight:700}
+    .motto{background:rgba(255,255,255,.8);border-radius:24px;padding:18px;text-align:center;margin-top:16px}
+    .motto b{color:#064e3b;font-size:18px}
+    section{padding:44px 0}
+    .section-title{text-align:center;max-width:680px;margin:0 auto 30px}
+    .section-title p,.eyebrow{font-size:13px;color:var(--green);font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin:0 0 8px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:28px;padding:24px;
+      box-shadow:0 12px 34px rgba(15,118,110,.07);
+    }
+    .icon{
+      width:52px;height:52px;border-radius:18px;background:#d1fae5;color:var(--green);
+      display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:14px;
+    }
+    .checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
+    .check{
+      background:#f0fdf4;border:1px solid var(--line);border-radius:16px;padding:11px 12px;
+      display:flex;gap:9px;font-size:14px;align-items:flex-start;
+    }
+    .check:before{content:"✓";font-weight:900;color:var(--green)}
+    .cta{
+      background:linear-gradient(135deg,#0f766e,#65a30d);
+      color:#fff;border-radius:34px;padding:34px;
+      box-shadow:0 22px 55px rgba(15,118,110,.22);
+    }
+    .cta h2{color:#fff}
+    .cta p{color:#ecfdf5}
+    .steps{display:grid;gap:10px}
+    .step{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.15);border-radius:18px;padding:12px}
+    .num{width:34px;height:34px;border-radius:999px;background:#fff;color:var(--green);font-weight:900;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+    .form-wrap{display:grid;grid-template-columns:.82fr 1.18fr;gap:24px;align-items:start}
+    .info-box{background:#f0fdf4;border:1px solid var(--line);border-radius:24px;padding:18px;margin-top:18px}
+    form{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    label{display:block;font-weight:700;font-size:14px;color:#374151}
+    input,select,textarea{
+      width:100%;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-top:6px;
+      font-size:15px;outline:none;background:#fff;color:#111827;
+    }
+    textarea{min-height:105px;resize:vertical}
+    .full{grid-column:1 / -1}
+    .note{font-size:12px;color:var(--muted);text-align:center;margin:10px 0 0}
+    footer{border-top:1px solid var(--line);padding:28px 0;background:#fff;color:#4b5563}
+    .footer-row{display:flex;justify-content:space-between;gap:16px;align-items:center}
+    @media(max-width:900px){
+      .hero-grid,.form-wrap,.grid-2{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:repeat(2,1fr)}
+      h1{font-size:42px}
+      .navlinks{display:none}
+    }
+    @media(max-width:640px){
+      h1{font-size:34px}
+      h2{font-size:28px}
+      .grid-3,.checklist,form{grid-template-columns:1fr}
+      .people{grid-template-columns:1fr 1fr}
+      .footer-row{flex-direction:column;align-items:flex-start}
+      .btn{width:100%}
+      .hero-actions{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="#" class="brand">
+        <div class="logo">🏫</div>
+        <div>
+          <b>PKBM Pelita Aushaf Indonesia</b>
+          <span>NPSN 9998555 • Terakreditasi B</span>
+        </div>
+      </a>
+      <nav class="navlinks">
+        <a href="#tentang">Tentang</a>
+        <a href="#program">Program</a>
+        <a href="#pendaftaran">Pendaftaran</a>
+      </nav>
+      <a class="btn" href="https://wa.me/6282140046047" target="_blank" rel="noopener">WhatsApp Admin</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="badge">✨ Pendaftaran Murid Baru Dibuka</div>
+          <h1>Sekolah Nonformal Islami untuk Tumbuhnya Karakter Anak</h1>
+          <p class="lead">PKBM Pelita Aushaf Indonesia menghadirkan layanan Daycare, PAUD Non Formal, Kelompok Bermain, Paket A, Paket B, Paket C, dan Program Home Schooling dengan suasana pendidikan yang hangat, terarah, dan ramah anak.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#pendaftaran">Daftar Sekarang</a>
+            <a class="btn secondary" href="#program">Lihat Program</a>
+          </div>
+        </div>
+
+        <div class="visual-card">
+          <div class="visual-inner">
+            <div class="people">
+              <div class="person"><div class="head"></div><div class="body"></div><small>Anak</small></div>
+              <div class="person"><div class="head"></div><div class="body"></div><small>Guru</small></div>
+              <div class="person"><div class="head"></div><div class="body"></div><small>Orang Tua</small></div>
+            </div>
+            <div class="motto">
+              <b>Mitra Pendidikan Karakter Buah Hati</b>
+              <p style="margin:6px 0 0;color:#4b5563">Sejak 2020 • Belajar, Beradab, Bertumbuh</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tentang">
+      <div class="container grid-2">
+        <div class="card">
+          <p class="eyebrow">Tentang Kami</p>
+          <h2>PKBM Pelita Aushaf Indonesia</h2>
+          <p>Kami adalah lembaga pendidikan nonformal yang berkomitmen mendampingi anak bertumbuh dengan ilmu, adab, karakter, dan bekal kemandirian. Pembelajaran dirancang agar anak merasa aman, dihargai, dan dibimbing sesuai tahap perkembangannya.</p>
+          <div class="checklist">
+            <div class="check">Lingkungan belajar islami dan ramah anak</div>
+            <div class="check">Mitra pendidikan karakter buah hati</div>
+            <div class="check">Mendukung peserta didik tipikal dan PDPD</div>
+            <div class="check">Pembelajaran bertahap sesuai kemampuan anak</div>
+            <div class="check">Komunikasi aktif dengan orang tua/wali</div>
+            <div class="check">Program akademik, adab, Qur'an, dan kemandirian</div>
+          </div>
+        </div>
+        <div class="card" style="background:#0f766e;color:white">
+          <div class="icon" style="background:rgba(255,255,255,.18);color:white">🤝</div>
+          <h2 style="color:white">Pendidikan Inklusi</h2>
+          <p style="color:#ecfdf5">Kami mendampingi peserta didik tipikal dan PDPD dengan pendekatan yang lebih personal, bertahap, dan berorientasi pada kemampuan anak.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="program">
+      <div class="container">
+        <div class="section-title">
+          <p>Program Pendidikan</p>
+          <h2>Pilih Program Sesuai Kebutuhan Ananda</h2>
+          <p style="text-transform:none;letter-spacing:0;font-weight:400;color:#6b7280;font-size:16px">Mulai dari usia dini hingga kesetaraan, dengan pendampingan yang ramah anak dan komunikatif bersama orang tua.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card"><div class="icon">🏡</div><h3>Daycare</h3><p>Pendampingan anak dengan suasana hangat, aman, dan islami.</p></div>
+          <div class="card"><div class="icon">🌿</div><h3>PAUD Non Formal</h3><p>Stimulasi tumbuh kembang, adab, kemandirian, dan pembiasaan ibadah.</p></div>
+          <div class="card"><div class="icon">🧩</div><h3>Kelompok Bermain</h3><p>Belajar melalui bermain, eksplorasi, seni, motorik, dan bahasa.</p></div>
+          <div class="card"><div class="icon">📘</div><h3>Paket A</h3><p>Setara SD dengan pembelajaran karakter, akademik, dan pembiasaan Qurani.</p></div>
+          <div class="card"><div class="icon">🏫</div><h3>Paket B</h3><p>Setara SMP dengan penguatan tauhid, Al-Qur'an, bahasa Arab, dan life skill.</p></div>
+          <div class="card"><div class="icon">🎓</div><h3>Paket C</h3><p>Setara SMA, fleksibel, terarah, dan mendukung kesiapan masa depan.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container cta grid-2">
+        <div>
+          <p class="eyebrow" style="color:#d1fae5">Alur Pendaftaran</p>
+          <h2>Mudah, Cepat, dan Bisa Lewat WhatsApp</h2>
+          <p>Isi formulir singkat, kirim ke WhatsApp admin, lalu admin akan menghubungi orang tua/wali untuk informasi jadwal observasi, berkas, dan biaya.</p>
+        </div>
+        <div class="steps">
+          <div class="step"><div class="num">1</div><b>Isi formulir pendaftaran</b></div>
+          <div class="step"><div class="num">2</div><b>Kirim data ke WhatsApp admin</b></div>
+          <div class="step"><div class="num">3</div><b>Admin menghubungi orang tua/wali</b></div>
+          <div class="step"><div class="num">4</div><b>Observasi dan konsultasi kebutuhan anak</b></div>
+          <div class="step"><div class="num">5</div><b>Melengkapi berkas pendaftaran</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pendaftaran">
+      <div class="container form-wrap">
+        <div>
+          <p class="eyebrow">Formulir Online</p>
+          <h2>Pendaftaran Murid Baru</h2>
+          <p>Formulir ini tidak memakai database berbayar. Data yang diisi akan dirapikan otomatis menjadi pesan WhatsApp ke admin PKBM.</p>
+          <div class="info-box">
+            <p><b>SPMB / Admin:</b><br>0821-4004-6047</p>
+            <p><b>Alamat:</b><br>Perumahan Griya Permata Gedangan Blok G2/29</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <form id="formDaftar">
+            <label>Nama Anak
+              <input id="namaAnak" placeholder="Contoh: Ahmad" required>
+            </label>
+            <label>Usia / Kelas
+              <input id="usia" placeholder="Contoh: 5 tahun / kelas 2">
+            </label>
+            <label>Program Pilihan
+              <select id="program">
+                <option>Daycare</option>
+                <option>PAUD Non Formal</option>
+                <option>Kelompok Bermain</option>
+                <option>Paket A</option>
+                <option>Paket B</option>
+                <option>Paket C</option>
+                <option>Program Home Schooling</option>
+              </select>
+            </label>
+            <label>Keterangan Anak
+              <select id="kebutuhan">
+                <option>Anak tipikal</option>
+                <option>PDPD / anak berkebutuhan khusus</option>
+                <option>Perlu konsultasi dulu</option>
+              </select>
+            </label>
+            <label>Nama Orang Tua/Wali
+              <input id="ortu" placeholder="Nama ayah/bunda/wali" required>
+            </label>
+            <label>Nomor HP
+              <input id="hp" placeholder="Contoh: 08xxxxxxxxxx">
+            </label>
+            <label class="full">Alamat Domisili
+              <input id="alamat" placeholder="Alamat singkat">
+            </label>
+            <label class="full">Pesan Tambahan
+              <textarea id="pesan" placeholder="Contoh: ingin tanya biaya, jadwal, atau konsultasi anak"></textarea>
+            </label>
+            <button class="btn full" type="submit">Kirim Pendaftaran ke WhatsApp Admin</button>
+          </form>
+          <p class="note">Dengan menekan tombol, data akan terbuka di WhatsApp dan belum terkirim sampai orang tua/wali menekan kirim.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div>
+        <b>PKBM Pelita Aushaf Indonesia</b><br>
+        <small>NPSN 9998555 • Terakreditasi B • Sejak 2020</small>
+      </div>
+      <small>© 2026 PKBM Pelita Aushaf Indonesia. Semua hak dilindungi.</small>
+    </div>
+  </footer>
+
+  <script>
+    const adminWhatsApp = "6282140046047";
+    document.getElementById("formDaftar").addEventListener("submit", function(e){
+      e.preventDefault();
+      const data = {
+        namaAnak: document.getElementById("namaAnak").value || "-",
+        usia: document.getElementById("usia").value || "-",
+        program: document.getElementById("program").value || "-",
+        kebutuhan: document.getElementById("kebutuhan").value || "-",
+        ortu: document.getElementById("ortu").value || "-",
+        hp: document.getElementById("hp").value || "-",
+        alamat: document.getElementById("alamat").value || "-",
+        pesan: document.getElementById("pesan").value || "-"
+      };
+      const text =
+`Assalamu'alaikum admin PKBM Pelita Aushaf Indonesia.
+
+Saya ingin mendaftarkan calon murid baru.
+
+Nama Anak: ${data.namaAnak}
+Usia/Kelas: ${data.usia}
+Program Dipilih: ${data.program}
+Keterangan Anak: ${data.kebutuhan}
+Nama Orang Tua/Wali: ${data.ortu}
+No HP: ${data.hp}
+Alamat: ${data.alamat}
+Pesan Tambahan: ${data.pesan}
+
+Mohon informasi langkah pendaftaran selanjutnya.`;
+      window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(text)}`, "_blank");
+    });
+  </script>
+</body>
+</html>
