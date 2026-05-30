@@ -1,6 +1,14 @@
 {
   "Daycare": [],
-  "PAUD Non Formal": [],
+  "PAUD Non Formal": [
+    {
+      "program": "PAUD Non Formal",
+      "caption": "Kegiatan Cooking Class PAUD Non Formal",
+      "date": "2026-05-29",
+      "src": "foto-kegiatan/paud-non-formal/2026-05-30T13-09-02-737Z-cooking-class-paud-29-mei-jpeg.jpg",
+      "uploadedAt": "2026-05-30T13:09:04.753Z"
+    }
+  ],
   "Kelompok Bermain": [],
   "Paket A": [
     {
