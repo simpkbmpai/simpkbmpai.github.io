@@ -378,6 +378,108 @@
       background:#fff;border:3px solid #ffffff;box-shadow:0 14px 34px rgba(0,0,0,.16);
     }
     .floating-trademark img{width:100%;height:100%;object-fit:cover}
+
+    .inclusion-card{
+      background:linear-gradient(160deg,#0d7a5f,#0a5c48);
+      color:#fff;
+      position:relative;
+      overflow:hidden;
+      padding:30px;
+      min-height:100%;
+    }
+    .inclusion-card:before{
+      content:"";
+      position:absolute;
+      width:260px;
+      height:260px;
+      right:-90px;
+      top:-90px;
+      border-radius:50%;
+      background:rgba(255,255,255,.10);
+    }
+    .inclusion-card:after{
+      content:"";
+      position:absolute;
+      width:190px;
+      height:190px;
+      left:-70px;
+      bottom:-70px;
+      border-radius:50%;
+      background:rgba(255,255,255,.08);
+    }
+    .inclusion-card > *{
+      position:relative;
+      z-index:1;
+    }
+    .inclusion-icon{
+      width:58px;
+      height:58px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:20px;
+      background:#e8f8ee;
+      color:#0a5c48;
+      font-size:26px;
+      margin-bottom:16px;
+      box-shadow:0 12px 26px rgba(0,0,0,.12);
+    }
+    .inclusion-card h2{
+      color:#fff;
+      font-size:42px;
+      margin-bottom:14px;
+    }
+    .inclusion-card p{
+      color:#e9fbf2;
+      font-size:17px;
+      line-height:1.75;
+      margin:0 0 16px;
+    }
+    .inclusion-illustration{
+      margin:18px 0;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:28px;
+      padding:16px;
+    }
+    .inclusion-illustration svg{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+    .inclusion-points{
+      display:grid;
+      gap:10px;
+      margin-top:18px;
+    }
+    .inclusion-point{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:11px 12px;
+      border-radius:16px;
+      background:rgba(255,255,255,.12);
+      color:#f6fffb;
+      border:1px solid rgba(255,255,255,.14);
+      font-weight:700;
+      font-size:14px;
+    }
+    .inclusion-point:before{
+      content:"✓";
+      flex:0 0 auto;
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#e8f8ee;
+      color:#0a5c48;
+      font-weight:900;
+      font-size:13px;
+      margin-top:1px;
+    }
+
     @media(max-width:1024px){
       h1{font-size:50px}
       .hero-grid,.grid-2,.form-wrap{grid-template-columns:1fr}
@@ -477,10 +579,65 @@
           </div>
         </div>
 
-        <div class="card highlight-card">
-          <div class="icon">🤝</div>
+        <div class="card inclusion-card">
+          <div class="inclusion-icon">🤝</div>
           <h2>Pendidikan Inklusi</h2>
-          <p>Kami mendampingi peserta didik tipikal dan PDPD dengan pendekatan yang lebih personal, bertahap, dan berorientasi pada kemampuan anak.</p>
+          <p>
+            Kami mendampingi peserta didik tipikal dan PDPD agar dapat belajar dengan aman, dihargai, dan dibimbing sesuai kemampuan serta tahap perkembangannya.
+          </p>
+
+          <div class="inclusion-illustration" aria-label="Ilustrasi pendidikan inklusi">
+            <svg viewBox="0 0 760 360" role="img" aria-label="Ilustrasi faceless anak dan guru dalam pendidikan inklusi">
+              <defs>
+                <linearGradient id="bgInklusi" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#e8f8ee"/>
+                  <stop offset="100%" stop-color="#d7f1df"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="760" height="360" rx="34" fill="url(#bgInklusi)"/>
+              <circle cx="630" cy="74" r="42" fill="#b8e7c9" opacity=".8"/>
+              <circle cx="115" cy="290" r="54" fill="#b8e7c9" opacity=".55"/>
+
+              <!-- papan belajar -->
+              <rect x="250" y="52" width="260" height="110" rx="22" fill="#ffffff" opacity=".9"/>
+              <rect x="282" y="82" width="196" height="14" rx="7" fill="#0d7a5f" opacity=".25"/>
+              <rect x="282" y="112" width="144" height="14" rx="7" fill="#0d7a5f" opacity=".18"/>
+              <circle cx="478" cy="120" r="10" fill="#d6aa38"/>
+
+              <!-- karakter faceless: kepala melayang tanpa leher -->
+              <g>
+                <circle cx="170" cy="145" r="42" fill="#f3c69a"/>
+                <path d="M128 132 Q170 83 212 132" fill="#ffffff"/>
+                <rect x="124" y="204" width="92" height="98" rx="30" fill="#6bcda5"/>
+                <rect x="106" y="252" width="128" height="34" rx="17" fill="#0d7a5f" opacity=".18"/>
+                <text x="170" y="330" text-anchor="middle" font-family="Arial" font-size="25" font-weight="800" fill="#0a5c48">Tipikal</text>
+              </g>
+
+              <g>
+                <circle cx="380" cy="133" r="48" fill="#f0bd8b"/>
+                <path d="M326 128 Q380 70 434 128" fill="#ffffff"/>
+                <rect x="324" y="202" width="112" height="104" rx="34" fill="#0d7a5f"/>
+                <rect x="300" y="248" width="160" height="36" rx="18" fill="#ffffff" opacity=".35"/>
+                <text x="380" y="330" text-anchor="middle" font-family="Arial" font-size="25" font-weight="800" fill="#0a5c48">Guru</text>
+              </g>
+
+              <g>
+                <circle cx="590" cy="145" r="42" fill="#f3c69a"/>
+                <path d="M548 132 Q590 83 632 132" fill="#ffffff"/>
+                <rect x="544" y="204" width="92" height="98" rx="30" fill="#8edbb9"/>
+                <circle cx="655" cy="238" r="18" fill="#d6aa38"/>
+                <path d="M647 238 h16 M655 230 v16" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                <text x="590" y="330" text-anchor="middle" font-family="Arial" font-size="25" font-weight="800" fill="#0a5c48">PDPD</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="inclusion-points">
+            <div class="inclusion-point">Observasi kebutuhan belajar anak secara bertahap.</div>
+            <div class="inclusion-point">Pendampingan adab, kemandirian, komunikasi, dan sosial emosi.</div>
+            <div class="inclusion-point">Target belajar disesuaikan dengan kemampuan anak.</div>
+            <div class="inclusion-point">Kolaborasi guru, orang tua, dan lingkungan belajar.</div>
+          </div>
         </div>
       </div>
     </section>
