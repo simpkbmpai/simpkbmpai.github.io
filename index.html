@@ -1602,8 +1602,8 @@
     <section id="kalender">
       <div class="container">
         <div class="section-title">
-          <span class="eyebrow">Kalender Kegiatan</span>
-          <h2>Agenda dan Kegiatan PKBM</h2>
+          <span class="eyebrow">Kalender Akademik & Kegiatan</span>
+          <h2>Agenda Akademik dan Kegiatan PKBM</h2>
           <p>Informasi kegiatan mendatang, outing class, parenting, pembelajaran tematik, dan agenda sekolah.</p>
         </div>
 
@@ -2223,7 +2223,7 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
       if(!list) return;
       const events = sortByNewest(eventData).reverse();
       if(!events.length){
-        list.innerHTML = `<div class="empty-dynamic"><h3>Belum ada agenda kegiatan</h3><p>Agenda bisa ditambahkan melalui dashboard.</p></div>`;
+        list.innerHTML = `<div class="empty-dynamic"><h3>Belum ada agenda akademik dan kegiatan</h3><p>Agenda bisa ditambahkan melalui dashboard.</p></div>`;
         return;
       }
 

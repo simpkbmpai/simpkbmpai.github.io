@@ -72,6 +72,12 @@
     .stage3-item b{display:block;color:#0f172a}
     .stage3-item small{display:block;margin-top:4px}
     .stage3-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+    .stage3-edit{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff;color:var(--green-dark);font-weight:900;cursor:pointer}
+    .stage3-edit:hover{background:#eef8f4}
+    .stage3-cancel{display:none;border:1px solid #fed7aa;border-radius:16px;padding:14px 18px;background:#fff7ed;color:#7c2d12;font-weight:900;cursor:pointer;margin-top:14px;margin-left:8px}
+    .stage3-cancel.show{display:inline-flex}
+    .edit-mode-note{display:none;margin-top:12px;border:1px solid #a7f3d0;background:#ecfdf5;color:#065f46;border-radius:16px;padding:12px;font-weight:800}
+    .edit-mode-note.show{display:block}
     .stage3-delete{border:0;border-radius:14px;padding:10px 12px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
     .stage3-delete:hover{filter:brightness(.92)}
 
@@ -79,7 +85,7 @@
       .grid,.preview,.manage-tools,.pdf-tools,.stage3-tools{grid-template-columns:1fr}
       .pdf-item{grid-template-columns:1fr}
       .pdf-actions,.stage3-actions{justify-content:flex-start}
-      .pdf-delete,.pdf-link,.stage3-delete{width:100%;text-align:center}
+      .pdf-delete,.pdf-link,.stage3-delete,.stage3-edit{width:100%;text-align:center}
       .manage-item{grid-template-columns:1fr}
       .manage-item img{width:100%;height:190px}
       .delete-btn{width:100%}
@@ -256,7 +262,9 @@
       </label>
 
       <button class="btn" id="saveArticleBtn">Simpan Artikel</button>
-      <button class="btn secondary" id="loadArticleBtn">Kelola / Hapus Artikel</button>
+      <button class="stage3-cancel" id="articleCancelEditBtn" type="button">Batal Edit</button>
+      <button class="btn secondary" id="loadArticleBtn">Kelola / Edit / Hapus Artikel</button>
+      <div class="edit-mode-note" id="articleEditNote">Mode edit artikel aktif. Ubah data lalu klik Simpan Artikel.</div>
 
       <div id="articleManageList" class="stage3-list">
         <div class="empty">Masukkan GitHub Token, lalu klik Kelola / Hapus Artikel.</div>
@@ -264,8 +272,8 @@
     </div>
 
     <div class="card">
-      <h2>6. Kalender Kegiatan</h2>
-      <p>Tambah agenda kegiatan agar wali murid dapat melihat informasi terbaru di web.</p>
+      <h2>6. Kalender Akademik & Kegiatan</h2>
+      <p>Tambah agenda akademik dan kegiatan agar wali murid dapat melihat informasi terbaru di web.</p>
 
       <div class="stage3-tools">
         <label>Judul Kegiatan
@@ -294,7 +302,9 @@
       </label>
 
       <button class="btn" id="saveEventBtn">Simpan Kegiatan</button>
-      <button class="btn secondary" id="loadEventBtn">Kelola / Hapus Kegiatan</button>
+      <button class="stage3-cancel" id="eventCancelEditBtn" type="button">Batal Edit</button>
+      <button class="btn secondary" id="loadEventBtn">Kelola / Edit / Hapus Kegiatan</button>
+      <div class="edit-mode-note" id="eventEditNote">Mode edit kegiatan aktif. Ubah data lalu klik Simpan Kegiatan.</div>
 
       <div id="eventManageList" class="stage3-list">
         <div class="empty">Masukkan GitHub Token, lalu klik Kelola / Hapus Kegiatan.</div>
@@ -784,6 +794,8 @@
 
 
     /* ===== Tahap 3 Dashboard: Artikel, Kalender, Album ===== */
+    let editingArticleId = null;
+    let editingEventId = null;
     function makeId(prefix, title){
       return prefix + "-" + (title || "item").toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
@@ -816,7 +828,7 @@
     async function saveArticle(){
       $("success").style.display = "none";
       $("error").style.display = "none";
-      logBox.textContent = "Mulai menyimpan artikel...";
+      logBox.textContent = editingArticleId ? "Mulai mengedit artikel..." : "Mulai menyimpan artikel...";
 
       try{
         if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
@@ -824,25 +836,38 @@
         if(!title) throw new Error("Judul artikel belum diisi.");
 
         const fileData = await getArrayJsonFile("data-artikel.json");
-        const cover = await uploadOptionalImage(($("articleCoverInput").files || [])[0], "artikel-cover", title);
+        const data = fileData.json || [];
+        const existing = editingArticleId ? data.find(x => x.id === editingArticleId) : null;
+
+        const newCover = await uploadOptionalImage(($("articleCoverInput").files || [])[0], "artikel-cover", title);
+        const cover = newCover || (existing ? existing.cover : "");
 
         const item = {
-          id: makeId("artikel", title),
+          id: editingArticleId || makeId("artikel", title),
           title,
           category: $("articleCategoryInput").value.trim() || "Umum",
           date: $("articleDateInput").value || new Date().toISOString().slice(0,10),
           summary: $("articleSummaryInput").value.trim() || "-",
           content: $("articleContentInput").value.trim() || $("articleSummaryInput").value.trim() || "-",
           cover,
-          createdAt: new Date().toISOString()
+          createdAt: existing ? (existing.createdAt || new Date().toISOString()) : new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         };
 
-        const data = fileData.json || [];
-        data.push(item);
-        await putFile("data-artikel.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Tambah artikel " + title, fileData.sha);
+        let next;
+        if(editingArticleId){
+          next = data.map(x => x.id === editingArticleId ? item : x);
+          await putFile("data-artikel.json", utf8ToBase64(JSON.stringify(next, null, 2)), "Edit artikel " + title, fileData.sha);
+          show("success", "Artikel berhasil diedit.");
+          cancelEditArticle(false);
+        }else{
+          next = data.concat(item);
+          await putFile("data-artikel.json", utf8ToBase64(JSON.stringify(next, null, 2)), "Tambah artikel " + title, fileData.sha);
+          show("success", "Artikel berhasil disimpan.");
+          clearArticleForm();
+        }
 
         log("Selesai. Tunggu 1-3 menit lalu refresh website.");
-        show("success", "Artikel berhasil disimpan.");
         await loadStage3Manage("artikel");
       }catch(err){
         log("ERROR: " + err.message);
@@ -853,7 +878,7 @@
     async function saveEvent(){
       $("success").style.display = "none";
       $("error").style.display = "none";
-      logBox.textContent = "Mulai menyimpan kegiatan...";
+      logBox.textContent = editingEventId ? "Mulai mengedit kegiatan..." : "Mulai menyimpan kegiatan...";
 
       try{
         if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
@@ -861,23 +886,35 @@
         if(!title) throw new Error("Judul kegiatan belum diisi.");
 
         const fileData = await getArrayJsonFile("data-kalender.json");
+        const data = fileData.json || [];
+        const existing = editingEventId ? data.find(x => x.id === editingEventId) : null;
+
         const item = {
-          id: makeId("agenda", title),
+          id: editingEventId || makeId("agenda", title),
           title,
           category: $("eventCategoryInput").value.trim() || "Kegiatan",
           date: $("eventDateInput").value || new Date().toISOString().slice(0,10),
           time: $("eventTimeInput").value.trim() || "-",
           location: $("eventLocationInput").value.trim() || "PKBM Pelita Aushaf Indonesia",
           desc: $("eventDescInput").value.trim() || "-",
-          createdAt: new Date().toISOString()
+          createdAt: existing ? (existing.createdAt || new Date().toISOString()) : new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         };
 
-        const data = fileData.json || [];
-        data.push(item);
-        await putFile("data-kalender.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Tambah kegiatan " + title, fileData.sha);
+        let next;
+        if(editingEventId){
+          next = data.map(x => x.id === editingEventId ? item : x);
+          await putFile("data-kalender.json", utf8ToBase64(JSON.stringify(next, null, 2)), "Edit kegiatan " + title, fileData.sha);
+          show("success", "Kegiatan berhasil diedit.");
+          cancelEditEvent(false);
+        }else{
+          next = data.concat(item);
+          await putFile("data-kalender.json", utf8ToBase64(JSON.stringify(next, null, 2)), "Tambah kegiatan " + title, fileData.sha);
+          show("success", "Kegiatan berhasil disimpan.");
+          clearEventForm();
+        }
 
         log("Selesai. Tunggu 1-3 menit lalu refresh website.");
-        show("success", "Kegiatan berhasil disimpan.");
         await loadStage3Manage("kalender");
       }catch(err){
         log("ERROR: " + err.message);
@@ -954,10 +991,15 @@
               <small>${escapeHtml(item.category || item.program || "")}</small>
             </div>
             <div class="stage3-actions">
+              ${type === "artikel" || type === "kalender" ? `<button class="stage3-edit" data-type="${type}" data-id="${escapeHtml(item.id || "")}">Edit</button>` : ""}
               <button class="stage3-delete" data-type="${type}" data-id="${escapeHtml(item.id || "")}">Hapus</button>
             </div>
           </div>
         `).join("");
+
+        list.querySelectorAll(".stage3-edit").forEach(btn => {
+          btn.addEventListener("click", async () => editStage3Item(btn.dataset.type, btn.dataset.id));
+        });
 
         list.querySelectorAll(".stage3-delete").forEach(btn => {
           btn.addEventListener("click", async () => deleteStage3Item(btn.dataset.type, btn.dataset.id));
@@ -965,6 +1007,88 @@
       }catch(err){
         log("ERROR: " + err.message);
         show("error", "Gagal memuat daftar: " + err.message);
+      }
+    }
+
+    function clearArticleForm(){
+      $("articleTitleInput").value = "";
+      $("articleCategoryInput").value = "";
+      $("articleDateInput").value = "";
+      $("articleCoverInput").value = "";
+      $("articleSummaryInput").value = "";
+      $("articleContentInput").value = "";
+    }
+
+    function clearEventForm(){
+      $("eventTitleInput").value = "";
+      $("eventCategoryInput").value = "";
+      $("eventDateInput").value = "";
+      $("eventTimeInput").value = "";
+      $("eventLocationInput").value = "";
+      $("eventDescInput").value = "";
+    }
+
+    function cancelEditArticle(clear=true){
+      editingArticleId = null;
+      $("saveArticleBtn").textContent = "Simpan Artikel";
+      $("articleCancelEditBtn").classList.remove("show");
+      $("articleEditNote").classList.remove("show");
+      if(clear) clearArticleForm();
+    }
+
+    function cancelEditEvent(clear=true){
+      editingEventId = null;
+      $("saveEventBtn").textContent = "Simpan Kegiatan";
+      $("eventCancelEditBtn").classList.remove("show");
+      $("eventEditNote").classList.remove("show");
+      if(clear) clearEventForm();
+    }
+
+    async function editStage3Item(type, id){
+      try{
+        const config = {
+          artikel: {path:"data-artikel.json"},
+          kalender: {path:"data-kalender.json"}
+        }[type];
+
+        if(!config) return;
+
+        const fileData = await getArrayJsonFile(config.path);
+        const item = (fileData.json || []).find(x => x.id === id);
+        if(!item) throw new Error("Data tidak ditemukan.");
+
+        if(type === "artikel"){
+          editingArticleId = id;
+          $("articleTitleInput").value = item.title || "";
+          $("articleCategoryInput").value = item.category || "";
+          $("articleDateInput").value = item.date || "";
+          $("articleSummaryInput").value = item.summary || "";
+          $("articleContentInput").value = item.content || "";
+          $("articleCoverInput").value = "";
+          $("saveArticleBtn").textContent = "Simpan Perubahan Artikel";
+          $("articleCancelEditBtn").classList.add("show");
+          $("articleEditNote").classList.add("show");
+          $("articleTitleInput").scrollIntoView({behavior:"smooth", block:"center"});
+        }
+
+        if(type === "kalender"){
+          editingEventId = id;
+          $("eventTitleInput").value = item.title || "";
+          $("eventCategoryInput").value = item.category || "";
+          $("eventDateInput").value = item.date || "";
+          $("eventTimeInput").value = item.time || "";
+          $("eventLocationInput").value = item.location || "";
+          $("eventDescInput").value = item.desc || "";
+          $("saveEventBtn").textContent = "Simpan Perubahan Kegiatan";
+          $("eventCancelEditBtn").classList.add("show");
+          $("eventEditNote").classList.add("show");
+          $("eventTitleInput").scrollIntoView({behavior:"smooth", block:"center"});
+        }
+
+        log("Mode edit aktif. Ubah data lalu klik Simpan.");
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal membuka mode edit: " + err.message);
       }
     }
 
@@ -1003,8 +1127,10 @@
     }
 
     $("saveArticleBtn").addEventListener("click", saveArticle);
+    $("articleCancelEditBtn").addEventListener("click", () => cancelEditArticle(true));
     $("loadArticleBtn").addEventListener("click", () => loadStage3Manage("artikel"));
     $("saveEventBtn").addEventListener("click", saveEvent);
+    $("eventCancelEditBtn").addEventListener("click", () => cancelEditEvent(true));
     $("loadEventBtn").addEventListener("click", () => loadStage3Manage("kalender"));
     $("saveAlbumBtn").addEventListener("click", saveAlbum);
     $("loadAlbumBtn").addEventListener("click", () => loadStage3Manage("album"));
