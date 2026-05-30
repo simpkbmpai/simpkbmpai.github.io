@@ -1,0 +1,22 @@
+[
+  {
+    "id": "artikel-parenting-adab",
+    "title": "Menguatkan Adab Anak Sejak Dini",
+    "category": "Parenting",
+    "date": "2026-05-30",
+    "summary": "Adab adalah pondasi penting dalam proses pendidikan anak.",
+    "content": "Adab perlu dibiasakan melalui contoh, pengulangan, dan suasana yang hangat. Anak lebih mudah meniru daripada hanya mendengar nasihat. Karena itu, orang tua dan pendidik perlu menjadi teladan dalam berbicara, meminta maaf, berterima kasih, dan menjaga amanah.",
+    "cover": "",
+    "createdAt": "2026-05-30"
+  },
+  {
+    "id": "artikel-inklusi-anak",
+    "title": "Memahami Pendidikan Inklusi untuk Anak",
+    "category": "Inklusi",
+    "date": "2026-05-30",
+    "summary": "Pendidikan inklusi membantu anak belajar sesuai tahap kemampuan dan kebutuhannya.",
+    "content": "Pendidikan inklusi bukan sekadar mencampur semua anak dalam satu ruang, tetapi menghadirkan pendampingan yang menghargai keunikan anak. Observasi awal, komunikasi dengan orang tua, dan target belajar bertahap menjadi bagian penting dari proses ini.",
+    "cover": "",
+    "createdAt": "2026-05-30"
+  }
+]

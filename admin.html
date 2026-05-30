@@ -65,11 +65,21 @@
     .pdf-delete{border:0;border-radius:14px;padding:10px 12px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
     .pdf-delete:hover{filter:brightness(.92)}
 
+
+    .stage3-tools{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .stage3-list{display:grid;gap:12px;margin-top:14px}
+    .stage3-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:12px;background:#f8fcfa}
+    .stage3-item b{display:block;color:#0f172a}
+    .stage3-item small{display:block;margin-top:4px}
+    .stage3-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+    .stage3-delete{border:0;border-radius:14px;padding:10px 12px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
+    .stage3-delete:hover{filter:brightness(.92)}
+
     @media(max-width:760px){
-      .grid,.preview,.manage-tools,.pdf-tools{grid-template-columns:1fr}
+      .grid,.preview,.manage-tools,.pdf-tools,.stage3-tools{grid-template-columns:1fr}
       .pdf-item{grid-template-columns:1fr}
-      .pdf-actions{justify-content:flex-start}
-      .pdf-delete,.pdf-link{width:100%;text-align:center}
+      .pdf-actions,.stage3-actions{justify-content:flex-start}
+      .pdf-delete,.pdf-link,.stage3-delete{width:100%;text-align:center}
       .manage-item{grid-template-columns:1fr}
       .manage-item img{width:100%;height:190px}
       .delete-btn{width:100%}
@@ -216,7 +226,126 @@
     </div>
 
     <div class="card">
-      <h2>5. Catatan Proses</h2>
+      <h2>5. Artikel Parenting & Edukasi</h2>
+      <p>Tambah artikel untuk halaman web. Cocok untuk parenting, pendidikan inklusi, tumbuh kembang, adab, dan info program.</p>
+
+      <div class="stage3-tools">
+        <label>Judul Artikel
+          <input id="articleTitleInput" placeholder="Contoh: Cara Mendampingi Anak Belajar di Rumah">
+        </label>
+        <label>Kategori
+          <input id="articleCategoryInput" placeholder="Contoh: Parenting / Inklusi / Adab">
+        </label>
+      </div>
+
+      <div class="stage3-tools">
+        <label>Tanggal Artikel
+          <input id="articleDateInput" type="date">
+        </label>
+        <label>Foto Sampul Artikel
+          <input id="articleCoverInput" type="file" accept="image/*">
+        </label>
+      </div>
+
+      <label>Ringkasan Artikel
+        <textarea id="articleSummaryInput" placeholder="Ringkasan singkat yang tampil di kartu artikel"></textarea>
+      </label>
+
+      <label>Isi Artikel
+        <textarea id="articleContentInput" placeholder="Tulis isi artikel lengkap di sini"></textarea>
+      </label>
+
+      <button class="btn" id="saveArticleBtn">Simpan Artikel</button>
+      <button class="btn secondary" id="loadArticleBtn">Kelola / Hapus Artikel</button>
+
+      <div id="articleManageList" class="stage3-list">
+        <div class="empty">Masukkan GitHub Token, lalu klik Kelola / Hapus Artikel.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>6. Kalender Kegiatan</h2>
+      <p>Tambah agenda kegiatan agar wali murid dapat melihat informasi terbaru di web.</p>
+
+      <div class="stage3-tools">
+        <label>Judul Kegiatan
+          <input id="eventTitleInput" placeholder="Contoh: Cooking Class PAUD">
+        </label>
+        <label>Kategori
+          <input id="eventCategoryInput" placeholder="Contoh: PAUD / Parenting / SOC">
+        </label>
+      </div>
+
+      <div class="stage3-tools">
+        <label>Tanggal
+          <input id="eventDateInput" type="date">
+        </label>
+        <label>Waktu
+          <input id="eventTimeInput" placeholder="Contoh: 08.00 - 10.00">
+        </label>
+      </div>
+
+      <label>Lokasi
+        <input id="eventLocationInput" placeholder="Contoh: PKBM Pelita Aushaf Indonesia">
+      </label>
+
+      <label>Keterangan
+        <textarea id="eventDescInput" placeholder="Keterangan singkat kegiatan"></textarea>
+      </label>
+
+      <button class="btn" id="saveEventBtn">Simpan Kegiatan</button>
+      <button class="btn secondary" id="loadEventBtn">Kelola / Hapus Kegiatan</button>
+
+      <div id="eventManageList" class="stage3-list">
+        <div class="empty">Masukkan GitHub Token, lalu klik Kelola / Hapus Kegiatan.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>7. Galeri Album</h2>
+      <p>Buat album kegiatan pilihan. Album ini menampilkan cover, keterangan, dan bisa diarahkan ke galeri program.</p>
+
+      <div class="stage3-tools">
+        <label>Judul Album
+          <input id="albumTitleInput" placeholder="Contoh: Cooking Class PAUD Non Formal">
+        </label>
+        <label>Program Album
+          <select id="albumProgramInput">
+            <option>Daycare</option>
+            <option>PAUD Non Formal</option>
+            <option>Kelompok Bermain</option>
+            <option>Paket A</option>
+            <option>Paket B</option>
+            <option>Paket C</option>
+            <option>Program Home Schooling</option>
+            <option>Pendidikan Inklusi</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="stage3-tools">
+        <label>Tanggal Album
+          <input id="albumDateInput" type="date">
+        </label>
+        <label>Cover Album
+          <input id="albumCoverInput" type="file" accept="image/*">
+        </label>
+      </div>
+
+      <label>Keterangan Album
+        <textarea id="albumDescInput" placeholder="Keterangan singkat album kegiatan"></textarea>
+      </label>
+
+      <button class="btn" id="saveAlbumBtn">Simpan Album</button>
+      <button class="btn secondary" id="loadAlbumBtn">Kelola / Hapus Album</button>
+
+      <div id="albumManageList" class="stage3-list">
+        <div class="empty">Masukkan GitHub Token, lalu klik Kelola / Hapus Album.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>8. Catatan Proses</h2>
       <div id="log" class="log">Siap upload...</div>
     </div>
 
@@ -651,6 +780,234 @@
 
     $("uploadBrosurBtn").addEventListener("click", uploadBrosurPdf);
     $("loadBrosurBtn").addEventListener("click", loadBrosurManageList);
+
+
+
+    /* ===== Tahap 3 Dashboard: Artikel, Kalender, Album ===== */
+    function makeId(prefix, title){
+      return prefix + "-" + (title || "item").toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 50) + "-" + Date.now();
+    }
+
+    async function getArrayJsonFile(path){
+      try{
+        const data = await getGithubFile(path);
+        const parsed = JSON.parse(base64ToUtf8(data.content));
+        return { json: Array.isArray(parsed) ? parsed : [], sha: data.sha };
+      }catch(err){
+        if(String(err.message).includes("Not Found")){
+          return { json: [], sha: null };
+        }
+        throw err;
+      }
+    }
+
+    async function uploadOptionalImage(file, folder, prefix){
+      if(!file) return "";
+      const resized = await resizeImage(file, 1400, .78);
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const path = `${folder}/${timestamp}-${safeName(prefix || file.name)}.jpg`;
+      await putBinaryFile(path, resized.base64, `Upload gambar ${folder}`);
+      return path;
+    }
+
+    async function saveArticle(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+      logBox.textContent = "Mulai menyimpan artikel...";
+
+      try{
+        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
+        const title = $("articleTitleInput").value.trim();
+        if(!title) throw new Error("Judul artikel belum diisi.");
+
+        const fileData = await getArrayJsonFile("data-artikel.json");
+        const cover = await uploadOptionalImage(($("articleCoverInput").files || [])[0], "artikel-cover", title);
+
+        const item = {
+          id: makeId("artikel", title),
+          title,
+          category: $("articleCategoryInput").value.trim() || "Umum",
+          date: $("articleDateInput").value || new Date().toISOString().slice(0,10),
+          summary: $("articleSummaryInput").value.trim() || "-",
+          content: $("articleContentInput").value.trim() || $("articleSummaryInput").value.trim() || "-",
+          cover,
+          createdAt: new Date().toISOString()
+        };
+
+        const data = fileData.json || [];
+        data.push(item);
+        await putFile("data-artikel.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Tambah artikel " + title, fileData.sha);
+
+        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
+        show("success", "Artikel berhasil disimpan.");
+        await loadStage3Manage("artikel");
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal menyimpan artikel: " + err.message);
+      }
+    }
+
+    async function saveEvent(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+      logBox.textContent = "Mulai menyimpan kegiatan...";
+
+      try{
+        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
+        const title = $("eventTitleInput").value.trim();
+        if(!title) throw new Error("Judul kegiatan belum diisi.");
+
+        const fileData = await getArrayJsonFile("data-kalender.json");
+        const item = {
+          id: makeId("agenda", title),
+          title,
+          category: $("eventCategoryInput").value.trim() || "Kegiatan",
+          date: $("eventDateInput").value || new Date().toISOString().slice(0,10),
+          time: $("eventTimeInput").value.trim() || "-",
+          location: $("eventLocationInput").value.trim() || "PKBM Pelita Aushaf Indonesia",
+          desc: $("eventDescInput").value.trim() || "-",
+          createdAt: new Date().toISOString()
+        };
+
+        const data = fileData.json || [];
+        data.push(item);
+        await putFile("data-kalender.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Tambah kegiatan " + title, fileData.sha);
+
+        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
+        show("success", "Kegiatan berhasil disimpan.");
+        await loadStage3Manage("kalender");
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal menyimpan kegiatan: " + err.message);
+      }
+    }
+
+    async function saveAlbum(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+      logBox.textContent = "Mulai menyimpan album...";
+
+      try{
+        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
+        const title = $("albumTitleInput").value.trim();
+        if(!title) throw new Error("Judul album belum diisi.");
+
+        const fileData = await getArrayJsonFile("data-album.json");
+        const cover = await uploadOptionalImage(($("albumCoverInput").files || [])[0], "album-cover", title);
+        const program = $("albumProgramInput").value;
+
+        const item = {
+          id: makeId("album", title),
+          title,
+          program,
+          date: $("albumDateInput").value || new Date().toISOString().slice(0,10),
+          desc: $("albumDescInput").value.trim() || "-",
+          cover,
+          linkProgram: program,
+          createdAt: new Date().toISOString()
+        };
+
+        const data = fileData.json || [];
+        data.push(item);
+        await putFile("data-album.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Tambah album " + title, fileData.sha);
+
+        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
+        show("success", "Album berhasil disimpan.");
+        await loadStage3Manage("album");
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal menyimpan album: " + err.message);
+      }
+    }
+
+    async function loadStage3Manage(type){
+      if(!$("token").value.trim()) {
+        show("error", "GitHub token belum diisi.");
+        return;
+      }
+
+      let config = {
+        artikel: {path:"data-artikel.json", list:"articleManageList", title:"Artikel"},
+        kalender: {path:"data-kalender.json", list:"eventManageList", title:"Kegiatan"},
+        album: {path:"data-album.json", list:"albumManageList", title:"Album"}
+      }[type];
+
+      try{
+        log("Memuat daftar " + config.title + "...");
+        const fileData = await getArrayJsonFile(config.path);
+        const data = fileData.json || [];
+        const list = $(config.list);
+
+        if(!data.length){
+          list.innerHTML = `<div class="empty">Belum ada ${config.title.toLowerCase()}.</div>`;
+          return;
+        }
+
+        list.innerHTML = data.slice().reverse().map(item => `
+          <div class="stage3-item">
+            <div>
+              <b>${escapeHtml(item.title || item.category || config.title)}</b>
+              <small>${escapeHtml(item.date || item.createdAt || "")}</small>
+              <small>${escapeHtml(item.category || item.program || "")}</small>
+            </div>
+            <div class="stage3-actions">
+              <button class="stage3-delete" data-type="${type}" data-id="${escapeHtml(item.id || "")}">Hapus</button>
+            </div>
+          </div>
+        `).join("");
+
+        list.querySelectorAll(".stage3-delete").forEach(btn => {
+          btn.addEventListener("click", async () => deleteStage3Item(btn.dataset.type, btn.dataset.id));
+        });
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal memuat daftar: " + err.message);
+      }
+    }
+
+    async function deleteStage3Item(type, id){
+      if(!confirm("Yakin ingin menghapus item ini dari website?")) return;
+
+      const config = {
+        artikel: {path:"data-artikel.json", list:"articleManageList", title:"Artikel", assetKey:"cover"},
+        kalender: {path:"data-kalender.json", list:"eventManageList", title:"Kegiatan", assetKey:null},
+        album: {path:"data-album.json", list:"albumManageList", title:"Album", assetKey:"cover"}
+      }[type];
+
+      try{
+        const fileData = await getArrayJsonFile(config.path);
+        const data = fileData.json || [];
+        const item = data.find(x => x.id === id);
+        const next = data.filter(x => x.id !== id);
+
+        await putFile(config.path, utf8ToBase64(JSON.stringify(next, null, 2)), `Hapus ${config.title}`, fileData.sha);
+
+        if(item && config.assetKey && item[config.assetKey]){
+          try{
+            await deleteGithubFile(item[config.assetKey], `Hapus file ${config.title}`);
+          }catch(fileErr){
+            log("Catatan: data terhapus, tetapi file gambar lama belum terhapus: " + fileErr.message);
+          }
+        }
+
+        log(config.title + " berhasil dihapus.");
+        show("success", config.title + " berhasil dihapus.");
+        await loadStage3Manage(type);
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal menghapus: " + err.message);
+      }
+    }
+
+    $("saveArticleBtn").addEventListener("click", saveArticle);
+    $("loadArticleBtn").addEventListener("click", () => loadStage3Manage("artikel"));
+    $("saveEventBtn").addEventListener("click", saveEvent);
+    $("loadEventBtn").addEventListener("click", () => loadStage3Manage("kalender"));
+    $("saveAlbumBtn").addEventListener("click", saveAlbum);
+    $("loadAlbumBtn").addEventListener("click", () => loadStage3Manage("album"));
 
 
     $("photos").addEventListener("change", async () => {

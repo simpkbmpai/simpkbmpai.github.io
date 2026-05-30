@@ -756,6 +756,410 @@
       line-height:1;
       margin-bottom:4px;
     }
+
+    /* ===== Tahap 3: Web Dinamis ===== */
+    .wa-need-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-top:26px;
+    }
+    .wa-need{
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:24px;
+      padding:18px;
+      box-shadow:0 12px 34px rgba(13,122,95,.07);
+      transition:.2s ease;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .wa-need:hover{
+      transform:translateY(-3px);
+      box-shadow:0 18px 44px rgba(13,122,95,.11);
+    }
+    .wa-need .wa-ico{
+      width:48px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:17px;
+      background:#eef8f4;
+      color:#0a5c48;
+      font-size:23px;
+    }
+    .wa-need b{
+      color:#0f172a;
+      font-size:17px;
+      line-height:1.3;
+    }
+    .wa-need span{
+      color:#6b7280;
+      font-size:14px;
+      line-height:1.45;
+      flex:1;
+    }
+    .wa-need a{
+      margin-top:6px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      border-radius:14px;
+      background:#0d7a5f;
+      color:#fff;
+      font-weight:900;
+      padding:10px 12px;
+    }
+
+    .dynamic-toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
+      margin:22px 0 28px;
+    }
+    .filter-btn{
+      border:1px solid var(--line);
+      background:#fff;
+      color:#345047;
+      font-weight:800;
+      padding:10px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .filter-btn.active{
+      background:#0d7a5f;
+      color:#fff;
+      border-color:#0d7a5f;
+      box-shadow:0 12px 28px rgba(13,122,95,.18);
+    }
+
+    .article-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+    .article-card{
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 12px 36px rgba(13,122,95,.07);
+      display:flex;
+      flex-direction:column;
+      transition:.2s ease;
+    }
+    .article-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 18px 44px rgba(13,122,95,.11);
+    }
+    .article-cover{
+      height:190px;
+      background:#eef8f4;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .article-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .article-placeholder{
+      font-size:48px;
+      opacity:.9;
+    }
+    .article-body{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:9px;
+      flex:1;
+    }
+    .article-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      color:#6b7280;
+      font-size:12px;
+      font-weight:800;
+    }
+    .article-tag{
+      background:#eef8f4;
+      color:#0a5c48;
+      border-radius:999px;
+      padding:4px 9px;
+    }
+    .article-body h3{
+      margin:0;
+      color:#0f172a;
+      line-height:1.28;
+      font-size:21px;
+    }
+    .article-body p{
+      margin:0;
+      color:#5b6472;
+      flex:1;
+    }
+    .article-read{
+      margin-top:8px;
+      border:1px solid #d6eee5;
+      background:#f8fcfa;
+      color:#0a5c48;
+      border-radius:14px;
+      padding:11px 12px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .calendar-wrap{
+      display:grid;
+      grid-template-columns:.85fr 1.15fr;
+      gap:22px;
+      align-items:start;
+    }
+    .calendar-card{
+      background:linear-gradient(135deg,#0d7a5f,#0a5c48);
+      color:#fff;
+      border-radius:34px;
+      padding:28px;
+      box-shadow:0 24px 58px rgba(13,122,95,.18);
+      position:sticky;
+      top:112px;
+    }
+    .calendar-card h3{
+      margin:0 0 8px;
+      color:#fff;
+      font-size:32px;
+      line-height:1.18;
+    }
+    .calendar-card p{
+      margin:0;
+      color:#e8fff4;
+    }
+    .calendar-list{
+      display:grid;
+      gap:14px;
+    }
+    .event-card{
+      display:grid;
+      grid-template-columns:96px 1fr;
+      gap:16px;
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:26px;
+      padding:16px;
+      box-shadow:0 12px 36px rgba(13,122,95,.07);
+    }
+    .event-date{
+      background:#eef8f4;
+      border:1px solid #d6eee5;
+      border-radius:20px;
+      min-height:94px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      color:#0a5c48;
+      font-weight:900;
+      text-align:center;
+      padding:8px;
+    }
+    .event-date b{
+      font-size:30px;
+      line-height:1;
+    }
+    .event-date span{
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .event-body h3{
+      margin:0 0 6px;
+      color:#0f172a;
+      font-size:21px;
+    }
+    .event-body p{
+      margin:0 0 8px;
+      color:#5b6472;
+    }
+    .event-small{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      color:#6b7280;
+      font-size:13px;
+      font-weight:700;
+    }
+    .event-label{
+      display:inline-flex;
+      padding:4px 9px;
+      border-radius:999px;
+      background:#eef8f4;
+      color:#0a5c48;
+      font-weight:900;
+      font-size:12px;
+    }
+
+    .album-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+    .album-card{
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 12px 36px rgba(13,122,95,.07);
+      transition:.2s ease;
+    }
+    .album-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 18px 44px rgba(13,122,95,.11);
+    }
+    .album-cover{
+      height:220px;
+      position:relative;
+      background:#eef8f4;
+      overflow:hidden;
+    }
+    .album-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .album-cover .album-placeholder{
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:56px;
+    }
+    .album-badge{
+      position:absolute;
+      left:14px;
+      top:14px;
+      background:rgba(255,255,255,.92);
+      color:#0a5c48;
+      padding:7px 11px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:12px;
+      box-shadow:0 10px 24px rgba(0,0,0,.12);
+    }
+    .album-body{
+      padding:18px;
+    }
+    .album-body h3{
+      margin:0 0 8px;
+      color:#0f172a;
+      font-size:21px;
+    }
+    .album-body p{
+      margin:0 0 12px;
+      color:#5b6472;
+    }
+    .album-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .album-actions a{
+      border-radius:14px;
+      padding:11px 12px;
+      text-align:center;
+      font-weight:900;
+      background:#0d7a5f;
+      color:#fff;
+    }
+    .album-actions a.secondary{
+      background:#fff;
+      color:#0a5c48;
+      border:1px solid #d6eee5;
+    }
+
+    .empty-dynamic{
+      text-align:center;
+      border:2px dashed #cce8dd;
+      border-radius:28px;
+      padding:34px;
+      background:#f8fcfa;
+      color:#6b7280;
+      grid-column:1/-1;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:220;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:rgba(15,23,42,.80);
+      backdrop-filter:blur(6px);
+    }
+    .modal.show{display:flex}
+    .modal-panel{
+      width:min(920px,100%);
+      max-height:90vh;
+      overflow:auto;
+      background:#fff;
+      border-radius:30px;
+      box-shadow:0 30px 90px rgba(0,0,0,.35);
+    }
+    .modal-head{
+      padding:18px 22px;
+      border-bottom:1px solid #e7f4ee;
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:center;
+      position:sticky;
+      top:0;
+      background:#fff;
+      z-index:1;
+    }
+    .modal-head b{
+      color:#0f172a;
+      font-size:20px;
+    }
+    .modal-close{
+      border:0;
+      background:#f3f4f6;
+      color:#111827;
+      border-radius:14px;
+      width:44px;
+      height:44px;
+      font-size:24px;
+      cursor:pointer;
+    }
+    .modal-body{
+      padding:22px;
+      color:#334155;
+      line-height:1.8;
+      font-size:17px;
+      white-space:pre-wrap;
+    }
+
+    @media(max-width:1024px){
+      .wa-need-grid,.article-grid,.album-grid{grid-template-columns:repeat(2,1fr)}
+      .calendar-wrap{grid-template-columns:1fr}
+      .calendar-card{position:relative;top:auto}
+    }
+    @media(max-width:760px){
+      .wa-need-grid,.article-grid,.album-grid{grid-template-columns:1fr}
+      .event-card{grid-template-columns:1fr}
+      .event-date{min-height:76px}
+      .album-actions{grid-template-columns:1fr}
+    }
+
     @media(max-width:1024px){
       .trust-grid,.brosur-list{grid-template-columns:repeat(2,1fr)}
       .brosur-box{grid-template-columns:1fr}
@@ -804,6 +1208,8 @@
           <li><a href="#tentang">Tentang</a></li>
           <li><a href="#program">Program</a></li>
           <li><a href="#galeri-kegiatan">Galeri</a></li>
+          <li><a href="#artikel">Artikel</a></li>
+          <li><a href="#kalender">Kegiatan</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#brosur">Brosur</a></li>
           <li><a href="#lokasi">Lokasi</a></li>
@@ -1142,6 +1548,91 @@
       </div>
     </section>
 
+
+    <section id="whatsapp-kebutuhan">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">WhatsApp Cepat</span>
+          <h2>Pilih Kebutuhan, Langsung Terhubung ke Admin</h2>
+          <p>Calon wali murid bisa memilih pesan sesuai kebutuhan agar komunikasi lebih cepat dan rapi.</p>
+        </div>
+
+        <div class="wa-need-grid">
+          <div class="wa-need">
+            <div class="wa-ico">📝</div>
+            <b>Daftar Murid Baru</b>
+            <span>Untuk orang tua yang siap mengisi data awal pendaftaran.</span>
+            <a href="https://wa.me/6282140046047?text=Assalamu%27alaikum%20admin%20PKBM%20Pelita%20Aushaf%20Indonesia.%20Saya%20ingin%20mendaftar%20murid%20baru." target="_blank" rel="noopener">Kirim WhatsApp</a>
+          </div>
+          <div class="wa-need">
+            <div class="wa-ico">🧩</div>
+            <b>Konsultasi PDPD/Inklusi</b>
+            <span>Untuk konsultasi anak autis, ADHD, disleksia, hambatan belajar, atau kebutuhan khusus lain.</span>
+            <a href="https://wa.me/6282140046047?text=Assalamu%27alaikum%20admin.%20Saya%20ingin%20konsultasi%20program%20inklusi%20atau%20PDPD." target="_blank" rel="noopener">Konsultasi</a>
+          </div>
+          <div class="wa-need">
+            <div class="wa-ico">📄</div>
+            <b>Minta Brosur</b>
+            <span>Untuk meminta brosur dan informasi program yang sesuai kebutuhan anak.</span>
+            <a href="https://wa.me/6282140046047?text=Assalamu%27alaikum%20admin.%20Saya%20ingin%20meminta%20brosur%20program%20PKBM." target="_blank" rel="noopener">Minta Brosur</a>
+          </div>
+          <div class="wa-need">
+            <div class="wa-ico">📍</div>
+            <b>Jadwal Kunjungan</b>
+            <span>Untuk bertanya lokasi, waktu kunjungan, observasi, atau konsultasi langsung.</span>
+            <a href="https://wa.me/6282140046047?text=Assalamu%27alaikum%20admin.%20Saya%20ingin%20bertanya%20jadwal%20kunjungan%20ke%20PKBM." target="_blank" rel="noopener">Atur Kunjungan</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="artikel">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Artikel Parenting & Edukasi</span>
+          <h2>Ruang Baca Orang Tua</h2>
+          <p>Artikel bisa ditambahkan dari dashboard untuk edukasi parenting, pendidikan inklusi, adab, dan tumbuh kembang anak.</p>
+        </div>
+
+        <div class="dynamic-toolbar" id="articleFilters"></div>
+        <div class="article-grid" id="articleGrid"></div>
+      </div>
+    </section>
+
+    <section id="kalender">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Kalender Kegiatan</span>
+          <h2>Agenda dan Kegiatan PKBM</h2>
+          <p>Informasi kegiatan mendatang, outing class, parenting, pembelajaran tematik, dan agenda sekolah.</p>
+        </div>
+
+        <div class="calendar-wrap">
+          <div class="calendar-card">
+            <h3>Agenda Terbaru</h3>
+            <p>Kalender ini bisa diperbarui dari dashboard sehingga wali murid dapat melihat kegiatan terbaru secara mudah.</p>
+            <div class="hero-actions">
+              <a class="btn btn-outline" href="https://wa.me/6282140046047?text=Assalamu%27alaikum%20admin.%20Saya%20ingin%20bertanya%20agenda%20kegiatan%20PKBM." target="_blank" rel="noopener">Tanya Agenda</a>
+            </div>
+          </div>
+          <div class="calendar-list" id="eventList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="album">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Galeri Album</span>
+          <h2>Album Kegiatan Pilihan</h2>
+          <p>Album kegiatan membantu pengunjung melihat dokumentasi berdasarkan tema, program, atau momen tertentu.</p>
+        </div>
+
+        <div class="dynamic-toolbar" id="albumFilters"></div>
+        <div class="album-grid" id="albumGrid"></div>
+      </div>
+    </section>
+
     <section id="pendaftaran">
       <div class="container form-wrap">
         <div>
@@ -1197,6 +1688,17 @@
         <span class="lightbox-counter" id="lightboxCounter">1 / 1</span>
         <button class="lightbox-nav" id="nextPhoto">Berikutnya →</button>
       </div>
+    </div>
+  </div>
+
+
+  <div class="modal" id="articleModal" aria-hidden="true">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <b id="articleModalTitle">Artikel</b>
+        <button class="modal-close" id="articleModalClose" aria-label="Tutup">×</button>
+      </div>
+      <div class="modal-body" id="articleModalBody"></div>
     </div>
   </div>
 
@@ -1562,6 +2064,261 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
     setupTestimonials();
     setupFAQ();
     loadBrosurData();
+
+
+    /* ===== Tahap 3: data dinamis artikel, kalender, album ===== */
+    const defaultArticles = [
+      {
+        id:"artikel-parenting-adab",
+        title:"Menguatkan Adab Anak Sejak Dini",
+        category:"Parenting",
+        date:"2026-05-30",
+        summary:"Adab adalah pondasi penting dalam proses pendidikan anak.",
+        content:"Adab perlu dibiasakan melalui contoh, pengulangan, dan suasana yang hangat. Anak lebih mudah meniru daripada hanya mendengar nasihat. Karena itu, orang tua dan pendidik perlu menjadi teladan dalam berbicara, meminta maaf, berterima kasih, dan menjaga amanah.",
+        cover:"",
+        createdAt:"2026-05-30"
+      },
+      {
+        id:"artikel-inklusi-anak",
+        title:"Memahami Pendidikan Inklusi untuk Anak",
+        category:"Inklusi",
+        date:"2026-05-30",
+        summary:"Pendidikan inklusi membantu anak belajar sesuai tahap kemampuan dan kebutuhannya.",
+        content:"Pendidikan inklusi bukan sekadar mencampur semua anak dalam satu ruang, tetapi menghadirkan pendampingan yang menghargai keunikan anak. Observasi awal, komunikasi dengan orang tua, dan target belajar bertahap menjadi bagian penting dari proses ini.",
+        cover:"",
+        createdAt:"2026-05-30"
+      }
+    ];
+
+    const defaultEvents = [
+      {
+        id:"agenda-konsultasi",
+        title:"Konsultasi Pendaftaran Murid Baru",
+        category:"SPMB",
+        date:"2026-06-01",
+        time:"08.00 - 14.00",
+        location:"PKBM Pelita Aushaf Indonesia",
+        desc:"Konsultasi program, kebutuhan anak, dan alur pendaftaran.",
+        createdAt:"2026-05-30"
+      }
+    ];
+
+    const defaultAlbums = [
+      {
+        id:"album-kegiatan-paud",
+        title:"Kegiatan PAUD Non Formal",
+        program:"PAUD Non Formal",
+        date:"2026-05-30",
+        desc:"Dokumentasi kegiatan pembelajaran dan bermain anak.",
+        cover:"",
+        linkProgram:"PAUD Non Formal",
+        createdAt:"2026-05-30"
+      }
+    ];
+
+    let articleData = [];
+    let eventData = [];
+    let albumData = [];
+    let activeArticleCategory = "Semua";
+    let activeAlbumProgram = "Semua";
+
+    function sortByNewest(items){
+      return items.slice().sort((a,b) => {
+        const ad = new Date(a.createdAt || a.date || "1970-01-01").getTime();
+        const bd = new Date(b.createdAt || b.date || "1970-01-01").getTime();
+        return bd - ad;
+      });
+    }
+
+    function monthName(dateString){
+      const d = new Date(dateString + "T00:00:00");
+      if(isNaN(d.getTime())) return "";
+      return d.toLocaleDateString("id-ID", {month:"short"});
+    }
+
+    function dayNum(dateString){
+      const d = new Date(dateString + "T00:00:00");
+      if(isNaN(d.getTime())) return "";
+      return String(d.getDate()).padStart(2,"0");
+    }
+
+    async function fetchJsonWithDefault(path, fallback){
+      try{
+        const res = await fetch(path + "?ts=" + Date.now());
+        if(res.ok){
+          const data = await res.json();
+          if(Array.isArray(data)) return data;
+        }
+      }catch(err){}
+      return fallback;
+    }
+
+    function renderFilterButtons(containerId, values, activeValue, onClick){
+      const el = document.getElementById(containerId);
+      if(!el) return;
+      el.innerHTML = values.map(v => `<button class="filter-btn ${v===activeValue ? "active" : ""}" data-value="${escapeHtml(v)}">${escapeHtml(v)}</button>`).join("");
+      el.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => onClick(btn.dataset.value));
+      });
+    }
+
+    function renderArticles(){
+      const grid = document.getElementById("articleGrid");
+      if(!grid) return;
+      const categories = ["Semua", ...Array.from(new Set(articleData.map(a => a.category || "Umum")))];
+      renderFilterButtons("articleFilters", categories, activeArticleCategory, (val) => {
+        activeArticleCategory = val;
+        renderArticles();
+      });
+
+      const filtered = activeArticleCategory === "Semua"
+        ? sortByNewest(articleData)
+        : sortByNewest(articleData.filter(a => (a.category || "Umum") === activeArticleCategory));
+
+      if(!filtered.length){
+        grid.innerHTML = `<div class="empty-dynamic"><h3>Belum ada artikel</h3><p>Artikel bisa ditambahkan melalui dashboard.</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((item, idx) => `
+        <article class="article-card">
+          <div class="article-cover">
+            ${item.cover ? `<img src="${escapeHtml(item.cover)}" alt="${escapeHtml(item.title)}" loading="lazy">` : `<div class="article-placeholder">📚</div>`}
+          </div>
+          <div class="article-body">
+            <div class="article-meta">
+              <span class="article-tag">${escapeHtml(item.category || "Umum")}</span>
+              <span>${escapeHtml(item.date || "")}</span>
+            </div>
+            <h3>${escapeHtml(item.title || "Artikel")}</h3>
+            <p>${escapeHtml(item.summary || "")}</p>
+            <button class="article-read" data-index="${idx}">Baca Artikel</button>
+          </div>
+        </article>
+      `).join("");
+
+      grid.querySelectorAll(".article-read").forEach(btn => {
+        btn.addEventListener("click", () => openArticleModal(filtered[Number(btn.dataset.index)]));
+      });
+    }
+
+    function openArticleModal(item){
+      const modal = document.getElementById("articleModal");
+      if(!modal) return;
+      document.getElementById("articleModalTitle").textContent = item.title || "Artikel";
+      document.getElementById("articleModalBody").textContent = item.content || item.summary || "";
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden","false");
+    }
+
+    function closeArticleModal(){
+      const modal = document.getElementById("articleModal");
+      if(!modal) return;
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+    }
+
+    function renderEvents(){
+      const list = document.getElementById("eventList");
+      if(!list) return;
+      const events = sortByNewest(eventData).reverse();
+      if(!events.length){
+        list.innerHTML = `<div class="empty-dynamic"><h3>Belum ada agenda kegiatan</h3><p>Agenda bisa ditambahkan melalui dashboard.</p></div>`;
+        return;
+      }
+
+      list.innerHTML = events.map(item => `
+        <article class="event-card">
+          <div class="event-date">
+            <b>${escapeHtml(dayNum(item.date || ""))}</b>
+            <span>${escapeHtml(monthName(item.date || ""))}</span>
+          </div>
+          <div class="event-body">
+            <span class="event-label">${escapeHtml(item.category || "Kegiatan")}</span>
+            <h3>${escapeHtml(item.title || "Agenda")}</h3>
+            <p>${escapeHtml(item.desc || "")}</p>
+            <div class="event-small">
+              <span>🗓️ ${escapeHtml(item.date || "")}</span>
+              <span>⏰ ${escapeHtml(item.time || "-")}</span>
+              <span>📍 ${escapeHtml(item.location || "-")}</span>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderAlbums(){
+      const grid = document.getElementById("albumGrid");
+      if(!grid) return;
+      const programsForAlbum = ["Semua", ...Array.from(new Set(albumData.map(a => a.program || "Umum")))];
+      renderFilterButtons("albumFilters", programsForAlbum, activeAlbumProgram, (val) => {
+        activeAlbumProgram = val;
+        renderAlbums();
+      });
+
+      const filtered = activeAlbumProgram === "Semua"
+        ? sortByNewest(albumData)
+        : sortByNewest(albumData.filter(a => (a.program || "Umum") === activeAlbumProgram));
+
+      if(!filtered.length){
+        grid.innerHTML = `<div class="empty-dynamic"><h3>Belum ada album kegiatan</h3><p>Album bisa ditambahkan melalui dashboard.</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => `
+        <article class="album-card">
+          <div class="album-cover">
+            <span class="album-badge">${escapeHtml(item.program || "Kegiatan")}</span>
+            ${item.cover ? `<img src="${escapeHtml(item.cover)}" alt="${escapeHtml(item.title)}" loading="lazy">` : `<div class="album-placeholder">🖼️</div>`}
+          </div>
+          <div class="album-body">
+            <h3>${escapeHtml(item.title || "Album Kegiatan")}</h3>
+            <p>${escapeHtml(item.desc || "")}</p>
+            <div class="event-small" style="margin-bottom:12px">
+              <span>🗓️ ${escapeHtml(item.date || "")}</span>
+            </div>
+            <div class="album-actions">
+              <a href="#galeri-kegiatan" data-album-program="${escapeHtml(item.linkProgram || item.program || "")}">Lihat Galeri</a>
+              <a class="secondary" target="_blank" rel="noopener" href="${waLinkAlbum(item)}">Tanya Kegiatan</a>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      grid.querySelectorAll("[data-album-program]").forEach(link => {
+        link.addEventListener("click", () => {
+          const target = link.dataset.albumProgram;
+          if(target && typeof programs !== "undefined" && programs.includes(target)){
+            activeProgram = target;
+            visibleCount = 9;
+            setTimeout(() => { setupTabs(); renderGallery(); }, 100);
+          }
+        });
+      });
+    }
+
+    function waLinkAlbum(item){
+      return "https://wa.me/6282140046047?text=" + encodeURIComponent("Assalamu'alaikum admin PKBM Pelita Aushaf Indonesia. Saya ingin bertanya tentang kegiatan " + (item.title || item.program || "PKBM") + ".");
+    }
+
+    async function loadStage3Data(){
+      articleData = await fetchJsonWithDefault("data-artikel.json", defaultArticles);
+      eventData = await fetchJsonWithDefault("data-kalender.json", defaultEvents);
+      albumData = await fetchJsonWithDefault("data-album.json", defaultAlbums);
+      renderArticles();
+      renderEvents();
+      renderAlbums();
+    }
+
+    document.getElementById("articleModalClose")?.addEventListener("click", closeArticleModal);
+    document.getElementById("articleModal")?.addEventListener("click", (e) => {
+      if(e.target.id === "articleModal") closeArticleModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") closeArticleModal();
+    });
+
+    loadStage3Data();
 
     loadGallery();
   </script>
