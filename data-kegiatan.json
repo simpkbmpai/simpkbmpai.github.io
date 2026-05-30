@@ -24,7 +24,22 @@
       "uploadedAt": "2026-05-30T13:22:06.458Z"
     }
   ],
-  "Kelompok Bermain": [],
+  "Kelompok Bermain": [
+    {
+      "program": "Kelompok Bermain",
+      "caption": "Outing Kelompok Bermain",
+      "date": "2026-05-28",
+      "src": "foto-kegiatan/kelompok-bermain/2026-05-30T13-55-31-067Z-kb-2026-05-30-at-20-44-12-jpeg.jpg",
+      "uploadedAt": "2026-05-30T13:55:33.201Z"
+    },
+    {
+      "program": "Kelompok Bermain",
+      "caption": "Outing Kelompok Bermain",
+      "date": "2026-05-28",
+      "src": "foto-kegiatan/kelompok-bermain/2026-05-30T13-55-33-288Z-paud-nf-outing-2026-05-30-at-20-43-59-jp.jpg",
+      "uploadedAt": "2026-05-30T13:55:36.130Z"
+    }
+  ],
   "Paket A": [
     {
       "program": "Paket A",
