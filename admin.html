@@ -54,8 +54,22 @@
     .empty{border:2px dashed #cce8dd;border-radius:18px;padding:18px;text-align:center;color:#6b7280;background:#f8fcfa;margin-top:14px}
     small{color:var(--muted)}
     code{background:#eef8f4;padding:2px 6px;border-radius:7px}
+
+    .pdf-tools{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .pdf-list{display:grid;gap:12px;margin-top:14px}
+    .pdf-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:12px;background:#f8fcfa}
+    .pdf-item b{display:block;color:#0f172a}
+    .pdf-item small{display:block;margin-top:4px}
+    .pdf-link{border:1px solid var(--line);border-radius:14px;padding:10px 12px;color:var(--green-dark);font-weight:900;background:#fff}
+    .pdf-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+    .pdf-delete{border:0;border-radius:14px;padding:10px 12px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
+    .pdf-delete:hover{filter:brightness(.92)}
+
     @media(max-width:760px){
-      .grid,.preview,.manage-tools{grid-template-columns:1fr}
+      .grid,.preview,.manage-tools,.pdf-tools{grid-template-columns:1fr}
+      .pdf-item{grid-template-columns:1fr}
+      .pdf-actions{justify-content:flex-start}
+      .pdf-delete,.pdf-link{width:100%;text-align:center}
       .manage-item{grid-template-columns:1fr}
       .manage-item img{width:100%;height:190px}
       .delete-btn{width:100%}
@@ -160,8 +174,49 @@
       </div>
     </div>
 
+
     <div class="card">
-      <h2>4. Catatan Proses</h2>
+      <h2>4. Upload Brosur PDF Per Program</h2>
+      <p>Gunakan bagian ini untuk mengunggah brosur PDF khusus. Setiap program bisa memiliki brosur sendiri. Brosur yang sudah tidak dipakai bisa dihapus melalui daftar di bawah.</p>
+
+      <div class="pdf-tools">
+        <label>Pilih Program Brosur
+          <select id="brosurProgram">
+            <option>Brosur Umum</option>
+            <option>Daycare</option>
+            <option>PAUD Non Formal</option>
+            <option>Kelompok Bermain</option>
+            <option>Paket A</option>
+            <option>Paket B</option>
+            <option>Paket C</option>
+            <option>Program Home Schooling</option>
+            <option>Pendidikan Inklusi</option>
+          </select>
+        </label>
+
+        <label>File Brosur PDF
+          <input id="brosurPdf" type="file" accept="application/pdf,.pdf">
+        </label>
+      </div>
+
+      <label>Judul Brosur
+        <input id="brosurTitleInput" placeholder="Contoh: Brosur PAUD Non Formal">
+      </label>
+
+      <label>Keterangan Singkat Brosur
+        <textarea id="brosurDescInput" placeholder="Contoh: Informasi kegiatan, jadwal, alur pendaftaran, dan kontak program PAUD Non Formal"></textarea>
+      </label>
+
+      <button class="btn" id="uploadBrosurBtn">Upload Brosur PDF</button>
+      <button class="btn secondary" id="loadBrosurBtn">Kelola / Hapus Brosur</button>
+
+      <div id="brosurManageList" class="pdf-list">
+        <div class="empty">Masukkan GitHub Token, lalu klik Muat Daftar Brosur.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>5. Catatan Proses</h2>
       <div id="log" class="log">Siap upload...</div>
     </div>
 
@@ -403,6 +458,200 @@
         show("error", "Gagal menghapus foto: " + err.message);
       }
     }
+
+
+    const brochurePrograms = ["Brosur Umum","Daycare","PAUD Non Formal","Kelompok Bermain","Paket A","Paket B","Paket C","Program Home Schooling","Pendidikan Inklusi"];
+
+    function brochureSlug(text){
+      if(text === "Brosur Umum") return "brosur-umum";
+      return text.toLowerCase()
+        .replace(/program /g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+
+    async function getGithubFile(path){
+      const branch = $("branch").value.trim() || "main";
+      return await githubRequest("GET", `${path}?ref=${encodeURIComponent(branch)}`);
+    }
+
+    async function getBrosurJson(){
+      try{
+        const data = await getGithubFile("data-brosur.json");
+        return { json: JSON.parse(base64ToUtf8(data.content)), sha: data.sha };
+      }catch(err){
+        if(String(err.message).includes("Not Found")){
+          return { json: {}, sha: null };
+        }
+        throw err;
+      }
+    }
+
+    async function putBinaryFile(path, base64Content, message){
+      let sha = null;
+      try{
+        const old = await getGithubFile(path);
+        sha = old.sha;
+      }catch(err){
+        if(!String(err.message).includes("Not Found")) throw err;
+      }
+      return await putFile(path, base64Content, message, sha);
+    }
+
+    async function uploadBrosurPdf(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+      logBox.textContent = "Mulai upload brosur PDF...";
+
+      try{
+        const token = $("token").value.trim();
+        if(!token){ throw new Error("GitHub token belum diisi."); }
+
+        const file = $("brosurPdf").files && $("brosurPdf").files[0];
+        if(!file){ throw new Error("Pilih file PDF terlebih dahulu."); }
+        if(!file.name.toLowerCase().endsWith(".pdf")){ throw new Error("File harus PDF."); }
+
+        const program = $("brosurProgram").value;
+        const title = $("brosurTitleInput").value.trim() || `Brosur ${program}`;
+        const desc = $("brosurDescInput").value.trim() || `Informasi lengkap program ${program}.`;
+        const path = `brosur-program/${brochureSlug(program)}.pdf`;
+
+        log("Membaca file PDF...");
+        const buffer = await file.arrayBuffer();
+        const base64 = arrayBufferToBase64(buffer);
+
+        log("Upload PDF ke GitHub: " + path);
+        await putBinaryFile(path, base64, `Upload brosur PDF ${program}`);
+
+        log("Memperbarui data-brosur.json...");
+        const dataFile = await getBrosurJson();
+        const data = dataFile.json || {};
+        data[program] = {
+          title,
+          desc,
+          path,
+          fileName: file.name,
+          updatedAt: new Date().toISOString()
+        };
+
+        await putFile("data-brosur.json", utf8ToBase64(JSON.stringify(data, null, 2)), `Update data brosur ${program}`, dataFile.sha);
+
+        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
+        show("success", "Brosur PDF berhasil diunggah. Tunggu 1-3 menit, lalu refresh website.");
+        await loadBrosurManageList();
+
+      }catch(err){
+        console.error(err);
+        log("ERROR: " + err.message);
+        show("error", "Gagal upload brosur: " + err.message);
+      }
+    }
+
+    function isCustomBrosur(item){
+      return item && item.path && item.path.startsWith("brosur-program/") && item.updatedAt && item.updatedAt !== "default";
+    }
+
+    async function loadBrosurManageList(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+      try{
+        const token = $("token").value.trim();
+        if(!token){ throw new Error("GitHub token belum diisi."); }
+
+        log("Memuat daftar brosur...");
+        const dataFile = await getBrosurJson();
+        const data = dataFile.json || {};
+        const list = $("brosurManageList");
+
+        const rows = brochurePrograms.map(program => {
+          const item = data[program];
+          const custom = isCustomBrosur(item);
+
+          if(!item || !custom){
+            return `<div class="pdf-item">
+              <div>
+                <b>${escapeHtml(program)}</b>
+                <small>Belum ada PDF khusus. Website memakai brosur umum.</small>
+              </div>
+              <div class="pdf-actions">
+                <span class="pdf-link">Default</span>
+              </div>
+            </div>`;
+          }
+
+          return `<div class="pdf-item">
+            <div>
+              <b>${escapeHtml(program)}</b>
+              <small>${escapeHtml(item.title || program)} • ${escapeHtml(item.updatedAt || "")}</small>
+              <small>${escapeHtml(item.path || "")}</small>
+            </div>
+            <div class="pdf-actions">
+              <a class="pdf-link" href="${escapeHtml(item.path)}" target="_blank" rel="noopener">Lihat PDF</a>
+              <button class="pdf-delete" data-program="${escapeHtml(program)}" data-path="${escapeHtml(item.path)}">Hapus</button>
+            </div>
+          </div>`;
+        }).join("");
+
+        list.innerHTML = rows;
+
+        list.querySelectorAll(".pdf-delete").forEach(btn => {
+          btn.addEventListener("click", async () => {
+            await deleteBrosurPdf(btn.dataset.program, btn.dataset.path);
+          });
+        });
+
+      }catch(err){
+        console.error(err);
+        log("ERROR: " + err.message);
+        show("error", "Gagal memuat daftar brosur: " + err.message);
+      }
+    }
+
+    async function deleteBrosurPdf(program, path){
+      if(!confirm("Yakin ingin menghapus brosur PDF khusus untuk " + program + "? Setelah dihapus, website akan kembali memakai brosur umum.")) return;
+
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+
+      try{
+        const token = $("token").value.trim();
+        if(!token){ throw new Error("GitHub token belum diisi."); }
+
+        log("Menghapus data brosur: " + program);
+        const dataFile = await getBrosurJson();
+        const data = dataFile.json || {};
+
+        if(data[program]){
+          delete data[program];
+        }
+
+        await putFile("data-brosur.json", utf8ToBase64(JSON.stringify(data, null, 2)), `Hapus brosur PDF ${program}`, dataFile.sha);
+
+        if(path && path.startsWith("brosur-program/")){
+          try{
+            log("Menghapus file PDF dari repository: " + path);
+            await deleteGithubFile(path, `Hapus file brosur PDF ${program}`);
+          }catch(fileErr){
+            log("Catatan: data brosur sudah dihapus, tetapi file PDF lama belum terhapus: " + fileErr.message);
+          }
+        }else{
+          log("File default tidak dihapus. Website kembali memakai brosur umum.");
+        }
+
+        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
+        show("success", "Brosur khusus berhasil dihapus. Website akan kembali memakai brosur umum.");
+        await loadBrosurManageList();
+
+      }catch(err){
+        console.error(err);
+        log("ERROR: " + err.message);
+        show("error", "Gagal menghapus brosur: " + err.message);
+      }
+    }
+
+    $("uploadBrosurBtn").addEventListener("click", uploadBrosurPdf);
+    $("loadBrosurBtn").addEventListener("click", loadBrosurManageList);
+
 
     $("photos").addEventListener("change", async () => {
       const files = Array.from($("photos").files || []);

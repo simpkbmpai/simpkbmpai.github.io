@@ -470,6 +470,304 @@
       margin-top:1px;
     }
 
+
+    /* ===== Tahap 2: Kepercayaan + Brosur Per Program ===== */
+    .trust-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:28px;
+    }
+    .trust-card{
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:28px;
+      padding:24px;
+      box-shadow:0 12px 36px rgba(13,122,95,.07);
+      transition:.2s ease;
+    }
+    .trust-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 18px 44px rgba(13,122,95,.11);
+    }
+    .trust-icon{
+      width:54px;
+      height:54px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:18px;
+      background:#eef8f4;
+      color:#0a5c48;
+      font-size:25px;
+      margin-bottom:14px;
+    }
+    .trust-card h3{
+      margin:0 0 10px;
+      font-size:21px;
+      color:#0f172a;
+    }
+    .trust-card p{
+      margin:0;
+      color:#5b6472;
+    }
+    .testimonial-wrap{
+      background:linear-gradient(145deg,#eef8f4,#fff);
+      border:1px solid #e7f4ee;
+      border-radius:34px;
+      padding:28px;
+      box-shadow:0 18px 48px rgba(13,122,95,.08);
+      max-width:980px;
+      margin:auto;
+    }
+    .testimonial-card{
+      display:none;
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:26px;
+      padding:26px;
+    }
+    .testimonial-card.active{display:block}
+    .testimonial-card p{
+      margin:0;
+      color:#334155;
+      font-size:20px;
+      line-height:1.7;
+    }
+    .testimonial-card b{
+      display:block;
+      margin-top:18px;
+      color:#0a5c48;
+    }
+    .testimonial-dots{
+      display:flex;
+      justify-content:center;
+      gap:9px;
+      margin-top:18px;
+    }
+    .testimonial-dot{
+      width:12px;
+      height:12px;
+      border-radius:999px;
+      border:0;
+      background:#b7dccc;
+      cursor:pointer;
+    }
+    .testimonial-dot.active{background:#0d7a5f}
+    .faq-wrap{
+      display:grid;
+      gap:12px;
+      max-width:920px;
+      margin:0 auto;
+    }
+    .faq-item{
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 10px 28px rgba(13,122,95,.05);
+    }
+    .faq-q{
+      width:100%;
+      border:0;
+      background:#fff;
+      padding:18px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      text-align:left;
+      color:#0f172a;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+    }
+    .faq-q span:last-child{
+      color:#0d7a5f;
+      font-size:24px;
+      flex:0 0 auto;
+    }
+    .faq-a{
+      display:none;
+      padding:0 20px 18px;
+      color:#5b6472;
+    }
+    .faq-item.open .faq-a{display:block}
+    .brosur-box{
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:24px;
+      align-items:center;
+      background:linear-gradient(135deg,#0d7a5f,#0a5c48);
+      color:#fff;
+      border-radius:34px;
+      padding:30px;
+      box-shadow:0 24px 58px rgba(13,122,95,.18);
+      overflow:hidden;
+      position:relative;
+    }
+    .brosur-box:before{
+      content:"";
+      position:absolute;
+      right:-110px;
+      top:-110px;
+      width:280px;
+      height:280px;
+      border-radius:50%;
+      background:rgba(255,255,255,.10);
+    }
+    .brosur-box > *{position:relative;z-index:1}
+    .brosur-preview{
+      background:#fff;
+      border-radius:28px;
+      padding:22px;
+      color:#0f172a;
+      min-height:330px;
+      box-shadow:0 18px 42px rgba(0,0,0,.15);
+    }
+    .brosur-preview .paper{
+      border:1px solid #e7f4ee;
+      border-radius:22px;
+      padding:22px;
+      background:#f8fcfa;
+      min-height:286px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brosur-preview img{
+      width:74px;
+      height:74px;
+      object-fit:contain;
+      border-radius:50%;
+      background:#fff;
+      padding:4px;
+      border:1px solid #e7f4ee;
+    }
+    .brosur-preview h3{
+      margin:0;
+      font-size:30px;
+      color:#0a5c48;
+      line-height:1.15;
+    }
+    .brosur-preview p{margin:0;color:#5b6472}
+    .brosur-controls label{
+      display:block;
+      color:#e8fff4;
+      font-weight:900;
+      margin:14px 0 8px;
+    }
+    .brosur-controls select{
+      width:100%;
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:18px;
+      padding:14px;
+      font-size:16px;
+      font-weight:800;
+      outline:none;
+      color:#0f172a;
+      background:#fff;
+    }
+    .brosur-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:18px;
+    }
+    .brosur-actions a{
+      min-height:54px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:12px;
+      font-weight:900;
+    }
+    .download-main{
+      background:#fff;
+      color:#0a5c48;
+    }
+    .download-wa{
+      background:rgba(255,255,255,.15);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.28);
+    }
+    .brosur-note{
+      margin-top:12px;
+      color:#dcfce7;
+      font-size:14px;
+    }
+    .brosur-list{
+      margin-top:20px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+    .brosur-mini{
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.20);
+      border-radius:18px;
+      padding:14px;
+      color:#fff;
+    }
+    .brosur-mini b{display:block}
+    .brosur-mini small{color:#dcfce7}
+    .map-card{
+      overflow:hidden;
+      padding:0;
+    }
+    .map-frame{
+      width:100%;
+      height:360px;
+      border:0;
+      display:block;
+      background:#eef8f4;
+    }
+    .map-content{
+      padding:26px;
+    }
+    .mobile-bottom-nav{
+      display:none;
+      position:fixed;
+      left:12px;
+      right:12px;
+      bottom:12px;
+      z-index:120;
+      background:rgba(255,255,255,.94);
+      border:1px solid #e7f4ee;
+      border-radius:24px;
+      box-shadow:0 18px 45px rgba(15,23,42,.16);
+      backdrop-filter:blur(10px);
+      overflow:hidden;
+    }
+    .mobile-bottom-nav a{
+      flex:1;
+      padding:10px 6px;
+      text-align:center;
+      color:#0a5c48;
+      font-size:12px;
+      font-weight:900;
+    }
+    .mobile-bottom-nav span{
+      display:block;
+      font-size:18px;
+      line-height:1;
+      margin-bottom:4px;
+    }
+    @media(max-width:1024px){
+      .trust-grid,.brosur-list{grid-template-columns:repeat(2,1fr)}
+      .brosur-box{grid-template-columns:1fr}
+    }
+    @media(max-width:760px){
+      .trust-grid,.brosur-list,.brosur-actions{grid-template-columns:1fr}
+      .testimonial-card p{font-size:17px}
+      .map-frame{height:300px}
+      .mobile-bottom-nav{display:flex}
+      body{padding-bottom:82px}
+    }
+
     @media(max-width:1024px){
       h1{font-size:50px}
       .hero-grid,.grid-2,.form-wrap{grid-template-columns:1fr}
@@ -506,6 +804,9 @@
           <li><a href="#tentang">Tentang</a></li>
           <li><a href="#program">Program</a></li>
           <li><a href="#galeri-kegiatan">Galeri</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#brosur">Brosur</a></li>
+          <li><a href="#lokasi">Lokasi</a></li>
           <li><a href="#pendaftaran">Pendaftaran</a></li>
         </ul>
       </nav>
@@ -525,6 +826,7 @@
           <div class="hero-actions">
             <a class="btn" href="#pendaftaran">Daftar Sekarang</a>
             <a class="btn btn-outline" href="#program">Lihat Program</a>
+            <a class="btn btn-outline" href="#brosur">Pilih Brosur</a>
           </div>
         </div>
 
@@ -685,6 +987,157 @@
           <div class="step"><div class="num">3</div><b>Admin menghubungi orang tua/wali</b></div>
           <div class="step"><div class="num">4</div><b>Observasi dan konsultasi kebutuhan anak</b></div>
           <div class="step"><div class="num">5</div><b>Melengkapi berkas pendaftaran</b></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="trust">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Kepercayaan Orang Tua</span>
+          <h2>Informasi Jelas, Layanan Terarah, dan Mudah Dihubungi</h2>
+          <p>Bagian ini membantu calon wali murid mengenal PKBM dengan lebih yakin sebelum mendaftar.</p>
+        </div>
+
+        <div class="trust-grid">
+          <div class="trust-card">
+            <div class="trust-icon">⭐</div>
+            <h3>Testimoni Orang Tua</h3>
+            <p>Cerita pengalaman wali murid membantu calon keluarga baru memahami suasana belajar di PKBM.</p>
+          </div>
+          <div class="trust-card">
+            <div class="trust-icon">❓</div>
+            <h3>FAQ Lengkap</h3>
+            <p>Pertanyaan umum tentang pendaftaran, program, inklusi, dan konsultasi bisa dibaca langsung.</p>
+          </div>
+          <div class="trust-card">
+            <div class="trust-icon">📄</div>
+            <h3>Brosur Per Program</h3>
+            <p>Calon wali murid dapat memilih dan mengunduh brosur sesuai program yang diminati.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimoni">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Testimoni</span>
+          <h2>Apa Kata Orang Tua?</h2>
+          <p>Isi testimoni bisa disesuaikan dengan testimoni asli dari wali murid.</p>
+        </div>
+
+        <div class="testimonial-wrap">
+          <div class="testimonial-card active">
+            <p>“Alhamdulillah, anak kami lebih semangat belajar karena suasananya hangat dan pendidiknya sabar mendampingi.”</p>
+            <b>Wali Murid PAUD Non Formal</b>
+          </div>
+          <div class="testimonial-card">
+            <p>“Programnya fleksibel, komunikasinya baik, dan anak tetap diarahkan pada adab serta karakter.”</p>
+            <b>Wali Murid Program Kesetaraan</b>
+          </div>
+          <div class="testimonial-card">
+            <p>“Pendampingan untuk anak kami terasa lebih personal. Guru memperhatikan kemampuan anak secara bertahap.”</p>
+            <b>Wali Murid Program Inklusi</b>
+          </div>
+          <div class="testimonial-dots" id="testimonialDots"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">FAQ</span>
+          <h2>Pertanyaan yang Sering Ditanyakan</h2>
+          <p>Informasi ringkas agar calon wali murid lebih mudah memahami layanan PKBM.</p>
+        </div>
+
+        <div class="faq-wrap">
+          <div class="faq-item open">
+            <button class="faq-q"><span>Apakah menerima anak PDPD atau anak berkebutuhan khusus?</span><span>+</span></button>
+            <div class="faq-a">Ya, PKBM Pelita Aushaf Indonesia mendukung peserta didik tipikal dan PDPD dengan pendekatan bertahap sesuai kemampuan dan kebutuhan anak.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q"><span>Bagaimana cara mendaftar?</span><span>+</span></button>
+            <div class="faq-a">Calon wali murid dapat mengisi formulir pada bagian Pendaftaran, lalu data akan otomatis terbuka dalam format WhatsApp ke admin.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q"><span>Apakah bisa konsultasi dulu sebelum daftar?</span><span>+</span></button>
+            <div class="faq-a">Bisa. Orang tua dapat menghubungi admin untuk konsultasi program, kebutuhan anak, jadwal, dan langkah observasi awal.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q"><span>Program apa saja yang tersedia?</span><span>+</span></button>
+            <div class="faq-a">Tersedia Daycare, PAUD Non Formal, Kelompok Bermain, Paket A, Paket B, Paket C, Program Home Schooling, dan Pendidikan Inklusi.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q"><span>Apa yang perlu disiapkan saat pendaftaran?</span><span>+</span></button>
+            <div class="faq-a">Admin akan menginformasikan berkas dan langkah lanjutan setelah orang tua mengirim data awal melalui formulir pendaftaran.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="brosur">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Download Brosur PDF</span>
+          <h2>Pilih Brosur Sesuai Program</h2>
+          <p>Setiap program dapat memiliki brosur PDF khusus yang bisa diunggah dari dashboard.</p>
+        </div>
+
+        <div class="brosur-box">
+          <div class="brosur-preview">
+            <div class="paper">
+              <div>
+                <img src="logo-pkbm.png" alt="Logo PKBM">
+                <h3 id="brosurTitle">Brosur Umum PKBM</h3>
+                <p id="brosurDesc">Profil singkat, layanan pendidikan, alur pendaftaran, kontak, dan alamat PKBM.</p>
+              </div>
+              <p><b>PKBM Pelita Aushaf Indonesia</b><br>NPSN 9998555 • Terakreditasi B</p>
+            </div>
+          </div>
+
+          <div class="brosur-controls">
+            <span class="eyebrow" style="color:#dcfce7">Pilih Program</span>
+            <h2 style="color:#fff">Unduh Brosur yang Dibutuhkan</h2>
+            <p style="color:#e8fff4">Pilih program, lalu klik download. Jika brosur khusus belum tersedia, sistem akan memakai brosur umum.</p>
+
+            <label for="brosurSelect">Pilih brosur PDF:</label>
+            <select id="brosurSelect"></select>
+
+            <div class="brosur-actions">
+              <a id="downloadBrosurBtn" class="download-main" href="brosur-pkbm-pelita-aushaf-indonesia.pdf" target="_blank" rel="noopener">Download PDF</a>
+              <a id="waBrosurBtn" class="download-wa" href="#" target="_blank" rel="noopener">Tanya Program Ini</a>
+            </div>
+
+            <div class="brosur-note" id="brosurNote">Memuat daftar brosur...</div>
+            <div class="brosur-list" id="brosurList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lokasi">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Google Maps</span>
+          <h2>Lokasi PKBM Pelita Aushaf Indonesia</h2>
+          <p>Silakan hubungi admin untuk jadwal kunjungan atau konsultasi pendaftaran.</p>
+        </div>
+
+        <div class="card map-card">
+          <iframe class="map-frame" loading="lazy" allowfullscreen
+            src="https://www.google.com/maps?q=Perumahan%20Griya%20Permata%20Gedangan%2C%20Blok%20G2%2F29%2C%20Gedangan%2C%20Sidoarjo%2C%20Jawa%20Timur&output=embed"></iframe>
+          <div class="map-content">
+            <h3>Alamat</h3>
+            <p>Perumahan Griya Permata Gedangan, Blok G2/29, Gedangan, Sidoarjo, Jawa Timur</p>
+            <div class="hero-actions">
+              <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Perumahan%20Griya%20Permata%20Gedangan%2C%20Blok%20G2%2F29%2C%20Gedangan%2C%20Sidoarjo%2C%20Jawa%20Timur" target="_blank" rel="noopener">Buka Google Maps</a>
+              <a class="btn btn-outline" href="https://wa.me/6282140046047?text=Assalamu%27alaikum%20admin%20PKBM%20Pelita%20Aushaf%20Indonesia.%20Saya%20ingin%20bertanya%20lokasi%20dan%20jadwal%20kunjungan." target="_blank" rel="noopener">Tanya Jadwal Kunjungan</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -963,6 +1416,152 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
     });
 
     activeProgram = "Semua";
+
+
+    const defaultBrosurData = {
+      "Brosur Umum": {
+        title: "Brosur Umum PKBM",
+        desc: "Profil singkat, layanan pendidikan, alur pendaftaran, kontak, dan alamat PKBM.",
+        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        updatedAt: "default"
+      },
+      "Daycare": {
+        title: "Brosur Daycare",
+        desc: "Informasi pendampingan anak, suasana belajar, dan pendaftaran Daycare.",
+        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        updatedAt: "default"
+      },
+      "PAUD Non Formal": {
+        title: "Brosur PAUD Non Formal",
+        desc: "Informasi stimulasi tumbuh kembang, adab, kemandirian, dan pembiasaan ibadah.",
+        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        updatedAt: "default"
+      },
+      "Kelompok Bermain": {
+        title: "Brosur Kelompok Bermain",
+        desc: "Informasi kegiatan bermain, eksplorasi, sosial emosi, bahasa, dan motorik.",
+        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        updatedAt: "default"
+      },
+      "Paket A": {
+        title: "Brosur Paket A",
+        desc: "Informasi program kesetaraan setara SD.",
+        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        updatedAt: "default"
+      },
+      "Paket B": {
+        title: "Brosur Paket B",
+        desc: "Informasi program kesetaraan setara SMP.",
+        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        updatedAt: "default"
+      },
+      "Paket C": {
+        title: "Brosur Paket C",
+        desc: "Informasi program kesetaraan setara SMA.",
+        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        updatedAt: "default"
+      },
+      "Program Home Schooling": {
+        title: "Brosur Program Home Schooling",
+        desc: "Informasi program belajar fleksibel sesuai kebutuhan anak dan keluarga.",
+        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        updatedAt: "default"
+      },
+      "Pendidikan Inklusi": {
+        title: "Brosur Pendidikan Inklusi",
+        desc: "Informasi pendampingan peserta didik tipikal dan PDPD.",
+        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        updatedAt: "default"
+      }
+    };
+
+    let brosurData = defaultBrosurData;
+
+    function setupTestimonials(){
+      const cards = Array.from(document.querySelectorAll(".testimonial-card"));
+      const dots = document.getElementById("testimonialDots");
+      if(!cards.length || !dots) return;
+      let active = 0;
+      function render(){
+        cards.forEach((card, i) => card.classList.toggle("active", i === active));
+        dots.innerHTML = cards.map((_, i) => `<button class="testimonial-dot ${i === active ? "active" : ""}" data-index="${i}" aria-label="Testimoni ${i+1}"></button>`).join("");
+        dots.querySelectorAll("button").forEach(btn => {
+          btn.addEventListener("click", () => {
+            active = Number(btn.dataset.index);
+            render();
+          });
+        });
+      }
+      render();
+      setInterval(() => {
+        active = (active + 1) % cards.length;
+        render();
+      }, 5500);
+    }
+
+    function setupFAQ(){
+      document.querySelectorAll(".faq-q").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.closest(".faq-item").classList.toggle("open");
+        });
+      });
+    }
+
+    function updateBrosurUI(){
+      const select = document.getElementById("brosurSelect");
+      const title = document.getElementById("brosurTitle");
+      const desc = document.getElementById("brosurDesc");
+      const downloadBtn = document.getElementById("downloadBrosurBtn");
+      const waBtn = document.getElementById("waBrosurBtn");
+      const note = document.getElementById("brosurNote");
+      const list = document.getElementById("brosurList");
+      if(!select || !title || !desc || !downloadBtn || !waBtn) return;
+
+      const keys = Object.keys(brosurData);
+      if(!select.options.length){
+        select.innerHTML = keys.map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join("");
+      }
+
+      const selected = select.value || keys[0];
+      const item = brosurData[selected] || defaultBrosurData["Brosur Umum"];
+
+      title.textContent = item.title || selected;
+      desc.textContent = item.desc || "Download brosur PDF program.";
+      downloadBtn.href = item.path || "brosur-pkbm-pelita-aushaf-indonesia.pdf";
+      downloadBtn.textContent = "Download " + selected;
+      waBtn.href = "https://wa.me/6282140046047?text=" + encodeURIComponent("Assalamu'alaikum admin PKBM Pelita Aushaf Indonesia. Saya ingin bertanya tentang " + selected + ".");
+      note.textContent = item.updatedAt && item.updatedAt !== "default"
+        ? "Brosur ini sudah diperbarui dari dashboard."
+        : "Brosur khusus belum diunggah, sementara memakai brosur umum.";
+
+      if(list){
+        list.innerHTML = keys.slice(0, 6).map(k => {
+          const b = brosurData[k];
+          return `<div class="brosur-mini"><b>${escapeHtml(k)}</b><small>${b && b.updatedAt && b.updatedAt !== "default" ? "PDF khusus tersedia" : "Memakai brosur umum"}</small></div>`;
+        }).join("");
+      }
+    }
+
+    async function loadBrosurData(){
+      try{
+        const res = await fetch("data-brosur.json?ts=" + Date.now());
+        if(res.ok){
+          const loaded = await res.json();
+          brosurData = {...defaultBrosurData, ...loaded};
+        }
+      }catch(err){
+        brosurData = defaultBrosurData;
+      }
+      const select = document.getElementById("brosurSelect");
+      if(select){
+        select.addEventListener("change", updateBrosurUI);
+      }
+      updateBrosurUI();
+    }
+
+    setupTestimonials();
+    setupFAQ();
+    loadBrosurData();
 
     loadGallery();
   </script>

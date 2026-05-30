@@ -1,0 +1,56 @@
+{
+  "Brosur Umum": {
+    "title": "Brosur Umum PKBM",
+    "desc": "Profil singkat, layanan pendidikan, alur pendaftaran, kontak, dan alamat PKBM.",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "default"
+  },
+  "Daycare": {
+    "title": "Brosur Daycare",
+    "desc": "Informasi lengkap program Daycare.",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "default"
+  },
+  "PAUD Non Formal": {
+    "title": "Brosur PAUD Non Formal",
+    "desc": "Informasi lengkap program PAUD Non Formal.",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "default"
+  },
+  "Kelompok Bermain": {
+    "title": "Brosur Kelompok Bermain",
+    "desc": "Informasi lengkap program Kelompok Bermain.",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "default"
+  },
+  "Paket A": {
+    "title": "Brosur Paket A",
+    "desc": "Informasi lengkap program Paket A.",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "default"
+  },
+  "Paket B": {
+    "title": "Brosur Paket B",
+    "desc": "Informasi lengkap program Paket B.",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "default"
+  },
+  "Paket C": {
+    "title": "Brosur Paket C",
+    "desc": "Informasi lengkap program Paket C.",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "default"
+  },
+  "Program Home Schooling": {
+    "title": "Brosur Program Home Schooling",
+    "desc": "Informasi lengkap program Program Home Schooling.",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "default"
+  },
+  "Pendidikan Inklusi": {
+    "title": "Brosur Pendidikan Inklusi",
+    "desc": "Informasi lengkap program Pendidikan Inklusi.",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "default"
+  }
+}
