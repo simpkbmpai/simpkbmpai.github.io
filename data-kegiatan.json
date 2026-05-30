@@ -10,7 +10,15 @@
     }
   ],
   "Kelompok Bermain": [],
-  "Paket A": [],
+  "Paket A": [
+    {
+      "program": "Paket A",
+      "caption": "PSAT",
+      "date": "2026-06-02",
+      "src": "foto-kegiatan/paket-a/2026-05-30T13-23-31-849Z-jadwal-psat-jpeg.jpg",
+      "uploadedAt": "2026-05-30T13:23:34.368Z"
+    }
+  ],
   "Paket B": [],
   "Paket C": [],
   "Program Home Schooling": []
