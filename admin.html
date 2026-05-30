@@ -42,11 +42,23 @@
     .error{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:18px;padding:14px;margin-top:14px;display:none}
     .log{background:#0f172a;color:#d1fae5;border-radius:18px;padding:14px;white-space:pre-wrap;min-height:120px;font-family:Consolas,monospace;font-size:13px}
     .preview{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
-    .preview img{width:100%;height:140px;object-fit:cover;border-radius:18px;border:1px solid var(--line)}
+    .preview img{width:100%;height:140px;object-fit:contain;background:#eef8f4;border-radius:18px;border:1px solid var(--line)}
+    .manage-tools{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end}
+    .manage-list{display:grid;gap:12px;margin-top:14px}
+    .manage-item{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:12px;background:#f8fcfa}
+    .manage-item img{width:120px;height:90px;object-fit:contain;background:#eef8f4;border-radius:14px;border:1px solid #e4f4ed}
+    .manage-item b{display:block;color:#0f172a}
+    .manage-item small{display:block;margin-top:4px}
+    .delete-btn{border:0;border-radius:14px;padding:11px 14px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
+    .delete-btn:hover{filter:brightness(.92)}
+    .empty{border:2px dashed #cce8dd;border-radius:18px;padding:18px;text-align:center;color:#6b7280;background:#f8fcfa;margin-top:14px}
     small{color:var(--muted)}
     code{background:#eef8f4;padding:2px 6px;border-radius:7px}
     @media(max-width:760px){
-      .grid,.preview{grid-template-columns:1fr}
+      .grid,.preview,.manage-tools{grid-template-columns:1fr}
+      .manage-item{grid-template-columns:1fr}
+      .manage-item img{width:100%;height:190px}
+      .delete-btn{width:100%}
       h1{font-size:28px}
       .container{padding:16px}
     }
@@ -123,8 +135,33 @@
       <div id="error" class="error"></div>
     </div>
 
+
     <div class="card">
-      <h2>Catatan Proses</h2>
+      <h2>3. Kelola / Hapus Foto Kegiatan</h2>
+      <p>Pilih program, lalu klik <b>Muat Foto</b>. Setelah daftar foto muncul, klik <b>Hapus</b> pada foto yang ingin dihilangkan dari website.</p>
+
+      <div class="manage-tools">
+        <label>Pilih Program
+          <select id="manageProgram">
+            <option>Daycare</option>
+            <option>PAUD Non Formal</option>
+            <option>Kelompok Bermain</option>
+            <option>Paket A</option>
+            <option>Paket B</option>
+            <option>Paket C</option>
+            <option>Program Home Schooling</option>
+          </select>
+        </label>
+        <button class="btn secondary" id="loadManageBtn">Muat Foto</button>
+      </div>
+
+      <div id="manageList" class="manage-list">
+        <div class="empty">Masukkan GitHub Token, pilih program, lalu klik Muat Foto.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>4. Catatan Proses</h2>
       <div id="log" class="log">Siap upload...</div>
     </div>
 
@@ -263,6 +300,110 @@
       return await githubRequest("PUT", path, body);
     }
 
+    async function deleteGithubFile(path, message){
+      const branch = $("branch").value.trim() || "main";
+      const fileInfo = await githubRequest("GET", `${path}?ref=${encodeURIComponent(branch)}`);
+      return await githubRequest("DELETE", path, {
+        message,
+        sha: fileInfo.sha,
+        branch
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str || "").replace(/[&<>"']/g, function(ch){
+        return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[ch] || ch;
+      });
+    }
+
+    let currentManageData = null;
+
+    async function loadManageList(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+
+      try{
+        const token = $("token").value.trim();
+        if(!token){ throw new Error("GitHub token belum diisi."); }
+
+        const selectedProgram = $("manageProgram").value;
+        log("Memuat daftar foto: " + selectedProgram);
+
+        currentManageData = await getJsonFile("data-kegiatan.json");
+        const gallery = currentManageData.json || {};
+        const photos = Array.isArray(gallery[selectedProgram]) ? gallery[selectedProgram].slice().reverse() : [];
+        const list = $("manageList");
+
+        if(!photos.length){
+          list.innerHTML = `<div class="empty">Belum ada foto pada program ${escapeHtml(selectedProgram)}.</div>`;
+          return;
+        }
+
+        list.innerHTML = photos.map(item => `
+          <div class="manage-item">
+            <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.caption || "Foto kegiatan")}">
+            <div>
+              <b>${escapeHtml(item.caption || "Kegiatan " + selectedProgram)}</b>
+              <small>${escapeHtml(item.date || "")}</small>
+              <small>${escapeHtml(item.src || "")}</small>
+            </div>
+            <button class="delete-btn" data-src="${escapeHtml(item.src)}" data-program="${escapeHtml(selectedProgram)}">Hapus</button>
+          </div>
+        `).join("");
+
+        list.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.addEventListener("click", async () => {
+            const src = btn.dataset.src;
+            const program = btn.dataset.program;
+            await deletePhoto(program, src);
+          });
+        });
+
+      }catch(err){
+        console.error(err);
+        log("ERROR: " + err.message);
+        show("error", "Gagal memuat foto: " + err.message);
+      }
+    }
+
+    async function deletePhoto(program, src){
+      if(!confirm("Yakin ingin menghapus foto ini dari website?")) return;
+
+      try{
+        log("Menghapus foto dari galeri: " + src);
+
+        const dataFile = await getJsonFile("data-kegiatan.json");
+        const gallery = dataFile.json || {};
+        programs.forEach(p => { if(!Array.isArray(gallery[p])) gallery[p] = []; });
+
+        const before = gallery[program].length;
+        gallery[program] = gallery[program].filter(item => item.src !== src);
+
+        if(gallery[program].length === before){
+          throw new Error("Foto tidak ditemukan di data-kegiatan.json.");
+        }
+
+        const jsonBase64 = utf8ToBase64(JSON.stringify(gallery, null, 2));
+        await putFile("data-kegiatan.json", jsonBase64, `Hapus foto kegiatan ${program}`, dataFile.sha);
+
+        try{
+          log("Menghapus file foto dari repository...");
+          await deleteGithubFile(src, `Hapus file foto kegiatan ${program}`);
+        }catch(fileErr){
+          log("Catatan: data galeri sudah dihapus, tetapi file foto lama belum terhapus: " + fileErr.message);
+        }
+
+        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
+        show("success", "Foto berhasil dihapus dari galeri. Tunggu 1-3 menit, lalu refresh website.");
+        await loadManageList();
+
+      }catch(err){
+        console.error(err);
+        log("ERROR: " + err.message);
+        show("error", "Gagal menghapus foto: " + err.message);
+      }
+    }
+
     $("photos").addEventListener("change", async () => {
       const files = Array.from($("photos").files || []);
       $("preview").innerHTML = "";
@@ -272,6 +413,8 @@
         $("preview").appendChild(img);
       });
     });
+
+    $("loadManageBtn").addEventListener("click", loadManageList);
 
     $("uploadBtn").addEventListener("click", async () => {
       $("success").style.display = "none";
@@ -323,6 +466,8 @@
 
         log("Selesai. Tunggu 1-3 menit lalu refresh website.");
         show("success", "Foto berhasil diunggah. Tunggu 1-3 menit, lalu refresh website.");
+        $("manageProgram").value = program;
+        await loadManageList();
       }catch(err){
         console.error(err);
         log("ERROR: " + err.message);

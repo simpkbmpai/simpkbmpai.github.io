@@ -1,24 +1,8 @@
 {
   "Daycare": [],
-  "PAUD Non Formal": [
-    {
-      "program": "PAUD Non Formal",
-      "caption": "Kegiatan Cooking Class PAUD Non Formal",
-      "date": "2026-05-29",
-      "src": "foto-kegiatan/paud-non-formal/2026-05-30T13-09-02-737Z-cooking-class-paud-29-mei-jpeg.jpg",
-      "uploadedAt": "2026-05-30T13:09:04.753Z"
-    }
-  ],
+  "PAUD Non Formal": [],
   "Kelompok Bermain": [],
-  "Paket A": [
-    {
-      "program": "Paket A",
-      "caption": "Jadwal PSAT PKBM Pelita Aushaf Indonesia",
-      "date": "2026-06-02",
-      "src": "foto-kegiatan/paket-a/2026-05-30T13-05-18-710Z-jadwal-psat-jpeg.jpg",
-      "uploadedAt": "2026-05-30T13:05:20.919Z"
-    }
-  ],
+  "Paket A": [],
   "Paket B": [],
   "Paket C": [],
   "Program Home Schooling": []
