@@ -112,29 +112,247 @@
       font-weight:700;background:#f8fcfa;
     }
     .program-card .mini-link:hover{background:#eef8f4}
-    .gallery-tabs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0 28px}
+
+    .gallery-toolbar{
+      margin:20px 0 28px;
+      display:grid;
+      gap:16px;
+    }
+    .gallery-tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
+    }
     .tab-btn{
-      border:1px solid var(--line);background:#fff;color:#345047;font-weight:800;
-      padding:10px 14px;border-radius:999px;cursor:pointer;
+      border:1px solid var(--line);
+      background:#fff;
+      color:#345047;
+      font-weight:800;
+      padding:10px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.2s ease;
+      box-shadow:0 8px 20px rgba(13,122,95,.04);
     }
-    .tab-btn.active{background:var(--green);color:#fff;border-color:var(--green)}
-    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .tab-btn:hover{
+      transform:translateY(-1px);
+      background:#f3fbf7;
+    }
+    .tab-btn.active{
+      background:var(--green);
+      color:#fff;
+      border-color:var(--green);
+      box-shadow:0 12px 28px rgba(13,122,95,.18);
+    }
+    .tab-count{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:24px;
+      height:24px;
+      margin-left:8px;
+      padding:0 7px;
+      border-radius:999px;
+      background:#eef8f4;
+      color:var(--green-dark);
+      font-size:12px;
+      font-weight:900;
+    }
+    .tab-btn.active .tab-count{
+      background:rgba(255,255,255,.2);
+      color:#fff;
+    }
+    .gallery-summary{
+      text-align:center;
+      color:#5b6472;
+      font-size:14px;
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:18px;
+      padding:12px 16px;
+      max-width:760px;
+      margin:0 auto;
+    }
+    .gallery-masonry{
+      column-count:3;
+      column-gap:18px;
+    }
     .photo-card{
-      background:#fff;border:1px solid #e7f4ee;border-radius:24px;overflow:hidden;
+      display:inline-block;
+      width:100%;
+      margin:0 0 18px;
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:26px;
+      overflow:hidden;
       box-shadow:0 12px 36px rgba(13,122,95,.07);
+      break-inside:avoid;
+      transition:.2s ease;
     }
-    .photo-card a{display:block;background:#eef8f4}
-    .photo-card img{width:100%;height:300px;object-fit:contain;background:#eef8f4;padding:8px}
-    .photo-body{padding:16px}
-    .photo-body b{display:block;color:#0f172a;font-size:17px}
-    .photo-body small{display:block;color:#6b7280;margin-top:6px}
+    .photo-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 18px 44px rgba(13,122,95,.11);
+    }
+    .photo-thumb{
+      display:block;
+      width:100%;
+      border:0;
+      padding:8px;
+      background:#eef8f4;
+      cursor:pointer;
+    }
+    .photo-thumb img{
+      width:100%;
+      height:auto;
+      max-height:430px;
+      object-fit:contain;
+      background:#eef8f4;
+      border-radius:18px;
+      margin:auto;
+    }
+    .photo-body{
+      padding:16px 16px 18px;
+    }
+    .photo-body b{
+      display:block;
+      color:#0f172a;
+      font-size:17px;
+      line-height:1.35;
+    }
+    .photo-body small{
+      display:block;
+      color:#6b7280;
+      margin-top:6px;
+    }
+    .photo-program{
+      display:inline-flex;
+      margin-bottom:9px;
+      padding:5px 9px;
+      border-radius:999px;
+      background:#eef8f4;
+      color:var(--green-dark);
+      font-size:12px;
+      font-weight:900;
+    }
+    .load-more-wrap{
+      display:flex;
+      justify-content:center;
+      margin-top:16px;
+    }
+    .load-more-btn{
+      display:none;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--green-dark);
+      border-radius:16px;
+      padding:13px 18px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 12px 28px rgba(13,122,95,.08);
+    }
+    .load-more-btn:hover{background:#f3fbf7}
     .empty-gallery{
-      text-align:center;border:2px dashed #cce8dd;border-radius:28px;padding:34px;background:#f8fcfa;color:#6b7280;
+      text-align:center;
+      border:2px dashed #cce8dd;
+      border-radius:28px;
+      padding:34px;
+      background:#f8fcfa;
+      color:#6b7280;
     }
     .admin-note{
-      margin:22px auto 0;max-width:760px;text-align:center;font-size:14px;color:#6b7280;
-      background:#fff;border:1px solid #e7f4ee;border-radius:18px;padding:14px;
+      margin:22px auto 0;
+      max-width:760px;
+      text-align:center;
+      font-size:14px;
+      color:#6b7280;
+      background:#fff;
+      border:1px solid #e7f4ee;
+      border-radius:18px;
+      padding:14px;
     }
+    .lightbox{
+      position:fixed;
+      inset:0;
+      z-index:200;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:rgba(15,23,42,.82);
+      backdrop-filter:blur(6px);
+    }
+    .lightbox.show{display:flex}
+    .lightbox-panel{
+      width:min(1120px, 100%);
+      max-height:92vh;
+      background:#fff;
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 30px 90px rgba(0,0,0,.35);
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+    }
+    .lightbox-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:14px 18px;
+      border-bottom:1px solid #e7f4ee;
+    }
+    .lightbox-title{
+      min-width:0;
+    }
+    .lightbox-title b{
+      display:block;
+      color:#0f172a;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .lightbox-title small{color:#6b7280}
+    .lightbox-close{
+      border:0;
+      background:#f3f4f6;
+      color:#111827;
+      border-radius:14px;
+      width:44px;
+      height:44px;
+      font-size:24px;
+      cursor:pointer;
+    }
+    .lightbox-img-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#eef8f4;
+      min-height:280px;
+    }
+    .lightbox-img-wrap img{
+      max-width:100%;
+      max-height:72vh;
+      object-fit:contain;
+    }
+    .lightbox-actions{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:14px 18px;
+      border-top:1px solid #e7f4ee;
+    }
+    .lightbox-nav{
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--green-dark);
+      border-radius:14px;
+      padding:10px 14px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .lightbox-counter{color:#6b7280;font-weight:700}
+
     .cta{
       background:linear-gradient(135deg,#0e7a5d,#4cae71);
       color:#fff;border-radius:34px;padding:34px;box-shadow:0 24px 52px rgba(13,122,95,.18);
@@ -163,7 +381,7 @@
     @media(max-width:1024px){
       h1{font-size:50px}
       .hero-grid,.grid-2,.form-wrap{grid-template-columns:1fr}
-      .gallery-grid{grid-template-columns:repeat(2,1fr)}
+      .gallery-masonry{column-count:2}
     }
     @media(max-width:760px){
       .nav{flex-wrap:wrap;justify-content:center;padding:14px 0}
@@ -172,7 +390,8 @@
       .hero{padding-top:38px}
       h1{font-size:38px}
       .lead{font-size:18px}
-      .grid-3,.checklist,form,.people,.gallery-grid{grid-template-columns:1fr}
+      .grid-3,.checklist,form,.people{grid-template-columns:1fr}
+      .gallery-masonry{column-count:1}
       .footer-row{flex-direction:column;align-items:flex-start}
       .btn{width:100%}
       .hero-actions{flex-direction:column}
@@ -293,11 +512,19 @@
           <p>Pilih program untuk melihat dokumentasi kegiatan yang sudah diunggah dari dashboard admin.</p>
         </div>
 
-        <div class="gallery-tabs" id="galleryTabs"></div>
-        <div id="galleryGrid" class="gallery-grid"></div>
+        <div class="gallery-toolbar">
+          <div class="gallery-tabs" id="galleryTabs"></div>
+          <div class="gallery-summary" id="gallerySummary">Memuat foto kegiatan...</div>
+        </div>
+
+        <div id="galleryGrid" class="gallery-masonry"></div>
+
+        <div class="load-more-wrap">
+          <button class="load-more-btn" id="loadMoreBtn">Tampilkan lebih banyak foto</button>
+        </div>
 
         <div class="admin-note">
-          Admin dapat mengunggah foto melalui halaman <b>admin.html</b>. Halaman admin sebaiknya hanya dibuka oleh pengelola PKBM.
+          Admin dapat mengunggah banyak foto melalui halaman <b>admin.html</b>. Foto terbaru otomatis tampil paling atas.
         </div>
       </div>
     </section>
@@ -356,6 +583,27 @@
     </section>
   </main>
 
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-panel">
+      <div class="lightbox-top">
+        <div class="lightbox-title">
+          <b id="lightboxCaption">Foto Kegiatan</b>
+          <small id="lightboxDate"></small>
+        </div>
+        <button class="lightbox-close" id="lightboxClose" aria-label="Tutup">×</button>
+      </div>
+      <div class="lightbox-img-wrap">
+        <img id="lightboxImg" src="" alt="Foto kegiatan penuh">
+      </div>
+      <div class="lightbox-actions">
+        <button class="lightbox-nav" id="prevPhoto">← Sebelumnya</button>
+        <span class="lightbox-counter" id="lightboxCounter">1 / 1</span>
+        <button class="lightbox-nav" id="nextPhoto">Berikutnya →</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <div class="container footer-row">
       <div>
@@ -406,12 +654,55 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
       window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(text)}`, "_blank");
     });
 
+
+    const allTabs = ["Semua", ...programs];
+    let visibleCount = 9;
+    let currentPhotos = [];
+
+    function escapeHtml(str){
+      return String(str || "").replace(/[&<>"']/g, function(ch){
+        return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[ch] || ch;
+      });
+    }
+
+    function getAllPhotos(){
+      return programs.flatMap(program => {
+        const items = Array.isArray(galleryData[program]) ? galleryData[program] : [];
+        return items.map(item => ({...item, program: item.program || program}));
+      });
+    }
+
+    function sortNewestFirst(items){
+      return items.slice().sort((a,b) => {
+        const ad = new Date(a.uploadedAt || a.date || "1970-01-01").getTime();
+        const bd = new Date(b.uploadedAt || b.date || "1970-01-01").getTime();
+        return bd - ad;
+      });
+    }
+
+    function getPhotosForActiveTab(){
+      if(activeProgram === "Semua"){
+        return sortNewestFirst(getAllPhotos());
+      }
+      const items = Array.isArray(galleryData[activeProgram]) ? galleryData[activeProgram] : [];
+      return sortNewestFirst(items.map(item => ({...item, program: item.program || activeProgram})));
+    }
+
+    function countPhotos(program){
+      if(program === "Semua") return getAllPhotos().length;
+      return Array.isArray(galleryData[program]) ? galleryData[program].length : 0;
+    }
+
     function setupTabs(){
       const tabs = document.getElementById("galleryTabs");
-      tabs.innerHTML = programs.map(p => `<button class="tab-btn ${p===activeProgram ? "active" : ""}" data-program="${p}">${p}</button>`).join("");
+      tabs.innerHTML = allTabs.map(p => {
+        const count = countPhotos(p);
+        return `<button class="tab-btn ${p===activeProgram ? "active" : ""}" data-program="${escapeHtml(p)}">${escapeHtml(p)} <span class="tab-count">${count}</span></button>`;
+      }).join("");
       tabs.querySelectorAll("button").forEach(btn => {
         btn.addEventListener("click", () => {
           activeProgram = btn.dataset.program;
+          visibleCount = 9;
           setupTabs();
           renderGallery();
         });
@@ -420,44 +711,115 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
 
     function renderGallery(){
       const grid = document.getElementById("galleryGrid");
-      const photos = (galleryData[activeProgram] || []).slice().reverse();
-      if(!photos.length){
+      const summary = document.getElementById("gallerySummary");
+      const loadMoreBtn = document.getElementById("loadMoreBtn");
+
+      currentPhotos = getPhotosForActiveTab();
+      const total = currentPhotos.length;
+      const visiblePhotos = currentPhotos.slice(0, visibleCount);
+
+      summary.textContent = total
+        ? `Menampilkan ${Math.min(visibleCount, total)} dari ${total} foto kegiatan ${activeProgram}. Klik foto untuk memperbesar.`
+        : `Belum ada foto kegiatan ${activeProgram}.`;
+
+      if(!total){
         grid.className = "";
         grid.innerHTML = `<div class="empty-gallery">
-          <h3>Belum ada foto kegiatan ${activeProgram}</h3>
+          <h3>Belum ada foto kegiatan ${escapeHtml(activeProgram)}</h3>
           <p>Foto bisa ditambahkan melalui dashboard admin.</p>
         </div>`;
+        loadMoreBtn.style.display = "none";
         return;
       }
-      grid.className = "gallery-grid";
-      grid.innerHTML = photos.map(item => `
+
+      grid.className = "gallery-masonry";
+      grid.innerHTML = visiblePhotos.map((item, index) => `
         <article class="photo-card">
-          <a href="${item.src}" target="_blank" rel="noopener" title="Klik untuk melihat foto penuh"><img src="${item.src}" alt="${item.caption || "Foto kegiatan"}" loading="lazy"></a>
+          <button class="photo-thumb" data-index="${index}" title="Klik untuk melihat foto penuh">
+            <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.caption || "Foto kegiatan")}" loading="lazy">
+          </button>
           <div class="photo-body">
-            <b>${item.caption || "Kegiatan " + item.program}</b>
-            <small>${item.date || ""}</small>
+            <span class="photo-program">${escapeHtml(item.program || activeProgram)}</span>
+            <b>${escapeHtml(item.caption || "Kegiatan " + (item.program || activeProgram))}</b>
+            <small>${escapeHtml(item.date || "")}</small>
           </div>
         </article>
       `).join("");
+
+      grid.querySelectorAll(".photo-thumb").forEach(btn => {
+        btn.addEventListener("click", () => openLightbox(Number(btn.dataset.index)));
+      });
+
+      loadMoreBtn.style.display = visibleCount < total ? "inline-flex" : "none";
+    }
+
+    function openLightbox(index){
+      const item = currentPhotos[index];
+      if(!item) return;
+
+      const lightbox = document.getElementById("lightbox");
+      document.getElementById("lightboxImg").src = item.src;
+      document.getElementById("lightboxCaption").textContent = item.caption || "Kegiatan " + (item.program || activeProgram);
+      document.getElementById("lightboxDate").textContent = [item.program || activeProgram, item.date || ""].filter(Boolean).join(" • ");
+      document.getElementById("lightboxCounter").textContent = `${index + 1} / ${currentPhotos.length}`;
+      lightbox.dataset.index = index;
+      lightbox.classList.add("show");
+      lightbox.setAttribute("aria-hidden", "false");
+    }
+
+    function closeLightbox(){
+      const lightbox = document.getElementById("lightbox");
+      lightbox.classList.remove("show");
+      lightbox.setAttribute("aria-hidden", "true");
+      document.getElementById("lightboxImg").src = "";
+    }
+
+    function moveLightbox(direction){
+      const lightbox = document.getElementById("lightbox");
+      if(!lightbox.classList.contains("show")) return;
+      const current = Number(lightbox.dataset.index || 0);
+      const next = (current + direction + currentPhotos.length) % currentPhotos.length;
+      openLightbox(next);
     }
 
     async function loadGallery(){
-      setupTabs();
       try{
         const res = await fetch("data-kegiatan.json?ts=" + Date.now());
         galleryData = await res.json();
       }catch(err){
         galleryData = {};
       }
+      if(!activeProgram) activeProgram = "Semua";
+      setupTabs();
       renderGallery();
     }
+
+    document.getElementById("loadMoreBtn").addEventListener("click", () => {
+      visibleCount += 9;
+      renderGallery();
+    });
+
+    document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+    document.getElementById("lightbox").addEventListener("click", (e) => {
+      if(e.target.id === "lightbox") closeLightbox();
+    });
+    document.getElementById("prevPhoto").addEventListener("click", () => moveLightbox(-1));
+    document.getElementById("nextPhoto").addEventListener("click", () => moveLightbox(1));
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") closeLightbox();
+      if(e.key === "ArrowLeft") moveLightbox(-1);
+      if(e.key === "ArrowRight") moveLightbox(1);
+    });
 
     document.querySelectorAll("[data-tablink]").forEach(link => {
       link.addEventListener("click", () => {
         activeProgram = link.dataset.tablink;
+        visibleCount = 9;
         setTimeout(() => { setupTabs(); renderGallery(); }, 100);
       });
     });
+
+    activeProgram = "Semua";
 
     loadGallery();
   </script>
