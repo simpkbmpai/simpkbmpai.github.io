@@ -1638,10 +1638,11 @@
         <div>
           <span class="eyebrow">Formulir Online</span>
           <h2>Pendaftaran Murid Baru</h2>
-          <p>Formulir ini tidak memakai database berbayar. Data yang diisi akan dirapikan otomatis menjadi pesan WhatsApp ke admin PKBM: 0877-5132-5199.</p>
+          <p>Formulir ini tidak memakai database berbayar. Data yang diisi akan dirapikan otomatis menjadi pesan WhatsApp ke admin PKBM: <span id="adminNumberSentence">0877-5132-5199</span>.</p>
           <div class="info-box">
-            <p><b>Nomor WhatsApp Admin:</b><br>0877-5132-5199</p>
-            <p><b>CP Humas:</b><br>0821-4004-6047</p>
+            <p><b>Nomor WhatsApp Admin:</b><br><span id="adminNumberDisplay">0877-5132-5199</span></p>
+            <p><b>CP Humas:</b><br><span id="humasNumberDisplay">0821-4004-6047</span></p>
+            <p id="contactNoteDisplay" style="display:none"></p>
             <p><b>Alamat:</b><br>Perumahan Griya Permata Gedangan, Blok G2/29, Gedangan, Sidoarjo, Jawa Timur</p>
             <p style="margin-bottom:0"><b>Layanan:</b><br>Daycare, PAUD Non Formal, Kelompok Bermain, Paket A, Paket B, Paket C, Program Home Schooling</p>
           </div>
@@ -1718,7 +1719,61 @@
   </a>
 
   <script>
-    const adminWhatsApp = "6287751325199";
+    const defaultContactData = {
+      whatsappAdmin: "6287751325199",
+      whatsappAdminDisplay: "0877-5132-5199",
+      cpHumas: "082140046047",
+      cpHumasDisplay: "0821-4004-6047",
+      note: ""
+    };
+    let contactData = {...defaultContactData};
+    let adminWhatsApp = contactData.whatsappAdmin;
+
+    function buildWaLink(message){
+      return `https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`;
+    }
+
+    function applyContactData(){
+      adminWhatsApp = contactData.whatsappAdmin || defaultContactData.whatsappAdmin;
+      const adminDisplay = contactData.whatsappAdminDisplay || defaultContactData.whatsappAdminDisplay;
+      const humasDisplay = contactData.cpHumasDisplay || defaultContactData.cpHumasDisplay;
+      const sentence = document.getElementById("adminNumberSentence");
+      const adminSpan = document.getElementById("adminNumberDisplay");
+      const humasSpan = document.getElementById("humasNumberDisplay");
+      const note = document.getElementById("contactNoteDisplay");
+      if(sentence) sentence.textContent = adminDisplay;
+      if(adminSpan) adminSpan.textContent = adminDisplay;
+      if(humasSpan) humasSpan.textContent = humasDisplay;
+      if(note){
+        if(contactData.note){
+          note.innerHTML = `<b>Catatan:</b><br>${escapeHtml(contactData.note)}`;
+          note.style.display = "block";
+        }else{
+          note.style.display = "none";
+        }
+      }
+      document.querySelectorAll('a[href*="wa.me/"]').forEach(link => {
+        try{
+          const url = new URL(link.href);
+          const text = url.searchParams.get("text");
+          link.href = text ? buildWaLink(text) : `https://wa.me/${adminWhatsApp}`;
+        }catch(err){}
+      });
+      updateBrosurUI?.();
+    }
+
+    async function loadContactData(){
+      try{
+        const res = await fetch("data-kontak.json?ts=" + Date.now());
+        if(res.ok){
+          const loaded = await res.json();
+          contactData = {...defaultContactData, ...loaded};
+        }
+      }catch(err){
+        contactData = {...defaultContactData};
+      }
+      applyContactData();
+    }
     const programs = ["Daycare","PAUD Non Formal","Kelompok Bermain","Paket A","Paket B","Paket C","Program Home Schooling"];
     let galleryData = {};
     let activeProgram = "Daycare";
@@ -2032,7 +2087,7 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
       desc.textContent = item.desc || "Download brosur PDF program.";
       downloadBtn.href = item.path || "brosur-pkbm-pelita-aushaf-indonesia.pdf";
       downloadBtn.textContent = "Download " + selected;
-      waBtn.href = "https://wa.me/6287751325199?text=" + encodeURIComponent("Assalamu'alaikum admin PKBM Pelita Aushaf Indonesia. Saya ingin bertanya tentang " + selected + ".");
+      waBtn.href = buildWaLink("Assalamu'alaikum admin PKBM Pelita Aushaf Indonesia. Saya ingin bertanya tentang " + selected + ".");
       note.textContent = item.updatedAt && item.updatedAt !== "default"
         ? "Brosur ini sudah diperbarui dari dashboard."
         : "Brosur khusus belum diunggah, sementara memakai brosur umum.";
@@ -2065,6 +2120,7 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
     setupTestimonials();
     setupFAQ();
     loadBrosurData();
+    loadContactData();
 
 
     /* ===== Tahap 3: data dinamis artikel, kalender, album ===== */
@@ -2299,7 +2355,7 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
     }
 
     function waLinkAlbum(item){
-      return "https://wa.me/6287751325199?text=" + encodeURIComponent("Assalamu'alaikum admin PKBM Pelita Aushaf Indonesia. Saya ingin bertanya tentang kegiatan " + (item.title || item.program || "PKBM") + ".");
+      return buildWaLink("Assalamu'alaikum admin PKBM Pelita Aushaf Indonesia. Saya ingin bertanya tentang kegiatan " + (item.title || item.program || "PKBM") + ".");
     }
 
     async function loadStage3Data(){

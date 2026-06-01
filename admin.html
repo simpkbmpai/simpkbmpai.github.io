@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard Foto Kegiatan - PKBM Pelita Aushaf Indonesia</title>
+  <title>Dashboard Admin Website - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
   <style>
     :root{
@@ -81,8 +81,44 @@
     .stage3-delete{border:0;border-radius:14px;padding:10px 12px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
     .stage3-delete:hover{filter:brightness(.92)}
 
+
+
+    .dashboard-hero{
+      display:grid;
+      grid-template-columns:1fr 1.25fr;
+      gap:18px;
+      align-items:center;
+      background:linear-gradient(135deg,#0d7a5f,#0a5c48);
+      color:#fff;
+      border:0;
+      overflow:hidden;
+      position:relative;
+    }
+    .dashboard-hero:before{
+      content:"";
+      position:absolute;
+      width:240px;
+      height:240px;
+      border-radius:50%;
+      right:-90px;
+      top:-90px;
+      background:rgba(255,255,255,.10);
+    }
+    .dashboard-hero > *{position:relative;z-index:1}
+    .dashboard-hero h2{margin:8px 0 8px;color:#fff;font-size:34px;line-height:1.14}
+    .dashboard-hero p{margin:0;color:#e8fff4}
+    .dash-badge{display:inline-flex;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:7px 12px;font-weight:900;color:#fff;font-size:13px}
+    .quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .quick-grid a{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:10px;border-radius:16px;background:#fff;color:#0a5c48;font-weight:900;box-shadow:0 10px 24px rgba(0,0,0,.10)}
+    .quick-grid a:hover{background:#eef8f4}
+    .contact-preview{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+    .contact-preview div{background:#f3fbf7;border:1px solid #e4f4ed;border-radius:18px;padding:14px}
+    .contact-preview b{display:block;color:#0f172a;margin-bottom:4px}
+    .contact-preview span{display:block;color:#0a5c48;font-weight:900;font-size:18px}
+    .mini-note{margin-top:10px;color:#6b7280;font-size:13px}
+
     @media(max-width:760px){
-      .grid,.preview,.manage-tools,.pdf-tools,.stage3-tools{grid-template-columns:1fr}
+      .grid,.preview,.manage-tools,.pdf-tools,.stage3-tools,.dashboard-hero,.quick-grid,.contact-preview{grid-template-columns:1fr}
       .pdf-item{grid-template-columns:1fr}
       .pdf-actions,.stage3-actions{justify-content:flex-start}
       .pdf-delete,.pdf-link,.stage3-delete,.stage3-edit{width:100%;text-align:center}
@@ -99,8 +135,26 @@
     <div class="top">
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div>
-        <h1>Dashboard Foto Kegiatan</h1>
-        <p class="sub">PKBM Pelita Aushaf Indonesia</p>
+        <h1>Dashboard Admin Website</h1>
+        <p class="sub">Kelola foto, brosur, artikel, agenda, album, dan kontak PKBM</p>
+      </div>
+    </div>
+
+
+
+    <div class="card dashboard-hero">
+      <div>
+        <span class="dash-badge">Dashboard Admin</span>
+        <h2>Kelola Website dari Satu Tempat</h2>
+        <p>Menu utama dibuat lebih rapi: kontak, foto kegiatan, brosur PDF, artikel, kalender, dan album kegiatan.</p>
+      </div>
+      <div class="quick-grid">
+        <a href="#pengaturan-github">GitHub</a>
+        <a href="#kontak-website">Kontak</a>
+        <a href="#upload-foto">Foto</a>
+        <a href="#brosur-pdf">Brosur</a>
+        <a href="#artikel-edukasi">Artikel</a>
+        <a href="#kalender-kegiatan">Kalender</a>
       </div>
     </div>
 
@@ -108,7 +162,7 @@
       <b>Penting:</b> dashboard ini gratis dan memakai GitHub sebagai tempat penyimpanan foto. Untuk upload, admin perlu memasukkan <b>GitHub token</b> yang punya izin menulis ke repository. Jangan bagikan token ke orang lain dan jangan simpan token di komputer umum.
     </div>
 
-    <div class="card">
+    <div class="card" id="pengaturan-github">
       <h2>1. Pengaturan GitHub</h2>
       <div class="grid">
         <label>Owner GitHub
@@ -129,8 +183,41 @@
       <small>Token hanya dipakai di browser ini untuk mengirim file ke repository GitHub. Token tidak dimasukkan ke file web.</small>
     </div>
 
-    <div class="card">
-      <h2>2. Upload Foto Kegiatan</h2>
+    <div class="card" id="kontak-website">
+      <h2>2. Pengaturan Kontak Website</h2>
+      <p>Nomor ini akan dipakai untuk tombol WhatsApp, formulir pendaftaran, tanya brosur, agenda, dan tombol konsultasi di website.</p>
+
+      <div class="stage3-tools">
+        <label>Nomor WhatsApp Admin
+          <input id="contactAdminInput" value="0877-5132-5199" placeholder="Contoh: 087751325199">
+        </label>
+        <label>Nomor CP Humas
+          <input id="contactHumasInput" value="0821-4004-6047" placeholder="Contoh: 082140046047">
+        </label>
+      </div>
+
+      <label>Catatan Kontak / Jam Layanan (opsional)
+        <textarea id="contactNoteInput" placeholder="Contoh: Admin melayani konsultasi pendaftaran pukul 08.00 - 15.00 WIB"></textarea>
+      </label>
+
+      <div class="contact-preview">
+        <div>
+          <b>Preview WhatsApp Admin</b>
+          <span id="contactAdminPreview">0877-5132-5199</span>
+        </div>
+        <div>
+          <b>Preview CP Humas</b>
+          <span id="contactHumasPreview">0821-4004-6047</span>
+        </div>
+      </div>
+
+      <button class="btn" id="saveContactBtn">Simpan Kontak ke Web</button>
+      <button class="btn secondary" id="loadContactBtn">Muat Kontak dari Web</button>
+      <div class="mini-note">Setelah disimpan, upload juga <code>index.html</code> terbaru dan <code>data-kontak.json</code> agar nomor website bisa berubah dari dashboard.</div>
+    </div>
+
+    <div class="card" id="upload-foto">
+      <h2>3. Upload Foto Kegiatan</h2>
       <div class="grid">
         <label>Pilih Program
           <select id="program">
@@ -166,8 +253,8 @@
     </div>
 
 
-    <div class="card">
-      <h2>3. Kelola Banyak Foto / Hapus Foto Kegiatan</h2>
+    <div class="card" id="kelola-foto">
+      <h2>4. Kelola Banyak Foto / Hapus Foto Kegiatan</h2>
       <p>Pilih program, lalu klik <b>Muat Foto</b>. Setelah daftar foto muncul, admin bisa menghapus foto yang tidak ingin ditampilkan.</p>
 
       <div class="manage-tools">
@@ -191,8 +278,8 @@
     </div>
 
 
-    <div class="card">
-      <h2>4. Upload Brosur PDF Per Program</h2>
+    <div class="card" id="brosur-pdf">
+      <h2>5. Upload Brosur PDF Per Program</h2>
       <p>Gunakan bagian ini untuk mengunggah brosur PDF khusus. Setiap program bisa memiliki brosur sendiri. Brosur yang sudah tidak dipakai bisa dihapus melalui daftar di bawah.</p>
 
       <div class="pdf-tools">
@@ -231,8 +318,8 @@
       </div>
     </div>
 
-    <div class="card">
-      <h2>5. Artikel Parenting & Edukasi</h2>
+    <div class="card" id="artikel-edukasi">
+      <h2>6. Artikel Parenting & Edukasi</h2>
       <p>Tambah artikel untuk halaman web. Cocok untuk parenting, pendidikan inklusi, tumbuh kembang, adab, dan info program.</p>
 
       <div class="stage3-tools">
@@ -271,8 +358,8 @@
       </div>
     </div>
 
-    <div class="card">
-      <h2>6. Kalender Akademik & Kegiatan</h2>
+    <div class="card" id="kalender-kegiatan">
+      <h2>7. Kalender Akademik & Kegiatan</h2>
       <p>Tambah agenda akademik dan kegiatan agar wali murid dapat melihat informasi terbaru di web.</p>
 
       <div class="stage3-tools">
@@ -311,8 +398,8 @@
       </div>
     </div>
 
-    <div class="card">
-      <h2>7. Galeri Album</h2>
+    <div class="card" id="galeri-album">
+      <h2>8. Galeri Album</h2>
       <p>Buat album kegiatan pilihan. Album ini menampilkan cover, keterangan, dan bisa diarahkan ke galeri program.</p>
 
       <div class="stage3-tools">
@@ -354,8 +441,8 @@
       </div>
     </div>
 
-    <div class="card">
-      <h2>8. Catatan Proses</h2>
+    <div class="card" id="catatan-proses">
+      <h2>9. Catatan Proses</h2>
       <div id="log" class="log">Siap upload...</div>
     </div>
 
@@ -511,6 +598,104 @@
     }
 
     let currentManageData = null;
+
+
+    const defaultContactData = {
+      whatsappAdmin: "6287751325199",
+      whatsappAdminDisplay: "0877-5132-5199",
+      cpHumas: "082140046047",
+      cpHumasDisplay: "0821-4004-6047",
+      note: ""
+    };
+
+    function digitsOnly(value){
+      return String(value || "").replace(/\D/g, "");
+    }
+
+    function normalizeWhatsapp(value){
+      let digits = digitsOnly(value);
+      if(digits.startsWith("0")) digits = "62" + digits.slice(1);
+      if(digits.startsWith("8")) digits = "62" + digits;
+      return digits;
+    }
+
+    function formatIndonesiaPhone(value){
+      let digits = digitsOnly(value);
+      if(digits.startsWith("62")) digits = "0" + digits.slice(2);
+      if(!digits) return "";
+      if(digits.length <= 4) return digits;
+      if(digits.length <= 8) return digits.slice(0,4) + "-" + digits.slice(4);
+      return digits.slice(0,4) + "-" + digits.slice(4,8) + "-" + digits.slice(8);
+    }
+
+    function refreshContactPreview(){
+      const adminPreview = $("contactAdminPreview");
+      const humasPreview = $("contactHumasPreview");
+      if(adminPreview) adminPreview.textContent = formatIndonesiaPhone($("contactAdminInput")?.value) || "-";
+      if(humasPreview) humasPreview.textContent = formatIndonesiaPhone($("contactHumasInput")?.value) || "-";
+    }
+
+    async function getContactJson(){
+      try{
+        const data = await getGithubFile("data-kontak.json");
+        return { json: {...defaultContactData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha };
+      }catch(err){
+        if(String(err.message).includes("Not Found")){
+          return { json: {...defaultContactData}, sha: null };
+        }
+        throw err;
+      }
+    }
+
+    async function loadContactSettings(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+      try{
+        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
+        log("Memuat data kontak website...");
+        const fileData = await getContactJson();
+        const data = fileData.json || defaultContactData;
+        $("contactAdminInput").value = data.whatsappAdminDisplay || formatIndonesiaPhone(data.whatsappAdmin) || defaultContactData.whatsappAdminDisplay;
+        $("contactHumasInput").value = data.cpHumasDisplay || formatIndonesiaPhone(data.cpHumas) || defaultContactData.cpHumasDisplay;
+        $("contactNoteInput").value = data.note || "";
+        refreshContactPreview();
+        show("success", "Kontak berhasil dimuat dari data-kontak.json.");
+        log("Kontak berhasil dimuat.");
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal memuat kontak: " + err.message);
+      }
+    }
+
+    async function saveContactSettings(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+      try{
+        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
+        const adminWa = normalizeWhatsapp($("contactAdminInput").value);
+        const humasDigits = digitsOnly($("contactHumasInput").value);
+        if(!adminWa || adminWa.length < 10) throw new Error("Nomor WhatsApp Admin belum valid.");
+        if(!humasDigits || humasDigits.length < 9) throw new Error("Nomor CP Humas belum valid.");
+
+        log("Menyimpan data-kontak.json...");
+        const old = await getContactJson();
+        const data = {
+          whatsappAdmin: adminWa,
+          whatsappAdminDisplay: formatIndonesiaPhone($("contactAdminInput").value),
+          cpHumas: humasDigits.startsWith("62") ? humasDigits : humasDigits,
+          cpHumasDisplay: formatIndonesiaPhone($("contactHumasInput").value),
+          note: $("contactNoteInput").value.trim(),
+          updatedAt: new Date().toISOString().slice(0,10)
+        };
+        await putFile("data-kontak.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update kontak website PKBM", old.sha);
+        refreshContactPreview();
+        show("success", "Kontak berhasil disimpan. Tunggu 1-3 menit lalu refresh website.");
+        log("Selesai menyimpan kontak. Tunggu 1-3 menit lalu refresh website.");
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal menyimpan kontak: " + err.message);
+      }
+    }
 
     async function loadManageList(){
       $("success").style.display = "none";
@@ -1125,6 +1310,16 @@
         show("error", "Gagal menghapus: " + err.message);
       }
     }
+
+
+
+    if($("saveContactBtn")) $("saveContactBtn").addEventListener("click", saveContactSettings);
+    if($("loadContactBtn")) $("loadContactBtn").addEventListener("click", loadContactSettings);
+    ["contactAdminInput","contactHumasInput"].forEach(id => {
+      const el = $(id);
+      if(el) el.addEventListener("input", refreshContactPreview);
+    });
+    refreshContactPreview();
 
     $("saveArticleBtn").addEventListener("click", saveArticle);
     $("articleCancelEditBtn").addEventListener("click", () => cancelEditArticle(true));
