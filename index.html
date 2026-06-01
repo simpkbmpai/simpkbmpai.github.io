@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PKBM Pelita Aushaf Indonesia - Pendaftaran Murid Baru</title>
   <meta name="description" content="Web profil dan pendaftaran murid baru PKBM Pelita Aushaf Indonesia." />
+  <!-- PERBAIKAN PROGRAM PILIHAN WA FINAL: 2026-06-01 -->
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
   <style>
     :root{
@@ -1653,8 +1654,14 @@
             <label>Nama Anak<input id="namaAnak" placeholder="Contoh: Ahmad" required></label>
             <label>Usia / Kelas<input id="usia" placeholder="Contoh: 5 tahun / kelas 2"></label>
             <label>Program Pilihan
-              <select id="programPilihan">
-                <option>Daycare</option><option>PAUD Non Formal</option><option>Kelompok Bermain</option><option>Paket A</option><option>Paket B</option><option>Paket C</option><option>Program Home Schooling</option>
+              <select id="programPilihan" name="programPilihan">
+                <option value="Daycare">Daycare</option>
+                <option value="PAUD Non Formal">PAUD Non Formal</option>
+                <option value="Kelompok Bermain">Kelompok Bermain</option>
+                <option value="Paket A">Paket A</option>
+                <option value="Paket B">Paket B</option>
+                <option value="Paket C">Paket C</option>
+                <option value="Program Home Schooling">Program Home Schooling</option>
               </select>
             </label>
             <label>Keterangan Anak
@@ -1780,10 +1787,15 @@
 
     document.getElementById("formDaftar").addEventListener("submit", function(e){
       e.preventDefault();
+      const programEl = document.getElementById("programPilihan");
+      const selectedProgram = programEl
+        ? ((programEl.selectedOptions && programEl.selectedOptions[0] ? programEl.selectedOptions[0].textContent.trim() : "") || programEl.value || "-")
+        : "-";
+
       const data = {
         namaAnak: document.getElementById("namaAnak").value || "-",
         usia: document.getElementById("usia").value || "-",
-        program: document.getElementById("programPilihan").value || "-",
+        program: selectedProgram,
         kebutuhan: document.getElementById("kebutuhan").value || "-",
         ortu: document.getElementById("ortu").value || "-",
         hp: document.getElementById("hp").value || "-",
