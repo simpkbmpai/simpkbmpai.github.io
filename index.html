@@ -1653,7 +1653,7 @@
             <label>Nama Anak<input id="namaAnak" placeholder="Contoh: Ahmad" required></label>
             <label>Usia / Kelas<input id="usia" placeholder="Contoh: 5 tahun / kelas 2"></label>
             <label>Program Pilihan
-              <select id="program">
+              <select id="programPilihan">
                 <option>Daycare</option><option>PAUD Non Formal</option><option>Kelompok Bermain</option><option>Paket A</option><option>Paket B</option><option>Paket C</option><option>Program Home Schooling</option>
               </select>
             </label>
@@ -1783,7 +1783,7 @@
       const data = {
         namaAnak: document.getElementById("namaAnak").value || "-",
         usia: document.getElementById("usia").value || "-",
-        program: document.getElementById("program").value || "-",
+        program: document.getElementById("programPilihan").value || "-",
         kebutuhan: document.getElementById("kebutuhan").value || "-",
         ortu: document.getElementById("ortu").value || "-",
         hp: document.getElementById("hp").value || "-",
