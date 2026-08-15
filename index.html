@@ -1340,29 +1340,54 @@
         </div>
       </div>
     </section>
-<!-- ================= SECTION VIDEO PROFIL ================= -->
-<section style="max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: center;">
+<!-- ================= SECTION VIDEO PROFIL (DINAMIS) ================= -->
+<section id="sectionVideo" style="max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: center;">
   <span style="display: inline-block; font-size: 13px; font-weight: 700; color: #1b6348; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
     Video Profil
   </span>
-  <h2 style="color: #1b6348; font-size: 26px; font-weight: 700; margin-bottom: 10px;">
+  <h2 id="videoJudul" style="color: #1b6348; font-size: 26px; font-weight: 700; margin-bottom: 10px;">
     Mengenal PKBM Pelita Aushaf Indonesia
   </h2>
-  <p style="color: #555; font-size: 15px; margin-bottom: 24px; max-width: 650px; margin-left: auto; margin-right: auto;">
+  <p id="videoDeskripsi" style="color: #555; font-size: 15px; margin-bottom: 24px; max-width: 650px; margin-left: auto; margin-right: auto;">
     Simak dokumentasi suasana belajar, adab, dan program pendampingan anak di sekolah kami.
   </p>
 
   <!-- Pemutar Video Responsif -->
   <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); background-color: #000;">
     <iframe 
+      id="videoPlayer"
       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-      src="https://www.youtube.com/embed/eOHkg5rBSLo" 
+      src="" 
       title="Video Profil PKBM Pelita Aushaf Indonesia" 
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
       allowfullscreen>
     </iframe>
   </div>
 </section>
+
+<script>
+  // Membaca link video & judul secara otomatis dari data-video.json
+  fetch('data-video.json?t=' + new Date().getTime())
+    .then(response => response.json())
+    .then(data => {
+      if (data.youtubeUrl) {
+        let videoId = "";
+        if (data.youtubeUrl.includes("v=")) {
+          videoId = data.youtubeUrl.split("v=")[1].split("&")[0];
+        } else if (data.youtubeUrl.includes("youtu.be/")) {
+          videoId = data.youtubeUrl.split("youtu.be/")[1].split("?")[0];
+        } else if (data.youtubeUrl.includes("embed/")) {
+          videoId = data.youtubeUrl.split("embed/")[1].split("?")[0];
+        } else {
+          videoId = data.youtubeUrl.trim();
+        }
+        document.getElementById('videoPlayer').src = "https://www.youtube.com/embed/" + videoId;
+      }
+      if (data.judul) document.getElementById('videoJudul').textContent = data.judul;
+      if (data.deskripsi) document.getElementById('videoDeskripsi').textContent = data.deskripsi;
+    })
+    .catch(err => console.log("Gagal membaca data-video.json:", err));
+</script>
 <!-- ================= END SECTION VIDEO ================= -->
     <section id="program">
       <div class="container">
