@@ -27,44 +27,64 @@
     }
     img{max-width:100%;display:block}
     a{text-decoration:none;color:inherit}
-    .container{max-width:1180px;margin:auto;padding:0 24px}
+    .container{max-width:1200px;margin:auto;padding:0 24px}
+    
+    /* Header & Navigation Estetis */
     header{
       position:sticky;top:0;z-index:50;
-      background:rgba(255,255,255,.94);
-      backdrop-filter:blur(10px);
+      background:rgba(255,255,255,.96);
+      backdrop-filter:blur(12px);
       border-bottom:1px solid var(--line);
     }
-    .nav{min-height:88px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:14px;min-width:0}
+    .nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
     .brand-logo{
-      width:64px;height:64px;border-radius:50%;background:white;padding:4px;object-fit:contain;
-      box-shadow:0 10px 26px rgba(13,122,95,.12);border:1px solid #edf5f2;flex:0 0 auto;
+      width:54px;height:54px;border-radius:50%;background:white;padding:3px;object-fit:contain;
+      box-shadow:0 8px 20px rgba(13,122,95,.10);border:1px solid #edf5f2;flex:0 0 auto;
     }
-    .brand-title{margin:0;font-size:19px;line-height:1.2;color:var(--green-dark);font-weight:800}
-    .brand-sub{margin:3px 0 0;color:var(--muted);font-size:14px}
-    nav ul{list-style:none;display:flex;align-items:center;gap:20px;padding:0;margin:0;color:#374151;font-weight:600}
+    .brand-title{margin:0;font-size:17px;line-height:1.2;color:var(--green-dark);font-weight:800;white-space:nowrap}
+    .brand-sub{margin:2px 0 0;color:var(--muted);font-size:12px;white-space:nowrap}
+    
+    .nav-menu-wrap{display:flex;align-items:center;gap:16px}
+    nav ul{list-style:none;display:flex;align-items:center;gap:14px;padding:0;margin:0;color:#374151;font-weight:700;font-size:13.5px}
+    nav a{white-space:nowrap;transition:color .2s}
     nav a:hover{color:var(--green)}
+    
     .nav-portal-btn{
-      background:var(--green);
-      color:#fff !important;
-      padding:8px 14px;
-      border-radius:12px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:var(--green-soft);
+      color:var(--green-dark) !important;
+      border:1.5px solid #bce6d7;
+      padding:7px 14px;
+      border-radius:999px;
       font-weight:800;
-      box-shadow:0 6px 16px rgba(13,122,95,.18);
-      transition:.2s ease;
+      font-size:13px;
+      white-space:nowrap;
+      transition:all .2s ease;
     }
     .nav-portal-btn:hover{
-      background:var(--green-dark);
+      background:var(--green);
+      color:#fff !important;
+      border-color:var(--green);
+      box-shadow:0 6px 16px rgba(13,122,95,.2);
       transform:translateY(-1px);
     }
+    
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      background:var(--green);color:#fff;border:0;border-radius:16px;
-      padding:14px 22px;font-weight:700;cursor:pointer;
-      box-shadow:0 14px 30px rgba(13,122,95,.16);
+      background:var(--green);color:#fff;border:0;border-radius:999px;
+      padding:10px 18px;font-weight:800;cursor:pointer;font-size:13.5px;
+      box-shadow:0 8px 20px rgba(13,122,95,.18);
+      white-space:nowrap;
+      transition:all .2s ease;
     }
-    .btn:hover{background:var(--green-dark)}
-    .btn-outline{background:#fff;color:var(--green-dark);border:1px solid var(--line);box-shadow:none}
+    .btn:hover{background:var(--green-dark);transform:translateY(-1px)}
+    .btn-outline{background:#fff;color:var(--green-dark);border:1.5px solid var(--line);box-shadow:none}
+    .btn-outline:hover{background:var(--green-soft);border-color:#bce6d7}
+    
+    /* Hero Banner */
     .hero{
       padding:54px 0 50px;
       background:linear-gradient(180deg,#eef8f4,#f8fcfa 100%);
@@ -72,13 +92,15 @@
     }
     .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:42px;align-items:center}
     .badge{
-      display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;
-      background:#fff;border:1px solid var(--line);color:var(--green);font-weight:800;font-size:14px;
+      display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;
+      background:#fff;border:1px solid var(--line);color:var(--green);font-weight:800;font-size:13.5px;
       box-shadow:0 8px 20px rgba(13,122,95,.08);
     }
     h1{margin:18px 0 16px;font-size:52px;line-height:1.08;letter-spacing:-1.2px;color:#0f172a}
-    .lead{font-size:19px;color:#4b5563;max-width:760px}
+    .lead{font-size:18px;color:#4b5563;max-width:760px}
     .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .hero-actions .btn{padding:14px 24px;font-size:15px;border-radius:16px}
+    
     .hero-card{
       background:#fff;border:1px solid #e8f4ef;border-radius:32px;padding:24px;
       box-shadow:0 28px 70px rgba(13,122,95,.12);
@@ -1158,42 +1180,33 @@
       white-space:pre-wrap;
     }
 
+    @media(max-width:1120px){
+      nav ul{gap:10px;font-size:13px}
+      .brand-title{font-size:15px}
+    }
     @media(max-width:1024px){
       .wa-need-grid,.article-grid,.album-grid{grid-template-columns:repeat(2,1fr)}
       .calendar-wrap{grid-template-columns:1fr}
       .calendar-card{position:relative;top:auto}
-    }
-    @media(max-width:760px){
-      .wa-need-grid,.article-grid,.album-grid{grid-template-columns:1fr}
-      .event-card{grid-template-columns:1fr}
-      .event-date{min-height:76px}
-      .album-actions{grid-template-columns:1fr}
-    }
-
-    @media(max-width:1024px){
       .trust-grid,.brosur-list{grid-template-columns:repeat(2,1fr)}
       .brosur-box{grid-template-columns:1fr}
+      h1{font-size:44px}
+      .hero-grid,.grid-2,.form-wrap{grid-template-columns:1fr}
+      .gallery-masonry{column-count:2}
     }
-    @media(max-width:760px){
+    @media(max-width:880px){
+      .nav{flex-wrap:wrap;justify-content:center;padding:12px 0}
+      .brand{width:100%;justify-content:center;margin-bottom:8px}
+      .nav-menu-wrap{width:100%;justify-content:center;flex-wrap:wrap}
+      nav ul{gap:10px;font-size:13px;flex-wrap:wrap;justify-content:center}
       .trust-grid,.brosur-list,.brosur-actions{grid-template-columns:1fr}
       .testimonial-card p{font-size:17px}
       .map-frame{height:300px}
       .mobile-bottom-nav{display:flex}
       body{padding-bottom:82px}
-    }
-
-    @media(max-width:1024px){
-      h1{font-size:44px}
-      .hero-grid,.grid-2,.form-wrap{grid-template-columns:1fr}
-      .gallery-masonry{column-count:2}
-    }
-    @media(max-width:760px){
-      .nav{flex-wrap:wrap;justify-content:center;padding:14px 0}
-      nav ul{gap:12px;font-size:14px;flex-wrap:wrap;justify-content:center}
-      .brand{width:100%;justify-content:center}
-      .hero{padding-top:38px}
-      h1{font-size:34px}
-      .lead{font-size:17px}
+      .hero{padding-top:34px}
+      h1{font-size:32px}
+      .lead{font-size:16px}
       .grid-3,.checklist,form,.people{grid-template-columns:1fr}
       .gallery-masonry{column-count:1}
       .footer-row{flex-direction:column;align-items:flex-start}
@@ -1213,22 +1226,23 @@
           <p class="brand-sub">NPSN 9998555 • Terakreditasi B</p>
         </div>
       </a>
-      <nav>
-        <ul>
-          <li><a href="#tentang">Tentang</a></li>
-          <li><a href="#program">Program</a></li>
-          <li><a href="#galeri-kegiatan">Galeri</a></li>
-          <li><a href="#artikel">Artikel</a></li>
-          <li><a href="#kalender">Kegiatan</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#brosur">Brosur</a></li>
-          <li><a href="#lokasi">Lokasi</a></li>
-          <li><a href="#pendaftaran">Pendaftaran</a></li>
-          <!-- TOMBOL PORTAL SISWA -->
-          <li><a href="portal-siswa.html" class="nav-portal-btn">🎓 Portal Siswa</a></li>
-        </ul>
-      </nav>
-      <a class="btn" href="https://wa.me/6287751325199" target="_blank" rel="noopener">WhatsApp Admin</a>
+
+      <div class="nav-menu-wrap">
+        <nav>
+          <ul>
+            <li><a href="#tentang">Tentang</a></li>
+            <li><a href="#program">Program</a></li>
+            <li><a href="#galeri-kegiatan">Galeri</a></li>
+            <li><a href="#artikel">Artikel</a></li>
+            <li><a href="#kalender">Kegiatan</a></li>
+            <li><a href="#brosur">Brosur</a></li>
+            <li><a href="#pendaftaran">Daftar</a></li>
+            <!-- TOMBOL PORTAL SISWA ELEGANT PILL -->
+            <li><a href="portal-siswa.html" class="nav-portal-btn">🎓 Portal Siswa</a></li>
+          </ul>
+        </nav>
+        <a class="btn" href="https://wa.me/6287751325199" target="_blank" rel="noopener">WhatsApp Admin</a>
+      </div>
     </div>
   </header>
 
@@ -1243,10 +1257,8 @@
           </p>
           <div class="hero-actions">
             <a class="btn" href="#pendaftaran">Daftar Sekarang</a>
-            <!-- TOMBOL CEPAT PORTAL SISWA DI BANNER UTAMA -->
-            <a class="btn btn-outline" href="portal-siswa.html" style="background:#eef8f4; border-color:#0d7a5f; color:#0a5c48; font-weight:800;">🎓 Portal Siswa & Kumpul Tugas →</a>
+            <a class="btn btn-outline" href="portal-siswa.html">🎓 Portal Siswa & Tugas →</a>
             <a class="btn btn-outline" href="#program">Lihat Program</a>
-            <a class="btn btn-outline" href="#brosur">Pilih Brosur</a>
           </div>
         </div>
 
