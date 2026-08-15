@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portal Tutor & Pengajar - PKBM Pelita Aushaf Indonesia</title>
+  <link rel="icon" type="image/png" href="logo-pkbm.png" />
+  <style>
+    :root {
+      --green: #0d7a5f;
+      --green-dark: #0a5c48;
+      --green-soft: #eef8f4;
+      --line: #d6eee5;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --danger: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef8f4, #ffffff 40%, #f8fcfa);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container { max-width: 940px; margin: auto; padding: 20px; }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green-dark);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 13.5px;
+      background: #fff;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1.5px solid var(--line);
+      box-shadow: 0 4px 12px rgba(13,122,95,0.06);
+    }
+    .btn-nav:hover { background: var(--green-soft); }
+
+    /* Header */
+    .hero {
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 28px 20px;
+      box-shadow: 0 12px 30px rgba(13,122,95,0.08);
+      margin-bottom: 26px;
+    }
+    .hero img { width: 68px; height: 68px; object-fit: contain; margin-bottom: 10px; }
+    .hero h1 { margin: 0; color: var(--green-dark); font-size: 26px; }
+    .hero p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+    .badge-tutor {
+      display: inline-block;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      border: 1px solid var(--line);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    /* Layar Kunci PIN (Lock Screen) */
+    .lock-box {
+      max-width: 420px;
+      margin: 40px auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 16px 40px rgba(13,122,95,0.12);
+    }
+    .lock-box h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 20px; }
+    .lock-box p { font-size: 13.5px; color: var(--muted); margin-bottom: 20px; }
+    .pin-input {
+      width: 100%;
+      text-align: center;
+      font-size: 20px;
+      letter-spacing: 4px;
+      padding: 14px;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      outline: none;
+      margin-bottom: 14px;
+    }
+    .pin-input:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(13,122,95,0.15); }
+    .btn-pin {
+      width: 100%;
+      padding: 14px;
+      background: var(--green);
+      color: #fff;
+      border: 0;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(13,122,95,0.2);
+    }
+    .btn-pin:hover { background: var(--green-dark); }
+    .pin-error {
+      color: var(--danger);
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* Dashboard Tutor (Setelah PIN Benar) */
+    #tutorDashboard { display: none; }
+
+    /* Highlight Card: Rekap Tugas */
+    .action-card {
+      background: linear-gradient(135deg, #0d7a5f, #0a5c48);
+      color: #fff;
+      border-radius: 24px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 14px 36px rgba(13,122,95,0.22);
+      margin-bottom: 30px;
+    }
+    .action-card h2 { margin: 0 0 8px; font-size: 22px; color: #fff; }
+    .action-card p { margin: 0 0 20px; color: #e8fff4; font-size: 14px; }
+    .btn-sheets {
+      display: inline-block;
+      background: #fff;
+      color: var(--green-dark);
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 15px;
+      padding: 14px 26px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .btn-sheets:hover { transform: translateY(-2px); background: #f0fdf4; }
+
+    /* Grid Menu Tutor */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 30px; }
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 8px 24px rgba(13,122,95,0.06);
+    }
+    .card-icon { font-size: 28px; margin-bottom: 10px; }
+    .card h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 18px; }
+    .card p { margin: 0 0 18px; color: var(--muted); font-size: 13.5px; flex-grow: 1; }
+    .btn-card {
+      display: block;
+      text-align: center;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      border: 1px solid var(--line);
+      padding: 11px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 13.5px;
+      text-decoration: none;
+    }
+    .btn-card:hover { background: var(--green); color: #fff; }
+
+    /* Panduan Tutor */
+    .guide-box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      font-size: 13.5px;
+      color: var(--text);
+    }
+    .guide-box h4 { margin: 0 0 10px; color: var(--green-dark); font-size: 16px; }
+    .guide-box ol { margin: 0; padding-left: 20px; }
+    .guide-box li { margin-bottom: 6px; }
+
+    .btn-logout {
+      display: inline-block;
+      margin-top: 20px;
+      color: var(--danger);
+      background: none;
+      border: 0;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <a href="index.html" class="btn-nav">← Beranda Website</a>
+      <a href="portal-siswa.html" class="btn-nav">Lihat Portal Siswa</a>
+    </div>
+
+    <!-- Header -->
+    <div class="hero">
+      <img src="logo-pkbm.png" alt="Logo PKBM">
+      <div><span class="badge-tutor">Area Terbatas • Dewan Pengajar</span></div>
+      <h1>Portal Akademik Tutor & Ustadz</h1>
+      <p>Pusat Rekap Tugas Santri, Penilaian, dan Manajemen Materi PKBM Pelita Aushaf Indonesia</p>
+    </div>
+
+    <!-- LAYAR KUNCI PIN -->
+    <div id="pinGate" class="lock-box">
+      <div style="font-size: 36px; margin-bottom: 8px;">🔐</div>
+      <h3>Masukkan PIN Pendidik</h3>
+      <p>Silakan masukkan PIN akses tutor untuk membuka rekap tugas dan berkas akademik.</p>
+      
+      <form id="pinForm">
+        <input type="password" id="pinInput" class="pin-input" placeholder="••••••••" maxlength="20" autofocus required>
+        <button type="submit" class="btn-pin">Buka Portal Tutor</button>
+      </form>
+      <div id="pinError" class="pin-error">❌ PIN salah. Silakan hubungi admin sekolah.</div>
+    </div>
+
+    <!-- DASHBOARD TUTOR (TERBUKA SETELAH PIN BENAR) -->
+    <div id="tutorDashboard">
+      
+      <!-- Rekap Nilai & Jawaban Siswa -->
+      <div class="action-card">
+        <h2>📊 Rekap Pengumpulan Tugas & Ujian</h2>
+        <p>Cek daftar tugas harian, foto lembar kerja, dan video hafalan/presentasi yang sudah dikirim oleh siswa.</p>
+        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ.../pubhtml" id="linkSpreadsheet" target="_blank" class="btn-sheets">
+          Buka Rekap Google Sheets Tugas Masuk ↗
+        </a>
+      </div>
+
+      <!-- Menu Utama Pengajar -->
+      <div class="grid">
+        <!-- Bank Modul Drive -->
+        <div class="card">
+          <div class="card-icon">📁</div>
+          <h3>Bank Materi & Modul Ajar</h3>
+          <p>Unggah modul pembelajaran baru, lembar kerja siswa (LKS), kisi-kisi PTS/PAS, atau buku pedoman.</p>
+          <a href="https://drive.google.com/drive/my-drive" target="_blank" class="btn-card">Buka Folder Google Drive</a>
+        </div>
+
+        <!-- Form Pengumpulan Siswa -->
+        <div class="card">
+          <div class="card-icon">📝</div>
+          <h3>Formulir Tugas Santri</h3>
+          <p>Pratinjau formulir yang diisi oleh siswa saat mengunggah tugas harian atau lembar ujian.</p>
+          <a href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-card">Pratinjau Google Form</a>
+        </div>
+
+        <!-- Kalender & Konsultasi -->
+        <div class="card">
+          <div class="card-icon">🗓️</div>
+          <h3>Agenda & Kalender Akademik</h3>
+          <p>Cek jadwal pekan ujian, konsultasi wali santri, observasi inklusi, dan kegiatan tematik.</p>
+          <a href="index.html#kalender" class="btn-card">Lihat Agenda Sekolah</a>
+        </div>
+      </div>
+
+      <!-- Panduan Tutor -->
+      <div class="guide-box">
+        <h4>📌 Panduan Pendidik & Tutor Homeschooling:</h4>
+        <ol>
+          <li><b>Pemeriksaan Tugas:</b> Buka link *Google Sheets* di atas secara berkala untuk melihat tugas terbaru santri.</li>
+          <li><b>Pemeriksaan Video Hafalan/Praktik:</b> Klik link file video di kolom spreadsheet untuk memutar langsung rekaman ananda dari Google Drive.</li>
+          <li><b>Pemberian Nilai & Feedback:</b> Berikan catatan apresiasi atau evaluasi adab belajar melalui grup pembinaan kelas atau laporan portofolio.</li>
+          <li><b>Upload Materi Baru:</b> Masukkan modul dalam format PDF ke sub-folder Paket A, B, atau C di Google Drive.</li>
+        </ol>
+        <div style="text-align: right;">
+          <button id="btnLogout" class="btn-logout">🔒 Kunci Kembali Portal</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ================= PENGATURAN PIN TUTOR =================
+    const TUTOR_PIN = "aushaf2026"; // Anda bisa mengganti PIN ini kapan saja
+
+    const pinGate = document.getElementById("pinGate");
+    const tutorDashboard = document.getElementById("tutorDashboard");
+    const pinForm = document.getElementById("pinForm");
+    const pinInput = document.getElementById("pinInput");
+    const pinError = document.getElementById("pinError");
+    const btnLogout = document.getElementById("btnLogout");
+
+    // Cek apakah tutor sudah login di sesi browser ini
+    if (sessionStorage.getItem("tutorLoggedIn") === "true") {
+      bukaPortal();
+    }
+
+    pinForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      if (pinInput.value.trim() === TUTOR_PIN) {
+        sessionStorage.setItem("tutorLoggedIn", "true");
+        bukaPortal();
+      } else {
+        pinError.style.display = "block";
+        pinInput.value = "";
+        pinInput.focus();
+      }
+    });
+
+    btnLogout.addEventListener("click", function() {
+      sessionStorage.removeItem("tutorLoggedIn");
+      location.reload();
+    });
+
+    function bukaPortal() {
+      pinGate.style.display = "none";
+      tutorDashboard.style.display = "block";
+    }
+  </script>
+</body>
+</html>
