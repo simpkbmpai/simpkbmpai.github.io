@@ -65,7 +65,6 @@
     .pdf-delete{border:0;border-radius:14px;padding:10px 12px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
     .pdf-delete:hover{filter:brightness(.92)}
 
-
     .stage3-tools{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .stage3-list{display:grid;gap:12px;margin-top:14px}
     .stage3-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:12px;background:#f8fcfa}
@@ -80,8 +79,6 @@
     .edit-mode-note.show{display:block}
     .stage3-delete{border:0;border-radius:14px;padding:10px 12px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
     .stage3-delete:hover{filter:brightness(.92)}
-
-
 
     .dashboard-hero{
       display:grid;
@@ -108,8 +105,8 @@
     .dashboard-hero h2{margin:8px 0 8px;color:#fff;font-size:34px;line-height:1.14}
     .dashboard-hero p{margin:0;color:#e8fff4}
     .dash-badge{display:inline-flex;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:7px 12px;font-weight:900;color:#fff;font-size:13px}
-    .quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .quick-grid a{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:10px;border-radius:16px;background:#fff;color:#0a5c48;font-weight:900;box-shadow:0 10px 24px rgba(0,0,0,.10)}
+    .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .quick-grid a{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:8px;border-radius:16px;background:#fff;color:#0a5c48;font-weight:900;font-size:13px;box-shadow:0 10px 24px rgba(0,0,0,.10)}
     .quick-grid a:hover{background:#eef8f4}
     .contact-preview{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
     .contact-preview div{background:#f3fbf7;border:1px solid #e4f4ed;border-radius:18px;padding:14px}
@@ -136,30 +133,30 @@
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div>
         <h1>Dashboard Admin Website</h1>
-        <p class="sub">Kelola foto, brosur, artikel, agenda, album, dan kontak PKBM</p>
+        <p class="sub">Kelola video, foto, brosur, artikel, agenda, album, dan kontak PKBM</p>
       </div>
     </div>
-
-
 
     <div class="card dashboard-hero">
       <div>
         <span class="dash-badge">Dashboard Admin</span>
         <h2>Kelola Website dari Satu Tempat</h2>
-        <p>Menu utama dibuat lebih rapi: kontak, foto kegiatan, brosur PDF, artikel, kalender, dan album kegiatan.</p>
+        <p>Menu utama dibuat lebih rapi: video YouTube, kontak, foto kegiatan, brosur PDF, artikel, kalender, dan album kegiatan.</p>
       </div>
       <div class="quick-grid">
         <a href="#pengaturan-github">GitHub</a>
+        <a href="#pengaturan-video">Video</a>
         <a href="#kontak-website">Kontak</a>
         <a href="#upload-foto">Foto</a>
         <a href="#brosur-pdf">Brosur</a>
         <a href="#artikel-edukasi">Artikel</a>
         <a href="#kalender-kegiatan">Kalender</a>
+        <a href="#galeri-album">Album</a>
       </div>
     </div>
 
     <div class="card warning">
-      <b>Penting:</b> dashboard ini gratis dan memakai GitHub sebagai tempat penyimpanan foto. Untuk upload, admin perlu memasukkan <b>GitHub token</b> yang punya izin menulis ke repository. Jangan bagikan token ke orang lain dan jangan simpan token di komputer umum.
+      <b>Penting:</b> dashboard ini gratis dan memakai GitHub sebagai tempat penyimpanan data. Untuk upload/simpan, admin perlu memasukkan <b>GitHub token</b> yang punya izin menulis ke repository. Jangan bagikan token ke orang lain dan jangan simpan token di komputer umum.
     </div>
 
     <div class="card" id="pengaturan-github">
@@ -180,11 +177,34 @@
           <input id="token" type="password" placeholder="Tempel token GitHub di sini">
         </label>
       </div>
-      <small>Token hanya dipakai di browser ini untuk mengirim file ke repository GitHub. Token tidak dimasukkan ke file web.</small>
+      <small>Token hanya dipakai di browser ini untuk mengirim data ke repository GitHub. Token tidak dimasukkan ke file web publik.</small>
+    </div>
+
+    <!-- ================= PENGATURAN VIDEO YOUTUBE ================= -->
+    <div class="card" id="pengaturan-video">
+      <h2>2. Pengaturan Video Profil YouTube</h2>
+      <p>Ubah video YouTube yang tampil di halaman beranda website PKBM Pelita Aushaf Indonesia.</p>
+
+      <label>Link Video YouTube (atau ID Video)
+        <input id="videoUrlInput" placeholder="Contoh: https://www.youtube.com/watch?v=eOHkg5rBSLo">
+      </label>
+
+      <div class="stage3-tools">
+        <label>Judul Video
+          <input id="videoTitleInput" placeholder="Contoh: Mengenal PKBM Pelita Aushaf Indonesia">
+        </label>
+        <label>Deskripsi Singkat Video
+          <input id="videoDescInput" placeholder="Contoh: Simak dokumentasi suasana belajar dan kegiatan kami.">
+        </label>
+      </div>
+
+      <button class="btn" id="saveVideoBtn">Simpan Video ke Web</button>
+      <button class="btn secondary" id="loadVideoBtn">Muat Video Saat Ini</button>
+      <div class="mini-note">Setelah disimpan, tunggu 1-2 menit lalu refresh halaman depan website.</div>
     </div>
 
     <div class="card" id="kontak-website">
-      <h2>2. Pengaturan Kontak Website</h2>
+      <h2>3. Pengaturan Kontak Website</h2>
       <p>Nomor ini akan dipakai untuk tombol WhatsApp, formulir pendaftaran, tanya brosur, agenda, dan tombol konsultasi di website.</p>
 
       <div class="stage3-tools">
@@ -217,7 +237,7 @@
     </div>
 
     <div class="card" id="upload-foto">
-      <h2>3. Upload Foto Kegiatan</h2>
+      <h2>4. Upload Foto Kegiatan</h2>
       <div class="grid">
         <label>Pilih Program
           <select id="program">
@@ -252,9 +272,8 @@
       <div id="error" class="error"></div>
     </div>
 
-
     <div class="card" id="kelola-foto">
-      <h2>4. Kelola Banyak Foto / Hapus Foto Kegiatan</h2>
+      <h2>5. Kelola Banyak Foto / Hapus Foto Kegiatan</h2>
       <p>Pilih program, lalu klik <b>Muat Foto</b>. Setelah daftar foto muncul, admin bisa menghapus foto yang tidak ingin ditampilkan.</p>
 
       <div class="manage-tools">
@@ -277,9 +296,8 @@
       </div>
     </div>
 
-
     <div class="card" id="brosur-pdf">
-      <h2>5. Upload Brosur PDF Per Program</h2>
+      <h2>6. Upload Brosur PDF Per Program</h2>
       <p>Gunakan bagian ini untuk mengunggah brosur PDF khusus. Setiap program bisa memiliki brosur sendiri. Brosur yang sudah tidak dipakai bisa dihapus melalui daftar di bawah.</p>
 
       <div class="pdf-tools">
@@ -319,7 +337,7 @@
     </div>
 
     <div class="card" id="artikel-edukasi">
-      <h2>6. Artikel Parenting & Edukasi</h2>
+      <h2>7. Artikel Parenting & Edukasi</h2>
       <p>Tambah artikel untuk halaman web. Cocok untuk parenting, pendidikan inklusi, tumbuh kembang, adab, dan info program.</p>
 
       <div class="stage3-tools">
@@ -359,7 +377,7 @@
     </div>
 
     <div class="card" id="kalender-kegiatan">
-      <h2>7. Kalender Akademik & Kegiatan</h2>
+      <h2>8. Kalender Akademik & Kegiatan</h2>
       <p>Tambah agenda akademik dan kegiatan agar wali murid dapat melihat informasi terbaru di web.</p>
 
       <div class="stage3-tools">
@@ -399,7 +417,7 @@
     </div>
 
     <div class="card" id="galeri-album">
-      <h2>8. Galeri Album</h2>
+      <h2>9. Galeri Album</h2>
       <p>Buat album kegiatan pilihan. Album ini menampilkan cover, keterangan, dan bisa diarahkan ke galeri program.</p>
 
       <div class="stage3-tools">
@@ -442,7 +460,7 @@
     </div>
 
     <div class="card" id="catatan-proses">
-      <h2>9. Catatan Proses</h2>
+      <h2>10. Catatan Proses</h2>
       <div id="log" class="log">Siap upload...</div>
     </div>
 
@@ -466,7 +484,7 @@
     const logBox = $("log");
 
     function log(msg){
-      logBox.textContent += "\\n" + msg;
+      logBox.textContent += "\n" + msg;
       logBox.scrollTop = logBox.scrollHeight;
     }
 
@@ -487,7 +505,7 @@
 
     function safeName(name){
       return name.toLowerCase()
-        .replace(/\\.[^.]+$/, "")
+        .replace(/\.[^.]+$/, "")
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "")
         .slice(0, 40) || "foto";
@@ -556,7 +574,12 @@
       return btoa(unescape(encodeURIComponent(str)));
     }
     function base64ToUtf8(b64){
-      return decodeURIComponent(escape(atob(b64.replace(/\\n/g, ""))));
+      return decodeURIComponent(escape(atob(b64.replace(/\n/g, ""))));
+    }
+
+    async function getGithubFile(path){
+      const branch = $("branch").value.trim() || "main";
+      return await githubRequest("GET", `${path}?ref=${encodeURIComponent(branch)}`);
     }
 
     async function getJsonFile(path){
@@ -581,6 +604,17 @@
       return await githubRequest("PUT", path, body);
     }
 
+    async function putBinaryFile(path, base64Content, message){
+      let sha = null;
+      try{
+        const old = await getGithubFile(path);
+        sha = old.sha;
+      }catch(err){
+        if(!String(err.message).includes("Not Found")) throw err;
+      }
+      return await putFile(path, base64Content, message, sha);
+    }
+
     async function deleteGithubFile(path, message){
       const branch = $("branch").value.trim() || "main";
       const fileInfo = await githubRequest("GET", `${path}?ref=${encodeURIComponent(branch)}`);
@@ -597,9 +631,73 @@
       });
     }
 
-    let currentManageData = null;
+    /* ===== FITUR VIDEO YOUTUBE (DINAMIS) ===== */
+    const defaultVideoData = {
+      youtubeUrl: "https://www.youtube.com/watch?v=eOHkg5rBSLo",
+      judul: "Mengenal PKBM Pelita Aushaf Indonesia",
+      deskripsi: "Simak dokumentasi suasana belajar, adab, dan program pendampingan anak di sekolah kami."
+    };
 
+    async function getVideoJson(){
+      try{
+        const data = await getGithubFile("data-video.json");
+        return { json: {...defaultVideoData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha };
+      }catch(err){
+        if(String(err.message).includes("Not Found")){
+          return { json: {...defaultVideoData}, sha: null };
+        }
+        throw err;
+      }
+    }
 
+    async function loadVideoSettings(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+      try{
+        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
+        log("Memuat data video YouTube...");
+        const fileData = await getVideoJson();
+        const data = fileData.json || defaultVideoData;
+        $("videoUrlInput").value = data.youtubeUrl || "";
+        $("videoTitleInput").value = data.judul || "";
+        $("videoDescInput").value = data.deskripsi || "";
+        show("success", "Data video berhasil dimuat dari data-video.json.");
+        log("Video berhasil dimuat.");
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal memuat video: " + err.message);
+      }
+    }
+
+    async function saveVideoSettings(){
+      $("success").style.display = "none";
+      $("error").style.display = "none";
+      try{
+        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
+        const rawUrl = $("videoUrlInput").value.trim();
+        if(!rawUrl) throw new Error("Link / ID video YouTube belum diisi.");
+
+        log("Menyimpan data-video.json ke GitHub...");
+        const old = await getVideoJson();
+        const data = {
+          youtubeUrl: rawUrl,
+          judul: $("videoTitleInput").value.trim() || defaultVideoData.judul,
+          deskripsi: $("videoDescInput").value.trim() || defaultVideoData.deskripsi,
+          updatedAt: new Date().toISOString()
+        };
+        await putFile("data-video.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update video profil YouTube PKBM", old.sha);
+        show("success", "Video profil berhasil disimpan! Tunggu 1-2 menit lalu buka website.");
+        log("Selesai menyimpan video ke data-video.json.");
+      }catch(err){
+        log("ERROR: " + err.message);
+        show("error", "Gagal menyimpan video: " + err.message);
+      }
+    }
+
+    if($("saveVideoBtn")) $("saveVideoBtn").addEventListener("click", saveVideoSettings);
+    if($("loadVideoBtn")) $("loadVideoBtn").addEventListener("click", loadVideoSettings);
+
+    /* ===== FITUR KONTAK WEBSITE ===== */
     const defaultContactData = {
       whatsappAdmin: "6287751325199",
       whatsappAdminDisplay: "0877-5132-5199",
@@ -697,6 +795,9 @@
       }
     }
 
+    /* ===== FITUR FOTO KEGIATAN ===== */
+    let currentManageData = null;
+
     async function loadManageList(){
       $("success").style.display = "none";
       $("error").style.display = "none";
@@ -783,7 +884,7 @@
       }
     }
 
-
+    /* ===== FITUR BROSUR PDF ===== */
     const brochurePrograms = ["Brosur Umum","Daycare","PAUD Non Formal","Kelompok Bermain","Paket A","Paket B","Paket C","Program Home Schooling","Pendidikan Inklusi"];
 
     function brochureSlug(text){
@@ -792,11 +893,6 @@
         .replace(/program /g, "")
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "");
-    }
-
-    async function getGithubFile(path){
-      const branch = $("branch").value.trim() || "main";
-      return await githubRequest("GET", `${path}?ref=${encodeURIComponent(branch)}`);
     }
 
     async function getBrosurJson(){
@@ -809,17 +905,6 @@
         }
         throw err;
       }
-    }
-
-    async function putBinaryFile(path, base64Content, message){
-      let sha = null;
-      try{
-        const old = await getGithubFile(path);
-        sha = old.sha;
-      }catch(err){
-        if(!String(err.message).includes("Not Found")) throw err;
-      }
-      return await putFile(path, base64Content, message, sha);
     }
 
     async function uploadBrosurPdf(){
@@ -975,8 +1060,6 @@
 
     $("uploadBrosurBtn").addEventListener("click", uploadBrosurPdf);
     $("loadBrosurBtn").addEventListener("click", loadBrosurManageList);
-
-
 
     /* ===== Tahap 3 Dashboard: Artikel, Kalender, Album ===== */
     let editingArticleId = null;
@@ -1287,7 +1370,7 @@
       }[type];
 
       try{
-        const fileData = await getArrayJsonFile(config.path);
+        const fileData = await getArrayArrayJsonFile ? getArrayJsonFile(config.path) : getArrayJsonFile(config.path);
         const data = fileData.json || [];
         const item = data.find(x => x.id === id);
         const next = data.filter(x => x.id !== id);
@@ -1311,8 +1394,6 @@
       }
     }
 
-
-
     if($("saveContactBtn")) $("saveContactBtn").addEventListener("click", saveContactSettings);
     if($("loadContactBtn")) $("loadContactBtn").addEventListener("click", loadContactSettings);
     ["contactAdminInput","contactHumasInput"].forEach(id => {
@@ -1329,7 +1410,6 @@
     $("loadEventBtn").addEventListener("click", () => loadStage3Manage("kalender"));
     $("saveAlbumBtn").addEventListener("click", saveAlbum);
     $("loadAlbumBtn").addEventListener("click", () => loadStage3Manage("album"));
-
 
     $("photos").addEventListener("change", async () => {
       const files = Array.from($("photos").files || []);
