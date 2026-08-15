@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portal Tutor & Pengajar - PKBM Pelita Aushaf Indonesia</title>
+  <title>Portal Akademik Tutor - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
   <style>
     :root {
@@ -59,7 +59,7 @@
       margin-bottom: 26px;
     }
     .hero img { width: 68px; height: 68px; object-fit: contain; margin-bottom: 10px; }
-    .hero h1 { margin: 0; color: var(--green-dark); font-size: 26px; }
+    .hero h1 { margin: 0; color: var(--green-dark); font-size: 24px; }
     .hero p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
     .badge-tutor {
       display: inline-block;
@@ -73,7 +73,7 @@
       margin-bottom: 10px;
     }
 
-    /* Layar Kunci PIN (Lock Screen) */
+    /* Layar Kunci PIN */
     .lock-box {
       max-width: 420px;
       margin: 40px auto;
@@ -119,10 +119,9 @@
       display: none;
     }
 
-    /* Dashboard Tutor (Setelah PIN Benar) */
+    /* Dashboard Tutor */
     #tutorDashboard { display: none; }
 
-    /* Highlight Card: Rekap Tugas */
     .action-card {
       background: linear-gradient(135deg, #0d7a5f, #0a5c48);
       color: #fff;
@@ -148,7 +147,6 @@
     }
     .btn-sheets:hover { transform: translateY(-2px); background: #f0fdf4; }
 
-    /* Grid Menu Tutor */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 30px; }
     .card {
       background: #fff;
@@ -177,7 +175,6 @@
     }
     .btn-card:hover { background: var(--green); color: #fff; }
 
-    /* Panduan Tutor */
     .guide-box {
       background: #fff;
       border: 1px solid var(--line);
@@ -217,7 +214,7 @@
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div><span class="badge-tutor">Area Terbatas • Dewan Pengajar</span></div>
       <h1>Portal Akademik Tutor PKBM Pelita Aushaf Indonesia</h1>
-      <p>Pusat Rekap Tugas Santri, Penilaian, dan Manajemen Materi PKBM Pelita Aushaf Indonesia</p>
+      <p>Pusat Rekap Tugas Siswa, Penilaian, dan Manajemen Materi Pembelajaran</p>
     </div>
 
     <!-- LAYAR KUNCI PIN -->
@@ -233,21 +230,18 @@
       <div id="pinError" class="pin-error">❌ PIN salah. Silakan hubungi admin sekolah.</div>
     </div>
 
-    <!-- DASHBOARD TUTOR (TERBUKA SETELAH PIN BENAR) -->
+    <!-- DASHBOARD TUTOR -->
     <div id="tutorDashboard">
       
-      <!-- Rekap Nilai & Jawaban Siswa -->
       <div class="action-card">
         <h2>📊 Rekap Pengumpulan Tugas & Ujian</h2>
         <p>Cek daftar tugas harian, foto lembar kerja, dan video hafalan/presentasi yang sudah dikirim oleh siswa.</p>
-        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ.../pubhtml" id="linkSpreadsheet" target="_blank" class="btn-sheets">
+        <a href="https://docs.google.com/spreadsheets" id="linkSpreadsheet" target="_blank" class="btn-sheets">
           Buka Rekap Google Sheets Tugas Masuk ↗
         </a>
       </div>
 
-      <!-- Menu Utama Pengajar -->
       <div class="grid">
-        <!-- Bank Modul Drive -->
         <div class="card">
           <div class="card-icon">📁</div>
           <h3>Bank Materi & Modul Ajar</h3>
@@ -255,15 +249,13 @@
           <a href="https://drive.google.com/drive/my-drive" target="_blank" class="btn-card">Buka Folder Google Drive</a>
         </div>
 
-        <!-- Form Pengumpulan Siswa -->
         <div class="card">
           <div class="card-icon">📝</div>
-          <h3>Formulir Tugas Santri</h3>
+          <h3>Formulir Tugas Siswa</h3>
           <p>Pratinjau formulir yang diisi oleh siswa saat mengunggah tugas harian atau lembar ujian.</p>
           <a href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-card">Pratinjau Google Form</a>
         </div>
 
-        <!-- Kalender & Konsultasi -->
         <div class="card">
           <div class="card-icon">🗓️</div>
           <h3>Agenda & Kalender Akademik</h3>
@@ -272,13 +264,12 @@
         </div>
       </div>
 
-      <!-- Panduan Tutor -->
       <div class="guide-box">
         <h4>📌 Panduan Pendidik & Tutor Homeschooling:</h4>
         <ol>
-          <li><b>Pemeriksaan Tugas:</b> Buka link *Google Sheets* di atas secara berkala untuk melihat tugas terbaru santri.</li>
+          <li><b>Pemeriksaan Tugas:</b> Buka link *Google Sheets* di atas secara berkala untuk melihat tugas terbaru siswa.</li>
           <li><b>Pemeriksaan Video Hafalan/Praktik:</b> Klik link file video di kolom spreadsheet untuk memutar langsung rekaman ananda dari Google Drive.</li>
-          <li><b>Pemberian Nilai & Feedback:</b> Berikan catatan apresiasi atau evaluasi adab belajar melalui grup pembinaan kelas atau laporan portofolio.</li>
+          <li><b>Pemberian Nilai & Feedback:</b> Berikan catatan apresiasi atau evaluasi belajar melalui grup kelas atau laporan portofolio.</li>
           <li><b>Upload Materi Baru:</b> Masukkan modul dalam format PDF ke sub-folder Paket A, B, atau C di Google Drive.</li>
         </ol>
         <div style="text-align: right;">
@@ -290,8 +281,7 @@
   </div>
 
   <script>
-    // ================= PENGATURAN PIN TUTOR =================
-    const TUTOR_PIN = "aushaf2026"; // Anda bisa mengganti PIN ini kapan saja
+    const TUTOR_PIN = "aushaf2026";
 
     const pinGate = document.getElementById("pinGate");
     const tutorDashboard = document.getElementById("tutorDashboard");
@@ -300,7 +290,6 @@
     const pinError = document.getElementById("pinError");
     const btnLogout = document.getElementById("btnLogout");
 
-    // Cek apakah tutor sudah login di sesi browser ini
     if (sessionStorage.getItem("tutorLoggedIn") === "true") {
       bukaPortal();
     }
