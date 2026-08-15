@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portal Siswa & Santri - PKBM Pelita Aushaf Indonesia</title>
+  <link rel="icon" type="image/png" href="logo-pkbm.png" />
+  <style>
+    :root {
+      --green: #0d7a5f;
+      --green-dark: #0a5c48;
+      --green-soft: #eef8f4;
+      --line: #d6eee5;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --bg: #f5fbf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef8f4, #ffffff 40%, #f8fcfa);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container { max-width: 920px; margin: auto; padding: 20px; }
+    
+    /* Tombol Navigasi */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green-dark);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      background: #fff;
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      box-shadow: 0 4px 12px rgba(13,122,95,0.06);
+    }
+    .btn-nav:hover { background: var(--green-soft); }
+
+    /* Header */
+    .hero {
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 28px 20px;
+      box-shadow: 0 12px 30px rgba(13,122,95,0.08);
+      margin-bottom: 24px;
+    }
+    .hero img { width: 72px; height: 72px; object-fit: contain; margin-bottom: 12px; }
+    .hero h1 { margin: 0; color: var(--green-dark); font-size: 26px; }
+    .hero p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+
+    /* Bagian Upload Tugas (Highlight Utama) */
+    .action-card {
+      background: linear-gradient(135deg, #0d7a5f, #0a5c48);
+      color: #fff;
+      border-radius: 24px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 14px 36px rgba(13,122,95,0.22);
+      margin-bottom: 30px;
+    }
+    .action-card h2 { margin: 0 0 10px; font-size: 22px; color: #fff; }
+    .action-card p { margin: 0 0 20px; color: #e8fff4; font-size: 14px; }
+    .btn-upload {
+      display: inline-block;
+      background: #fff;
+      color: var(--green-dark);
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 16px;
+      padding: 16px 28px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .btn-upload:hover { transform: translateY(-2px); background: #f0fdf4; }
+
+    /* Grid Bank Materi */
+    .section-title {
+      font-size: 20px;
+      color: var(--green-dark);
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 30px; }
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 8px 24px rgba(13,122,95,0.06);
+    }
+    .card h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 18px; }
+    .card p { margin: 0 0 18px; color: var(--muted); font-size: 13px; flex-grow: 1; }
+    .btn-card {
+      display: block;
+      text-align: center;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      border: 1px solid var(--line);
+      padding: 12px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .btn-card:hover { background: var(--green); color: #fff; }
+
+    /* Panduan Singkat */
+    .guide-box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .guide-box h4 { margin: 0 0 10px; color: var(--green-dark); font-size: 16px; }
+    .guide-box ol { margin: 0; padding-left: 20px; }
+    .guide-box li { margin-bottom: 6px; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 22px; }
+      .action-card { padding: 22px 16px; }
+      .action-card h2 { font-size: 19px; }
+      .btn-upload { width: 100%; padding: 14px; font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Navigasi -->
+    <div class="top-bar">
+      <a href="index.html" class="btn-nav">← Beranda Website</a>
+      <a href="https://wa.me/6287751325199" target="_blank" class="btn-nav">Bantuan Admin WA</a>
+    </div>
+
+    <!-- Identitas Portal -->
+    <div class="hero">
+      <img src="logo-pkbm.png" alt="Logo PKBM">
+      <h1>Portal Akademik Siswa & Santri</h1>
+      <p>Layanan Belajar Mandiri, Modul, & Pengumpulan Tugas Homeschooling / Kesetaraan</p>
+    </div>
+
+    <!-- Pintu Masuk Kumpul Tugas (Google Form Terhubung) -->
+    <div class="action-card">
+      <h2>📤 Pengumpulan Tugas & Ujian</h2>
+      <p>Kirimkan tugas harian, foto lembar kerja, portofolio, serta rekaman video kegiatan ananda di sini.</p>
+      <a href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-upload">
+        Buka Formulir Pengumpulan Tugas →
+      </a>
+    </div>
+
+    <!-- Bank Materi Pembelajaran -->
+    <h2 class="section-title">📚 Bank Materi & Modul Belajar</h2>
+    <div class="grid">
+      <div class="card">
+        <div>
+          <h3>Paket A (Setara SD)</h3>
+          <p>Materi tematik, lembar kegiatan adab, modul literasi & numerasi Kelas 1 s.d. Kelas 6.</p>
+        </div>
+        <a href="https://drive.google.com/drive/my-drive" target="_blank" class="btn-card">Akses Modul Paket A</a>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>Paket B (Setara SMP)</h3>
+          <p>Modul kurikulum kesetaraan, panduan proyek mandiri, dan materi ajar Kelas 7 s.d. Kelas 9.</p>
+        </div>
+        <a href="https://drive.google.com/drive/my-drive" target="_blank" class="btn-card">Akses Modul Paket B</a>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>Paket C (Setara SMA)</h3>
+          <p>Modul peminatan, persiapan ujian kesetaraan, dan portofolio keahlian Kelas 10 s.d. Kelas 12.</p>
+        </div>
+        <a href="https://drive.google.com/drive/my-drive" target="_blank" class="btn-card">Akses Modul Paket C</a>
+      </div>
+    </div>
+
+    <!-- Petunjuk Teknis -->
+    <div class="guide-box">
+      <h4>📌 Petunjuk Pengiriman Tugas:</h4>
+      <ol>
+        <li>Pastikan nama siswa, jenjang (Paket A/B/C), dan mata pelajaran sudah diisi dengan benar.</li>
+        <li>Untuk tugas foto/dokumen: Pastikan tulisan terbaca jelas sebelum diunggah.</li>
+        <li>Untuk tugas video (hafalan/presentasi): Rekam dengan posisi landscape/tegak yang stabil, lalu pilih file langsung dari galeri HP.</li>
+        <li>Jika ada kendala akses atau upload file besar, silakan hubungi admin akademik melalui tombol WA di atas.</li>
+      </ol>
+    </div>
+  </div>
+
+</body>
+</html>
