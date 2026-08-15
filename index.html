@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PKBM Pelita Aushaf Indonesia - Pendaftaran Murid Baru</title>
-  <meta name="description" content="Web profil dan pendaftaran murid baru PKBM Pelita Aushaf Indonesia." />
-  <!-- PERBAIKAN PROGRAM PILIHAN WA FINAL: 2026-06-01 -->
+  <title>PKBM Pelita Aushaf Indonesia - Daycare, PAUD, Homeschooling, Paket A B C & Inklusi</title>
+  <meta name="description" content="Web profil dan pendaftaran murid baru PKBM Pelita Aushaf Indonesia. Layanan Daycare, PAUD, Homeschooling, Kesetaraan Paket A B C, dan Pendidikan Inklusi di Sidoarjo." />
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
   <style>
     :root{
@@ -43,8 +42,21 @@
     }
     .brand-title{margin:0;font-size:19px;line-height:1.2;color:var(--green-dark);font-weight:800}
     .brand-sub{margin:3px 0 0;color:var(--muted);font-size:14px}
-    nav ul{list-style:none;display:flex;gap:24px;padding:0;margin:0;color:#374151;font-weight:600}
+    nav ul{list-style:none;display:flex;align-items:center;gap:20px;padding:0;margin:0;color:#374151;font-weight:600}
     nav a:hover{color:var(--green)}
+    .nav-portal-btn{
+      background:var(--green);
+      color:#fff !important;
+      padding:8px 14px;
+      border-radius:12px;
+      font-weight:800;
+      box-shadow:0 6px 16px rgba(13,122,95,.18);
+      transition:.2s ease;
+    }
+    .nav-portal-btn:hover{
+      background:var(--green-dark);
+      transform:translateY(-1px);
+    }
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:8px;
       background:var(--green);color:#fff;border:0;border-radius:16px;
@@ -64,9 +76,9 @@
       background:#fff;border:1px solid var(--line);color:var(--green);font-weight:800;font-size:14px;
       box-shadow:0 8px 20px rgba(13,122,95,.08);
     }
-    h1{margin:18px 0 16px;font-size:60px;line-height:1.04;letter-spacing:-1.5px;color:#0f172a}
-    .lead{font-size:20px;color:#4b5563;max-width:760px}
-    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
+    h1{margin:18px 0 16px;font-size:52px;line-height:1.08;letter-spacing:-1.2px;color:#0f172a}
+    .lead{font-size:19px;color:#4b5563;max-width:760px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
     .hero-card{
       background:#fff;border:1px solid #e8f4ef;border-radius:32px;padding:24px;
       box-shadow:0 28px 70px rgba(13,122,95,.12);
@@ -471,8 +483,6 @@
       margin-top:1px;
     }
 
-
-    /* ===== Tahap 2: Kepercayaan + Brosur Per Program ===== */
     .trust-grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
@@ -758,7 +768,6 @@
       margin-bottom:4px;
     }
 
-    /* ===== Tahap 3: Web Dinamis ===== */
     .wa-need-grid{
       display:grid;
       grid-template-columns:repeat(4,1fr);
@@ -1174,17 +1183,17 @@
     }
 
     @media(max-width:1024px){
-      h1{font-size:50px}
+      h1{font-size:44px}
       .hero-grid,.grid-2,.form-wrap{grid-template-columns:1fr}
       .gallery-masonry{column-count:2}
     }
     @media(max-width:760px){
       .nav{flex-wrap:wrap;justify-content:center;padding:14px 0}
-      nav ul{gap:14px;font-size:14px;flex-wrap:wrap;justify-content:center}
+      nav ul{gap:12px;font-size:14px;flex-wrap:wrap;justify-content:center}
       .brand{width:100%;justify-content:center}
       .hero{padding-top:38px}
-      h1{font-size:38px}
-      .lead{font-size:18px}
+      h1{font-size:34px}
+      .lead{font-size:17px}
       .grid-3,.checklist,form,.people{grid-template-columns:1fr}
       .gallery-masonry{column-count:1}
       .footer-row{flex-direction:column;align-items:flex-start}
@@ -1215,6 +1224,8 @@
           <li><a href="#brosur">Brosur</a></li>
           <li><a href="#lokasi">Lokasi</a></li>
           <li><a href="#pendaftaran">Pendaftaran</a></li>
+          <!-- TOMBOL PORTAL SISWA -->
+          <li><a href="portal-siswa.html" class="nav-portal-btn">🎓 Portal Siswa</a></li>
         </ul>
       </nav>
       <a class="btn" href="https://wa.me/6287751325199" target="_blank" rel="noopener">WhatsApp Admin</a>
@@ -1232,6 +1243,8 @@
           </p>
           <div class="hero-actions">
             <a class="btn" href="#pendaftaran">Daftar Sekarang</a>
+            <!-- TOMBOL CEPAT PORTAL SISWA DI BANNER UTAMA -->
+            <a class="btn btn-outline" href="portal-siswa.html" style="background:#eef8f4; border-color:#0d7a5f; color:#0a5c48; font-weight:800;">🎓 Portal Siswa & Kumpul Tugas →</a>
             <a class="btn btn-outline" href="#program">Lihat Program</a>
             <a class="btn btn-outline" href="#brosur">Pilih Brosur</a>
           </div>
@@ -1303,7 +1316,7 @@
               <rect x="282" y="112" width="144" height="14" rx="7" fill="#0d7a5f" opacity=".18"/>
               <circle cx="478" cy="120" r="10" fill="#d6aa38"/>
 
-              <!-- karakter faceless: kepala melayang tanpa leher -->
+              <!-- karakter faceless -->
               <g>
                 <circle cx="170" cy="145" r="42" fill="#f3c69a"/>
                 <path d="M128 132 Q170 83 212 132" fill="#ffffff"/>
@@ -1340,55 +1353,55 @@
         </div>
       </div>
     </section>
-<!-- ================= SECTION VIDEO PROFIL (DINAMIS) ================= -->
-<section id="sectionVideo" style="max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: center;">
-  <span style="display: inline-block; font-size: 13px; font-weight: 700; color: #1b6348; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
-    Video Profil
-  </span>
-  <h2 id="videoJudul" style="color: #1b6348; font-size: 26px; font-weight: 700; margin-bottom: 10px;">
-    Mengenal PKBM Pelita Aushaf Indonesia
-  </h2>
-  <p id="videoDeskripsi" style="color: #555; font-size: 15px; margin-bottom: 24px; max-width: 650px; margin-left: auto; margin-right: auto;">
-    Simak dokumentasi suasana belajar, adab, dan program pendampingan anak di sekolah kami.
-  </p>
 
-  <!-- Pemutar Video Responsif -->
-  <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); background-color: #000;">
-    <iframe 
-      id="videoPlayer"
-      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-      src="" 
-      title="Video Profil PKBM Pelita Aushaf Indonesia" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-      allowfullscreen>
-    </iframe>
-  </div>
-</section>
+    <!-- ================= SECTION VIDEO PROFIL (DINAMIS) ================= -->
+    <section id="sectionVideo" style="max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: center;">
+      <span style="display: inline-block; font-size: 13px; font-weight: 700; color: #1b6348; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
+        Video Profil
+      </span>
+      <h2 id="videoJudul" style="color: #1b6348; font-size: 26px; font-weight: 700; margin-bottom: 10px;">
+        Mengenal PKBM Pelita Aushaf Indonesia
+      </h2>
+      <p id="videoDeskripsi" style="color: #555; font-size: 15px; margin-bottom: 24px; max-width: 650px; margin-left: auto; margin-right: auto;">
+        Simak dokumentasi suasana belajar, adab, dan program pendampingan anak di sekolah kami.
+      </p>
 
-<script>
-  // Membaca link video & judul secara otomatis dari data-video.json
-  fetch('data-video.json?t=' + new Date().getTime())
-    .then(response => response.json())
-    .then(data => {
-      if (data.youtubeUrl) {
-        let videoId = "";
-        if (data.youtubeUrl.includes("v=")) {
-          videoId = data.youtubeUrl.split("v=")[1].split("&")[0];
-        } else if (data.youtubeUrl.includes("youtu.be/")) {
-          videoId = data.youtubeUrl.split("youtu.be/")[1].split("?")[0];
-        } else if (data.youtubeUrl.includes("embed/")) {
-          videoId = data.youtubeUrl.split("embed/")[1].split("?")[0];
-        } else {
-          videoId = data.youtubeUrl.trim();
-        }
-        document.getElementById('videoPlayer').src = "https://www.youtube.com/embed/" + videoId;
-      }
-      if (data.judul) document.getElementById('videoJudul').textContent = data.judul;
-      if (data.deskripsi) document.getElementById('videoDeskripsi').textContent = data.deskripsi;
-    })
-    .catch(err => console.log("Gagal membaca data-video.json:", err));
-</script>
-<!-- ================= END SECTION VIDEO ================= -->
+      <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); background-color: #000;">
+        <iframe 
+          id="videoPlayer" 
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+          src="" 
+          title="Video Profil PKBM Pelita Aushaf Indonesia" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+
+    <script>
+      fetch('data-video.json?t=' + new Date().getTime())
+        .then(response => response.json())
+        .then(data => {
+          if (data.youtubeUrl) {
+            let videoId = "";
+            if (data.youtubeUrl.includes("v=")) {
+              videoId = data.youtubeUrl.split("v=")[1].split("&")[0];
+            } else if (data.youtubeUrl.includes("youtu.be/")) {
+              videoId = data.youtubeUrl.split("youtu.be/")[1].split("?")[0];
+            } else if (data.youtubeUrl.includes("embed/")) {
+              videoId = data.youtubeUrl.split("embed/")[1].split("?")[0];
+            } else {
+              videoId = data.youtubeUrl.trim();
+            }
+            document.getElementById('videoPlayer').src = "https://www.youtube.com/embed/" + videoId;
+          }
+          if (data.judul) document.getElementById('videoJudul').textContent = data.judul;
+          if (data.deskripsi) document.getElementById('videoDeskripsi').textContent = data.deskripsi;
+        })
+        .catch(err => console.log("Gagal membaca data-video.json:", err));
+    </script>
+    <!-- ================= END SECTION VIDEO ================= -->
+
     <section id="program">
       <div class="container">
         <div class="section-title">
@@ -1426,7 +1439,7 @@
         <div class="load-more-wrap">
           <button class="load-more-btn" id="loadMoreBtn">Tampilkan lebih banyak foto</button>
         </div>
-</div>
+      </div>
     </section>
 
     <section>
@@ -1445,7 +1458,6 @@
         </div>
       </div>
     </section>
-
 
     <section id="trust">
       <div class="container">
@@ -1597,7 +1609,6 @@
       </div>
     </section>
 
-
     <section id="whatsapp-kebutuhan">
       <div class="container">
         <div class="section-title">
@@ -1727,7 +1738,6 @@
     </section>
   </main>
 
-
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <div class="lightbox-panel">
       <div class="lightbox-top">
@@ -1747,7 +1757,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="modal" id="articleModal" aria-hidden="true">
     <div class="modal-panel">
@@ -1867,7 +1876,6 @@ Pesan Tambahan: ${data.pesan}
 Mohon informasi langkah pendaftaran selanjutnya.`;
       window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(text)}`, "_blank");
     });
-
 
     const allTabs = ["Semua", ...programs];
     let visibleCount = 9;
@@ -2035,7 +2043,6 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
 
     activeProgram = "Semua";
 
-
     const defaultBrosurData = {
       "Brosur Umum": {
         title: "Brosur Umum PKBM",
@@ -2182,8 +2189,6 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
     loadBrosurData();
     loadContactData();
 
-
-    /* ===== Tahap 3: data dinamis artikel, kalender, album ===== */
     const defaultArticles = [
       {
         id:"artikel-parenting-adab",
@@ -2436,7 +2441,6 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
     });
 
     loadStage3Data();
-
     loadGallery();
   </script>
 </body>
