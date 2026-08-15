@@ -36,6 +36,7 @@
       box-shadow:0 12px 28px rgba(13,122,95,.18);
     }
     .btn:hover{background:var(--green-dark)}
+    .btn:disabled{background:#9ca3af;cursor:not-allowed;box-shadow:none}
     .btn.secondary{background:#fff;color:var(--green-dark);border:1px solid var(--line);box-shadow:none}
     .warning{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:18px;padding:14px}
     .success{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:18px;padding:14px;margin-top:14px;display:none}
@@ -198,8 +199,12 @@
         </label>
       </div>
 
-      <button class="btn" id="saveVideoBtn">Simpan Video ke Web</button>
-      <button class="btn secondary" id="loadVideoBtn">Muat Video Saat Ini</button>
+      <button class="btn" id="saveVideoBtn" type="button">Simpan Video ke Web</button>
+      <button class="btn secondary" id="loadVideoBtn" type="button">Muat Video Saat Ini</button>
+      
+      <!-- Kotak Notifikasi Langsung -->
+      <div id="videoStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
+
       <div class="mini-note">Setelah disimpan, tunggu 1-2 menit lalu refresh halaman depan website.</div>
     </div>
 
@@ -484,16 +489,19 @@
     const logBox = $("log");
 
     function log(msg){
+      if(!logBox) return;
       logBox.textContent += "\n" + msg;
       logBox.scrollTop = logBox.scrollHeight;
     }
 
     function show(type, msg){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
+      if($("success")) $("success").style.display = "none";
+      if($("error")) $("error").style.display = "none";
       const el = type === "success" ? $("success") : $("error");
-      el.textContent = msg;
-      el.style.display = "block";
+      if(el){
+        el.textContent = msg;
+        el.style.display = "block";
+      }
     }
 
     function slugify(text){
@@ -566,7 +574,7 @@
       const text = await res.text();
       let json;
       try { json = JSON.parse(text); } catch { json = {message:text}; }
-      if(!res.ok){ throw new Error(json.message || "GitHub API error"); }
+      if(!res.ok){ throw new Error(json.message || "GitHub API error (" + res.status + ")"); }
       return json;
     }
 
@@ -631,71 +639,132 @@
       });
     }
 
-    /* ===== FITUR VIDEO YOUTUBE (DINAMIS) ===== */
+    /* ===== FITUR VIDEO YOUTUBE (DINAMIS DENGAN NOTIFIKASI LANGSUNG) ===== */
     const defaultVideoData = {
       youtubeUrl: "https://www.youtube.com/watch?v=eOHkg5rBSLo",
       judul: "Mengenal PKBM Pelita Aushaf Indonesia",
       deskripsi: "Simak dokumentasi suasana belajar, adab, dan program pendampingan anak di sekolah kami."
     };
 
+    function showVideoStatus(type, msg){
+      const el = $("videoStatus");
+      if(!el) return;
+      el.style.display = "block";
+      if(type === "success"){
+        el.style.background = "#ecfdf5";
+        el.style.border = "1px solid #a7f3d0";
+        el.style.color = "#065f46";
+        el.innerHTML = "✅ " + msg;
+      } else if(type === "loading"){
+        el.style.background = "#eff6ff";
+        el.style.border = "1px solid #bfdbfe";
+        el.style.color = "#1e40af";
+        el.innerHTML = "⏳ " + msg;
+      } else {
+        el.style.background = "#fef2f2";
+        el.style.border = "1px solid #fecaca";
+        el.style.color = "#991b1b";
+        el.innerHTML = "❌ " + msg;
+      }
+    }
+
     async function getVideoJson(){
-      try{
-        const data = await getGithubFile("data-video.json");
-        return { json: {...defaultVideoData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha };
-      }catch(err){
-        if(String(err.message).includes("Not Found")){
-          return { json: {...defaultVideoData}, sha: null };
+      const token = $("token") ? $("token").value.trim() : "";
+      if(token){
+        try{
+          const data = await getGithubFile("data-video.json");
+          return { json: {...defaultVideoData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha };
+        }catch(err){
+          if(String(err.message).includes("Not Found")){
+            return { json: {...defaultVideoData}, sha: null };
+          }
+          throw err;
         }
-        throw err;
+      } else {
+        // Baca publik secara instan tanpa perlu token
+        const res = await fetch("data-video.json?t=" + Date.now());
+        if(!res.ok) return { json: {...defaultVideoData}, sha: null };
+        const json = await res.json();
+        return { json: {...defaultVideoData, ...json}, sha: null };
       }
     }
 
     async function loadVideoSettings(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
+      showVideoStatus("loading", "Memuat data video saat ini...");
       try{
-        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
         log("Memuat data video YouTube...");
         const fileData = await getVideoJson();
         const data = fileData.json || defaultVideoData;
         $("videoUrlInput").value = data.youtubeUrl || "";
         $("videoTitleInput").value = data.judul || "";
         $("videoDescInput").value = data.deskripsi || "";
-        show("success", "Data video berhasil dimuat dari data-video.json.");
+        showVideoStatus("success", "Data video berhasil dimuat!");
         log("Video berhasil dimuat.");
       }catch(err){
         log("ERROR: " + err.message);
-        show("error", "Gagal memuat video: " + err.message);
+        showVideoStatus("error", "Gagal memuat video: " + err.message);
       }
     }
 
     async function saveVideoSettings(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-      try{
-        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
-        const rawUrl = $("videoUrlInput").value.trim();
-        if(!rawUrl) throw new Error("Link / ID video YouTube belum diisi.");
+      const token = $("token") ? $("token").value.trim() : "";
+      if(!token){
+        showVideoStatus("error", "GitHub Token belum diisi! Silakan masukkan Token di Bagian 1 di atas terlebih dahulu.");
+        $("token").focus();
+        $("token").scrollIntoView({behavior: "smooth", block: "center"});
+        alert("Mohon isi GitHub Token terlebih dahulu pada Bagian 1 (Pengaturan GitHub) di atas.");
+        return;
+      }
 
-        log("Menyimpan data-video.json ke GitHub...");
-        const old = await getVideoJson();
+      const rawUrl = $("videoUrlInput").value.trim();
+      if(!rawUrl){
+        showVideoStatus("error", "Link atau ID video YouTube wajib diisi.");
+        $("videoUrlInput").focus();
+        return;
+      }
+
+      const saveBtn = $("saveVideoBtn");
+      const originalText = saveBtn.textContent;
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan ke GitHub...";
+      showVideoStatus("loading", "Sedang menyimpan data video ke GitHub...");
+
+      try{
+        log("Mengambil info file data-video.json...");
+        let sha = null;
+        try{
+          const oldFile = await getGithubFile("data-video.json");
+          sha = oldFile.sha;
+        }catch(e){}
+
         const data = {
           youtubeUrl: rawUrl,
           judul: $("videoTitleInput").value.trim() || defaultVideoData.judul,
           deskripsi: $("videoDescInput").value.trim() || defaultVideoData.deskripsi,
           updatedAt: new Date().toISOString()
         };
-        await putFile("data-video.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update video profil YouTube PKBM", old.sha);
-        show("success", "Video profil berhasil disimpan! Tunggu 1-2 menit lalu buka website.");
+
+        log("Mengirim data video ke GitHub...");
+        await putFile("data-video.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update video profil YouTube PKBM dari dashboard", sha);
+        
+        showVideoStatus("success", "Video profil berhasil disimpan! Tunggu 1–2 menit lalu buka website utama.");
         log("Selesai menyimpan video ke data-video.json.");
+        alert("Sukses! Video profil berhasil disimpan ke GitHub. Tunggu 1-2 menit lalu refresh website utama.");
       }catch(err){
         log("ERROR: " + err.message);
-        show("error", "Gagal menyimpan video: " + err.message);
+        showVideoStatus("error", "Gagal menyimpan video: " + err.message);
+        alert("Gagal menyimpan video: " + err.message);
+      }finally{
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalText;
       }
     }
 
     if($("saveVideoBtn")) $("saveVideoBtn").addEventListener("click", saveVideoSettings);
     if($("loadVideoBtn")) $("loadVideoBtn").addEventListener("click", loadVideoSettings);
+
+    // Otomatis muat data video saat halaman admin dibuka
+    try { loadVideoSettings(); } catch(e){}
 
     /* ===== FITUR KONTAK WEBSITE ===== */
     const defaultContactData = {
@@ -1370,7 +1439,7 @@
       }[type];
 
       try{
-        const fileData = await getArrayArrayJsonFile ? getArrayJsonFile(config.path) : getArrayJsonFile(config.path);
+        const fileData = await getArrayJsonFile(config.path);
         const data = fileData.json || [];
         const item = data.find(x => x.id === id);
         const next = data.filter(x => x.id !== id);
