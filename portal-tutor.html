@@ -268,7 +268,7 @@
       <form id="tutorLoginForm">
         <div class="form-group">
           <label for="usernameInput">Username Pendidik:</label>
-          <input type="text" id="usernameInput" class="input-field" placeholder="Contoh: tutor01" autofocus required>
+          <input type="text" id="usernameInput" class="input-field" placeholder="Contoh: tutor1" autofocus required>
         </div>
         
         <div class="form-group">
@@ -284,22 +284,22 @@
     <!-- DASHBOARD TUTOR -->
     <div id="tutorDashboard">
       
-      <!-- DUA KARTU KERJA UTAMA: PERIKSA TUGAS & FORMULIR TUGAS -->
+      <!-- DUA KARTU KERJA UTAMA -->
       <div class="action-card-grid">
         <div class="action-card">
           <div>
-            <h2>📊 Rekap Tugas Siswa Masuk</h2>
-            <p>Periksa hasil lembar kerja harian, foto dokumen, dan rekaman video praktik yang dikirim murid.</p>
+            <h2>📊 Database & Rekap Tugas Siswa</h2>
+            <p>Buka Google Sheets DB Akademik untuk melihat seluruh rekap nilai, data santri, dan rekaman tugas masuk.</p>
           </div>
-          <a href="https://docs.google.com/spreadsheets" id="linkSpreadsheet" target="_blank" class="btn-action">
-            Buka Spreadsheet Nilai & Tugas ↗
+          <a href="https://docs.google.com/spreadsheets/d/1tCqCDSuzb-JSIGCa3fcXS3RnZZ2Yx2E0WPUF9jkHMFg/edit" id="linkSpreadsheet" target="_blank" class="btn-action">
+            Buka Spreadsheet DB Akademik ↗
           </a>
         </div>
 
         <div class="action-card card-secondary">
           <div>
             <h2>📝 Formulir Penugasan Murid</h2>
-            <p>Pratinjau atau buat tautan penugasan baru untuk siswa mengumpulkan lembar jawaban.</p>
+            <p>Pratinjau formulir yang digunakan santri/wali murid saat mengirim tugas harian dan ujian.</p>
           </div>
           <a href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-action btn-action-primary">
             Buka Google Form Tugas Siswa ↗
@@ -307,7 +307,7 @@
         </div>
       </div>
 
-      <!-- FOLDER PENGELOLAAN MODUL AJAR & MATERI (DISARING SESUAI PENUGASAN TUTOR) -->
+      <!-- FOLDER PENGELOLAAN MODUL AJAR & MATERI -->
       <h2 class="section-title">📁 Manajemen Bank Materi & Modul Ajar</h2>
       <div class="grid">
         
@@ -341,7 +341,7 @@
           </a>
         </div>
 
-        <!-- Folder Induk / Master Bank Materi (Khusus Tutor Multi-Jenjang & Admin) -->
+        <!-- Folder Induk / Master Bank Materi -->
         <div class="card" id="tutorCardMaster">
           <div class="card-icon">🗂️</div>
           <h3>Induk Bank Materi PKBM</h3>
@@ -357,7 +357,7 @@
         <ol>
           <li><b>Pemeriksaan Tugas:</b> Pantau Google Spreadsheet secara berkala untuk mengecek pengumpulan tugas terbaru ananda.</li>
           <li><b>Koreksi File & Video:</b> Klik tautan file tugas atau video di kolom spreadsheet untuk memeriksa kelayakan portofolio.</li>
-          <li><b>Unggah Materi Baru:</b> Simpan file materi pembelajaran/LKS dalam format PDF langsung ke folder Google Drive kelas yang diampu.</li>
+          <li><b>Unggah Materi Baru:</b> Masukkan modul dalam format PDF langsung ke folder Google Drive kelas yang diampu.</li>
         </ol>
         <div style="text-align: right;">
           <button id="btnLogoutTutor" class="btn-logout">🔒 Kunci Kembali Portal</button>
@@ -369,7 +369,7 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    // LINK FOLDER GOOGLE DRIVE RESMI (SESUAI DENGAN PORTAL SISWA)
+    // LINK FOLDER GOOGLE DRIVE RESMI
     const FOLDER_DRIVE = {
       "Paket A": "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing",
       "Paket B": "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing",
@@ -387,7 +387,7 @@
     const btnSubmitTutor = document.getElementById("btnSubmitTutor");
     const btnLogoutTutor = document.getElementById("btnLogoutTutor");
 
-    // Cek Session Storage Tutor
+    // Cek Session Storage
     const savedTutor = sessionStorage.getItem("tutorAuth");
     if (savedTutor) {
       try {
@@ -436,37 +436,28 @@
       loginGate.style.display = "none";
       tutorDashboard.style.display = "block";
 
-      const nama = data.nama || "Pendidik";
-      const role = (data.role || data.jenjang || data.kelompok || "Semua").toString();
+      const nama = data.nama || data.Nama_Lengkap || "Pendidik";
+      const role = (data.role || data.Role || "Tutor").toString();
       const roleLower = role.toLowerCase();
 
       tutorBadge.textContent = `👨‍🏫 ${nama} (${role})`;
 
-      // Pasang Tautan Folder
+      // Pasang Link Folder Drive
       document.getElementById("tutorLinkPaketA").href = FOLDER_DRIVE["Paket A"];
       document.getElementById("tutorLinkPaketB").href = FOLDER_DRIVE["Paket B"];
       document.getElementById("tutorLinkPaketC").href = FOLDER_DRIVE["Paket C"];
 
-      // Jika data API menyediakan tautan spreadsheet khusus penilaian tutor
-      if (data.spreadsheetUrl || data.linkSpreadsheet) {
-        document.getElementById("linkSpreadsheet").href = data.spreadsheetUrl || data.linkSpreadsheet;
-      }
+      // Hak Akses Jenjang Tutor
+      const isSuper = roleLower.includes("super") || roleLower.includes("admin") || roleLower === "tutor";
+      const canAccessA = isSuper || roleLower.includes("paket a") || roleLower.includes("sd") || roleLower.includes("a");
+      const canAccessB = isSuper || roleLower.includes("paket b") || roleLower.includes("smp") || roleLower.includes("b");
+      const canAccessC = isSuper || roleLower.includes("paket c") || roleLower.includes("sma") || roleLower.includes("c");
 
-      // Evaluasi Hak Akses Jenjang Tutor
-      const isAll = roleLower.includes("semua") || 
-                    roleLower.includes("admin") || 
-                    roleLower.includes("dewan") ||
-                    (roleLower.includes("a") && roleLower.includes("b") && roleLower.includes("c"));
-
-      const canAccessA = isAll || roleLower.includes("paket a") || roleLower.includes("sd") || roleLower === "a";
-      const canAccessB = isAll || roleLower.includes("paket b") || roleLower.includes("smp") || roleLower === "b";
-      const canAccessC = isAll || roleLower.includes("paket c") || roleLower.includes("sma") || roleLower === "c";
-
-      // Atur Tampilan Kartu Folder Sesuai Penugasan
+      // Tampilkan Folder Sesuai Hak Akses
       document.getElementById("tutorCardPaketA").style.display = canAccessA ? "flex" : "none";
       document.getElementById("tutorCardPaketB").style.display = canAccessB ? "flex" : "none";
       document.getElementById("tutorCardPaketC").style.display = canAccessC ? "flex" : "none";
-      document.getElementById("tutorCardMaster").style.display = isAll ? "flex" : "none";
+      document.getElementById("tutorCardMaster").style.display = isSuper ? "flex" : "none";
     }
   </script>
 </body>
