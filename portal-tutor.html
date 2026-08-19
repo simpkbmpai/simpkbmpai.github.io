@@ -14,6 +14,7 @@
       --text: #1f2937;
       --muted: #6b7280;
       --danger: #b91c1c;
+      --gold: #d6aa38;
     }
     * { box-sizing: border-box; }
     body {
@@ -23,7 +24,7 @@
       color: var(--text);
       line-height: 1.6;
     }
-    .container { max-width: 940px; margin: auto; padding: 20px; }
+    .container { max-width: 960px; margin: auto; padding: 20px; }
 
     .top-bar {
       display: flex;
@@ -64,9 +65,9 @@
       background: var(--green-soft);
       color: var(--green-dark);
       border: 1px solid var(--line);
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 800;
       margin-bottom: 10px;
     }
@@ -125,58 +126,98 @@
 
     #tutorDashboard { display: none; }
 
+    /* Action Card Utama */
+    .action-card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+    @media(max-width: 768px) {
+      .action-card-grid { grid-template-columns: 1fr; }
+    }
+
     .action-card {
       background: linear-gradient(135deg, #0d7a5f, #0a5c48);
       color: #fff;
-      border-radius: 24px;
-      padding: 28px 24px;
+      border-radius: 22px;
+      padding: 22px;
       text-align: center;
-      box-shadow: 0 14px 36px rgba(13,122,95,0.22);
-      margin-bottom: 30px;
+      box-shadow: 0 12px 30px rgba(13,122,95,0.18);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .action-card h2 { margin: 0 0 8px; font-size: 22px; color: #fff; }
-    .action-card p { margin: 0 0 20px; color: #e8fff4; font-size: 14px; }
-    .btn-sheets {
+    .action-card.card-secondary {
+      background: #fff;
+      color: var(--text);
+      border: 2px solid var(--line);
+      box-shadow: 0 10px 26px rgba(13,122,95,0.06);
+    }
+    .action-card h2 { margin: 0 0 8px; font-size: 19px; }
+    .action-card.card-secondary h2 { color: var(--green-dark); }
+    .action-card p { margin: 0 0 16px; font-size: 13px; color: #e8fff4; flex-grow: 1; }
+    .action-card.card-secondary p { color: var(--muted); }
+
+    .btn-action {
       display: inline-block;
       background: #fff;
       color: var(--green-dark);
       text-decoration: none;
       font-weight: 900;
-      font-size: 15px;
-      padding: 14px 26px;
-      border-radius: 14px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      transition: transform 0.2s;
+      font-size: 14px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      transition: all 0.2s;
     }
-    .btn-sheets:hover { transform: translateY(-2px); background: #f0fdf4; }
+    .btn-action:hover { transform: translateY(-2px); background: #f0fdf4; }
+    
+    .btn-action-primary {
+      background: var(--green);
+      color: #fff;
+    }
+    .btn-action-primary:hover { background: var(--green-dark); color: #fff; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 30px; }
+    .section-title {
+      font-size: 20px;
+      color: var(--green-dark);
+      margin: 28px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 30px; }
     .card {
       background: #fff;
-      border: 1px solid var(--line);
+      border: 1.5px solid var(--line);
       border-radius: 22px;
       padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       box-shadow: 0 8px 24px rgba(13,122,95,0.06);
+      transition: transform 0.2s;
     }
+    .card:hover { transform: translateY(-2px); }
     .card-icon { font-size: 28px; margin-bottom: 10px; }
     .card h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 18px; }
-    .card p { margin: 0 0 18px; color: var(--muted); font-size: 13.5px; flex-grow: 1; }
+    .card p { margin: 0 0 18px; color: var(--muted); font-size: 13px; flex-grow: 1; }
+    
     .btn-card {
       display: block;
       text-align: center;
       background: var(--green-soft);
       color: var(--green-dark);
-      border: 1px solid var(--line);
+      border: 1.5px solid var(--line);
       padding: 11px;
       border-radius: 12px;
       font-weight: 800;
       font-size: 13.5px;
       text-decoration: none;
+      transition: all 0.2s;
     }
-    .btn-card:hover { background: var(--green); color: #fff; }
+    .btn-card:hover { background: var(--green); color: #fff; border-color: var(--green); }
 
     .guide-box {
       background: #fff;
@@ -208,26 +249,26 @@
   <div class="container">
     <div class="top-bar">
       <a href="index.html" class="btn-nav">← Beranda Website</a>
-      <a href="portal-siswa.html" class="btn-nav">Lihat Portal Siswa</a>
+      <a href="portal-siswa.html" class="btn-nav">🎓 Lihat Portal Siswa</a>
     </div>
 
     <div class="hero">
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div><span class="badge-tutor" id="tutorBadge">Area Terbatas • Dewan Pengajar</span></div>
       <h1>Portal Akademik Tutor PKBM Pelita Aushaf Indonesia</h1>
-      <p>Pusat Rekap Tugas Siswa, Penilaian, dan Manajemen Materi Pembelajaran</p>
+      <p>Pusat Rekap Nilai Tugas, Unggah Modul Ajar, dan Manajemen Kelas</p>
     </div>
 
-    <!-- FORM LOGIN TUTOR SISTEM DATABASE -->
+    <!-- FORM LOGIN TUTOR -->
     <div id="loginGate" class="lock-box">
       <div style="font-size: 36px; margin-bottom: 8px;">🔐</div>
-      <h3>Login Pendidik & Admin</h3>
-      <p>Masukkan Username dan Password pengajar yang terdaftar di database.</p>
+      <h3>Login Pendidik & Tutor</h3>
+      <p>Masukkan Username dan Password pengajar sesuai database sekolah.</p>
       
       <form id="tutorLoginForm">
         <div class="form-group">
           <label for="usernameInput">Username Pendidik:</label>
-          <input type="text" id="usernameInput" class="input-field" placeholder="Contoh: admin / tutor01" autofocus required>
+          <input type="text" id="usernameInput" class="input-field" placeholder="Contoh: tutor01" autofocus required>
         </div>
         
         <div class="form-group">
@@ -242,44 +283,81 @@
 
     <!-- DASHBOARD TUTOR -->
     <div id="tutorDashboard">
-      <div class="action-card">
-        <h2>📊 Rekap Pengumpulan Tugas & Ujian</h2>
-        <p>Cek daftar tugas harian, foto lembar kerja, dan video hafalan/presentasi yang sudah dikirim oleh siswa.</p>
-        <a href="https://docs.google.com/spreadsheets" id="linkSpreadsheet" target="_blank" class="btn-sheets">
-          Buka Rekap Google Sheets Tugas Masuk ↗
-        </a>
+      
+      <!-- DUA KARTU KERJA UTAMA: PERIKSA TUGAS & FORMULIR TUGAS -->
+      <div class="action-card-grid">
+        <div class="action-card">
+          <div>
+            <h2>📊 Rekap Tugas Siswa Masuk</h2>
+            <p>Periksa hasil lembar kerja harian, foto dokumen, dan rekaman video praktik yang dikirim murid.</p>
+          </div>
+          <a href="https://docs.google.com/spreadsheets" id="linkSpreadsheet" target="_blank" class="btn-action">
+            Buka Spreadsheet Nilai & Tugas ↗
+          </a>
+        </div>
+
+        <div class="action-card card-secondary">
+          <div>
+            <h2>📝 Formulir Penugasan Murid</h2>
+            <p>Pratinjau atau buat tautan penugasan baru untuk siswa mengumpulkan lembar jawaban.</p>
+          </div>
+          <a href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-action btn-action-primary">
+            Buka Google Form Tugas Siswa ↗
+          </a>
+        </div>
       </div>
 
+      <!-- FOLDER PENGELOLAAN MODUL AJAR & MATERI (DISARING SESUAI PENUGASAN TUTOR) -->
+      <h2 class="section-title">📁 Manajemen Bank Materi & Modul Ajar</h2>
       <div class="grid">
-        <div class="card">
-          <div class="card-icon">📁</div>
-          <h3>Bank Materi & Modul Ajar</h3>
-          <p>Unggah modul pembelajaran baru, lembar kerja siswa (LKS), kisi-kisi PTS/PAS, atau buku pedoman.</p>
-          <a href="https://drive.google.com/drive/my-drive" target="_blank" class="btn-card">Buka Folder Google Drive</a>
+        
+        <!-- Folder Paket A -->
+        <div class="card" id="tutorCardPaketA">
+          <div class="card-icon">📘</div>
+          <h3>Modul Ajar: Paket A (SD)</h3>
+          <p>Unggah modul tematik, lembar kerja siswa (LKS), panduan adab, kisi-kisi PTS/PAS Kelas 1–6.</p>
+          <a id="tutorLinkPaketA" href="https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing" target="_blank" class="btn-card">
+            Kelola Folder Paket A →
+          </a>
         </div>
 
-        <div class="card">
-          <div class="card-icon">📝</div>
-          <h3>Formulir Tugas Siswa</h3>
-          <p>Pratinjau formulir yang diisi oleh siswa saat mengunggah tugas harian atau lembar ujian.</p>
-          <a href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-card">Pratinjau Google Form</a>
+        <!-- Folder Paket B -->
+        <div class="card" id="tutorCardPaketB">
+          <div class="card-icon">🏫</div>
+          <h3>Modul Ajar: Paket B (SMP)</h3>
+          <p>Unggah silabus kesetaraan, modul mata pelajaran, panduan proyek mandiri Kelas 7–9.</p>
+          <a id="tutorLinkPaketB" href="https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing" target="_blank" class="btn-card">
+            Kelola Folder Paket B →
+          </a>
         </div>
 
-        <div class="card">
-          <div class="card-icon">🗓️</div>
-          <h3>Agenda & Kalender Akademik</h3>
-          <p>Cek jadwal pekan ujian, konsultasi wali santri, observasi inklusi, dan kegiatan tematik.</p>
-          <a href="index.html#kalender" class="btn-card">Lihat Agenda Sekolah</a>
+        <!-- Folder Paket C -->
+        <div class="card" id="tutorCardPaketC">
+          <div class="card-icon">🎓</div>
+          <h3>Modul Ajar: Paket C (SMA)</h3>
+          <p>Unggah materi peminatan, bank soal ujian kesetaraan, modul literasi lanjutan Kelas 10–12.</p>
+          <a id="tutorLinkPaketC" href="https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing" target="_blank" class="btn-card">
+            Kelola Folder Paket C →
+          </a>
+        </div>
+
+        <!-- Folder Induk / Master Bank Materi (Khusus Tutor Multi-Jenjang & Admin) -->
+        <div class="card" id="tutorCardMaster">
+          <div class="card-icon">🗂️</div>
+          <h3>Induk Bank Materi PKBM</h3>
+          <p>Akses ke seluruh direktori pusat materi PKBM Pelita Aushaf Indonesia.</p>
+          <a href="https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T" target="_blank" class="btn-card">
+            Buka Direktori Utama →
+          </a>
         </div>
       </div>
 
       <div class="guide-box">
-        <h4>📌 Panduan Pendidik & Tutor Homeschooling:</h4>
+        <h4>📌 Panduan & Prosedur Tutor:</h4>
         <ol>
-          <li><b>Pemeriksaan Tugas:</b> Buka link *Google Sheets* di atas secara berkala untuk melihat tugas terbaru siswa.</li>
-          <li><b>Pemeriksaan Video Hafalan/Praktik:</b> Klik link file video di kolom spreadsheet untuk memutar langsung rekaman ananda dari Google Drive.</li>
-          <li><b>Pemberian Nilai & Feedback:</b> Berikan catatan apresiasi atau evaluasi belajar melalui grup kelas atau laporan portofolio.</li>
-          <li><b>Upload Materi Baru:</b> Masukkan modul dalam format PDF ke sub-folder Paket A, B, atau C di Google Drive.</li>
+          <li><b>Pemeriksaan Tugas:</b> Pantau Google Spreadsheet secara berkala untuk mengecek pengumpulan tugas terbaru ananda.</li>
+          <li><b>Koreksi File & Video:</b> Klik tautan file tugas atau video di kolom spreadsheet untuk memeriksa kelayakan portofolio.</li>
+          <li><b>Unggah Materi Baru:</b> Simpan file materi pembelajaran/LKS dalam format PDF langsung ke folder Google Drive kelas yang diampu.</li>
         </ol>
         <div style="text-align: right;">
           <button id="btnLogoutTutor" class="btn-logout">🔒 Kunci Kembali Portal</button>
@@ -291,6 +369,14 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
+    // LINK FOLDER GOOGLE DRIVE RESMI (SESUAI DENGAN PORTAL SISWA)
+    const FOLDER_DRIVE = {
+      "Paket A": "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing",
+      "Paket B": "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing",
+      "Paket C": "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing",
+      "Master": "https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T"
+    };
+
     const loginGate = document.getElementById("loginGate");
     const tutorDashboard = document.getElementById("tutorDashboard");
     const tutorLoginForm = document.getElementById("tutorLoginForm");
@@ -301,6 +387,7 @@
     const btnSubmitTutor = document.getElementById("btnSubmitTutor");
     const btnLogoutTutor = document.getElementById("btnLogoutTutor");
 
+    // Cek Session Storage Tutor
     const savedTutor = sessionStorage.getItem("tutorAuth");
     if (savedTutor) {
       try {
@@ -348,7 +435,38 @@
     function tampilkanDashboard(data) {
       loginGate.style.display = "none";
       tutorDashboard.style.display = "block";
-      tutorBadge.textContent = `👨‍🏫 ${data.nama} (${data.role || 'Pendidik'})`;
+
+      const nama = data.nama || "Pendidik";
+      const role = (data.role || data.jenjang || data.kelompok || "Semua").toString();
+      const roleLower = role.toLowerCase();
+
+      tutorBadge.textContent = `👨‍🏫 ${nama} (${role})`;
+
+      // Pasang Tautan Folder
+      document.getElementById("tutorLinkPaketA").href = FOLDER_DRIVE["Paket A"];
+      document.getElementById("tutorLinkPaketB").href = FOLDER_DRIVE["Paket B"];
+      document.getElementById("tutorLinkPaketC").href = FOLDER_DRIVE["Paket C"];
+
+      // Jika data API menyediakan tautan spreadsheet khusus penilaian tutor
+      if (data.spreadsheetUrl || data.linkSpreadsheet) {
+        document.getElementById("linkSpreadsheet").href = data.spreadsheetUrl || data.linkSpreadsheet;
+      }
+
+      // Evaluasi Hak Akses Jenjang Tutor
+      const isAll = roleLower.includes("semua") || 
+                    roleLower.includes("admin") || 
+                    roleLower.includes("dewan") ||
+                    (roleLower.includes("a") && roleLower.includes("b") && roleLower.includes("c"));
+
+      const canAccessA = isAll || roleLower.includes("paket a") || roleLower.includes("sd") || roleLower === "a";
+      const canAccessB = isAll || roleLower.includes("paket b") || roleLower.includes("smp") || roleLower === "b";
+      const canAccessC = isAll || roleLower.includes("paket c") || roleLower.includes("sma") || roleLower === "c";
+
+      // Atur Tampilan Kartu Folder Sesuai Penugasan
+      document.getElementById("tutorCardPaketA").style.display = canAccessA ? "flex" : "none";
+      document.getElementById("tutorCardPaketB").style.display = canAccessB ? "flex" : "none";
+      document.getElementById("tutorCardPaketC").style.display = canAccessC ? "flex" : "none";
+      document.getElementById("tutorCardMaster").style.display = isAll ? "flex" : "none";
     }
   </script>
 </body>
