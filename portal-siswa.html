@@ -182,6 +182,7 @@
       font-weight: 800;
       font-size: 14px;
       text-decoration: none;
+      transition: all 0.2s;
     }
     .btn-card:hover { background: var(--green); color: #fff; }
 
@@ -225,7 +226,7 @@
       <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Kesetaraan)</p>
     </div>
 
-    <!-- FORM LOGIN SISTEM DATABASE SPREADSHEET -->
+    <!-- FORM LOGIN -->
     <div id="loginGate" class="lock-box">
       <div style="font-size: 36px; margin-bottom: 8px;">🎓</div>
       <h3>Login Santri / Wali Murid</h3>
@@ -264,7 +265,8 @@
             <h3>Paket A (Setara SD)</h3>
             <p>Materi tematik, lembar kegiatan adab, modul literasi & numerasi Kelas 1 s.d. Kelas 6.</p>
           </div>
-          <a href="https://drive.google.com/drive/my-drive" target="_blank" class="btn-card">Akses Modul Paket A</a>
+          <!-- Masukkan link spesifik folder Paket A di bawah (atau pakai link folder induk) -->
+          <a id="linkPaketA" href="https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T" target="_blank" class="btn-card">Akses Modul Paket A</a>
         </div>
 
         <div class="card">
@@ -272,7 +274,8 @@
             <h3>Paket B (Setara SMP)</h3>
             <p>Modul kurikulum kesetaraan, panduan proyek mandiri, dan materi ajar Kelas 7 s.d. Kelas 9.</p>
           </div>
-          <a href="https://drive.google.com/drive/my-drive" target="_blank" class="btn-card">Akses Modul Paket B</a>
+          <!-- Masukkan link spesifik folder Paket B di bawah (atau pakai link folder induk) -->
+          <a id="linkPaketB" href="https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T" target="_blank" class="btn-card">Akses Modul Paket B</a>
         </div>
 
         <div class="card">
@@ -280,7 +283,8 @@
             <h3>Paket C (Setara SMA)</h3>
             <p>Modul peminatan, persiapan ujian kesetaraan, dan portofolio keahlian Kelas 10 s.d. Kelas 12.</p>
           </div>
-          <a href="https://drive.google.com/drive/my-drive" target="_blank" class="btn-card">Akses Modul Paket C</a>
+          <!-- Masukkan link spesifik folder Paket C di bawah (atau pakai link folder induk) -->
+          <a id="linkPaketC" href="https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T" target="_blank" class="btn-card">Akses Modul Paket C</a>
         </div>
       </div>
 
@@ -301,6 +305,14 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
+    // LINK FOLDER GOOGLE DRIVE MASING-MASING PAKET
+    // Ganti nilai di dalam tanda kutip dengan link salinan dari subfolder Google Drive Anda
+    const FOLDER_DRIVE = {
+      "Paket A": "https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T",
+      "Paket B": "https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T",
+      "Paket C": "https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T"
+    };
+
     const loginGate = document.getElementById("loginGate");
     const siswaDashboard = document.getElementById("siswaDashboard");
     const siswaLoginForm = document.getElementById("siswaLoginForm");
@@ -311,7 +323,7 @@
     const btnSubmitSiswa = document.getElementById("btnSubmitSiswa");
     const btnLogoutSiswa = document.getElementById("btnLogoutSiswa");
 
-    // Cek Session Storage
+    // Cek Session Login
     const savedSiswa = sessionStorage.getItem("siswaAuth");
     if (savedSiswa) {
       try {
@@ -359,7 +371,12 @@
     function tampilkanDashboard(data) {
       loginGate.style.display = "none";
       siswaDashboard.style.display = "block";
-      userBadge.textContent = `👤 ${data.nama} (${data.jenjang || 'Santri'})`;
+      userBadge.textContent = `👤 ${data.nama || 'Santri'} (${data.jenjang || 'Paket A'})`;
+
+      // Set link tombol sesuai link subfolder
+      document.getElementById("linkPaketA").href = FOLDER_DRIVE["Paket A"];
+      document.getElementById("linkPaketB").href = FOLDER_DRIVE["Paket B"];
+      document.getElementById("linkPaketC").href = FOLDER_DRIVE["Paket C"];
     }
   </script>
 </body>
