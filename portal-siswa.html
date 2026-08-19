@@ -132,7 +132,7 @@
       padding: 28px 24px;
       text-align: center;
       box-shadow: 0 14px 36px rgba(13,122,95,0.22);
-      margin-bottom: 30px;
+      margin-bottom: 24px;
     }
     .action-card h2 { margin: 0 0 10px; font-size: 22px; color: #fff; }
     .action-card p { margin: 0 0 20px; color: #e8fff4; font-size: 14px; }
@@ -158,33 +158,38 @@
       align-items: center;
       gap: 8px;
     }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 30px; }
+    .grid-single {
+      display: grid;
+      grid-template-columns: 1fr;
+      margin-bottom: 24px;
+    }
     .card {
       background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 22px;
+      border: 2px solid var(--line);
+      border-radius: 22px;
+      padding: 26px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 8px 24px rgba(13,122,95,0.06);
+      box-shadow: 0 10px 30px rgba(13,122,95,0.08);
     }
-    .card h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 18px; }
-    .card p { margin: 0 0 18px; color: var(--muted); font-size: 13px; flex-grow: 1; }
+    .card h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 20px; }
+    .card p { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
     .btn-card {
       display: block;
       text-align: center;
-      background: var(--green-soft);
-      color: var(--green-dark);
-      border: 1px solid var(--line);
-      padding: 12px;
+      background: var(--green);
+      color: #fff;
+      border: 0;
+      padding: 14px;
       border-radius: 14px;
       font-weight: 800;
-      font-size: 14px;
+      font-size: 15px;
       text-decoration: none;
+      box-shadow: 0 6px 18px rgba(13,122,95,0.18);
       transition: all 0.2s;
     }
-    .btn-card:hover { background: var(--green); color: #fff; }
+    .btn-card:hover { background: var(--green-dark); transform: translateY(-2px); }
 
     .guide-box {
       background: #fff;
@@ -248,50 +253,54 @@
       <div id="loginError" class="login-error"></div>
     </div>
 
-    <!-- DASHBOARD SANTRI -->
+    <!-- DASHBOARD SANTRI (KHUSUS SESUAI JENJANG LOGIN) -->
     <div id="siswaDashboard">
+      
+      <!-- 1. PENGUMPULAN TUGAS KHUSUS -->
       <div class="action-card">
-        <h2>📤 Pengumpulan Tugas & Ujian</h2>
-        <p>Kirimkan tugas harian, lembar kerja, portofolio, serta rekaman video kegiatan ananda di sini.</p>
-        <a href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-upload">
+        <h2 id="titleTugas">📤 Pengumpulan Tugas & Ujian</h2>
+        <p id="descTugas">Kirimkan tugas harian, lembar kerja, portofolio, serta rekaman video kegiatan ananda di sini.</p>
+        <a id="btnTugas" href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-upload">
           Buka Formulir Pengumpulan Tugas →
         </a>
       </div>
 
+      <!-- 2. BANK MATERI KHUSUS (HANYA MUNCUL KELAS SISWA SAJA) -->
       <h2 class="section-title">📚 Bank Materi & Modul Belajar</h2>
-      <div class="grid">
-        <div class="card">
+      
+      <div class="grid-single">
+        <!-- Card Paket A (Hanya terlihat jika login Paket A) -->
+        <div class="card" id="cardPaketA" style="display:none;">
           <div>
-            <h3>Paket A (Setara SD)</h3>
+            <h3>📁 Folder Modul & Materi: Paket A (Setara SD)</h3>
             <p>Materi tematik, lembar kegiatan adab, modul literasi & numerasi Kelas 1 s.d. Kelas 6.</p>
           </div>
-          <!-- Masukkan link spesifik folder Paket A di bawah (atau pakai link folder induk) -->
-          <a id="linkPaketA" href="https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T" target="_blank" class="btn-card">Akses Modul Paket A</a>
+          <a id="linkPaketA" href="https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing" target="_blank" class="btn-card">🚀 Buka Folder Google Drive Paket A →</a>
         </div>
 
-        <div class="card">
+        <!-- Card Paket B (Hanya terlihat jika login Paket B) -->
+        <div class="card" id="cardPaketB" style="display:none;">
           <div>
-            <h3>Paket B (Setara SMP)</h3>
+            <h3>📁 Folder Modul & Materi: Paket B (Setara SMP)</h3>
             <p>Modul kurikulum kesetaraan, panduan proyek mandiri, dan materi ajar Kelas 7 s.d. Kelas 9.</p>
           </div>
-          <!-- Masukkan link spesifik folder Paket B di bawah (atau pakai link folder induk) -->
-          <a id="linkPaketB" href="https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T" target="_blank" class="btn-card">Akses Modul Paket B</a>
+          <a id="linkPaketB" href="https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing" target="_blank" class="btn-card">🚀 Buka Folder Google Drive Paket B →</a>
         </div>
 
-        <div class="card">
+        <!-- Card Paket C (Hanya terlihat jika login Paket C) -->
+        <div class="card" id="cardPaketC" style="display:none;">
           <div>
-            <h3>Paket C (Setara SMA)</h3>
+            <h3>📁 Folder Modul & Materi: Paket C (Setara SMA)</h3>
             <p>Modul peminatan, persiapan ujian kesetaraan, dan portofolio keahlian Kelas 10 s.d. Kelas 12.</p>
           </div>
-          <!-- Masukkan link spesifik folder Paket C di bawah (atau pakai link folder induk) -->
-          <a id="linkPaketC" href="https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T" target="_blank" class="btn-card">Akses Modul Paket C</a>
+          <a id="linkPaketC" href="https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing" target="_blank" class="btn-card">🚀 Buka Folder Google Drive Paket C →</a>
         </div>
       </div>
 
       <div class="guide-box">
         <h4>📌 Petunjuk Pengiriman Tugas:</h4>
         <ol>
-          <li>Pastikan nama siswa, jenjang (Paket A/B/C), dan mata pelajaran sudah diisi dengan benar.</li>
+          <li>Pastikan nama siswa, jenjang, dan mata pelajaran sudah diisi dengan benar.</li>
           <li>Untuk tugas foto/dokumen: Pastikan tulisan terbaca jelas sebelum diunggah.</li>
           <li>Untuk tugas video: Rekam dengan posisi landscape/tegak yang stabil, lalu unggah file.</li>
         </ol>
@@ -305,12 +314,11 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    // LINK FOLDER GOOGLE DRIVE MASING-MASING PAKET
-    // Ganti nilai di dalam tanda kutip dengan link salinan dari subfolder Google Drive Anda
+    // LINK FOLDER GOOGLE DRIVE PER PAKET
     const FOLDER_DRIVE = {
-      "Paket A": "https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T",
-      "Paket B": "https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T",
-      "Paket C": "https://drive.google.com/drive/folders/1c5o2zurAxV1KoCt9fIZJB1zbbZ4Xkd_T"
+      "Paket A": "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing",
+      "Paket B": "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing",
+      "Paket C": "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing"
     };
 
     const loginGate = document.getElementById("loginGate");
@@ -323,7 +331,11 @@
     const btnSubmitSiswa = document.getElementById("btnSubmitSiswa");
     const btnLogoutSiswa = document.getElementById("btnLogoutSiswa");
 
-    // Cek Session Login
+    const titleTugas = document.getElementById("titleTugas");
+    const descTugas = document.getElementById("descTugas");
+    const btnTugas = document.getElementById("btnTugas");
+
+    // Cek Sesi Login Sebelumnya
     const savedSiswa = sessionStorage.getItem("siswaAuth");
     if (savedSiswa) {
       try {
@@ -371,12 +383,42 @@
     function tampilkanDashboard(data) {
       loginGate.style.display = "none";
       siswaDashboard.style.display = "block";
-      userBadge.textContent = `👤 ${data.nama || 'Santri'} (${data.jenjang || 'Paket A'})`;
+      
+      const nama = data.nama || "Santri";
+      let jenjang = data.jenjang || "Paket A";
 
-      // Set link tombol sesuai link subfolder
-      document.getElementById("linkPaketA").href = FOLDER_DRIVE["Paket A"];
-      document.getElementById("linkPaketB").href = FOLDER_DRIVE["Paket B"];
-      document.getElementById("linkPaketC").href = FOLDER_DRIVE["Paket C"];
+      // Normalisasi teks jenjang dari database
+      if (jenjang === "A" || jenjang.toLowerCase().includes("paket a")) {
+        jenjang = "Paket A";
+      } else if (jenjang === "B" || jenjang.toLowerCase().includes("paket b")) {
+        jenjang = "Paket B";
+      } else if (jenjang === "C" || jenjang.toLowerCase().includes("paket c")) {
+        jenjang = "Paket C";
+      }
+
+      userBadge.textContent = `👤 ${nama} (${jenjang})`;
+
+      // Sesuaikan judul pengumpulan tugas sesuai jenjang
+      titleTugas.textContent = `📤 Pengumpulan Tugas & Ujian - ${jenjang}`;
+      descTugas.textContent = `Assalamu'alaikum ${nama}. Kirimkan lembar kerja, ujian, dan tugas portofolio ${jenjang} di sini.`;
+      btnTugas.textContent = `Buka Formulir Pengumpulan Tugas ${jenjang} →`;
+
+      // Sembunyikan semua kartu modul paket terlebih dahulu
+      document.getElementById("cardPaketA").style.display = "none";
+      document.getElementById("cardPaketB").style.display = "none";
+      document.getElementById("cardPaketC").style.display = "none";
+
+      // Buka dan tampilkan HANYA kartu yang sesuai dengan jenjang siswa yang sedang login
+      if (jenjang === "Paket A") {
+        document.getElementById("cardPaketA").style.display = "flex";
+        document.getElementById("linkPaketA").href = FOLDER_DRIVE["Paket A"];
+      } else if (jenjang === "Paket B") {
+        document.getElementById("cardPaketB").style.display = "flex";
+        document.getElementById("linkPaketB").href = FOLDER_DRIVE["Paket B"];
+      } else if (jenjang === "Paket C") {
+        document.getElementById("cardPaketC").style.display = "flex";
+        document.getElementById("linkPaketC").href = FOLDER_DRIVE["Paket C"];
+      }
     }
   </script>
 </body>
