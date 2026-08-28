@@ -1,1 +1,332 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ruang Ujian Terawasi (CBT) - PKBM Pelita Aushaf Indonesia</title>
+  <link rel="icon" type="image/png" href="logo-pkbm.png" />
+  <style>
+    :root {
+      --green: #0d7a5f;
+      --green-dark: #0a5c48;
+      --green-soft: #eef8f4;
+      --line: #d6eee5;
+      --text: #1f2937;
+      --danger: #dc2626;
+      --warning: #d97706;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f0fdf4;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
 
+    /* Bar Pengawas Atas */
+    header {
+      background: #fff;
+      border-bottom: 2px solid var(--line);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(13,122,95,0.06);
+    }
+    .student-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .student-meta img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: contain;
+    }
+    .student-info b {
+      display: block;
+      color: var(--green-dark);
+      font-size: 15px;
+    }
+    .student-info small {
+      color: #6b7280;
+      font-weight: bold;
+    }
+
+    .proctor-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .violation-badge {
+      background: #fef2f2;
+      color: var(--danger);
+      border: 1.5px solid #fecaca;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .live-camera-box {
+      width: 80px;
+      height: 60px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--green);
+      background: #000;
+      position: relative;
+    }
+    .live-camera-box video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+    .cam-dot {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: blink 1.2s infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    .btn-exit {
+      background: #fff;
+      color: #6b7280;
+      border: 1.5px solid #d1d5db;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 12.5px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-exit:hover { background: #fee2e2; color: var(--danger); border-color: #fca5a5; }
+
+    /* Area Utama Soal Ujian (Iframe Google Form) */
+    main {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #fff;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Modal Verifikasi Awal (Sebelum Mulai) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-card {
+      background: #fff;
+      border-radius: 24px;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .modal-card h2 {
+      margin: 0 0 10px;
+      color: var(--green-dark);
+      font-size: 22px;
+    }
+    .modal-card p {
+      color: #4b5563;
+      font-size: 14px;
+      margin: 0 0 20px;
+      line-height: 1.5;
+    }
+    .rules-list {
+      text-align: left;
+      background: #f0fdf4;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 13px;
+      margin-bottom: 22px;
+      color: #374151;
+    }
+    .rules-list li { margin-bottom: 6px; }
+    .btn-start {
+      width: 100%;
+      padding: 14px;
+      background: var(--green);
+      color: #fff;
+      border: 0;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(13,122,95,0.25);
+    }
+    .btn-start:hover { background: var(--green-dark); }
+  </style>
+</head>
+<body>
+
+  <!-- MODAL INSTRUKSI & AKTIFKAN KAMERA -->
+  <div id="startModal" class="modal-overlay">
+    <div class="modal-card">
+      <div style="font-size: 40px; margin-bottom: 10px;">📸</div>
+      <h2>Konfirmasi Ujian Terawasi</h2>
+      <p>Selamat datang di sistem evaluasi mandiri PKBM Pelita Aushaf Indonesia.</p>
+      
+      <div class="rules-list">
+        <b>Aturan Pelaksanaan Ujian:</b>
+        <ol style="margin: 6px 0 0; padding-left: 18px;">
+          <li>Izinkan akses <b>Kamera (Webcam)</b> untuk pengawasan otomatis.</li>
+          <li><b>Dilarang berpindah tab</b> atau membuka jendela aplikasi lain.</li>
+          <li>Pelanggaran akan otomatis tercatat dan dilaporkan ke tutor.</li>
+        </ol>
+      </div>
+
+      <button id="btnStartExam" class="btn-start">Izinkan Kamera & Mulai Ujian</button>
+    </div>
+  </div>
+
+  <!-- HEADER BAR PENGAWAS -->
+  <header>
+    <div class="student-meta">
+      <img src="logo-pkbm.png" alt="Logo">
+      <div class="student-info">
+        <b id="dispNama">Memuat Nama Siswa...</b>
+        <small id="dispJenjang">Paket -</small>
+      </div>
+    </div>
+
+    <div class="proctor-stats">
+      <div class="violation-badge">
+        ⚠️ Pelanggaran Tab: <span id="violationCount">0</span>
+      </div>
+
+      <!-- Kamera Pengawas Live -->
+      <div class="live-camera-box" title="Kamera Pengawas Aktif">
+        <video id="webcam" autoplay playsinline muted></video>
+        <div class="cam-dot"></div>
+      </div>
+
+      <a href="portal-siswa.html" class="btn-exit" onclick="return confirm('Apakah Anda yakin ingin keluar dari halaman ujian?')">Keluar</a>
+    </div>
+  </header>
+
+  <!-- CANVAS TERSEMBUNYI UNTUK AMBIL FOTO -->
+  <canvas id="snapshotCanvas" style="display:none;"></canvas>
+
+  <!-- IFRAME GOOGLE FORM SOAL UJIAN -->
+  <main>
+    <iframe id="examFrame" src="" title="Form Ujian Online"></iframe>
+  </main>
+
+  <script>
+    // 1. DAFTAR LINK GOOGLE FORM SOAL UJIAN PER PAKET
+    const SOAL_EXAM = {
+      "Paket A": "https://docs.google.com/forms/d/e/1FAIpQLSd7gqF_CONTOH_PAKET_A/viewform?embedded=true",
+      "Paket B": "https://docs.google.com/forms/d/e/1FAIpQLSd7gqF_CONTOH_PAKET_B/viewform?embedded=true",
+      "Paket C": "https://forms.gle/cbSFAhfKLiM2CEzx6" // Ganti dengan link Google Form Paket C Anda
+    };
+
+    // 2. CEK SESI LOGIN SISWA
+    const sessionData = sessionStorage.getItem("siswaAuth");
+    if (!sessionData) {
+      alert("Akses Terkunci! Silakan login melalui Portal Siswa terlebih dahulu.");
+      window.location.href = "portal-siswa.html";
+    }
+
+    const user = JSON.parse(sessionData);
+    let jenjangUser = user.jenjang || "Paket C";
+
+    // Normalisasi Jenjang
+    if (jenjangUser === "A" || jenjangUser.toLowerCase().includes("paket a")) jenjangUser = "Paket A";
+    else if (jenjangUser === "B" || jenjangUser.toLowerCase().includes("paket b")) jenjangUser = "Paket B";
+    else if (jenjangUser === "C" || jenjangUser.toLowerCase().includes("paket c")) jenjangUser = "Paket C";
+
+    // Tampilkan Data Siswa di Bar
+    document.getElementById("dispNama").textContent = user.nama || "Siswa PKBM";
+    document.getElementById("dispJenjang").textContent = `${jenjangUser} • NIS: ${user.nis || user.username || "-"}`;
+
+    // Set Sumber Iframe Google Form
+    const examUrl = SOAL_EXAM[jenjangUser] || SOAL_EXAM["Paket C"];
+    document.getElementById("examFrame").src = examUrl;
+
+    // 3. LOGIKA WEBCAM & DETEKSI PINDAH TAB
+    let violations = 0;
+    const videoEl = document.getElementById("webcam");
+    const canvasEl = document.getElementById("snapshotCanvas");
+    const startModal = document.getElementById("startModal");
+    const btnStart = document.getElementById("btnStartExam");
+    const violationCountEl = document.getElementById("violationCount");
+
+    // Tombol Mulai Ujian
+    btnStart.addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        videoEl.srcObject = stream;
+        startModal.style.display = "none";
+        
+        // Coba aktifkan mode layar penuh
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      } catch (err) {
+        alert("PENTING: Akses kamera diperlukan untuk mengikuti Ujian Terawasi ini. Mohon izinkan kamera pada browser Anda.");
+      }
+    });
+
+    // Deteksi Berpindah Tab / Meminimalkan Browser
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && startModal.style.display === "none") {
+        violations++;
+        violationCountEl.textContent = violations;
+        alert(`⚠️ PERINGATAN ${violations}!\nAnda terdeteksi meninggalkan halaman ujian/membuka tab lain. Tindakan ini dicatat oleh pengawas!`);
+        takeSnapshotLog("Pindah Tab Terdeteksi");
+      }
+    });
+
+    // Blokir Klik Kanan & Copy-Paste
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("copy", e => e.preventDefault());
+    document.addEventListener("paste", e => e.preventDefault());
+
+    // Fungsi Pengambilan Snapshot
+    function takeSnapshotLog(eventMsg) {
+      if (!videoEl.videoWidth) return;
+      canvasEl.width = videoEl.videoWidth;
+      canvasEl.height = videoEl.videoHeight;
+      const ctx = canvasEl.getContext("2d");
+      ctx.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
+      const base64Photo = canvasEl.toDataURL("image/jpeg", 0.4);
+      console.log(`[LOG PENGAWAS]: ${eventMsg} pada ${new Date().toLocaleTimeString()}`);
+    }
+  </script>
+</body>
+</html>
