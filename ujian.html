@@ -6,10 +6,22 @@
   <title>Ruang Ujian Terawasi (CBT) - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
 
-  <!-- PENGUNCI KEAMANAN (Membaca Sesi Tab Lama & Tab Baru) -->
+  <!-- PENGUNCI KEAMANAN DUA LAPIS (Membaca Tiket URL & Memori Sesi) -->
   <script>
-    const authData = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
-    if (!authData) {
+    const urlParams = new URLSearchParams(window.location.search);
+    let rawAuth = urlParams.get("auth");
+
+    if (rawAuth) {
+      try {
+        const decoded = decodeURIComponent(rawAuth);
+        sessionStorage.setItem("siswaAuth", decoded);
+        localStorage.setItem("siswaAuth", decoded);
+      } catch(e) {}
+    } else {
+      rawAuth = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
+    }
+
+    if (!rawAuth) {
       alert("Akses Terkunci! Silakan login melalui Portal Siswa terlebih dahulu.");
       window.location.replace("portal-siswa.html");
     }
@@ -265,9 +277,15 @@
       "Paket C": "https://forms.gle/cbSFAhfKLiM2CEzx6"
     };
 
-    // 2. BACA DATA LOGIN
-    const savedData = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
-    const user = JSON.parse(savedData || "{}");
+    // 2. BACA DATA LOGIN DARI PARAMETER URL / MEMORI
+    const savedString = rawAuth.startsWith("{") ? rawAuth : decodeURIComponent(rawAuth);
+    let user = {};
+    try {
+      user = JSON.parse(savedString);
+    } catch(e) {
+      user = { nama: "Siswa PKBM", jenjang: "Paket C" };
+    }
+
     let jenjangUser = user.jenjang || "Paket C";
 
     // Normalisasi Jenjang
