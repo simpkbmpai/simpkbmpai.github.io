@@ -134,7 +134,7 @@
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div>
         <h1>Dashboard Admin Website</h1>
-        <p class="sub">Kelola video, foto, brosur, artikel, agenda, album, kontak, dan link soal ujian PKBM</p>
+        <p class="sub">Kelola CBT, link tutor, video, foto, brosur, artikel, agenda, dan kontak PKBM</p>
       </div>
     </div>
 
@@ -142,11 +142,12 @@
       <div>
         <span class="dash-badge">Dashboard Admin</span>
         <h2>Kelola Website dari Satu Tempat</h2>
-        <p>Menu utama: video YouTube, kontak, foto kegiatan, brosur PDF, artikel, kalender, album, dan link soal CBT.</p>
+        <p>Menu utama: link soal CBT, link portal tutor, video YouTube, kontak, foto kegiatan, brosur PDF, artikel, kalender, dan album.</p>
       </div>
       <div class="quick-grid">
         <a href="#pengaturan-github">GitHub</a>
         <a href="#pengaturan-ujian">Soal CBT</a>
+        <a href="#pengaturan-tutor">Link Tutor</a>
         <a href="#pengaturan-video">Video</a>
         <a href="#kontak-website">Kontak</a>
         <a href="#upload-foto">Foto</a>
@@ -158,9 +159,10 @@
     </div>
 
     <div class="card warning">
-      <b>Penting:</b> dashboard ini memakai GitHub API. Untuk menyimpan perubahan, admin perlu memasukkan <b>GitHub token</b> yang punya izin menulis ke repository.
+      <b>Penting:</b> dashboard ini memakai GitHub API. Untuk menyimpan data ke website, masukkan <b>GitHub token</b> di bagian 1.
     </div>
 
+    <!-- 1. PENGATURAN GITHUB -->
     <div class="card" id="pengaturan-github">
       <h2>1. Pengaturan GitHub</h2>
       <div class="grid">
@@ -179,37 +181,69 @@
           <input id="token" type="password" placeholder="Tempel token GitHub di sini">
         </label>
       </div>
-      <small>Token hanya disimpan sementara di memori browser ini untuk update data.</small>
+      <small>Token hanya dipakai di memori browser ini untuk upload data.</small>
     </div>
 
-    <!-- ================= 2. PENGATURAN LINK SOAL UJIAN ONLINE ================= -->
+    <!-- 2. PENGATURAN LINK SOAL UJIAN ONLINE -->
     <div class="card" id="pengaturan-ujian">
-      <h2>2. Pengaturan Link Soal Ujian Online (CBT)</h2>
-      <p>Tempel link Google Form (atau kode sematan <code>&lt;iframe&gt;</code>) per jenjang. Sistem akan otomatis merapikan URL sematannya.</p>
+      <h2>2. Pengaturan Link Soal Ujian Online (CBT Siswa)</h2>
+      <p>Tempel link Google Form (atau kode sematan <code>&lt;iframe&gt;</code>) per jenjang. Sistem akan otomatis membersihkan URL.</p>
 
       <label>Link Soal Paket A (Setara SD)
-        <input id="ujianPaketA" placeholder="Tempel link Google Form atau kode iframe Paket A di sini">
+        <input id="ujianPaketA" placeholder="Tempel link Google Form Paket A">
       </label>
 
       <label>Link Soal Paket B (Setara SMP)
-        <input id="ujianPaketB" placeholder="Tempel link Google Form atau kode iframe Paket B di sini">
+        <input id="ujianPaketB" placeholder="Tempel link Google Form Paket B">
       </label>
 
       <label>Link Soal Paket C (Setara SMA)
-        <input id="ujianPaketC" placeholder="Tempel link Google Form atau kode iframe Paket C di sini">
+        <input id="ujianPaketC" placeholder="Tempel link Google Form Paket C">
       </label>
 
       <button class="btn" id="saveUjianBtn" type="button">Simpan Link Soal Ujian</button>
       <button class="btn secondary" id="loadUjianBtn" type="button">Muat Link Soal Saat Ini</button>
 
       <div id="ujianStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
-      <div class="mini-note">Tip: Anda bisa langsung menyalin dari Google Form &rarr; Kirim &rarr; Sematkan HTML (Kode iframe), sistem akan otomatis mengambil link aslinya.</div>
     </div>
 
-    <!-- ================= 3. PENGATURAN VIDEO YOUTUBE ================= -->
+    <!-- 3. PENGATURAN LINK TUTOR & AKADEMIK -->
+    <div class="card" id="pengaturan-tutor">
+      <h2>3. Pengaturan Link Portal Tutor & Google Drive</h2>
+      <p>Kelola link Google Spreadsheet nilai rekap ujian CBT, link folder tugas masuk, dan folder Google Drive modul materi santri.</p>
+
+      <label>Link Google Spreadsheet Rekap Nilai Siswa
+        <input id="tutorRekapNilai" placeholder="Contoh: https://docs.google.com/spreadsheets/d/...">
+      </label>
+
+      <label>Link Folder Google Drive Tugas Masuk Santri
+        <input id="tutorDriveTugas" placeholder="Contoh: https://drive.google.com/drive/folders/...">
+      </label>
+
+      <div class="stage3-tools">
+        <label>Folder Google Drive Paket A (SD)
+          <input id="tutorDrivePaketA" placeholder="https://drive.google.com/drive/folders/...">
+        </label>
+        <label>Folder Google Drive Paket B (SMP)
+          <input id="tutorDrivePaketB" placeholder="https://drive.google.com/drive/folders/...">
+        </label>
+      </div>
+
+      <label>Folder Google Drive Paket C (SMA)
+        <input id="tutorDrivePaketC" placeholder="https://drive.google.com/drive/folders/...">
+      </label>
+
+      <button class="btn" id="saveTutorBtn" type="button">Simpan Link Portal Tutor</button>
+      <button class="btn secondary" id="loadTutorBtn" type="button">Muat Link Tutor Saat Ini</button>
+
+      <div id="tutorStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
+      <div class="mini-note">Semua tautan yang disimpan di sini akan langsung terhubung ke tombol pada <code>portal-tutor.html</code> secara otomatis.</div>
+    </div>
+
+    <!-- 4. PENGATURAN VIDEO YOUTUBE -->
     <div class="card" id="pengaturan-video">
-      <h2>3. Pengaturan Video Profil YouTube</h2>
-      <p>Ubah video YouTube yang tampil di halaman beranda website PKBM Pelita Aushaf Indonesia.</p>
+      <h2>4. Pengaturan Video Profil YouTube</h2>
+      <p>Ubah video YouTube yang tampil di halaman beranda website.</p>
 
       <label>Link Video YouTube (atau ID Video)
         <input id="videoUrlInput" placeholder="Contoh: https://www.youtube.com/watch?v=eOHkg5rBSLo">
@@ -220,7 +254,7 @@
           <input id="videoTitleInput" placeholder="Contoh: Mengenal PKBM Pelita Aushaf Indonesia">
         </label>
         <label>Deskripsi Singkat Video
-          <input id="videoDescInput" placeholder="Contoh: Simak dokumentasi suasana belajar dan kegiatan kami.">
+          <input id="videoDescInput" placeholder="Contoh: Simak dokumentasi suasana belajar kami.">
         </label>
       </div>
 
@@ -228,14 +262,11 @@
       <button class="btn secondary" id="loadVideoBtn" type="button">Muat Video Saat Ini</button>
       
       <div id="videoStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
-      <div class="mini-note">Setelah disimpan, tunggu 1-2 menit lalu refresh halaman depan website.</div>
     </div>
 
-    <!-- ================= 4. KONTAK WEBSITE ================= -->
+    <!-- 5. KONTAK WEBSITE -->
     <div class="card" id="kontak-website">
-      <h2>4. Pengaturan Kontak Website</h2>
-      <p>Nomor ini akan dipakai untuk tombol WhatsApp, formulir pendaftaran, tanya brosur, agenda, dan konsultasi.</p>
-
+      <h2>5. Pengaturan Kontak Website</h2>
       <div class="stage3-tools">
         <label>Nomor WhatsApp Admin
           <input id="contactAdminInput" value="0877-5132-5199" placeholder="Contoh: 087751325199">
@@ -245,7 +276,7 @@
         </label>
       </div>
 
-      <label>Catatan Kontak / Jam Layanan (opsional)
+      <label>Catatan Kontak / Jam Layanan
         <textarea id="contactNoteInput" placeholder="Contoh: Admin melayani konsultasi pendaftaran pukul 08.00 - 15.00 WIB"></textarea>
       </label>
 
@@ -264,9 +295,9 @@
       <button class="btn secondary" id="loadContactBtn">Muat Kontak dari Web</button>
     </div>
 
-    <!-- ================= 5. UPLOAD FOTO ================= -->
+    <!-- 6. UPLOAD FOTO KEGIATAN -->
     <div class="card" id="upload-foto">
-      <h2>5. Upload Foto Kegiatan</h2>
+      <h2>6. Upload Foto Kegiatan</h2>
       <div class="grid">
         <label>Pilih Program
           <select id="program">
@@ -285,13 +316,12 @@
       </div>
 
       <label>Judul / Keterangan Foto
-        <textarea id="caption" placeholder="Contoh: Kegiatan belajar tematik bersama santri"></textarea>
+        <textarea id="caption" placeholder="Contoh: Kegiatan belajar tematik santri"></textarea>
       </label>
 
       <label>Pilih Foto
         <input id="photos" type="file" accept="image/*" multiple>
       </label>
-      <small>Bisa memilih banyak foto sekaligus. Foto akan dikompresi otomatis agar cepat diakses.</small>
       <div id="preview" class="preview"></div>
 
       <button class="btn" id="uploadBtn">Upload Foto ke Web</button>
@@ -301,11 +331,9 @@
       <div id="error" class="error"></div>
     </div>
 
-    <!-- ================= 6. KELOLA FOTO ================= -->
+    <!-- 7. KELOLA FOTO -->
     <div class="card" id="kelola-foto">
-      <h2>6. Kelola / Hapus Foto Kegiatan</h2>
-      <p>Pilih program, lalu klik <b>Muat Foto</b> untuk melihat atau menghapus foto.</p>
-
+      <h2>7. Kelola / Hapus Foto Kegiatan</h2>
       <div class="manage-tools">
         <label>Pilih Program
           <select id="manageProgram">
@@ -326,9 +354,9 @@
       </div>
     </div>
 
-    <!-- ================= 7. BROSUR PDF ================= -->
+    <!-- 8. BROSUR PDF -->
     <div class="card" id="brosur-pdf">
-      <h2>7. Upload Brosur PDF Per Program</h2>
+      <h2>8. Upload Brosur PDF Per Program</h2>
       <div class="pdf-tools">
         <label>Pilih Program Brosur
           <select id="brosurProgram">
@@ -365,15 +393,15 @@
       </div>
     </div>
 
-    <!-- ================= 8. ARTIKEL ================= -->
+    <!-- 9. ARTIKEL -->
     <div class="card" id="artikel-edukasi">
-      <h2>8. Artikel Parenting & Edukasi</h2>
+      <h2>9. Artikel Parenting & Edukasi</h2>
       <div class="stage3-tools">
         <label>Judul Artikel
-          <input id="articleTitleInput" placeholder="Contoh: Tips Belajar Mandiri yang Efektif">
+          <input id="articleTitleInput" placeholder="Contoh: Tips Belajar Mandiri">
         </label>
         <label>Kategori
-          <input id="articleCategoryInput" placeholder="Contoh: Parenting / Inklusi / Adab">
+          <input id="articleCategoryInput" placeholder="Contoh: Parenting / Inklusi">
         </label>
       </div>
 
@@ -397,16 +425,16 @@
       <button class="btn" id="saveArticleBtn">Simpan Artikel</button>
       <button class="stage3-cancel" id="articleCancelEditBtn" type="button">Batal Edit</button>
       <button class="btn secondary" id="loadArticleBtn">Kelola / Hapus Artikel</button>
-      <div class="edit-mode-note" id="articleEditNote">Mode edit artikel aktif. Ubah data lalu klik Simpan Artikel.</div>
+      <div class="edit-mode-note" id="articleEditNote">Mode edit artikel aktif.</div>
 
       <div id="articleManageList" class="stage3-list">
         <div class="empty">Masukkan GitHub Token, lalu klik Kelola / Hapus Artikel.</div>
       </div>
     </div>
 
-    <!-- ================= 9. KALENDER & ALBUM ================= -->
+    <!-- 10. KALENDER KEGIATAN -->
     <div class="card" id="kalender-kegiatan">
-      <h2>9. Kalender Akademik & Kegiatan</h2>
+      <h2>10. Kalender Akademik & Kegiatan</h2>
       <div class="stage3-tools">
         <label>Judul Kegiatan
           <input id="eventTitleInput" placeholder="Contoh: Evaluasi Akhir Semester">
@@ -443,8 +471,9 @@
       </div>
     </div>
 
+    <!-- 11. GALERI ALBUM -->
     <div class="card" id="galeri-album">
-      <h2>10. Galeri Album</h2>
+      <h2>11. Galeri Album</h2>
       <div class="stage3-tools">
         <label>Judul Album
           <input id="albumTitleInput" placeholder="Contoh: Dokumentasi Ujian CBT">
@@ -484,9 +513,9 @@
       </div>
     </div>
 
-    <!-- ================= 11. CATATAN PROSES ================= -->
+    <!-- 12. LOG CATATAN -->
     <div class="card" id="catatan-proses">
-      <h2>11. Catatan Proses</h2>
+      <h2>12. Catatan Proses</h2>
       <div id="log" class="log">Siap upload...</div>
     </div>
   </div>
@@ -509,25 +538,18 @@
       if(el){ el.textContent = msg; el.style.display = "block"; }
     }
 
-    function slugify(text){
-      return text.toLowerCase().replace(/program /g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-    }
-
-    function safeName(name){
-      return name.toLowerCase().replace(/\.[^.]+$/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "foto";
-    }
+    function slugify(text){ return text.toLowerCase().replace(/program /g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
+    function safeName(name){ return name.toLowerCase().replace(/\.[^.]+$/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "foto"; }
 
     function arrayBufferToBase64(buffer){
-      let binary = "";
-      const bytes = new Uint8Array(buffer);
+      let binary = ""; const bytes = new Uint8Array(buffer);
       for(let i=0; i<bytes.byteLength; i++){ binary += String.fromCharCode(bytes[i]); }
       return btoa(binary);
     }
 
     async function resizeImage(file, maxSize=1400, quality=.78){
       return new Promise((resolve, reject) => {
-        const img = new Image();
-        const reader = new FileReader();
+        const img = new Image(); const reader = new FileReader();
         reader.onload = () => { img.src = reader.result; };
         reader.onerror = reject;
         img.onload = () => {
@@ -535,17 +557,11 @@
           if(w > h && w > maxSize){ h = Math.round(h * maxSize / w); w = maxSize; }
           else if(h >= w && h > maxSize){ w = Math.round(w * maxSize / h); h = maxSize; }
 
-          const canvas = document.createElement("canvas");
-          canvas.width = w; canvas.height = h;
-          const ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0, w, h);
+          const canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext("2d"); ctx.drawImage(img, 0, 0, w, h);
           canvas.toBlob(async (blob) => {
             const buffer = await blob.arrayBuffer();
-            resolve({
-              base64: arrayBufferToBase64(buffer),
-              blobUrl: URL.createObjectURL(blob),
-              extension: "jpg"
-            });
+            resolve({ base64: arrayBufferToBase64(buffer), blobUrl: URL.createObjectURL(blob), extension: "jpg" });
           }, "image/jpeg", quality);
         };
         img.onerror = reject;
@@ -590,8 +606,7 @@
         return { json: JSON.parse(base64ToUtf8(data.content)), sha: data.sha };
       }catch(err){
         if(String(err.message).includes("Not Found")){
-          const empty = {};
-          programs.forEach(p => empty[p] = []);
+          const empty = {}; programs.forEach(p => empty[p] = []);
           return { json: empty, sha: null };
         }
         throw err;
@@ -607,12 +622,7 @@
 
     async function putBinaryFile(path, base64Content, message){
       let sha = null;
-      try{
-        const old = await getGithubFile(path);
-        sha = old.sha;
-      }catch(err){
-        if(!String(err.message).includes("Not Found")) throw err;
-      }
+      try{ const old = await getGithubFile(path); sha = old.sha; }catch(err){ if(!String(err.message).includes("Not Found")) throw err; }
       return await putFile(path, base64Content, message, sha);
     }
 
@@ -626,14 +636,8 @@
       return String(str || "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[ch] || ch));
     }
 
-    /* ===== FITUR OTOMATISASI LINK UJIAN CBT ===== */
-    const defaultUjianData = {
-      "Paket A": "",
-      "Paket B": "",
-      "Paket C": ""
-    };
-
-    // Fungsi Pintar: Mengubah iframe / shortlink menjadi Link Embed Murni Google Form
+    /* ===== FITUR SOAL UJIAN CBT ===== */
+    const defaultUjianData = { "Paket A": "", "Paket B": "", "Paket C": "" };
     function cleanEmbedUrl(input) {
       if(!input) return "";
       let url = input.trim();
@@ -644,41 +648,23 @@
       }
       return url;
     }
-
     function showUjianStatus(type, msg){
-      const el = $("ujianStatus");
-      if(!el) return;
-      el.style.display = "block";
-      if(type === "success"){
-        el.style.background = "#ecfdf5"; el.style.border = "1px solid #a7f3d0"; el.style.color = "#065f46";
-        el.innerHTML = "✅ " + msg;
-      } else if(type === "loading"){
-        el.style.background = "#eff6ff"; el.style.border = "1px solid #bfdbfe"; el.style.color = "#1e40af";
-        el.innerHTML = "⏳ " + msg;
-      } else {
-        el.style.background = "#fef2f2"; el.style.border = "1px solid #fecaca"; el.style.color = "#991b1b";
-        el.innerHTML = "❌ " + msg;
-      }
+      const el = $("ujianStatus"); if(!el) return; el.style.display = "block";
+      el.style.background = type === "success" ? "#ecfdf5" : (type === "loading" ? "#eff6ff" : "#fef2f2");
+      el.style.color = type === "success" ? "#065f46" : (type === "loading" ? "#1e40af" : "#991b1b");
+      el.innerHTML = (type === "success" ? "✅ " : (type === "loading" ? "⏳ " : "❌ ")) + msg;
     }
-
     async function getUjianJson(){
       const token = $("token") ? $("token").value.trim() : "";
       if(token){
-        try{
-          const data = await getGithubFile("data-ujian.json");
-          return { json: {...defaultUjianData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha };
-        }catch(err){
-          if(String(err.message).includes("Not Found")) return { json: {...defaultUjianData}, sha: null };
-          throw err;
-        }
+        try{ const data = await getGithubFile("data-ujian.json"); return { json: {...defaultUjianData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha }; }
+        catch(err){ if(String(err.message).includes("Not Found")) return { json: {...defaultUjianData}, sha: null }; throw err; }
       } else {
         const res = await fetch("data-ujian.json?t=" + Date.now());
         if(!res.ok) return { json: {...defaultUjianData}, sha: null };
-        const json = await res.json();
-        return { json: {...defaultUjianData, ...json}, sha: null };
+        return { json: {...defaultUjianData, ...(await res.json())}, sha: null };
       }
     }
-
     async function loadUjianSettings(){
       showUjianStatus("loading", "Memuat data link ujian...");
       try{
@@ -688,57 +674,99 @@
         $("ujianPaketB").value = data["Paket B"] || "";
         $("ujianPaketC").value = data["Paket C"] || "";
         showUjianStatus("success", "Link soal ujian berhasil dimuat!");
-      }catch(err){
-        showUjianStatus("error", "Gagal memuat link ujian: " + err.message);
-      }
+      }catch(err){ showUjianStatus("error", "Gagal memuat: " + err.message); }
     }
-
     async function saveUjianSettings(){
       const token = $("token") ? $("token").value.trim() : "";
-      if(!token){
-        showUjianStatus("error", "GitHub Token belum diisi pada Bagian 1 di atas.");
-        $("token").focus();
-        return;
-      }
-
-      const saveBtn = $("saveUjianBtn");
-      saveBtn.disabled = true;
-      saveBtn.textContent = "Menyimpan ke GitHub...";
+      if(!token){ showUjianStatus("error", "GitHub Token belum diisi pada Bagian 1."); $("token").focus(); return; }
+      const saveBtn = $("saveUjianBtn"); saveBtn.disabled = true;
       showUjianStatus("loading", "Menyimpan link soal ke database...");
-
       try{
-        let sha = null;
-        try{
-          const old = await getGithubFile("data-ujian.json");
-          sha = old.sha;
-        }catch(e){}
-
+        let sha = null; try{ const old = await getGithubFile("data-ujian.json"); sha = old.sha; }catch(e){}
         const data = {
           "Paket A": cleanEmbedUrl($("ujianPaketA").value),
           "Paket B": cleanEmbedUrl($("ujianPaketB").value),
           "Paket C": cleanEmbedUrl($("ujianPaketC").value),
           updatedAt: new Date().toISOString()
         };
-
-        // Perbarui tampilan input dengan link bersih
-        $("ujianPaketA").value = data["Paket A"];
-        $("ujianPaketB").value = data["Paket B"];
-        $("ujianPaketC").value = data["Paket C"];
-
-        await putFile("data-ujian.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update link soal ujian CBT per jenjang", sha);
-        showUjianStatus("success", "Link soal ujian berhasil disimpan! Murid yang membuka ujian akan langsung melihat form terbaru.");
-        alert("Sukses! Link soal ujian per jenjang berhasil disimpan.");
-      }catch(err){
-        showUjianStatus("error", "Gagal menyimpan link ujian: " + err.message);
-      }finally{
-        saveBtn.disabled = false;
-        saveBtn.textContent = "Simpan Link Soal Ujian";
-      }
+        $("ujianPaketA").value = data["Paket A"]; $("ujianPaketB").value = data["Paket B"]; $("ujianPaketC").value = data["Paket C"];
+        await putFile("data-ujian.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update link soal ujian CBT", sha);
+        showUjianStatus("success", "Link soal ujian berhasil disimpan!");
+        alert("Sukses! Link soal ujian berhasil disimpan.");
+      }catch(err){ showUjianStatus("error", err.message); }
+      finally{ saveBtn.disabled = false; }
     }
-
     $("saveUjianBtn").addEventListener("click", saveUjianSettings);
     $("loadUjianBtn").addEventListener("click", loadUjianSettings);
     try { loadUjianSettings(); } catch(e){}
+
+    /* ===== FITUR LINK TUTOR & GOOGLE DRIVE ===== */
+    const defaultTutorData = {
+      rekapNilai: "https://docs.google.com/spreadsheets",
+      driveTugas: "https://drive.google.com",
+      drivePaketA: "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing",
+      drivePaketB: "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing",
+      drivePaketC: "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing"
+    };
+
+    function showTutorStatus(type, msg){
+      const el = $("tutorStatus"); if(!el) return; el.style.display = "block";
+      el.style.background = type === "success" ? "#ecfdf5" : (type === "loading" ? "#eff6ff" : "#fef2f2");
+      el.style.color = type === "success" ? "#065f46" : (type === "loading" ? "#1e40af" : "#991b1b");
+      el.innerHTML = (type === "success" ? "✅ " : (type === "loading" ? "⏳ " : "❌ ")) + msg;
+    }
+
+    async function getTutorJson(){
+      const token = $("token") ? $("token").value.trim() : "";
+      if(token){
+        try{ const data = await getGithubFile("data-tutor.json"); return { json: {...defaultTutorData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha }; }
+        catch(err){ if(String(err.message).includes("Not Found")) return { json: {...defaultTutorData}, sha: null }; throw err; }
+      } else {
+        const res = await fetch("data-tutor.json?t=" + Date.now());
+        if(!res.ok) return { json: {...defaultTutorData}, sha: null };
+        return { json: {...defaultTutorData, ...(await res.json())}, sha: null };
+      }
+    }
+
+    async function loadTutorSettings(){
+      showTutorStatus("loading", "Memuat data link tutor...");
+      try{
+        const fileData = await getTutorJson();
+        const data = fileData.json || defaultTutorData;
+        $("tutorRekapNilai").value = data.rekapNilai || "";
+        $("tutorDriveTugas").value = data.driveTugas || "";
+        $("tutorDrivePaketA").value = data.drivePaketA || "";
+        $("tutorDrivePaketB").value = data.drivePaketB || "";
+        $("tutorDrivePaketC").value = data.drivePaketC || "";
+        showTutorStatus("success", "Link portal tutor berhasil dimuat!");
+      }catch(err){ showTutorStatus("error", "Gagal memuat link tutor: " + err.message); }
+    }
+
+    async function saveTutorSettings(){
+      const token = $("token") ? $("token").value.trim() : "";
+      if(!token){ showTutorStatus("error", "GitHub Token belum diisi pada Bagian 1."); $("token").focus(); return; }
+      const saveBtn = $("saveTutorBtn"); saveBtn.disabled = true;
+      showTutorStatus("loading", "Menyimpan data link tutor...");
+      try{
+        let sha = null; try{ const old = await getGithubFile("data-tutor.json"); sha = old.sha; }catch(e){}
+        const data = {
+          rekapNilai: $("tutorRekapNilai").value.trim() || defaultTutorData.rekapNilai,
+          driveTugas: $("tutorDriveTugas").value.trim() || defaultTutorData.driveTugas,
+          drivePaketA: $("tutorDrivePaketA").value.trim() || defaultTutorData.drivePaketA,
+          drivePaketB: $("tutorDrivePaketB").value.trim() || defaultTutorData.drivePaketB,
+          drivePaketC: $("tutorDrivePaketC").value.trim() || defaultTutorData.drivePaketC,
+          updatedAt: new Date().toISOString()
+        };
+        await putFile("data-tutor.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update link portal tutor & drive", sha);
+        showTutorStatus("success", "Link tutor & Google Drive berhasil disimpan!");
+        alert("Sukses! Semua link portal tutor berhasil disimpan.");
+      }catch(err){ showTutorStatus("error", err.message); }
+      finally{ saveBtn.disabled = false; }
+    }
+
+    $("saveTutorBtn").addEventListener("click", saveTutorSettings);
+    $("loadTutorBtn").addEventListener("click", loadTutorSettings);
+    try { loadTutorSettings(); } catch(e){}
 
     /* ===== FITUR VIDEO YOUTUBE ===== */
     const defaultVideoData = { youtubeUrl: "https://www.youtube.com/watch?v=eOHkg5rBSLo", judul: "Mengenal PKBM Pelita Aushaf Indonesia", deskripsi: "Simak suasana belajar di PKBM kami." };
@@ -786,7 +814,7 @@
     $("loadVideoBtn").addEventListener("click", loadVideoSettings);
     try { loadVideoSettings(); } catch(e){}
 
-    /* ===== FITUR LAINNYA (KONTAK, FOTO, BROSUR, ARTIKEL, DLL) ===== */
+    /* ===== FITUR KONTAK ===== */
     const defaultContactData = { whatsappAdmin: "6287751325199", whatsappAdminDisplay: "0877-5132-5199", cpHumas: "082140046047", cpHumasDisplay: "0821-4004-6047", note: "" };
     function digitsOnly(v){ return String(v||"").replace(/\D/g, ""); }
     function normalizeWhatsapp(v){ let d = digitsOnly(v); return d.startsWith("0") ? "62" + d.slice(1) : (d.startsWith("8") ? "62" + d : d); }
