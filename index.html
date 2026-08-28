@@ -45,8 +45,8 @@
     .brand-title{margin:0;font-size:17px;line-height:1.2;color:var(--green-dark);font-weight:800;white-space:nowrap}
     .brand-sub{margin:2px 0 0;color:var(--muted);font-size:12px;white-space:nowrap}
     
-    .nav-menu-wrap{display:flex;align-items:center;gap:16px}
-    nav ul{list-style:none;display:flex;align-items:center;gap:14px;padding:0;margin:0;color:#374151;font-weight:700;font-size:13.5px}
+    .nav-menu-wrap{display:flex;align-items:center;gap:12px}
+    nav ul{list-style:none;display:flex;align-items:center;gap:12px;padding:0;margin:0;color:#374151;font-weight:700;font-size:13.5px}
     nav a{white-space:nowrap;transition:color .2s}
     nav a:hover{color:var(--green)}
     
@@ -57,7 +57,7 @@
       background:var(--green-soft);
       color:var(--green-dark) !important;
       border:1.5px solid #bce6d7;
-      padding:7px 14px;
+      padding:7px 13px;
       border-radius:999px;
       font-weight:800;
       font-size:13px;
@@ -69,6 +69,27 @@
       color:#fff !important;
       border-color:var(--green);
       box-shadow:0 6px 16px rgba(13,122,95,.2);
+      transform:translateY(-1px);
+    }
+    
+    .nav-elearning-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:#0d7a5f;
+      color:#fff !important;
+      border:1.5px solid #0d7a5f;
+      padding:7px 13px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:13px;
+      white-space:nowrap;
+      transition:all .2s ease;
+      box-shadow:0 4px 12px rgba(13,122,95,.2);
+    }
+    .nav-elearning-btn:hover{
+      background:#0a5c48;
+      border-color:#0a5c48;
       transform:translateY(-1px);
     }
     
@@ -1231,7 +1252,7 @@
     }
 
     @media(max-width:1120px){
-      nav ul{gap:10px;font-size:13px}
+      nav ul{gap:8px;font-size:12.5px}
       .brand-title{font-size:15px}
     }
     @media(max-width:1024px){
@@ -1248,7 +1269,7 @@
       .nav{flex-wrap:wrap;justify-content:center;padding:12px 0}
       .brand{width:100%;justify-content:center;margin-bottom:8px}
       .nav-menu-wrap{width:100%;justify-content:center;flex-wrap:wrap}
-      nav ul{gap:10px;font-size:13px;flex-wrap:wrap;justify-content:center}
+      nav ul{gap:8px;font-size:13px;flex-wrap:wrap;justify-content:center}
       .trust-grid,.brosur-list,.brosur-actions{grid-template-columns:1fr}
       .testimonial-card p{font-size:17px}
       .map-frame{height:300px}
@@ -1289,6 +1310,7 @@
             <li><a href="#brosur">Brosur</a></li>
             <li><a href="#pendaftaran">Daftar</a></li>
             <li><a href="portal-siswa.html" class="nav-portal-btn">🎓 Portal Siswa</a></li>
+            <li><a href="portal-siswa.html" class="nav-elearning-btn">💻 E-Learning</a></li>
           </ul>
         </nav>
         <a class="btn" href="https://wa.me/6287751325199" target="_blank" rel="noopener">WhatsApp Admin</a>
@@ -1307,7 +1329,7 @@
           </p>
           <div class="hero-actions">
             <a class="btn" href="#pendaftaran">Daftar Sekarang</a>
-            <a class="btn btn-outline" href="portal-siswa.html">🎓 Portal Siswa & Tugas →</a>
+            <a class="btn btn-outline" href="portal-siswa.html">💻 Masuk E-Learning & Ujian →</a>
             <a class="btn btn-outline" href="#program">Lihat Program</a>
           </div>
         </div>
@@ -1826,6 +1848,14 @@
       </div>
       <div class="modal-body" id="articleModalBody"></div>
     </div>
+  </div>
+
+  <!-- BOTTOM NAV UNTUK HP -->
+  <div class="mobile-bottom-nav">
+    <a href="#pendaftaran"><span>📝</span>Daftar</a>
+    <a href="portal-siswa.html"><span>🎓</span>Portal</a>
+    <a href="portal-siswa.html"><span>💻</span>Ujian</a>
+    <a href="https://wa.me/6287751325199" target="_blank"><span>💬</span>WA Admin</a>
   </div>
 
   <!-- FOOTER -->
