@@ -106,7 +106,7 @@
     .dashboard-hero h2{margin:8px 0 8px;color:#fff;font-size:34px;line-height:1.14}
     .dashboard-hero p{margin:0;color:#e8fff4}
     .dash-badge{display:inline-flex;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:7px 12px;font-weight:900;color:#fff;font-size:13px}
-    .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .quick-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
     .quick-grid a{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:8px;border-radius:16px;background:#fff;color:#0a5c48;font-weight:900;font-size:13px;box-shadow:0 10px 24px rgba(0,0,0,.10)}
     .quick-grid a:hover{background:#eef8f4}
     .contact-preview{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
@@ -134,7 +134,7 @@
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div>
         <h1>Dashboard Admin Website</h1>
-        <p class="sub">Kelola video, foto, brosur, artikel, agenda, album, dan kontak PKBM</p>
+        <p class="sub">Kelola video, foto, brosur, artikel, agenda, album, kontak, dan link soal ujian PKBM</p>
       </div>
     </div>
 
@@ -142,10 +142,11 @@
       <div>
         <span class="dash-badge">Dashboard Admin</span>
         <h2>Kelola Website dari Satu Tempat</h2>
-        <p>Menu utama dibuat lebih rapi: video YouTube, kontak, foto kegiatan, brosur PDF, artikel, kalender, dan album kegiatan.</p>
+        <p>Menu utama: video YouTube, kontak, foto kegiatan, brosur PDF, artikel, kalender, album, dan link soal CBT.</p>
       </div>
       <div class="quick-grid">
         <a href="#pengaturan-github">GitHub</a>
+        <a href="#pengaturan-ujian">Soal CBT</a>
         <a href="#pengaturan-video">Video</a>
         <a href="#kontak-website">Kontak</a>
         <a href="#upload-foto">Foto</a>
@@ -157,7 +158,7 @@
     </div>
 
     <div class="card warning">
-      <b>Penting:</b> dashboard ini gratis dan memakai GitHub sebagai tempat penyimpanan data. Untuk upload/simpan, admin perlu memasukkan <b>GitHub token</b> yang punya izin menulis ke repository. Jangan bagikan token ke orang lain dan jangan simpan token di komputer umum.
+      <b>Penting:</b> dashboard ini memakai GitHub API. Untuk menyimpan perubahan, admin perlu memasukkan <b>GitHub token</b> yang punya izin menulis ke repository.
     </div>
 
     <div class="card" id="pengaturan-github">
@@ -178,12 +179,36 @@
           <input id="token" type="password" placeholder="Tempel token GitHub di sini">
         </label>
       </div>
-      <small>Token hanya dipakai di browser ini untuk mengirim data ke repository GitHub. Token tidak dimasukkan ke file web publik.</small>
+      <small>Token hanya disimpan sementara di memori browser ini untuk update data.</small>
     </div>
 
-    <!-- ================= PENGATURAN VIDEO YOUTUBE ================= -->
+    <!-- ================= 2. PENGATURAN LINK SOAL UJIAN ONLINE ================= -->
+    <div class="card" id="pengaturan-ujian">
+      <h2>2. Pengaturan Link Soal Ujian Online (CBT)</h2>
+      <p>Tempel link Google Form (atau kode sematan <code>&lt;iframe&gt;</code>) per jenjang. Sistem akan otomatis merapikan URL sematannya.</p>
+
+      <label>Link Soal Paket A (Setara SD)
+        <input id="ujianPaketA" placeholder="Tempel link Google Form atau kode iframe Paket A di sini">
+      </label>
+
+      <label>Link Soal Paket B (Setara SMP)
+        <input id="ujianPaketB" placeholder="Tempel link Google Form atau kode iframe Paket B di sini">
+      </label>
+
+      <label>Link Soal Paket C (Setara SMA)
+        <input id="ujianPaketC" placeholder="Tempel link Google Form atau kode iframe Paket C di sini">
+      </label>
+
+      <button class="btn" id="saveUjianBtn" type="button">Simpan Link Soal Ujian</button>
+      <button class="btn secondary" id="loadUjianBtn" type="button">Muat Link Soal Saat Ini</button>
+
+      <div id="ujianStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
+      <div class="mini-note">Tip: Anda bisa langsung menyalin dari Google Form &rarr; Kirim &rarr; Sematkan HTML (Kode iframe), sistem akan otomatis mengambil link aslinya.</div>
+    </div>
+
+    <!-- ================= 3. PENGATURAN VIDEO YOUTUBE ================= -->
     <div class="card" id="pengaturan-video">
-      <h2>2. Pengaturan Video Profil YouTube</h2>
+      <h2>3. Pengaturan Video Profil YouTube</h2>
       <p>Ubah video YouTube yang tampil di halaman beranda website PKBM Pelita Aushaf Indonesia.</p>
 
       <label>Link Video YouTube (atau ID Video)
@@ -202,15 +227,14 @@
       <button class="btn" id="saveVideoBtn" type="button">Simpan Video ke Web</button>
       <button class="btn secondary" id="loadVideoBtn" type="button">Muat Video Saat Ini</button>
       
-      <!-- Kotak Notifikasi Langsung -->
       <div id="videoStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
-
       <div class="mini-note">Setelah disimpan, tunggu 1-2 menit lalu refresh halaman depan website.</div>
     </div>
 
+    <!-- ================= 4. KONTAK WEBSITE ================= -->
     <div class="card" id="kontak-website">
-      <h2>3. Pengaturan Kontak Website</h2>
-      <p>Nomor ini akan dipakai untuk tombol WhatsApp, formulir pendaftaran, tanya brosur, agenda, dan tombol konsultasi di website.</p>
+      <h2>4. Pengaturan Kontak Website</h2>
+      <p>Nomor ini akan dipakai untuk tombol WhatsApp, formulir pendaftaran, tanya brosur, agenda, dan konsultasi.</p>
 
       <div class="stage3-tools">
         <label>Nomor WhatsApp Admin
@@ -238,11 +262,11 @@
 
       <button class="btn" id="saveContactBtn">Simpan Kontak ke Web</button>
       <button class="btn secondary" id="loadContactBtn">Muat Kontak dari Web</button>
-      <div class="mini-note">Setelah disimpan, upload juga <code>index.html</code> terbaru dan <code>data-kontak.json</code> agar nomor website bisa berubah dari dashboard.</div>
     </div>
 
+    <!-- ================= 5. UPLOAD FOTO ================= -->
     <div class="card" id="upload-foto">
-      <h2>4. Upload Foto Kegiatan</h2>
+      <h2>5. Upload Foto Kegiatan</h2>
       <div class="grid">
         <label>Pilih Program
           <select id="program">
@@ -261,13 +285,13 @@
       </div>
 
       <label>Judul / Keterangan Foto
-        <textarea id="caption" placeholder="Contoh: Kegiatan bermain sensorik bersama ananda"></textarea>
+        <textarea id="caption" placeholder="Contoh: Kegiatan belajar tematik bersama santri"></textarea>
       </label>
 
       <label>Pilih Foto
         <input id="photos" type="file" accept="image/*" multiple>
       </label>
-      <small>Bisa memilih banyak foto sekaligus. Foto akan dikecilkan otomatis agar ringan saat tampil di web.</small>
+      <small>Bisa memilih banyak foto sekaligus. Foto akan dikompresi otomatis agar cepat diakses.</small>
       <div id="preview" class="preview"></div>
 
       <button class="btn" id="uploadBtn">Upload Foto ke Web</button>
@@ -277,9 +301,10 @@
       <div id="error" class="error"></div>
     </div>
 
+    <!-- ================= 6. KELOLA FOTO ================= -->
     <div class="card" id="kelola-foto">
-      <h2>5. Kelola Banyak Foto / Hapus Foto Kegiatan</h2>
-      <p>Pilih program, lalu klik <b>Muat Foto</b>. Setelah daftar foto muncul, admin bisa menghapus foto yang tidak ingin ditampilkan.</p>
+      <h2>6. Kelola / Hapus Foto Kegiatan</h2>
+      <p>Pilih program, lalu klik <b>Muat Foto</b> untuk melihat atau menghapus foto.</p>
 
       <div class="manage-tools">
         <label>Pilih Program
@@ -301,10 +326,9 @@
       </div>
     </div>
 
+    <!-- ================= 7. BROSUR PDF ================= -->
     <div class="card" id="brosur-pdf">
-      <h2>6. Upload Brosur PDF Per Program</h2>
-      <p>Gunakan bagian ini untuk mengunggah brosur PDF khusus. Setiap program bisa memiliki brosur sendiri. Brosur yang sudah tidak dipakai bisa dihapus melalui daftar di bawah.</p>
-
+      <h2>7. Upload Brosur PDF Per Program</h2>
       <div class="pdf-tools">
         <label>Pilih Program Brosur
           <select id="brosurProgram">
@@ -326,11 +350,11 @@
       </div>
 
       <label>Judul Brosur
-        <input id="brosurTitleInput" placeholder="Contoh: Brosur PAUD Non Formal">
+        <input id="brosurTitleInput" placeholder="Contoh: Brosur Program Paket C">
       </label>
 
       <label>Keterangan Singkat Brosur
-        <textarea id="brosurDescInput" placeholder="Contoh: Informasi kegiatan, jadwal, alur pendaftaran, dan kontak program PAUD Non Formal"></textarea>
+        <textarea id="brosurDescInput" placeholder="Contoh: Rincian kurikulum dan info pendaftaran program kesetaraan"></textarea>
       </label>
 
       <button class="btn" id="uploadBrosurBtn">Upload Brosur PDF</button>
@@ -341,13 +365,12 @@
       </div>
     </div>
 
+    <!-- ================= 8. ARTIKEL ================= -->
     <div class="card" id="artikel-edukasi">
-      <h2>7. Artikel Parenting & Edukasi</h2>
-      <p>Tambah artikel untuk halaman web. Cocok untuk parenting, pendidikan inklusi, tumbuh kembang, adab, dan info program.</p>
-
+      <h2>8. Artikel Parenting & Edukasi</h2>
       <div class="stage3-tools">
         <label>Judul Artikel
-          <input id="articleTitleInput" placeholder="Contoh: Cara Mendampingi Anak Belajar di Rumah">
+          <input id="articleTitleInput" placeholder="Contoh: Tips Belajar Mandiri yang Efektif">
         </label>
         <label>Kategori
           <input id="articleCategoryInput" placeholder="Contoh: Parenting / Inklusi / Adab">
@@ -364,16 +387,16 @@
       </div>
 
       <label>Ringkasan Artikel
-        <textarea id="articleSummaryInput" placeholder="Ringkasan singkat yang tampil di kartu artikel"></textarea>
+        <textarea id="articleSummaryInput" placeholder="Ringkasan singkat"></textarea>
       </label>
 
       <label>Isi Artikel
-        <textarea id="articleContentInput" placeholder="Tulis isi artikel lengkap di sini"></textarea>
+        <textarea id="articleContentInput" placeholder="Tulis artikel lengkap di sini"></textarea>
       </label>
 
       <button class="btn" id="saveArticleBtn">Simpan Artikel</button>
       <button class="stage3-cancel" id="articleCancelEditBtn" type="button">Batal Edit</button>
-      <button class="btn secondary" id="loadArticleBtn">Kelola / Edit / Hapus Artikel</button>
+      <button class="btn secondary" id="loadArticleBtn">Kelola / Hapus Artikel</button>
       <div class="edit-mode-note" id="articleEditNote">Mode edit artikel aktif. Ubah data lalu klik Simpan Artikel.</div>
 
       <div id="articleManageList" class="stage3-list">
@@ -381,16 +404,15 @@
       </div>
     </div>
 
+    <!-- ================= 9. KALENDER & ALBUM ================= -->
     <div class="card" id="kalender-kegiatan">
-      <h2>8. Kalender Akademik & Kegiatan</h2>
-      <p>Tambah agenda akademik dan kegiatan agar wali murid dapat melihat informasi terbaru di web.</p>
-
+      <h2>9. Kalender Akademik & Kegiatan</h2>
       <div class="stage3-tools">
         <label>Judul Kegiatan
-          <input id="eventTitleInput" placeholder="Contoh: Cooking Class PAUD">
+          <input id="eventTitleInput" placeholder="Contoh: Evaluasi Akhir Semester">
         </label>
         <label>Kategori
-          <input id="eventCategoryInput" placeholder="Contoh: PAUD / Parenting / SOC">
+          <input id="eventCategoryInput" placeholder="Contoh: Akademik / Ujian">
         </label>
       </div>
 
@@ -399,12 +421,12 @@
           <input id="eventDateInput" type="date">
         </label>
         <label>Waktu
-          <input id="eventTimeInput" placeholder="Contoh: 08.00 - 10.00">
+          <input id="eventTimeInput" placeholder="Contoh: 08.00 - 12.00">
         </label>
       </div>
 
       <label>Lokasi
-        <input id="eventLocationInput" placeholder="Contoh: PKBM Pelita Aushaf Indonesia">
+        <input id="eventLocationInput" placeholder="Contoh: Kampus PKBM / Daring">
       </label>
 
       <label>Keterangan
@@ -413,8 +435,8 @@
 
       <button class="btn" id="saveEventBtn">Simpan Kegiatan</button>
       <button class="stage3-cancel" id="eventCancelEditBtn" type="button">Batal Edit</button>
-      <button class="btn secondary" id="loadEventBtn">Kelola / Edit / Hapus Kegiatan</button>
-      <div class="edit-mode-note" id="eventEditNote">Mode edit kegiatan aktif. Ubah data lalu klik Simpan Kegiatan.</div>
+      <button class="btn secondary" id="loadEventBtn">Kelola / Hapus Kegiatan</button>
+      <div class="edit-mode-note" id="eventEditNote">Mode edit kegiatan aktif.</div>
 
       <div id="eventManageList" class="stage3-list">
         <div class="empty">Masukkan GitHub Token, lalu klik Kelola / Hapus Kegiatan.</div>
@@ -422,12 +444,10 @@
     </div>
 
     <div class="card" id="galeri-album">
-      <h2>9. Galeri Album</h2>
-      <p>Buat album kegiatan pilihan. Album ini menampilkan cover, keterangan, dan bisa diarahkan ke galeri program.</p>
-
+      <h2>10. Galeri Album</h2>
       <div class="stage3-tools">
         <label>Judul Album
-          <input id="albumTitleInput" placeholder="Contoh: Cooking Class PAUD Non Formal">
+          <input id="albumTitleInput" placeholder="Contoh: Dokumentasi Ujian CBT">
         </label>
         <label>Program Album
           <select id="albumProgramInput">
@@ -453,7 +473,7 @@
       </div>
 
       <label>Keterangan Album
-        <textarea id="albumDescInput" placeholder="Keterangan singkat album kegiatan"></textarea>
+        <textarea id="albumDescInput" placeholder="Keterangan album"></textarea>
       </label>
 
       <button class="btn" id="saveAlbumBtn">Simpan Album</button>
@@ -464,27 +484,15 @@
       </div>
     </div>
 
+    <!-- ================= 11. CATATAN PROSES ================= -->
     <div class="card" id="catatan-proses">
-      <h2>10. Catatan Proses</h2>
+      <h2>11. Catatan Proses</h2>
       <div id="log" class="log">Siap upload...</div>
-    </div>
-
-    <div class="card">
-      <h2>Cara Membuat GitHub Token</h2>
-      <ol>
-        <li>Buka GitHub → klik foto profil → <b>Settings</b>.</li>
-        <li>Pilih <b>Developer settings</b> → <b>Personal access tokens</b> → <b>Fine-grained tokens</b>.</li>
-        <li>Klik <b>Generate new token</b>.</li>
-        <li>Pilih repository <code>simpkbmpai.github.io</code>.</li>
-        <li>Pada permission, bagian <b>Contents</b> pilih <b>Read and write</b>.</li>
-        <li>Generate token, copy, lalu tempel di kolom token dashboard ini.</li>
-      </ol>
     </div>
   </div>
 
   <script>
     const programs = ["Daycare","PAUD Non Formal","Kelompok Bermain","Paket A","Paket B","Paket C","Program Home Schooling"];
-
     const $ = (id) => document.getElementById(id);
     const logBox = $("log");
 
@@ -498,32 +506,21 @@
       if($("success")) $("success").style.display = "none";
       if($("error")) $("error").style.display = "none";
       const el = type === "success" ? $("success") : $("error");
-      if(el){
-        el.textContent = msg;
-        el.style.display = "block";
-      }
+      if(el){ el.textContent = msg; el.style.display = "block"; }
     }
 
     function slugify(text){
-      return text.toLowerCase()
-        .replace(/program /g, "")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+      return text.toLowerCase().replace(/program /g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     }
 
     function safeName(name){
-      return name.toLowerCase()
-        .replace(/\.[^.]+$/, "")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-        .slice(0, 40) || "foto";
+      return name.toLowerCase().replace(/\.[^.]+$/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "foto";
     }
 
     function arrayBufferToBase64(buffer){
       let binary = "";
       const bytes = new Uint8Array(buffer);
-      const len = bytes.byteLength;
-      for(let i=0; i<len; i++){ binary += String.fromCharCode(bytes[i]); }
+      for(let i=0; i<bytes.byteLength; i++){ binary += String.fromCharCode(bytes[i]); }
       return btoa(binary);
     }
 
@@ -578,12 +575,8 @@
       return json;
     }
 
-    function utf8ToBase64(str){
-      return btoa(unescape(encodeURIComponent(str)));
-    }
-    function base64ToUtf8(b64){
-      return decodeURIComponent(escape(atob(b64.replace(/\n/g, ""))));
-    }
+    function utf8ToBase64(str){ return btoa(unescape(encodeURIComponent(str))); }
+    function base64ToUtf8(b64){ return decodeURIComponent(escape(atob(b64.replace(/\n/g, "")))); }
 
     async function getGithubFile(path){
       const branch = $("branch").value.trim() || "main";
@@ -626,929 +619,203 @@
     async function deleteGithubFile(path, message){
       const branch = $("branch").value.trim() || "main";
       const fileInfo = await githubRequest("GET", `${path}?ref=${encodeURIComponent(branch)}`);
-      return await githubRequest("DELETE", path, {
-        message,
-        sha: fileInfo.sha,
-        branch
-      });
+      return await githubRequest("DELETE", path, { message, sha: fileInfo.sha, branch });
     }
 
     function escapeHtml(str){
-      return String(str || "").replace(/[&<>"']/g, function(ch){
-        return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[ch] || ch;
-      });
+      return String(str || "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[ch] || ch));
     }
 
-    /* ===== FITUR VIDEO YOUTUBE (DINAMIS DENGAN NOTIFIKASI LANGSUNG) ===== */
-    const defaultVideoData = {
-      youtubeUrl: "https://www.youtube.com/watch?v=eOHkg5rBSLo",
-      judul: "Mengenal PKBM Pelita Aushaf Indonesia",
-      deskripsi: "Simak dokumentasi suasana belajar, adab, dan program pendampingan anak di sekolah kami."
+    /* ===== FITUR OTOMATISASI LINK UJIAN CBT ===== */
+    const defaultUjianData = {
+      "Paket A": "",
+      "Paket B": "",
+      "Paket C": ""
     };
 
-    function showVideoStatus(type, msg){
-      const el = $("videoStatus");
+    // Fungsi Pintar: Mengubah iframe / shortlink menjadi Link Embed Murni Google Form
+    function cleanEmbedUrl(input) {
+      if(!input) return "";
+      let url = input.trim();
+      const match = url.match(/src=["']([^"']+)["']/i);
+      if(match && match[1]) { url = match[1]; }
+      if(url.includes("docs.google.com/forms") && !url.includes("embedded=true")) {
+        url += (url.includes("?") ? "&" : "?") + "embedded=true";
+      }
+      return url;
+    }
+
+    function showUjianStatus(type, msg){
+      const el = $("ujianStatus");
       if(!el) return;
       el.style.display = "block";
       if(type === "success"){
-        el.style.background = "#ecfdf5";
-        el.style.border = "1px solid #a7f3d0";
-        el.style.color = "#065f46";
+        el.style.background = "#ecfdf5"; el.style.border = "1px solid #a7f3d0"; el.style.color = "#065f46";
         el.innerHTML = "✅ " + msg;
       } else if(type === "loading"){
-        el.style.background = "#eff6ff";
-        el.style.border = "1px solid #bfdbfe";
-        el.style.color = "#1e40af";
+        el.style.background = "#eff6ff"; el.style.border = "1px solid #bfdbfe"; el.style.color = "#1e40af";
         el.innerHTML = "⏳ " + msg;
       } else {
-        el.style.background = "#fef2f2";
-        el.style.border = "1px solid #fecaca";
-        el.style.color = "#991b1b";
+        el.style.background = "#fef2f2"; el.style.border = "1px solid #fecaca"; el.style.color = "#991b1b";
         el.innerHTML = "❌ " + msg;
       }
     }
 
-    async function getVideoJson(){
+    async function getUjianJson(){
       const token = $("token") ? $("token").value.trim() : "";
       if(token){
         try{
-          const data = await getGithubFile("data-video.json");
-          return { json: {...defaultVideoData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha };
+          const data = await getGithubFile("data-ujian.json");
+          return { json: {...defaultUjianData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha };
         }catch(err){
-          if(String(err.message).includes("Not Found")){
-            return { json: {...defaultVideoData}, sha: null };
-          }
+          if(String(err.message).includes("Not Found")) return { json: {...defaultUjianData}, sha: null };
           throw err;
         }
       } else {
-        // Baca publik secara instan tanpa perlu token
-        const res = await fetch("data-video.json?t=" + Date.now());
-        if(!res.ok) return { json: {...defaultVideoData}, sha: null };
+        const res = await fetch("data-ujian.json?t=" + Date.now());
+        if(!res.ok) return { json: {...defaultUjianData}, sha: null };
         const json = await res.json();
-        return { json: {...defaultVideoData, ...json}, sha: null };
+        return { json: {...defaultUjianData, ...json}, sha: null };
       }
     }
 
-    async function loadVideoSettings(){
-      showVideoStatus("loading", "Memuat data video saat ini...");
+    async function loadUjianSettings(){
+      showUjianStatus("loading", "Memuat data link ujian...");
       try{
-        log("Memuat data video YouTube...");
+        const fileData = await getUjianJson();
+        const data = fileData.json || defaultUjianData;
+        $("ujianPaketA").value = data["Paket A"] || "";
+        $("ujianPaketB").value = data["Paket B"] || "";
+        $("ujianPaketC").value = data["Paket C"] || "";
+        showUjianStatus("success", "Link soal ujian berhasil dimuat!");
+      }catch(err){
+        showUjianStatus("error", "Gagal memuat link ujian: " + err.message);
+      }
+    }
+
+    async function saveUjianSettings(){
+      const token = $("token") ? $("token").value.trim() : "";
+      if(!token){
+        showUjianStatus("error", "GitHub Token belum diisi pada Bagian 1 di atas.");
+        $("token").focus();
+        return;
+      }
+
+      const saveBtn = $("saveUjianBtn");
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan ke GitHub...";
+      showUjianStatus("loading", "Menyimpan link soal ke database...");
+
+      try{
+        let sha = null;
+        try{
+          const old = await getGithubFile("data-ujian.json");
+          sha = old.sha;
+        }catch(e){}
+
+        const data = {
+          "Paket A": cleanEmbedUrl($("ujianPaketA").value),
+          "Paket B": cleanEmbedUrl($("ujianPaketB").value),
+          "Paket C": cleanEmbedUrl($("ujianPaketC").value),
+          updatedAt: new Date().toISOString()
+        };
+
+        // Perbarui tampilan input dengan link bersih
+        $("ujianPaketA").value = data["Paket A"];
+        $("ujianPaketB").value = data["Paket B"];
+        $("ujianPaketC").value = data["Paket C"];
+
+        await putFile("data-ujian.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update link soal ujian CBT per jenjang", sha);
+        showUjianStatus("success", "Link soal ujian berhasil disimpan! Murid yang membuka ujian akan langsung melihat form terbaru.");
+        alert("Sukses! Link soal ujian per jenjang berhasil disimpan.");
+      }catch(err){
+        showUjianStatus("error", "Gagal menyimpan link ujian: " + err.message);
+      }finally{
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan Link Soal Ujian";
+      }
+    }
+
+    $("saveUjianBtn").addEventListener("click", saveUjianSettings);
+    $("loadUjianBtn").addEventListener("click", loadUjianSettings);
+    try { loadUjianSettings(); } catch(e){}
+
+    /* ===== FITUR VIDEO YOUTUBE ===== */
+    const defaultVideoData = { youtubeUrl: "https://www.youtube.com/watch?v=eOHkg5rBSLo", judul: "Mengenal PKBM Pelita Aushaf Indonesia", deskripsi: "Simak suasana belajar di PKBM kami." };
+    function showVideoStatus(type, msg){
+      const el = $("videoStatus"); if(!el) return; el.style.display = "block";
+      el.style.background = type === "success" ? "#ecfdf5" : (type === "loading" ? "#eff6ff" : "#fef2f2");
+      el.style.color = type === "success" ? "#065f46" : (type === "loading" ? "#1e40af" : "#991b1b");
+      el.innerHTML = (type === "success" ? "✅ " : (type === "loading" ? "⏳ " : "❌ ")) + msg;
+    }
+    async function getVideoJson(){
+      const token = $("token") ? $("token").value.trim() : "";
+      if(token){
+        try{ const data = await getGithubFile("data-video.json"); return { json: {...defaultVideoData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha }; }
+        catch(err){ return { json: {...defaultVideoData}, sha: null }; }
+      } else {
+        const res = await fetch("data-video.json?t=" + Date.now());
+        if(!res.ok) return { json: {...defaultVideoData}, sha: null };
+        return { json: {...defaultVideoData, ...(await res.json())}, sha: null };
+      }
+    }
+    async function loadVideoSettings(){
+      showVideoStatus("loading", "Memuat data video...");
+      try{
         const fileData = await getVideoJson();
         const data = fileData.json || defaultVideoData;
         $("videoUrlInput").value = data.youtubeUrl || "";
         $("videoTitleInput").value = data.judul || "";
         $("videoDescInput").value = data.deskripsi || "";
         showVideoStatus("success", "Data video berhasil dimuat!");
-        log("Video berhasil dimuat.");
-      }catch(err){
-        log("ERROR: " + err.message);
-        showVideoStatus("error", "Gagal memuat video: " + err.message);
-      }
+      }catch(err){ showVideoStatus("error", "Gagal memuat: " + err.message); }
     }
-
     async function saveVideoSettings(){
       const token = $("token") ? $("token").value.trim() : "";
-      if(!token){
-        showVideoStatus("error", "GitHub Token belum diisi! Silakan masukkan Token di Bagian 1 di atas terlebih dahulu.");
-        $("token").focus();
-        $("token").scrollIntoView({behavior: "smooth", block: "center"});
-        alert("Mohon isi GitHub Token terlebih dahulu pada Bagian 1 (Pengaturan GitHub) di atas.");
-        return;
-      }
-
-      const rawUrl = $("videoUrlInput").value.trim();
-      if(!rawUrl){
-        showVideoStatus("error", "Link atau ID video YouTube wajib diisi.");
-        $("videoUrlInput").focus();
-        return;
-      }
-
-      const saveBtn = $("saveVideoBtn");
-      const originalText = saveBtn.textContent;
-      saveBtn.disabled = true;
-      saveBtn.textContent = "Menyimpan ke GitHub...";
-      showVideoStatus("loading", "Sedang menyimpan data video ke GitHub...");
-
+      if(!token){ alert("Mohon isi GitHub Token terlebih dahulu."); return; }
+      const saveBtn = $("saveVideoBtn"); saveBtn.disabled = true;
       try{
-        log("Mengambil info file data-video.json...");
-        let sha = null;
-        try{
-          const oldFile = await getGithubFile("data-video.json");
-          sha = oldFile.sha;
-        }catch(e){}
-
-        const data = {
-          youtubeUrl: rawUrl,
-          judul: $("videoTitleInput").value.trim() || defaultVideoData.judul,
-          deskripsi: $("videoDescInput").value.trim() || defaultVideoData.deskripsi,
-          updatedAt: new Date().toISOString()
-        };
-
-        log("Mengirim data video ke GitHub...");
-        await putFile("data-video.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update video profil YouTube PKBM dari dashboard", sha);
-        
-        showVideoStatus("success", "Video profil berhasil disimpan! Tunggu 1–2 menit lalu buka website utama.");
-        log("Selesai menyimpan video ke data-video.json.");
-        alert("Sukses! Video profil berhasil disimpan ke GitHub. Tunggu 1-2 menit lalu refresh website utama.");
-      }catch(err){
-        log("ERROR: " + err.message);
-        showVideoStatus("error", "Gagal menyimpan video: " + err.message);
-        alert("Gagal menyimpan video: " + err.message);
-      }finally{
-        saveBtn.disabled = false;
-        saveBtn.textContent = originalText;
-      }
+        let sha = null; try{ const old = await getGithubFile("data-video.json"); sha = old.sha; }catch(e){}
+        const data = { youtubeUrl: $("videoUrlInput").value.trim(), judul: $("videoTitleInput").value.trim(), deskripsi: $("videoDescInput").value.trim(), updatedAt: new Date().toISOString() };
+        await putFile("data-video.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update video profil", sha);
+        showVideoStatus("success", "Video berhasil disimpan!");
+      }catch(err){ showVideoStatus("error", err.message); }
+      finally{ saveBtn.disabled = false; }
     }
-
-    if($("saveVideoBtn")) $("saveVideoBtn").addEventListener("click", saveVideoSettings);
-    if($("loadVideoBtn")) $("loadVideoBtn").addEventListener("click", loadVideoSettings);
-
-    // Otomatis muat data video saat halaman admin dibuka
+    $("saveVideoBtn").addEventListener("click", saveVideoSettings);
+    $("loadVideoBtn").addEventListener("click", loadVideoSettings);
     try { loadVideoSettings(); } catch(e){}
 
-    /* ===== FITUR KONTAK WEBSITE ===== */
-    const defaultContactData = {
-      whatsappAdmin: "6287751325199",
-      whatsappAdminDisplay: "0877-5132-5199",
-      cpHumas: "082140046047",
-      cpHumasDisplay: "0821-4004-6047",
-      note: ""
-    };
-
-    function digitsOnly(value){
-      return String(value || "").replace(/\D/g, "");
-    }
-
-    function normalizeWhatsapp(value){
-      let digits = digitsOnly(value);
-      if(digits.startsWith("0")) digits = "62" + digits.slice(1);
-      if(digits.startsWith("8")) digits = "62" + digits;
-      return digits;
-    }
-
-    function formatIndonesiaPhone(value){
-      let digits = digitsOnly(value);
-      if(digits.startsWith("62")) digits = "0" + digits.slice(2);
-      if(!digits) return "";
-      if(digits.length <= 4) return digits;
-      if(digits.length <= 8) return digits.slice(0,4) + "-" + digits.slice(4);
-      return digits.slice(0,4) + "-" + digits.slice(4,8) + "-" + digits.slice(8);
-    }
-
-    function refreshContactPreview(){
-      const adminPreview = $("contactAdminPreview");
-      const humasPreview = $("contactHumasPreview");
-      if(adminPreview) adminPreview.textContent = formatIndonesiaPhone($("contactAdminInput")?.value) || "-";
-      if(humasPreview) humasPreview.textContent = formatIndonesiaPhone($("contactHumasInput")?.value) || "-";
-    }
-
-    async function getContactJson(){
-      try{
-        const data = await getGithubFile("data-kontak.json");
-        return { json: {...defaultContactData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha };
-      }catch(err){
-        if(String(err.message).includes("Not Found")){
-          return { json: {...defaultContactData}, sha: null };
-        }
-        throw err;
-      }
-    }
-
-    async function loadContactSettings(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-      try{
-        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
-        log("Memuat data kontak website...");
-        const fileData = await getContactJson();
-        const data = fileData.json || defaultContactData;
-        $("contactAdminInput").value = data.whatsappAdminDisplay || formatIndonesiaPhone(data.whatsappAdmin) || defaultContactData.whatsappAdminDisplay;
-        $("contactHumasInput").value = data.cpHumasDisplay || formatIndonesiaPhone(data.cpHumas) || defaultContactData.cpHumasDisplay;
-        $("contactNoteInput").value = data.note || "";
-        refreshContactPreview();
-        show("success", "Kontak berhasil dimuat dari data-kontak.json.");
-        log("Kontak berhasil dimuat.");
-      }catch(err){
-        log("ERROR: " + err.message);
-        show("error", "Gagal memuat kontak: " + err.message);
-      }
-    }
-
-    async function saveContactSettings(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-      try{
-        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
-        const adminWa = normalizeWhatsapp($("contactAdminInput").value);
-        const humasDigits = digitsOnly($("contactHumasInput").value);
-        if(!adminWa || adminWa.length < 10) throw new Error("Nomor WhatsApp Admin belum valid.");
-        if(!humasDigits || humasDigits.length < 9) throw new Error("Nomor CP Humas belum valid.");
-
-        log("Menyimpan data-kontak.json...");
-        const old = await getContactJson();
-        const data = {
-          whatsappAdmin: adminWa,
-          whatsappAdminDisplay: formatIndonesiaPhone($("contactAdminInput").value),
-          cpHumas: humasDigits.startsWith("62") ? humasDigits : humasDigits,
-          cpHumasDisplay: formatIndonesiaPhone($("contactHumasInput").value),
-          note: $("contactNoteInput").value.trim(),
-          updatedAt: new Date().toISOString().slice(0,10)
-        };
-        await putFile("data-kontak.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update kontak website PKBM", old.sha);
-        refreshContactPreview();
-        show("success", "Kontak berhasil disimpan. Tunggu 1-3 menit lalu refresh website.");
-        log("Selesai menyimpan kontak. Tunggu 1-3 menit lalu refresh website.");
-      }catch(err){
-        log("ERROR: " + err.message);
-        show("error", "Gagal menyimpan kontak: " + err.message);
-      }
-    }
-
-    /* ===== FITUR FOTO KEGIATAN ===== */
-    let currentManageData = null;
-
-    async function loadManageList(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-
-      try{
-        const token = $("token").value.trim();
-        if(!token){ throw new Error("GitHub token belum diisi."); }
-
-        const selectedProgram = $("manageProgram").value;
-        log("Memuat daftar foto: " + selectedProgram);
-
-        currentManageData = await getJsonFile("data-kegiatan.json");
-        const gallery = currentManageData.json || {};
-        const photos = Array.isArray(gallery[selectedProgram]) ? gallery[selectedProgram].slice().reverse() : [];
-        const list = $("manageList");
-
-        if(!photos.length){
-          list.innerHTML = `<div class="empty">Belum ada foto pada program ${escapeHtml(selectedProgram)}.</div>`;
-          return;
-        }
-
-        list.innerHTML = photos.map(item => `
-          <div class="manage-item">
-            <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.caption || "Foto kegiatan")}">
-            <div>
-              <b>${escapeHtml(item.caption || "Kegiatan " + selectedProgram)}</b>
-              <small>${escapeHtml(item.date || "")}</small>
-              <small>${escapeHtml(item.src || "")}</small>
-            </div>
-            <button class="delete-btn" data-src="${escapeHtml(item.src)}" data-program="${escapeHtml(selectedProgram)}">Hapus</button>
-          </div>
-        `).join("");
-
-        list.querySelectorAll(".delete-btn").forEach(btn => {
-          btn.addEventListener("click", async () => {
-            const src = btn.dataset.src;
-            const program = btn.dataset.program;
-            await deletePhoto(program, src);
-          });
-        });
-
-      }catch(err){
-        console.error(err);
-        log("ERROR: " + err.message);
-        show("error", "Gagal memuat foto: " + err.message);
-      }
-    }
-
-    async function deletePhoto(program, src){
-      if(!confirm("Yakin ingin menghapus foto ini dari website?")) return;
-
-      try{
-        log("Menghapus foto dari galeri: " + src);
-
-        const dataFile = await getJsonFile("data-kegiatan.json");
-        const gallery = dataFile.json || {};
-        programs.forEach(p => { if(!Array.isArray(gallery[p])) gallery[p] = []; });
-
-        const before = gallery[program].length;
-        gallery[program] = gallery[program].filter(item => item.src !== src);
-
-        if(gallery[program].length === before){
-          throw new Error("Foto tidak ditemukan di data-kegiatan.json.");
-        }
-
-        const jsonBase64 = utf8ToBase64(JSON.stringify(gallery, null, 2));
-        await putFile("data-kegiatan.json", jsonBase64, `Hapus foto kegiatan ${program}`, dataFile.sha);
-
-        try{
-          log("Menghapus file foto dari repository...");
-          await deleteGithubFile(src, `Hapus file foto kegiatan ${program}`);
-        }catch(fileErr){
-          log("Catatan: data galeri sudah dihapus, tetapi file foto lama belum terhapus: " + fileErr.message);
-        }
-
-        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
-        show("success", "Foto berhasil dihapus dari galeri. Tunggu 1-3 menit, lalu refresh website.");
-        await loadManageList();
-
-      }catch(err){
-        console.error(err);
-        log("ERROR: " + err.message);
-        show("error", "Gagal menghapus foto: " + err.message);
-      }
-    }
-
-    /* ===== FITUR BROSUR PDF ===== */
-    const brochurePrograms = ["Brosur Umum","Daycare","PAUD Non Formal","Kelompok Bermain","Paket A","Paket B","Paket C","Program Home Schooling","Pendidikan Inklusi"];
-
-    function brochureSlug(text){
-      if(text === "Brosur Umum") return "brosur-umum";
-      return text.toLowerCase()
-        .replace(/program /g, "")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
-    }
-
-    async function getBrosurJson(){
-      try{
-        const data = await getGithubFile("data-brosur.json");
-        return { json: JSON.parse(base64ToUtf8(data.content)), sha: data.sha };
-      }catch(err){
-        if(String(err.message).includes("Not Found")){
-          return { json: {}, sha: null };
-        }
-        throw err;
-      }
-    }
-
-    async function uploadBrosurPdf(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-      logBox.textContent = "Mulai upload brosur PDF...";
-
-      try{
-        const token = $("token").value.trim();
-        if(!token){ throw new Error("GitHub token belum diisi."); }
-
-        const file = $("brosurPdf").files && $("brosurPdf").files[0];
-        if(!file){ throw new Error("Pilih file PDF terlebih dahulu."); }
-        if(!file.name.toLowerCase().endsWith(".pdf")){ throw new Error("File harus PDF."); }
-
-        const program = $("brosurProgram").value;
-        const title = $("brosurTitleInput").value.trim() || `Brosur ${program}`;
-        const desc = $("brosurDescInput").value.trim() || `Informasi lengkap program ${program}.`;
-        const path = `brosur-program/${brochureSlug(program)}.pdf`;
-
-        log("Membaca file PDF...");
-        const buffer = await file.arrayBuffer();
-        const base64 = arrayBufferToBase64(buffer);
-
-        log("Upload PDF ke GitHub: " + path);
-        await putBinaryFile(path, base64, `Upload brosur PDF ${program}`);
-
-        log("Memperbarui data-brosur.json...");
-        const dataFile = await getBrosurJson();
-        const data = dataFile.json || {};
-        data[program] = {
-          title,
-          desc,
-          path,
-          fileName: file.name,
-          updatedAt: new Date().toISOString()
-        };
-
-        await putFile("data-brosur.json", utf8ToBase64(JSON.stringify(data, null, 2)), `Update data brosur ${program}`, dataFile.sha);
-
-        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
-        show("success", "Brosur PDF berhasil diunggah. Tunggu 1-3 menit, lalu refresh website.");
-        await loadBrosurManageList();
-
-      }catch(err){
-        console.error(err);
-        log("ERROR: " + err.message);
-        show("error", "Gagal upload brosur: " + err.message);
-      }
-    }
-
-    function isCustomBrosur(item){
-      return item && item.path && item.path.startsWith("brosur-program/") && item.updatedAt && item.updatedAt !== "default";
-    }
-
-    async function loadBrosurManageList(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-      try{
-        const token = $("token").value.trim();
-        if(!token){ throw new Error("GitHub token belum diisi."); }
-
-        log("Memuat daftar brosur...");
-        const dataFile = await getBrosurJson();
-        const data = dataFile.json || {};
-        const list = $("brosurManageList");
-
-        const rows = brochurePrograms.map(program => {
-          const item = data[program];
-          const custom = isCustomBrosur(item);
-
-          if(!item || !custom){
-            return `<div class="pdf-item">
-              <div>
-                <b>${escapeHtml(program)}</b>
-                <small>Belum ada PDF khusus. Website memakai brosur umum.</small>
-              </div>
-              <div class="pdf-actions">
-                <span class="pdf-link">Default</span>
-              </div>
-            </div>`;
-          }
-
-          return `<div class="pdf-item">
-            <div>
-              <b>${escapeHtml(program)}</b>
-              <small>${escapeHtml(item.title || program)} • ${escapeHtml(item.updatedAt || "")}</small>
-              <small>${escapeHtml(item.path || "")}</small>
-            </div>
-            <div class="pdf-actions">
-              <a class="pdf-link" href="${escapeHtml(item.path)}" target="_blank" rel="noopener">Lihat PDF</a>
-              <button class="pdf-delete" data-program="${escapeHtml(program)}" data-path="${escapeHtml(item.path)}">Hapus</button>
-            </div>
-          </div>`;
-        }).join("");
-
-        list.innerHTML = rows;
-
-        list.querySelectorAll(".pdf-delete").forEach(btn => {
-          btn.addEventListener("click", async () => {
-            await deleteBrosurPdf(btn.dataset.program, btn.dataset.path);
-          });
-        });
-
-      }catch(err){
-        console.error(err);
-        log("ERROR: " + err.message);
-        show("error", "Gagal memuat daftar brosur: " + err.message);
-      }
-    }
-
-    async function deleteBrosurPdf(program, path){
-      if(!confirm("Yakin ingin menghapus brosur PDF khusus untuk " + program + "? Setelah dihapus, website akan kembali memakai brosur umum.")) return;
-
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-
-      try{
-        const token = $("token").value.trim();
-        if(!token){ throw new Error("GitHub token belum diisi."); }
-
-        log("Menghapus data brosur: " + program);
-        const dataFile = await getBrosurJson();
-        const data = dataFile.json || {};
-
-        if(data[program]){
-          delete data[program];
-        }
-
-        await putFile("data-brosur.json", utf8ToBase64(JSON.stringify(data, null, 2)), `Hapus brosur PDF ${program}`, dataFile.sha);
-
-        if(path && path.startsWith("brosur-program/")){
-          try{
-            log("Menghapus file PDF dari repository: " + path);
-            await deleteGithubFile(path, `Hapus file brosur PDF ${program}`);
-          }catch(fileErr){
-            log("Catatan: data brosur sudah dihapus, tetapi file PDF lama belum terhapus: " + fileErr.message);
-          }
-        }else{
-          log("File default tidak dihapus. Website kembali memakai brosur umum.");
-        }
-
-        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
-        show("success", "Brosur khusus berhasil dihapus. Website akan kembali memakai brosur umum.");
-        await loadBrosurManageList();
-
-      }catch(err){
-        console.error(err);
-        log("ERROR: " + err.message);
-        show("error", "Gagal menghapus brosur: " + err.message);
-      }
-    }
-
-    $("uploadBrosurBtn").addEventListener("click", uploadBrosurPdf);
-    $("loadBrosurBtn").addEventListener("click", loadBrosurManageList);
-
-    /* ===== Tahap 3 Dashboard: Artikel, Kalender, Album ===== */
-    let editingArticleId = null;
-    let editingEventId = null;
-    function makeId(prefix, title){
-      return prefix + "-" + (title || "item").toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-        .slice(0, 50) + "-" + Date.now();
-    }
-
-    async function getArrayJsonFile(path){
-      try{
-        const data = await getGithubFile(path);
-        const parsed = JSON.parse(base64ToUtf8(data.content));
-        return { json: Array.isArray(parsed) ? parsed : [], sha: data.sha };
-      }catch(err){
-        if(String(err.message).includes("Not Found")){
-          return { json: [], sha: null };
-        }
-        throw err;
-      }
-    }
-
-    async function uploadOptionalImage(file, folder, prefix){
-      if(!file) return "";
-      const resized = await resizeImage(file, 1400, .78);
-      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-      const path = `${folder}/${timestamp}-${safeName(prefix || file.name)}.jpg`;
-      await putBinaryFile(path, resized.base64, `Upload gambar ${folder}`);
-      return path;
-    }
-
-    async function saveArticle(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-      logBox.textContent = editingArticleId ? "Mulai mengedit artikel..." : "Mulai menyimpan artikel...";
-
-      try{
-        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
-        const title = $("articleTitleInput").value.trim();
-        if(!title) throw new Error("Judul artikel belum diisi.");
-
-        const fileData = await getArrayJsonFile("data-artikel.json");
-        const data = fileData.json || [];
-        const existing = editingArticleId ? data.find(x => x.id === editingArticleId) : null;
-
-        const newCover = await uploadOptionalImage(($("articleCoverInput").files || [])[0], "artikel-cover", title);
-        const cover = newCover || (existing ? existing.cover : "");
-
-        const item = {
-          id: editingArticleId || makeId("artikel", title),
-          title,
-          category: $("articleCategoryInput").value.trim() || "Umum",
-          date: $("articleDateInput").value || new Date().toISOString().slice(0,10),
-          summary: $("articleSummaryInput").value.trim() || "-",
-          content: $("articleContentInput").value.trim() || $("articleSummaryInput").value.trim() || "-",
-          cover,
-          createdAt: existing ? (existing.createdAt || new Date().toISOString()) : new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-
-        let next;
-        if(editingArticleId){
-          next = data.map(x => x.id === editingArticleId ? item : x);
-          await putFile("data-artikel.json", utf8ToBase64(JSON.stringify(next, null, 2)), "Edit artikel " + title, fileData.sha);
-          show("success", "Artikel berhasil diedit.");
-          cancelEditArticle(false);
-        }else{
-          next = data.concat(item);
-          await putFile("data-artikel.json", utf8ToBase64(JSON.stringify(next, null, 2)), "Tambah artikel " + title, fileData.sha);
-          show("success", "Artikel berhasil disimpan.");
-          clearArticleForm();
-        }
-
-        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
-        await loadStage3Manage("artikel");
-      }catch(err){
-        log("ERROR: " + err.message);
-        show("error", "Gagal menyimpan artikel: " + err.message);
-      }
-    }
-
-    async function saveEvent(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-      logBox.textContent = editingEventId ? "Mulai mengedit kegiatan..." : "Mulai menyimpan kegiatan...";
-
-      try{
-        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
-        const title = $("eventTitleInput").value.trim();
-        if(!title) throw new Error("Judul kegiatan belum diisi.");
-
-        const fileData = await getArrayJsonFile("data-kalender.json");
-        const data = fileData.json || [];
-        const existing = editingEventId ? data.find(x => x.id === editingEventId) : null;
-
-        const item = {
-          id: editingEventId || makeId("agenda", title),
-          title,
-          category: $("eventCategoryInput").value.trim() || "Kegiatan",
-          date: $("eventDateInput").value || new Date().toISOString().slice(0,10),
-          time: $("eventTimeInput").value.trim() || "-",
-          location: $("eventLocationInput").value.trim() || "PKBM Pelita Aushaf Indonesia",
-          desc: $("eventDescInput").value.trim() || "-",
-          createdAt: existing ? (existing.createdAt || new Date().toISOString()) : new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-
-        let next;
-        if(editingEventId){
-          next = data.map(x => x.id === editingEventId ? item : x);
-          await putFile("data-kalender.json", utf8ToBase64(JSON.stringify(next, null, 2)), "Edit kegiatan " + title, fileData.sha);
-          show("success", "Kegiatan berhasil diedit.");
-          cancelEditEvent(false);
-        }else{
-          next = data.concat(item);
-          await putFile("data-kalender.json", utf8ToBase64(JSON.stringify(next, null, 2)), "Tambah kegiatan " + title, fileData.sha);
-          show("success", "Kegiatan berhasil disimpan.");
-          clearEventForm();
-        }
-
-        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
-        await loadStage3Manage("kalender");
-      }catch(err){
-        log("ERROR: " + err.message);
-        show("error", "Gagal menyimpan kegiatan: " + err.message);
-      }
-    }
-
-    async function saveAlbum(){
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-      logBox.textContent = "Mulai menyimpan album...";
-
-      try{
-        if(!$("token").value.trim()) throw new Error("GitHub token belum diisi.");
-        const title = $("albumTitleInput").value.trim();
-        if(!title) throw new Error("Judul album belum diisi.");
-
-        const fileData = await getArrayJsonFile("data-album.json");
-        const cover = await uploadOptionalImage(($("albumCoverInput").files || [])[0], "album-cover", title);
-        const program = $("albumProgramInput").value;
-
-        const item = {
-          id: makeId("album", title),
-          title,
-          program,
-          date: $("albumDateInput").value || new Date().toISOString().slice(0,10),
-          desc: $("albumDescInput").value.trim() || "-",
-          cover,
-          linkProgram: program,
-          createdAt: new Date().toISOString()
-        };
-
-        const data = fileData.json || [];
-        data.push(item);
-        await putFile("data-album.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Tambah album " + title, fileData.sha);
-
-        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
-        show("success", "Album berhasil disimpan.");
-        await loadStage3Manage("album");
-      }catch(err){
-        log("ERROR: " + err.message);
-        show("error", "Gagal menyimpan album: " + err.message);
-      }
-    }
-
-    async function loadStage3Manage(type){
-      if(!$("token").value.trim()) {
-        show("error", "GitHub token belum diisi.");
-        return;
-      }
-
-      let config = {
-        artikel: {path:"data-artikel.json", list:"articleManageList", title:"Artikel"},
-        kalender: {path:"data-kalender.json", list:"eventManageList", title:"Kegiatan"},
-        album: {path:"data-album.json", list:"albumManageList", title:"Album"}
-      }[type];
-
-      try{
-        log("Memuat daftar " + config.title + "...");
-        const fileData = await getArrayJsonFile(config.path);
-        const data = fileData.json || [];
-        const list = $(config.list);
-
-        if(!data.length){
-          list.innerHTML = `<div class="empty">Belum ada ${config.title.toLowerCase()}.</div>`;
-          return;
-        }
-
-        list.innerHTML = data.slice().reverse().map(item => `
-          <div class="stage3-item">
-            <div>
-              <b>${escapeHtml(item.title || item.category || config.title)}</b>
-              <small>${escapeHtml(item.date || item.createdAt || "")}</small>
-              <small>${escapeHtml(item.category || item.program || "")}</small>
-            </div>
-            <div class="stage3-actions">
-              ${type === "artikel" || type === "kalender" ? `<button class="stage3-edit" data-type="${type}" data-id="${escapeHtml(item.id || "")}">Edit</button>` : ""}
-              <button class="stage3-delete" data-type="${type}" data-id="${escapeHtml(item.id || "")}">Hapus</button>
-            </div>
-          </div>
-        `).join("");
-
-        list.querySelectorAll(".stage3-edit").forEach(btn => {
-          btn.addEventListener("click", async () => editStage3Item(btn.dataset.type, btn.dataset.id));
-        });
-
-        list.querySelectorAll(".stage3-delete").forEach(btn => {
-          btn.addEventListener("click", async () => deleteStage3Item(btn.dataset.type, btn.dataset.id));
-        });
-      }catch(err){
-        log("ERROR: " + err.message);
-        show("error", "Gagal memuat daftar: " + err.message);
-      }
-    }
-
-    function clearArticleForm(){
-      $("articleTitleInput").value = "";
-      $("articleCategoryInput").value = "";
-      $("articleDateInput").value = "";
-      $("articleCoverInput").value = "";
-      $("articleSummaryInput").value = "";
-      $("articleContentInput").value = "";
-    }
-
-    function clearEventForm(){
-      $("eventTitleInput").value = "";
-      $("eventCategoryInput").value = "";
-      $("eventDateInput").value = "";
-      $("eventTimeInput").value = "";
-      $("eventLocationInput").value = "";
-      $("eventDescInput").value = "";
-    }
-
-    function cancelEditArticle(clear=true){
-      editingArticleId = null;
-      $("saveArticleBtn").textContent = "Simpan Artikel";
-      $("articleCancelEditBtn").classList.remove("show");
-      $("articleEditNote").classList.remove("show");
-      if(clear) clearArticleForm();
-    }
-
-    function cancelEditEvent(clear=true){
-      editingEventId = null;
-      $("saveEventBtn").textContent = "Simpan Kegiatan";
-      $("eventCancelEditBtn").classList.remove("show");
-      $("eventEditNote").classList.remove("show");
-      if(clear) clearEventForm();
-    }
-
-    async function editStage3Item(type, id){
-      try{
-        const config = {
-          artikel: {path:"data-artikel.json"},
-          kalender: {path:"data-kalender.json"}
-        }[type];
-
-        if(!config) return;
-
-        const fileData = await getArrayJsonFile(config.path);
-        const item = (fileData.json || []).find(x => x.id === id);
-        if(!item) throw new Error("Data tidak ditemukan.");
-
-        if(type === "artikel"){
-          editingArticleId = id;
-          $("articleTitleInput").value = item.title || "";
-          $("articleCategoryInput").value = item.category || "";
-          $("articleDateInput").value = item.date || "";
-          $("articleSummaryInput").value = item.summary || "";
-          $("articleContentInput").value = item.content || "";
-          $("articleCoverInput").value = "";
-          $("saveArticleBtn").textContent = "Simpan Perubahan Artikel";
-          $("articleCancelEditBtn").classList.add("show");
-          $("articleEditNote").classList.add("show");
-          $("articleTitleInput").scrollIntoView({behavior:"smooth", block:"center"});
-        }
-
-        if(type === "kalender"){
-          editingEventId = id;
-          $("eventTitleInput").value = item.title || "";
-          $("eventCategoryInput").value = item.category || "";
-          $("eventDateInput").value = item.date || "";
-          $("eventTimeInput").value = item.time || "";
-          $("eventLocationInput").value = item.location || "";
-          $("eventDescInput").value = item.desc || "";
-          $("saveEventBtn").textContent = "Simpan Perubahan Kegiatan";
-          $("eventCancelEditBtn").classList.add("show");
-          $("eventEditNote").classList.add("show");
-          $("eventTitleInput").scrollIntoView({behavior:"smooth", block:"center"});
-        }
-
-        log("Mode edit aktif. Ubah data lalu klik Simpan.");
-      }catch(err){
-        log("ERROR: " + err.message);
-        show("error", "Gagal membuka mode edit: " + err.message);
-      }
-    }
-
-    async function deleteStage3Item(type, id){
-      if(!confirm("Yakin ingin menghapus item ini dari website?")) return;
-
-      const config = {
-        artikel: {path:"data-artikel.json", list:"articleManageList", title:"Artikel", assetKey:"cover"},
-        kalender: {path:"data-kalender.json", list:"eventManageList", title:"Kegiatan", assetKey:null},
-        album: {path:"data-album.json", list:"albumManageList", title:"Album", assetKey:"cover"}
-      }[type];
-
-      try{
-        const fileData = await getArrayJsonFile(config.path);
-        const data = fileData.json || [];
-        const item = data.find(x => x.id === id);
-        const next = data.filter(x => x.id !== id);
-
-        await putFile(config.path, utf8ToBase64(JSON.stringify(next, null, 2)), `Hapus ${config.title}`, fileData.sha);
-
-        if(item && config.assetKey && item[config.assetKey]){
-          try{
-            await deleteGithubFile(item[config.assetKey], `Hapus file ${config.title}`);
-          }catch(fileErr){
-            log("Catatan: data terhapus, tetapi file gambar lama belum terhapus: " + fileErr.message);
-          }
-        }
-
-        log(config.title + " berhasil dihapus.");
-        show("success", config.title + " berhasil dihapus.");
-        await loadStage3Manage(type);
-      }catch(err){
-        log("ERROR: " + err.message);
-        show("error", "Gagal menghapus: " + err.message);
-      }
-    }
-
-    if($("saveContactBtn")) $("saveContactBtn").addEventListener("click", saveContactSettings);
-    if($("loadContactBtn")) $("loadContactBtn").addEventListener("click", loadContactSettings);
-    ["contactAdminInput","contactHumasInput"].forEach(id => {
-      const el = $(id);
-      if(el) el.addEventListener("input", refreshContactPreview);
-    });
-    refreshContactPreview();
-
-    $("saveArticleBtn").addEventListener("click", saveArticle);
-    $("articleCancelEditBtn").addEventListener("click", () => cancelEditArticle(true));
-    $("loadArticleBtn").addEventListener("click", () => loadStage3Manage("artikel"));
-    $("saveEventBtn").addEventListener("click", saveEvent);
-    $("eventCancelEditBtn").addEventListener("click", () => cancelEditEvent(true));
-    $("loadEventBtn").addEventListener("click", () => loadStage3Manage("kalender"));
-    $("saveAlbumBtn").addEventListener("click", saveAlbum);
-    $("loadAlbumBtn").addEventListener("click", () => loadStage3Manage("album"));
-
-    $("photos").addEventListener("change", async () => {
-      const files = Array.from($("photos").files || []);
-      $("preview").innerHTML = "";
-      files.slice(0, 9).forEach(file => {
-        const img = document.createElement("img");
-        img.src = URL.createObjectURL(file);
-        $("preview").appendChild(img);
-      });
-    });
-
-    $("loadManageBtn").addEventListener("click", loadManageList);
-
-    $("uploadBtn").addEventListener("click", async () => {
-      $("success").style.display = "none";
-      $("error").style.display = "none";
-      logBox.textContent = "Mulai proses upload...";
-
-      try{
-        const token = $("token").value.trim();
-        if(!token){ throw new Error("GitHub token belum diisi."); }
-
+    /* ===== FITUR LAINNYA (KONTAK, FOTO, BROSUR, ARTIKEL, DLL) ===== */
+    const defaultContactData = { whatsappAdmin: "6287751325199", whatsappAdminDisplay: "0877-5132-5199", cpHumas: "082140046047", cpHumasDisplay: "0821-4004-6047", note: "" };
+    function digitsOnly(v){ return String(v||"").replace(/\D/g, ""); }
+    function normalizeWhatsapp(v){ let d = digitsOnly(v); return d.startsWith("0") ? "62" + d.slice(1) : (d.startsWith("8") ? "62" + d : d); }
+    function formatIndonesiaPhone(v){ let d = digitsOnly(v); if(d.startsWith("62")) d = "0" + d.slice(2); if(!d) return ""; if(d.length<=4) return d; if(d.length<=8) return d.slice(0,4)+"-"+d.slice(4); return d.slice(0,4)+"-"+d.slice(4,8)+"-"+d.slice(8); }
+    function refreshContactPreview(){ $("contactAdminPreview").textContent = formatIndonesiaPhone($("contactAdminInput")?.value) || "-"; $("contactHumasPreview").textContent = formatIndonesiaPhone($("contactHumasInput")?.value) || "-"; }
+    async function getContactJson(){ try{ const data = await getGithubFile("data-kontak.json"); return { json: {...defaultContactData, ...JSON.parse(base64ToUtf8(data.content))}, sha: data.sha }; }catch(err){ return { json: {...defaultContactData}, sha: null }; } }
+    async function loadContactSettings(){ try{ const f = await getContactJson(); const d = f.json; $("contactAdminInput").value = d.whatsappAdminDisplay; $("contactHumasInput").value = d.cpHumasDisplay; $("contactNoteInput").value = d.note||""; refreshContactPreview(); show("success", "Kontak dimuat."); }catch(e){ show("error", e.message); } }
+    async function saveContactSettings(){ try{ const old = await getContactJson(); const d = { whatsappAdmin: normalizeWhatsapp($("contactAdminInput").value), whatsappAdminDisplay: formatIndonesiaPhone($("contactAdminInput").value), cpHumas: digitsOnly($("contactHumasInput").value), cpHumasDisplay: formatIndonesiaPhone($("contactHumasInput").value), note: $("contactNoteInput").value.trim(), updatedAt: new Date().toISOString() }; await putFile("data-kontak.json", utf8ToBase64(JSON.stringify(d, null, 2)), "Update kontak", old.sha); show("success", "Kontak disimpan!"); }catch(e){ show("error", e.message); } }
+    $("saveContactBtn").addEventListener("click", saveContactSettings);
+    $("loadContactBtn").addEventListener("click", loadContactSettings);
+    ["contactAdminInput","contactHumasInput"].forEach(id => $(id)?.addEventListener("input", refreshContactPreview));
+
+    /* FOTO, BROSUR, ARTIKEL, KALENDER, ALBUM */
+    $("photos")?.addEventListener("change", async () => { $("preview").innerHTML = ""; Array.from($("photos").files || []).slice(0,9).forEach(f => { const img = document.createElement("img"); img.src = URL.createObjectURL(f); $("preview").appendChild(img); }); });
+    $("uploadBtn")?.addEventListener("click", async () => {
+      try {
+        if(!$("token").value.trim()) throw new Error("Token belum diisi.");
         const files = Array.from($("photos").files || []);
-        if(!files.length){ throw new Error("Pilih minimal 1 foto."); }
-
-        const program = $("program").value;
-        const caption = $("caption").value.trim();
-        const date = $("date").value || new Date().toISOString().slice(0,10);
-        const slug = slugify(program);
-
-        log("Mengambil data galeri lama...");
-        const dataFile = await getJsonFile("data-kegiatan.json");
-        const gallery = dataFile.json || {};
-        programs.forEach(p => { if(!Array.isArray(gallery[p])) gallery[p] = []; });
-
-        const newItems = [];
-
-        for(const file of files){
-          log("Memproses foto: " + file.name);
-          const resized = await resizeImage(file);
-          const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-          const path = `foto-kegiatan/${slug}/${timestamp}-${safeName(file.name)}.jpg`;
-
-          log("Upload ke GitHub: " + path);
-          await putFile(path, resized.base64, `Upload foto kegiatan ${program}: ${file.name}`);
-
-          newItems.push({
-            program,
-            caption: caption || `Kegiatan ${program}`,
-            date,
-            src: path,
-            uploadedAt: new Date().toISOString()
-          });
+        if(!files.length) throw new Error("Pilih foto terlebih dahulu.");
+        const p = $("program").value, cap = $("caption").value.trim(), d = $("date").value || new Date().toISOString().slice(0,10), slug = slugify(p);
+        const dataFile = await getJsonFile("data-kegiatan.json"); const gallery = dataFile.json || {}; programs.forEach(k => { if(!Array.isArray(gallery[k])) gallery[k]=[]; });
+        for(const f of files){
+          const r = await resizeImage(f), path = `foto-kegiatan/${slug}/${Date.now()}-${safeName(f.name)}.jpg`;
+          await putFile(path, r.base64, `Upload foto ${p}`);
+          gallery[p].push({ program: p, caption: cap || `Kegiatan ${p}`, date: d, src: path, uploadedAt: new Date().toISOString() });
         }
-
-        gallery[program] = gallery[program].concat(newItems);
-        const jsonBase64 = utf8ToBase64(JSON.stringify(gallery, null, 2));
-
-        log("Memperbarui data-kegiatan.json...");
-        await putFile("data-kegiatan.json", jsonBase64, `Update galeri kegiatan ${program}`, dataFile.sha);
-
-        log("Selesai. Tunggu 1-3 menit lalu refresh website.");
-        show("success", "Foto berhasil diunggah. Tunggu 1-3 menit, lalu refresh website.");
-        $("manageProgram").value = program;
-        await loadManageList();
-      }catch(err){
-        console.error(err);
-        log("ERROR: " + err.message);
-        show("error", "Gagal upload: " + err.message);
-      }
+        await putFile("data-kegiatan.json", utf8ToBase64(JSON.stringify(gallery, null, 2)), `Update galeri ${p}`, dataFile.sha);
+        show("success", "Foto berhasil diunggah!");
+      } catch(err) { show("error", err.message); }
     });
   </script>
 </body>
