@@ -14,7 +14,6 @@
       --text: #1f2937;
       --muted: #6b7280;
       --danger: #b91c1c;
-      --blue-card: linear-gradient(135deg, #0d7a5f, #07523f);
     }
     * { box-sizing: border-box; }
     body {
@@ -72,7 +71,6 @@
       margin-bottom: 8px;
     }
 
-    /* Kotak Login */
     .lock-box {
       max-width: 420px;
       margin: 30px auto;
@@ -126,7 +124,6 @@
 
     #siswaDashboard { display: none; }
 
-    /* Grid Dashboard Fitur */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -271,24 +268,23 @@
       <div id="loginError" class="login-error"></div>
     </div>
 
-    <!-- DASHBOARD SANTRI (KHUSUS SESUAI JENJANG LOGIN) -->
+    <!-- DASHBOARD SANTRI -->
     <div id="siswaDashboard">
       
-      <!-- MENU UTAMA SISWA (E-LEARNING & PENGUMPULAN TUGAS) -->
       <div class="dashboard-grid">
-        <!-- 1. E-LEARNING & UJIAN ONLINE TERAWASI -->
+        <!-- 1. E-LEARNING & UJIAN ONLINE -->
         <div class="action-card elearning-card">
           <div>
             <div style="font-size: 30px; margin-bottom: 6px;">💻</div>
             <h2 id="titleElearning">Ruang E-Learning & Ujian</h2>
-            <p id="descElearning">Akses kelas digital, kuis interaktif, dan Ujian Online Terawasi (CBT) resmi.</p>
+            <p id="descElearning">Akses kelas digital, evaluasi mandiri, dan Ujian Online Terawasi (CBT) resmi.</p>
           </div>
-          <a id="btnElearning" href="#" target="_blank" class="btn-action">
+          <a id="btnElearning" href="ujian.html" class="btn-action">
             Mulai Belajar & Ujian →
           </a>
         </div>
 
-        <!-- 2. PENGUMPULAN TUGAS KHUSUS -->
+        <!-- 2. PENGUMPULAN TUGAS -->
         <div class="action-card">
           <div>
             <div style="font-size: 30px; margin-bottom: 6px;">📤</div>
@@ -301,11 +297,10 @@
         </div>
       </div>
 
-      <!-- 3. BANK MATERI KHUSUS (HANYA MUNCUL KELAS SISWA SAJA) -->
+      <!-- 3. BANK MATERI -->
       <h2 class="section-title">📚 Bank Materi & Modul Belajar</h2>
       
       <div class="grid-single">
-        <!-- Card Paket A (Hanya terlihat jika login Paket A) -->
         <div class="card" id="cardPaketA" style="display:none;">
           <div>
             <h3>📁 Folder Modul & Materi: Paket A (Setara SD)</h3>
@@ -314,7 +309,6 @@
           <a id="linkPaketA" href="https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing" target="_blank" class="btn-card">🚀 Buka Folder Google Drive Paket A →</a>
         </div>
 
-        <!-- Card Paket B (Hanya terlihat jika login Paket B) -->
         <div class="card" id="cardPaketB" style="display:none;">
           <div>
             <h3>📁 Folder Modul & Materi: Paket B (Setara SMP)</h3>
@@ -323,7 +317,6 @@
           <a id="linkPaketB" href="https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing" target="_blank" class="btn-card">🚀 Buka Folder Google Drive Paket B →</a>
         </div>
 
-        <!-- Card Paket C (Hanya terlihat jika login Paket C) -->
         <div class="card" id="cardPaketC" style="display:none;">
           <div>
             <h3>📁 Folder Modul & Materi: Paket C (Setara SMA)</h3>
@@ -336,9 +329,9 @@
       <div class="guide-box">
         <h4>📌 Petunjuk Pembelajaran & Ujian:</h4>
         <ol>
-          <li>Pastikan kamera dan mikrofon aktif jika mengikuti sesi evaluasi/ujian daring terawasi.</li>
-          <li>Untuk tugas foto/dokumen: Pastikan tulisan terbaca jelas sebelum diunggah ke formulir tugas.</li>
-          <li>Untuk tugas video: Rekam dengan posisi landscape/tegak yang stabil, lalu unggah file.</li>
+          <li>Pastikan kamera dan mikrofon aktif saat mengikuti evaluasi/ujian daring terawasi.</li>
+          <li>Untuk tugas foto/dokumen: Pastikan tulisan terbaca jelas sebelum diunggah.</li>
+          <li>Untuk tugas video: Rekam dengan posisi stabil, lalu unggah file ke formulir.</li>
         </ol>
         <div style="text-align: right;">
           <button id="btnLogoutSiswa" class="btn-logout">🔒 Keluar dari Portal Siswa</button>
@@ -350,18 +343,10 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    // LINK FOLDER GOOGLE DRIVE PER PAKET
     const FOLDER_DRIVE = {
       "Paket A": "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing",
       "Paket B": "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing",
       "Paket C": "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing"
-    };
-
-    // LINK E-LEARNING / UJIAN ONLINE PER PAKET (Bisa disesuaikan ke Form / Platform Ujian masing-masing)
-    const LINK_ELEARNING = {
-      "Paket A": "ujian.html",
-      "Paket B": "ujian.html",
-      "Paket C": "ujian.html"
     };
 
     const loginGate = document.getElementById("loginGate");
@@ -382,8 +367,8 @@
     const descElearning = document.getElementById("descElearning");
     const btnElearning = document.getElementById("btnElearning");
 
-    // Cek Sesi Login Sebelumnya
-    const savedSiswa = sessionStorage.getItem("siswaAuth");
+    // Cek Sesi Sebelumnya (Mendukung localStorage & sessionStorage)
+    const savedSiswa = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
     if (savedSiswa) {
       try {
         const data = JSON.parse(savedSiswa);
@@ -405,6 +390,8 @@
         const result = await response.json();
 
         if (result.success) {
+          // Simpan ke localStorage agar bisa diakses semua tab
+          localStorage.setItem("siswaAuth", JSON.stringify(result));
           sessionStorage.setItem("siswaAuth", JSON.stringify(result));
           tampilkanDashboard(result);
         } else {
@@ -423,6 +410,7 @@
     });
 
     btnLogoutSiswa.addEventListener("click", function() {
+      localStorage.removeItem("siswaAuth");
       sessionStorage.removeItem("siswaAuth");
       location.reload();
     });
@@ -434,34 +422,26 @@
       const nama = data.nama || "Santri";
       let jenjang = data.jenjang || "Paket A";
 
-      // Normalisasi teks jenjang dari database
-      if (jenjang === "A" || jenjang.toLowerCase().includes("paket a")) {
-        jenjang = "Paket A";
-      } else if (jenjang === "B" || jenjang.toLowerCase().includes("paket b")) {
-        jenjang = "Paket B";
-      } else if (jenjang === "C" || jenjang.toLowerCase().includes("paket c")) {
-        jenjang = "Paket C";
-      }
+      if (jenjang === "A" || jenjang.toLowerCase().includes("paket a")) jenjang = "Paket A";
+      else if (jenjang === "B" || jenjang.toLowerCase().includes("paket b")) jenjang = "Paket B";
+      else if (jenjang === "C" || jenjang.toLowerCase().includes("paket c")) jenjang = "Paket C";
 
       userBadge.textContent = `👤 ${nama} (${jenjang})`;
 
-      // 1. Sesuaikan Pengumpulan Tugas
+      // Sesuaikan Tombol & Teks
       titleTugas.textContent = `📤 Tugas & Portofolio - ${jenjang}`;
       descTugas.textContent = `Kirimkan tugas harian, lembar kerja, dan portofolio ${jenjang} di sini.`;
       btnTugas.textContent = `Formulir Tugas ${jenjang} →`;
 
-      // 2. Sesuaikan Menu E-Learning & Ujian Online
       titleElearning.textContent = `💻 E-Learning & Ujian - ${jenjang}`;
       descElearning.textContent = `Ruang belajar daring, evaluasi berkala, dan Ujian Terawasi untuk jenjang ${jenjang}.`;
       btnElearning.textContent = `Masuk Ujian ${jenjang} →`;
       btnElearning.href = "ujian.html";
 
-      // 3. Sembunyikan semua kartu modul paket terlebih dahulu
       document.getElementById("cardPaketA").style.display = "none";
       document.getElementById("cardPaketB").style.display = "none";
       document.getElementById("cardPaketC").style.display = "none";
 
-      // Buka dan tampilkan HANYA kartu yang sesuai dengan jenjang siswa yang sedang login
       if (jenjang === "Paket A") {
         document.getElementById("cardPaketA").style.display = "flex";
         document.getElementById("linkPaketA").href = FOLDER_DRIVE["Paket A"];
