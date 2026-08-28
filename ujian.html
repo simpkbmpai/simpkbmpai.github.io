@@ -6,10 +6,10 @@
   <title>Ruang Ujian Terawasi (CBT) - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
 
-  <!-- PENGUNCI KEAMANAN INSTAN (Mencegah Akses Tanpa Login) -->
+  <!-- PENGUNCI KEAMANAN (Membaca Sesi Tab Lama & Tab Baru) -->
   <script>
-    const checkAuth = sessionStorage.getItem("siswaAuth");
-    if (!checkAuth) {
+    const authData = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
+    if (!authData) {
       alert("Akses Terkunci! Silakan login melalui Portal Siswa terlebih dahulu.");
       window.location.replace("portal-siswa.html");
     }
@@ -265,9 +265,9 @@
       "Paket C": "https://forms.gle/cbSFAhfKLiM2CEzx6"
     };
 
-    // 2. CEK SESI LOGIN SISWA
-    const sessionData = sessionStorage.getItem("siswaAuth");
-    const user = JSON.parse(sessionData);
+    // 2. BACA DATA LOGIN
+    const savedData = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
+    const user = JSON.parse(savedData || "{}");
     let jenjangUser = user.jenjang || "Paket C";
 
     // Normalisasi Jenjang
