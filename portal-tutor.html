@@ -14,7 +14,7 @@
       --text: #1f2937;
       --muted: #6b7280;
       --danger: #b91c1c;
-      --gold: #d6aa38;
+      --gold: #d97706;
     }
     * { box-sizing: border-box; }
     body {
@@ -240,16 +240,16 @@
 
     <div class="hero">
       <img src="logo-pkbm.png" alt="Logo PKBM">
-      <div><span class="badge-user" id="userBadge">Area Tutor & Pengajar Terverifikasi</span></div>
-      <h1>Portal Tutor & Akademik PKBM</h1>
-      <p>Manajemen Nilai, Hasil Ujian CBT, dan Modul Pembelajaran Santri</p>
+      <div><span class="badge-user" id="userBadge">Area Tutor & Fasilitator Terdaftar</span></div>
+      <h1>Portal Akademik Tutor & Fasilitator</h1>
+      <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Kesetaraan)</p>
     </div>
 
     <!-- FORM LOGIN TUTOR -->
     <div id="loginGate" class="lock-box">
-      <div style="font-size: 36px; margin-bottom: 8px;">🔒</div>
-      <h3>Login Tutor / Fasilitator</h3>
-      <p>Masukkan Username Tutor dan PIN akses Anda.</p>
+      <div style="font-size: 36px; margin-bottom: 8px;">👨‍🏫</div>
+      <h3>Login Ruang Tutor</h3>
+      <p>Masukkan Username Tutor dan Password sesuai database sekolah.</p>
       
       <form id="tutorLoginForm">
         <div class="form-group">
@@ -258,7 +258,7 @@
         </div>
         
         <div class="form-group">
-          <label for="passwordInput">PIN Akses:</label>
+          <label for="passwordInput">Password:</label>
           <input type="password" id="passwordInput" class="input-field" placeholder="••••••••" required>
         </div>
 
@@ -270,17 +270,17 @@
     <!-- DASHBOARD UTAMA TUTOR -->
     <div id="tutorDashboard">
       
-      <!-- FITUR UTAMA: UJIAN, TUGAS & REKAP -->
+      <!-- MENU UTAMA: REKAP NILAI, TUGAS MASUK, DAN LINK UJIAN -->
       <div class="dashboard-grid">
         <!-- 1. HASIL UJIAN & CBT -->
         <div class="tutor-card">
           <div>
             <div class="tutor-card-icon">📊</div>
-            <h3>Hasil Ujian & Pengawasan</h3>
-            <p>Lihat rekap nilai siswa, riwayat pengerjaan soal, dan bukti snapshot foto pengawas ujian.</p>
+            <h3>Rekap Nilai & Ujian CBT</h3>
+            <p>Buka spreadsheet respons hasil pengerjaan soal ujian daring santri per jenjang.</p>
           </div>
-          <a id="btnRekapUjian" href="https://docs.google.com/spreadsheets" target="_blank" class="btn-tutor">
-            Buka Rekap Ujian →
+          <a id="linkRekapNilai" href="https://docs.google.com/spreadsheets" target="_blank" class="btn-tutor">
+            Buka Rekap Spreadsheet →
           </a>
         </div>
 
@@ -288,54 +288,55 @@
         <div class="tutor-card">
           <div>
             <div class="tutor-card-icon">📥</div>
-            <h3>Tugas & Portofolio Masuk</h3>
-            <p>Periksa lembar kerja, rekaman video, dan tugas harian yang dikirim oleh santri.</p>
+            <h3>Tugas & Lembar Kerja</h3>
+            <p>Periksa unggahan portofolio harian, foto dokumen, dan video yang dikirim oleh santri.</p>
           </div>
-          <a id="btnRekapTugas" href="https://drive.google.com" target="_blank" class="btn-tutor">
-            Buka Folder Tugas →
+          <a id="linkDriveTugas" href="https://drive.google.com" target="_blank" class="btn-tutor">
+            Buka Folder Tugas Masuk →
           </a>
         </div>
 
-        <!-- 3. KELOLA SOAL & FORM -->
+        <!-- 3. KELOLA LINK SOAL UJIAN -->
         <div class="tutor-card">
           <div>
-            <div class="tutor-card-icon">✍️</div>
-            <h3>Buat / Edit Soal Ujian</h3>
-            <p>Buat instrumen asesmen baru atau perbarui link Google Form ujian per jenjang.</p>
+            <div class="tutor-card-icon">⚙️</div>
+            <h3>Ganti Link Soal Ujian</h3>
+            <p>Perbarui link Google Form soal ujian CBT tanpa perlu mengedit file kode web.</p>
           </div>
-          <a href="https://forms.google.com" target="_blank" class="btn-tutor outline">
-            Buka Google Forms ↗
+          <a href="admin.html#pengaturan-ujian" target="_blank" class="btn-tutor outline">
+            Buka Panel Admin Soal ↗
           </a>
         </div>
       </div>
 
-      <!-- FOLDER MODUL MATERI PER JENJANG -->
+      <!-- BANK MODUL PEMBELAJARAN -->
       <h2 class="section-title">📁 Manajemen Modul Belajar (Google Drive)</h2>
       <div class="folder-grid">
         <div class="tutor-card">
           <h3>Paket A (Setara SD)</h3>
-          <p>Materi tematik, literasi & numerasi Kelas 1 - 6.</p>
-          <a href="https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing" target="_blank" class="btn-tutor outline">Buka Drive Paket A ↗</a>
+          <p>Materi tematik, literasi & numerasi Kelas 1 s.d. 6.</p>
+          <a id="tutorLinkA" href="https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing" target="_blank" class="btn-tutor outline">Buka Drive Paket A ↗</a>
         </div>
 
         <div class="tutor-card">
           <h3>Paket B (Setara SMP)</h3>
-          <p>Modul kurikulum kesetaraan Kelas 7 - 9.</p>
-          <a href="https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing" target="_blank" class="btn-tutor outline">Buka Drive Paket B ↗</a>
+          <p>Modul kurikulum kesetaraan Kelas 7 s.d. 9.</p>
+          <a id="tutorLinkB" href="https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing" target="_blank" class="btn-tutor outline">Buka Drive Paket B ↗</a>
         </div>
 
         <div class="tutor-card">
           <h3>Paket C (Setara SMA)</h3>
-          <p>Modul peminatan & keahlian Kelas 10 - 12.</p>
-          <a href="https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing" target="_blank" class="btn-tutor outline">Buka Drive Paket C ↗</a>
+          <p>Modul peminatan & keahlian Kelas 10 s.d. 12.</p>
+          <a id="tutorLinkC" href="https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing" target="_blank" class="btn-tutor outline">Buka Drive Paket C ↗</a>
         </div>
       </div>
 
       <div class="guide-box">
-        <h4>📌 Catatan Penting Tutor:</h4>
+        <h4>📌 Panduan Fasilitator / Tutor:</h4>
         <ol>
-          <li>Hasil ujian otomatis terdata di spreadsheet utama setelah santri menekan tombol submit.</li>
-          <li>Pastikan hak akses folder materi di Google Drive disetel ke <i>"Anyone with the link can view"</i> agar siswa bisa mengunduhnya.</li>
+          <li>Hasil ujian CBT tersinkronisasi otomatis pada Google Spreadsheet setelah santri menekan tombol <b>Kirim</b> pada lembar ujian.</li>
+          <li>Untuk mengunggah materi baru, pastikan file dimasukkan ke dalam folder Google Drive yang sesuai jenjangnya di atas.</li>
+          <li>Pastikan hak akses folder materi Google Drive diatur ke <b>"Siapa saja yang memiliki link dapat melihat"</b> agar santri dapat mengunduh materi ajar.</li>
         </ol>
         <div style="text-align: right;">
           <button id="btnLogoutTutor" class="btn-logout">🔒 Keluar dari Ruang Tutor</button>
@@ -348,6 +349,15 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
+    // LINK REKAP SPREADSHEET & FOLDER TUGAS
+    const CONFIG_TUTOR = {
+      rekapNilaiSpreadsheet: "https://docs.google.com/spreadsheets", // Ganti dengan link Spreadsheet Nilai Anda
+      driveTugasMasuk: "https://drive.google.com", // Ganti dengan link folder Drive tempat tugas tersimpan
+      folderPaketA: "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing",
+      folderPaketB: "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing",
+      folderPaketC: "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing"
+    };
+
     const loginGate = document.getElementById("loginGate");
     const tutorDashboard = document.getElementById("tutorDashboard");
     const tutorLoginForm = document.getElementById("tutorLoginForm");
@@ -358,8 +368,15 @@
     const btnSubmitTutor = document.getElementById("btnSubmitTutor");
     const btnLogoutTutor = document.getElementById("btnLogoutTutor");
 
-    // Cek Sesi Tutor
-    const savedTutor = sessionStorage.getItem("tutorAuth");
+    // Pasang Link Dinamis
+    document.getElementById("linkRekapNilai").href = CONFIG_TUTOR.rekapNilaiSpreadsheet;
+    document.getElementById("linkDriveTugas").href = CONFIG_TUTOR.driveTugasMasuk;
+    document.getElementById("tutorLinkA").href = CONFIG_TUTOR.folderPaketA;
+    document.getElementById("tutorLinkB").href = CONFIG_TUTOR.folderPaketB;
+    document.getElementById("tutorLinkC").href = CONFIG_TUTOR.folderPaketC;
+
+    // Cek Sesi Tutor Sebelumnya
+    const savedTutor = localStorage.getItem("tutorAuth") || sessionStorage.getItem("tutorAuth");
     if (savedTutor) {
       try {
         const data = JSON.parse(savedTutor);
@@ -371,7 +388,7 @@
       e.preventDefault();
       loginError.style.display = "none";
       btnSubmitTutor.disabled = true;
-      btnSubmitTutor.textContent = "Memverifikasi...";
+      btnSubmitTutor.textContent = "Memverifikasi database...";
 
       const u = usernameInput.value.trim();
       const p = passwordInput.value.trim();
@@ -381,16 +398,17 @@
         const result = await response.json();
 
         if (result.success) {
+          localStorage.setItem("tutorAuth", JSON.stringify(result));
           sessionStorage.setItem("tutorAuth", JSON.stringify(result));
           tampilkanDashboardTutor(result);
         } else {
-          loginError.textContent = "❌ " + (result.message || "Username atau PIN salah!");
+          loginError.textContent = "❌ " + (result.message || "Username atau Password salah!");
           loginError.style.display = "block";
           passwordInput.value = "";
           passwordInput.focus();
         }
       } catch (err) {
-        loginError.textContent = "❌ Gagal terhubung ke server database.";
+        loginError.textContent = "❌ Gagal terhubung ke database. Periksa koneksi internet.";
         loginError.style.display = "block";
       } finally {
         btnSubmitTutor.disabled = false;
@@ -399,6 +417,7 @@
     });
 
     btnLogoutTutor.addEventListener("click", function() {
+      localStorage.removeItem("tutorAuth");
       sessionStorage.removeItem("tutorAuth");
       location.reload();
     });
