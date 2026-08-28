@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portal Siswa & Santri - PKBM Pelita Aushaf Indonesia</title>
+  <title>Portal Siswa & E-Learning - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
   <style>
     :root {
@@ -14,6 +14,7 @@
       --text: #1f2937;
       --muted: #6b7280;
       --danger: #b91c1c;
+      --blue-card: linear-gradient(135deg, #0d7a5f, #07523f);
     }
     * { box-sizing: border-box; }
     body {
@@ -23,7 +24,7 @@
       color: var(--text);
       line-height: 1.6;
     }
-    .container { max-width: 920px; margin: auto; padding: 20px; }
+    .container { max-width: 960px; margin: auto; padding: 20px; }
     
     .top-bar {
       display: flex;
@@ -125,35 +126,52 @@
 
     #siswaDashboard { display: none; }
 
+    /* Grid Dashboard Fitur */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    @media(max-width: 768px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+
     .action-card {
       background: linear-gradient(135deg, #0d7a5f, #0a5c48);
       color: #fff;
       border-radius: 24px;
-      padding: 28px 24px;
+      padding: 26px 22px;
       text-align: center;
-      box-shadow: 0 14px 36px rgba(13,122,95,0.22);
-      margin-bottom: 24px;
+      box-shadow: 0 14px 36px rgba(13,122,95,0.20);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .action-card h2 { margin: 0 0 10px; font-size: 22px; color: #fff; }
-    .action-card p { margin: 0 0 20px; color: #e8fff4; font-size: 14px; }
-    .btn-upload {
+    .action-card.elearning-card {
+      background: linear-gradient(135deg, #145a43, #0a3d2e);
+      border: 2px solid #34d399;
+    }
+    .action-card h2 { margin: 0 0 8px; font-size: 21px; color: #fff; }
+    .action-card p { margin: 0 0 18px; color: #e8fff4; font-size: 13.5px; flex-grow: 1; }
+    .btn-action {
       display: inline-block;
       background: #fff;
       color: var(--green-dark);
       text-decoration: none;
       font-weight: 900;
-      font-size: 16px;
-      padding: 15px 28px;
-      border-radius: 16px;
+      font-size: 15px;
+      padding: 13px 20px;
+      border-radius: 14px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      transition: transform 0.2s;
+      transition: transform 0.2s, background 0.2s;
     }
-    .btn-upload:hover { transform: translateY(-2px); background: #f0fdf4; }
+    .btn-action:hover { transform: translateY(-2px); background: #f0fdf4; }
 
     .section-title {
       font-size: 20px;
       color: var(--green-dark);
-      margin: 0 0 16px;
+      margin: 28px 0 16px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -227,7 +245,7 @@
     <div class="hero">
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div><span class="badge-user" id="userBadge">Area Akademik Santri Terdaftar</span></div>
-      <h1 id="portalTitle">Portal Akademik Siswa & Santri</h1>
+      <h1 id="portalTitle">Portal Akademik Siswa & E-Learning</h1>
       <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Kesetaraan)</p>
     </div>
 
@@ -256,16 +274,34 @@
     <!-- DASHBOARD SANTRI (KHUSUS SESUAI JENJANG LOGIN) -->
     <div id="siswaDashboard">
       
-      <!-- 1. PENGUMPULAN TUGAS KHUSUS -->
-      <div class="action-card">
-        <h2 id="titleTugas">📤 Pengumpulan Tugas & Ujian</h2>
-        <p id="descTugas">Kirimkan tugas harian, lembar kerja, portofolio, serta rekaman video kegiatan ananda di sini.</p>
-        <a id="btnTugas" href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-upload">
-          Buka Formulir Pengumpulan Tugas →
-        </a>
+      <!-- MENU UTAMA SISWA (E-LEARNING & PENGUMPULAN TUGAS) -->
+      <div class="dashboard-grid">
+        <!-- 1. E-LEARNING & UJIAN ONLINE TERAWASI -->
+        <div class="action-card elearning-card">
+          <div>
+            <div style="font-size: 30px; margin-bottom: 6px;">💻</div>
+            <h2 id="titleElearning">Ruang E-Learning & Ujian</h2>
+            <p id="descElearning">Akses kelas digital, kuis interaktif, dan Ujian Online Terawasi (CBT) resmi.</p>
+          </div>
+          <a id="btnElearning" href="#" target="_blank" class="btn-action">
+            Mulai Belajar & Ujian →
+          </a>
+        </div>
+
+        <!-- 2. PENGUMPULAN TUGAS KHUSUS -->
+        <div class="action-card">
+          <div>
+            <div style="font-size: 30px; margin-bottom: 6px;">📤</div>
+            <h2 id="titleTugas">Pengumpulan Tugas</h2>
+            <p id="descTugas">Kirimkan tugas harian, lembar kerja adab, dan portofolio kegiatan ananda di sini.</p>
+          </div>
+          <a id="btnTugas" href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-action">
+            Formulir Kirim Tugas →
+          </a>
+        </div>
       </div>
 
-      <!-- 2. BANK MATERI KHUSUS (HANYA MUNCUL KELAS SISWA SAJA) -->
+      <!-- 3. BANK MATERI KHUSUS (HANYA MUNCUL KELAS SISWA SAJA) -->
       <h2 class="section-title">📚 Bank Materi & Modul Belajar</h2>
       
       <div class="grid-single">
@@ -298,10 +334,10 @@
       </div>
 
       <div class="guide-box">
-        <h4>📌 Petunjuk Pengiriman Tugas:</h4>
+        <h4>📌 Petunjuk Pembelajaran & Ujian:</h4>
         <ol>
-          <li>Pastikan nama siswa, jenjang, dan mata pelajaran sudah diisi dengan benar.</li>
-          <li>Untuk tugas foto/dokumen: Pastikan tulisan terbaca jelas sebelum diunggah.</li>
+          <li>Pastikan kamera dan mikrofon aktif jika mengikuti sesi evaluasi/ujian daring terawasi.</li>
+          <li>Untuk tugas foto/dokumen: Pastikan tulisan terbaca jelas sebelum diunggah ke formulir tugas.</li>
           <li>Untuk tugas video: Rekam dengan posisi landscape/tegak yang stabil, lalu unggah file.</li>
         </ol>
         <div style="text-align: right;">
@@ -321,6 +357,13 @@
       "Paket C": "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing"
     };
 
+    // LINK E-LEARNING / UJIAN ONLINE PER PAKET (Bisa disesuaikan ke Form / Platform Ujian masing-masing)
+    const LINK_ELEARNING = {
+      "Paket A": "https://forms.gle/cbSFAhfKLiM2CEzx6",
+      "Paket B": "https://forms.gle/cbSFAhfKLiM2CEzx6",
+      "Paket C": "https://forms.gle/cbSFAhfKLiM2CEzx6"
+    };
+
     const loginGate = document.getElementById("loginGate");
     const siswaDashboard = document.getElementById("siswaDashboard");
     const siswaLoginForm = document.getElementById("siswaLoginForm");
@@ -334,6 +377,10 @@
     const titleTugas = document.getElementById("titleTugas");
     const descTugas = document.getElementById("descTugas");
     const btnTugas = document.getElementById("btnTugas");
+
+    const titleElearning = document.getElementById("titleElearning");
+    const descElearning = document.getElementById("descElearning");
+    const btnElearning = document.getElementById("btnElearning");
 
     // Cek Sesi Login Sebelumnya
     const savedSiswa = sessionStorage.getItem("siswaAuth");
@@ -398,12 +445,18 @@
 
       userBadge.textContent = `👤 ${nama} (${jenjang})`;
 
-      // Sesuaikan judul pengumpulan tugas sesuai jenjang
-      titleTugas.textContent = `📤 Pengumpulan Tugas & Ujian - ${jenjang}`;
-      descTugas.textContent = `Assalamu'alaikum ${nama}. Kirimkan lembar kerja, ujian, dan tugas portofolio ${jenjang} di sini.`;
-      btnTugas.textContent = `Buka Formulir Pengumpulan Tugas ${jenjang} →`;
+      // 1. Sesuaikan Pengumpulan Tugas
+      titleTugas.textContent = `📤 Tugas & Portofolio - ${jenjang}`;
+      descTugas.textContent = `Kirimkan tugas harian, lembar kerja, dan portofolio ${jenjang} di sini.`;
+      btnTugas.textContent = `Formulir Tugas ${jenjang} →`;
 
-      // Sembunyikan semua kartu modul paket terlebih dahulu
+      // 2. Sesuaikan Menu E-Learning & Ujian Online
+      titleElearning.textContent = `💻 E-Learning & Ujian - ${jenjang}`;
+      descElearning.textContent = `Ruang belajar daring, evaluasi berkala, dan Ujian Terawasi untuk jenjang ${jenjang}.`;
+      btnElearning.textContent = `Masuk Ujian ${jenjang} →`;
+      btnElearning.href = LINK_ELEARNING[jenjang] || "#";
+
+      // 3. Sembunyikan semua kartu modul paket terlebih dahulu
       document.getElementById("cardPaketA").style.display = "none";
       document.getElementById("cardPaketB").style.display = "none";
       document.getElementById("cardPaketC").style.display = "none";
