@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ruang Ujian Terawasi (CBT) - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
+
+  <!-- PENGUNCI KEAMANAN INSTAN (Mencegah Akses Tanpa Login) -->
+  <script>
+    const checkAuth = sessionStorage.getItem("siswaAuth");
+    if (!checkAuth) {
+      alert("Akses Terkunci! Silakan login melalui Portal Siswa terlebih dahulu.");
+      window.location.replace("portal-siswa.html");
+    }
+  </script>
+
   <style>
     :root {
       --green: #0d7a5f;
@@ -119,7 +129,7 @@
     }
     .btn-exit:hover { background: #fee2e2; color: var(--danger); border-color: #fca5a5; }
 
-    /* Area Utama Soal Ujian (Iframe Google Form) */
+    /* Area Utama Soal Ujian */
     main {
       flex: 1;
       width: 100%;
@@ -134,7 +144,7 @@
       display: block;
     }
 
-    /* Modal Verifikasi Awal (Sebelum Mulai) */
+    /* Modal Verifikasi Awal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -250,18 +260,13 @@
   <script>
     // 1. DAFTAR LINK GOOGLE FORM SOAL UJIAN PER PAKET
     const SOAL_EXAM = {
-      "Paket A": "https://docs.google.com/forms/d/e/1FAIpQLSd7gqF_CONTOH_PAKET_A/viewform?embedded=true",
-      "Paket B": "https://docs.google.com/forms/d/e/1FAIpQLSd7gqF_CONTOH_PAKET_B/viewform?embedded=true",
-      "Paket C": "https://forms.gle/cbSFAhfKLiM2CEzx6" // Ganti dengan link Google Form Paket C Anda
+      "Paket A": "https://forms.gle/cbSFAhfKLiM2CEzx6",
+      "Paket B": "https://forms.gle/cbSFAhfKLiM2CEzx6",
+      "Paket C": "https://forms.gle/cbSFAhfKLiM2CEzx6"
     };
 
     // 2. CEK SESI LOGIN SISWA
     const sessionData = sessionStorage.getItem("siswaAuth");
-    if (!sessionData) {
-      alert("Akses Terkunci! Silakan login melalui Portal Siswa terlebih dahulu.");
-      window.location.href = "portal-siswa.html";
-    }
-
     const user = JSON.parse(sessionData);
     let jenjangUser = user.jenjang || "Paket C";
 
@@ -293,7 +298,6 @@
         videoEl.srcObject = stream;
         startModal.style.display = "none";
         
-        // Coba aktifkan mode layar penuh
         if (document.documentElement.requestFullscreen) {
           document.documentElement.requestFullscreen().catch(() => {});
         }
@@ -307,7 +311,7 @@
       if (document.hidden && startModal.style.display === "none") {
         violations++;
         violationCountEl.textContent = violations;
-        alert(`⚠️ PERINGATAN ${violations}!\nAnda terdeteksi meninggalkan halaman ujian/membuka tab lain. Tindakan ini dicatat oleh pengawas!`);
+        alert(`⚠️ PERINGATAN ${violations}!\nAnda terdeteksi meninggalkan halaman ujian/membuka tab lain. Tindakan ini dicatat oleh sistem pengawas!`);
         takeSnapshotLog("Pindah Tab Terdeteksi");
       }
     });
