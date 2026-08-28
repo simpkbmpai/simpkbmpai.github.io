@@ -72,7 +72,6 @@
       margin-bottom: 8px;
     }
 
-    /* Kotak Login Tutor */
     .lock-box {
       max-width: 420px;
       margin: 30px auto;
@@ -126,7 +125,6 @@
 
     #tutorDashboard { display: none; }
 
-    /* Grid Dasbor Tutor */
     .dashboard-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -270,7 +268,6 @@
     <!-- DASHBOARD UTAMA TUTOR -->
     <div id="tutorDashboard">
       
-      <!-- MENU UTAMA: REKAP NILAI, TUGAS MASUK, DAN LINK UJIAN -->
       <div class="dashboard-grid">
         <!-- 1. HASIL UJIAN & CBT -->
         <div class="tutor-card">
@@ -309,25 +306,25 @@
         </div>
       </div>
 
-      <!-- BANK MODUL PEMBELAJARAN -->
+      <!-- BANK MODUL PEMBELAJARAN (DRIVE) -->
       <h2 class="section-title">📁 Manajemen Modul Belajar (Google Drive)</h2>
       <div class="folder-grid">
         <div class="tutor-card">
           <h3>Paket A (Setara SD)</h3>
           <p>Materi tematik, literasi & numerasi Kelas 1 s.d. 6.</p>
-          <a id="tutorLinkA" href="https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing" target="_blank" class="btn-tutor outline">Buka Drive Paket A ↗</a>
+          <a id="tutorLinkA" href="#" target="_blank" class="btn-tutor outline">Buka Drive Paket A ↗</a>
         </div>
 
         <div class="tutor-card">
           <h3>Paket B (Setara SMP)</h3>
           <p>Modul kurikulum kesetaraan Kelas 7 s.d. 9.</p>
-          <a id="tutorLinkB" href="https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing" target="_blank" class="btn-tutor outline">Buka Drive Paket B ↗</a>
+          <a id="tutorLinkB" href="#" target="_blank" class="btn-tutor outline">Buka Drive Paket B ↗</a>
         </div>
 
         <div class="tutor-card">
           <h3>Paket C (Setara SMA)</h3>
           <p>Modul peminatan & keahlian Kelas 10 s.d. 12.</p>
-          <a id="tutorLinkC" href="https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing" target="_blank" class="btn-tutor outline">Buka Drive Paket C ↗</a>
+          <a id="tutorLinkC" href="#" target="_blank" class="btn-tutor outline">Buka Drive Paket C ↗</a>
         </div>
       </div>
 
@@ -335,8 +332,8 @@
         <h4>📌 Panduan Fasilitator / Tutor:</h4>
         <ol>
           <li>Hasil ujian CBT tersinkronisasi otomatis pada Google Spreadsheet setelah santri menekan tombol <b>Kirim</b> pada lembar ujian.</li>
-          <li>Untuk mengunggah materi baru, pastikan file dimasukkan ke dalam folder Google Drive yang sesuai jenjangnya di atas.</li>
-          <li>Pastikan hak akses folder materi Google Drive diatur ke <b>"Siapa saja yang memiliki link dapat melihat"</b> agar santri dapat mengunduh materi ajar.</li>
+          <li>Untuk mengunggah materi baru, masukkan file ke dalam folder Google Drive yang sesuai jenjangnya di atas.</li>
+          <li>Pastikan hak akses folder Google Drive diatur ke <b>"Siapa saja yang memiliki link dapat melihat"</b> agar santri dapat mengunduh materi ajar.</li>
         </ol>
         <div style="text-align: right;">
           <button id="btnLogoutTutor" class="btn-logout">🔒 Keluar dari Ruang Tutor</button>
@@ -349,14 +346,27 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    // LINK REKAP SPREADSHEET & FOLDER TUGAS
-    const CONFIG_TUTOR = {
-      rekapNilaiSpreadsheet: "https://docs.google.com/spreadsheets", // Ganti dengan link Spreadsheet Nilai Anda
-      driveTugasMasuk: "https://drive.google.com", // Ganti dengan link folder Drive tempat tugas tersimpan
-      folderPaketA: "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing",
-      folderPaketB: "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing",
-      folderPaketC: "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing"
-    };
+    // FUNGSI MEMBACA LINK DINAMIS DARI data-tutor.json
+    async function loadDynamicTutorLinks() {
+      try {
+        const res = await fetch("data-tutor.json?t=" + Date.now());
+        if (res.ok) {
+          const cfg = await res.json();
+          if (cfg.rekapNilai) document.getElementById("linkRekapNilai").href = cfg.rekapNilai;
+          if (cfg.driveTugas) document.getElementById("linkDriveTugas").href = cfg.driveTugas;
+          if (cfg.drivePaketA) document.getElementById("tutorLinkA").href = cfg.drivePaketA;
+          if (cfg.drivePaketB) document.getElementById("tutorLinkB").href = cfg.drivePaketB;
+          if (cfg.drivePaketC) document.getElementById("tutorLinkC").href = cfg.drivePaketC;
+          return;
+        }
+      } catch(e) {}
+
+      // Fallback Link bawaan jika belum ada data-tutor.json
+      document.getElementById("tutorLinkA").href = "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing";
+      document.getElementById("tutorLinkB").href = "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing";
+      document.getElementById("tutorLinkC").href = "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing";
+    }
+    loadDynamicTutorLinks();
 
     const loginGate = document.getElementById("loginGate");
     const tutorDashboard = document.getElementById("tutorDashboard");
@@ -367,13 +377,6 @@
     const userBadge = document.getElementById("userBadge");
     const btnSubmitTutor = document.getElementById("btnSubmitTutor");
     const btnLogoutTutor = document.getElementById("btnLogoutTutor");
-
-    // Pasang Link Dinamis
-    document.getElementById("linkRekapNilai").href = CONFIG_TUTOR.rekapNilaiSpreadsheet;
-    document.getElementById("linkDriveTugas").href = CONFIG_TUTOR.driveTugasMasuk;
-    document.getElementById("tutorLinkA").href = CONFIG_TUTOR.folderPaketA;
-    document.getElementById("tutorLinkB").href = CONFIG_TUTOR.folderPaketB;
-    document.getElementById("tutorLinkC").href = CONFIG_TUTOR.folderPaketC;
 
     // Cek Sesi Tutor Sebelumnya
     const savedTutor = localStorage.getItem("tutorAuth") || sessionStorage.getItem("tutorAuth");
