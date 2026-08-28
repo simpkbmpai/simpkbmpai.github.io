@@ -359,9 +359,9 @@
 
     // LINK E-LEARNING / UJIAN ONLINE PER PAKET (Bisa disesuaikan ke Form / Platform Ujian masing-masing)
     const LINK_ELEARNING = {
-      "Paket A": "https://forms.gle/cbSFAhfKLiM2CEzx6",
-      "Paket B": "https://forms.gle/cbSFAhfKLiM2CEzx6",
-      "Paket C": "https://forms.gle/cbSFAhfKLiM2CEzx6"
+      "Paket A": "ujian.html",
+      "Paket B": "ujian.html",
+      "Paket C": "ujian.html"
     };
 
     const loginGate = document.getElementById("loginGate");
@@ -454,7 +454,7 @@
       titleElearning.textContent = `💻 E-Learning & Ujian - ${jenjang}`;
       descElearning.textContent = `Ruang belajar daring, evaluasi berkala, dan Ujian Terawasi untuk jenjang ${jenjang}.`;
       btnElearning.textContent = `Masuk Ujian ${jenjang} →`;
-      btnElearning.href = LINK_ELEARNING[jenjang] || "#";
+      btnElearning.href = "ujian.html";
 
       // 3. Sembunyikan semua kartu modul paket terlebih dahulu
       document.getElementById("cardPaketA").style.display = "none";
