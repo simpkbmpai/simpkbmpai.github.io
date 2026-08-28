@@ -6,7 +6,6 @@
   <title>Ruang Ujian Terawasi (CBT) - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
 
-  <!-- PENGUNCI KEAMANAN DUA LAPIS (Membaca Tiket URL & Memori Sesi) -->
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     let rawAuth = urlParams.get("auth");
@@ -35,7 +34,6 @@
       --line: #d6eee5;
       --text: #1f2937;
       --danger: #dc2626;
-      --warning: #d97706;
     }
     * { box-sizing: border-box; }
     body {
@@ -51,7 +49,6 @@
       -webkit-user-select: none;
     }
 
-    /* Bar Pengawas Atas */
     header {
       background: #fff;
       border-bottom: 2px solid var(--line);
@@ -68,27 +65,11 @@
       align-items: center;
       gap: 12px;
     }
-    .student-meta img {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      object-fit: contain;
-    }
-    .student-info b {
-      display: block;
-      color: var(--green-dark);
-      font-size: 15px;
-    }
-    .student-info small {
-      color: #6b7280;
-      font-weight: bold;
-    }
+    .student-meta img { width: 42px; height: 42px; border-radius: 50%; object-fit: contain; }
+    .student-info b { display: block; color: var(--green-dark); font-size: 15px; }
+    .student-info small { color: #6b7280; font-weight: bold; }
 
-    .proctor-stats {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+    .proctor-stats { display: flex; align-items: center; gap: 16px; }
     .violation-badge {
       background: #fef2f2;
       color: var(--danger);
@@ -110,18 +91,11 @@
       background: #000;
       position: relative;
     }
-    .live-camera-box video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scaleX(-1);
-    }
+    .live-camera-box video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
     .cam-dot {
       position: absolute;
-      top: 4px;
-      right: 4px;
-      width: 8px;
-      height: 8px;
+      top: 4px; right: 4px;
+      width: 8px; height: 8px;
       border-radius: 50%;
       background: #ef4444;
       animation: blink 1.2s infinite;
@@ -141,7 +115,6 @@
     }
     .btn-exit:hover { background: #fee2e2; color: var(--danger); border-color: #fca5a5; }
 
-    /* Area Utama Soal Ujian */
     main {
       flex: 1;
       width: 100%;
@@ -149,14 +122,8 @@
       position: relative;
       background: #fff;
     }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
+    iframe { width: 100%; height: 100%; border: none; display: block; }
 
-    /* Modal Verifikasi Awal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -177,17 +144,8 @@
       text-align: center;
       box-shadow: 0 20px 50px rgba(0,0,0,0.3);
     }
-    .modal-card h2 {
-      margin: 0 0 10px;
-      color: var(--green-dark);
-      font-size: 22px;
-    }
-    .modal-card p {
-      color: #4b5563;
-      font-size: 14px;
-      margin: 0 0 20px;
-      line-height: 1.5;
-    }
+    .modal-card h2 { margin: 0 0 10px; color: var(--green-dark); font-size: 22px; }
+    .modal-card p { color: #4b5563; font-size: 14px; margin: 0 0 20px; line-height: 1.5; }
     .rules-list {
       text-align: left;
       background: #f0fdf4;
@@ -216,7 +174,6 @@
 </head>
 <body>
 
-  <!-- MODAL INSTRUKSI & AKTIFKAN KAMERA -->
   <div id="startModal" class="modal-overlay">
     <div class="modal-card">
       <div style="font-size: 40px; margin-bottom: 10px;">📸</div>
@@ -228,7 +185,7 @@
         <ol style="margin: 6px 0 0; padding-left: 18px;">
           <li>Izinkan akses <b>Kamera (Webcam)</b> untuk pengawasan otomatis.</li>
           <li><b>Dilarang berpindah tab</b> atau membuka jendela aplikasi lain.</li>
-          <li>Pelanggaran akan otomatis tercatat dan dilaporkan ke tutor.</li>
+          <li>Pelanggaran akan otomatis tercatat oleh sistem.</li>
         </ol>
       </div>
 
@@ -236,7 +193,6 @@
     </div>
   </div>
 
-  <!-- HEADER BAR PENGAWAS -->
   <header>
     <div class="student-meta">
       <img src="logo-pkbm.png" alt="Logo">
@@ -251,57 +207,54 @@
         ⚠️ Pelanggaran Tab: <span id="violationCount">0</span>
       </div>
 
-      <!-- Kamera Pengawas Live -->
       <div class="live-camera-box" title="Kamera Pengawas Aktif">
         <video id="webcam" autoplay playsinline muted></video>
         <div class="cam-dot"></div>
       </div>
 
-      <a href="portal-siswa.html" class="btn-exit" onclick="return confirm('Apakah Anda yakin ingin keluar dari halaman ujian?')">Keluar</a>
+      <a href="portal-siswa.html" class="btn-exit" onclick="return confirm('Apakah Anda yakin ingin keluar dari ujian?')">Keluar</a>
     </div>
   </header>
 
-  <!-- CANVAS TERSEMBUNYI UNTUK AMBIL FOTO -->
   <canvas id="snapshotCanvas" style="display:none;"></canvas>
 
-  <!-- IFRAME GOOGLE FORM SOAL UJIAN -->
   <main>
     <iframe id="examFrame" src="" title="Form Ujian Online"></iframe>
   </main>
 
   <script>
-    // 1. DAFTAR LINK GOOGLE FORM SOAL UJIAN PER PAKET
-    const SOAL_EXAM = {
-      "Paket A": "https://forms.gle/cbSFAhfKLiM2CEzx6",
-      "Paket B": "https://forms.gle/cbSFAhfKLiM2CEzx6",
-      "Paket C": "https://forms.gle/cbSFAhfKLiM2CEzx6"
-    };
-
-    // 2. BACA DATA LOGIN DARI PARAMETER URL / MEMORI
+    // 1. DATA USER DARI TIKET LOGIN
     const savedString = rawAuth.startsWith("{") ? rawAuth : decodeURIComponent(rawAuth);
     let user = {};
-    try {
-      user = JSON.parse(savedString);
-    } catch(e) {
-      user = { nama: "Siswa PKBM", jenjang: "Paket C" };
-    }
+    try { user = JSON.parse(savedString); } catch(e) { user = { nama: "Siswa PKBM", jenjang: "Paket C" }; }
 
     let jenjangUser = user.jenjang || "Paket C";
-
-    // Normalisasi Jenjang
     if (jenjangUser === "A" || jenjangUser.toLowerCase().includes("paket a")) jenjangUser = "Paket A";
     else if (jenjangUser === "B" || jenjangUser.toLowerCase().includes("paket b")) jenjangUser = "Paket B";
     else if (jenjangUser === "C" || jenjangUser.toLowerCase().includes("paket c")) jenjangUser = "Paket C";
 
-    // Tampilkan Data Siswa di Bar
     document.getElementById("dispNama").textContent = user.nama || "Siswa PKBM";
     document.getElementById("dispJenjang").textContent = `${jenjangUser} • NIS: ${user.nis || user.username || "-"}`;
 
-    // Set Sumber Iframe Google Form
-    const examUrl = SOAL_EXAM[jenjangUser] || SOAL_EXAM["Paket C"];
-    document.getElementById("examFrame").src = examUrl;
+    // 2. AMBIL LINK SOAL SECARA DINAMIS DARI data-ujian.json
+    async function loadExamForm() {
+      try {
+        const res = await fetch("data-ujian.json?t=" + Date.now());
+        if (res.ok) {
+          const examData = await res.json();
+          let targetUrl = examData[jenjangUser];
+          if (targetUrl) {
+            document.getElementById("examFrame").src = targetUrl;
+            return;
+          }
+        }
+      } catch(e) {}
+      // Link Fallback jika data-ujian.json belum ada
+      document.getElementById("examFrame").src = "https://docs.google.com/forms";
+    }
+    loadExamForm();
 
-    // 3. LOGIKA WEBCAM & DETEKSI PINDAH TAB
+    // 3. PENGATURAN KAMERA & PENGAWAS
     let violations = 0;
     const videoEl = document.getElementById("webcam");
     const canvasEl = document.getElementById("snapshotCanvas");
@@ -309,46 +262,30 @@
     const btnStart = document.getElementById("btnStartExam");
     const violationCountEl = document.getElementById("violationCount");
 
-    // Tombol Mulai Ujian
     btnStart.addEventListener("click", async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         videoEl.srcObject = stream;
         startModal.style.display = "none";
-        
         if (document.documentElement.requestFullscreen) {
           document.documentElement.requestFullscreen().catch(() => {});
         }
       } catch (err) {
-        alert("PENTING: Akses kamera diperlukan untuk mengikuti Ujian Terawasi ini. Mohon izinkan kamera pada browser Anda.");
+        alert("PENTING: Akses kamera diperlukan untuk mengikuti Ujian Terawasi. Mohon izinkan akses kamera.");
       }
     });
 
-    // Deteksi Berpindah Tab / Meminimalkan Browser
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && startModal.style.display === "none") {
         violations++;
         violationCountEl.textContent = violations;
-        alert(`⚠️ PERINGATAN ${violations}!\nAnda terdeteksi meninggalkan halaman ujian/membuka tab lain. Tindakan ini dicatat oleh sistem pengawas!`);
-        takeSnapshotLog("Pindah Tab Terdeteksi");
+        alert(`⚠️ PERINGATAN ${violations}!\nAnda terdeteksi meninggalkan halaman ujian/membuka tab lain.`);
       }
     });
 
-    // Blokir Klik Kanan & Copy-Paste
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.addEventListener("copy", e => e.preventDefault());
     document.addEventListener("paste", e => e.preventDefault());
-
-    // Fungsi Pengambilan Snapshot
-    function takeSnapshotLog(eventMsg) {
-      if (!videoEl.videoWidth) return;
-      canvasEl.width = videoEl.videoWidth;
-      canvasEl.height = videoEl.videoHeight;
-      const ctx = canvasEl.getContext("2d");
-      ctx.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
-      const base64Photo = canvasEl.toDataURL("image/jpeg", 0.4);
-      console.log(`[LOG PENGAWAS]: ${eventMsg} pada ${new Date().toLocaleTimeString()}`);
-    }
   </script>
 </body>
 </html>
