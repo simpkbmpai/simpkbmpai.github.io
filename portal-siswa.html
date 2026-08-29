@@ -66,7 +66,7 @@
       border: 1px solid var(--line);
       padding: 4px 14px;
       border-radius: 999px;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 800;
       margin-bottom: 8px;
     }
@@ -109,7 +109,6 @@
       cursor: pointer;
       box-shadow: 0 8px 20px rgba(13,122,95,0.2);
       margin-top: 8px;
-      transition: all 0.2s;
     }
     .btn-login:disabled { background: #9ca3af; cursor: not-allowed; }
     .btn-login:hover:not(:disabled) { background: var(--green-dark); }
@@ -173,11 +172,6 @@
       align-items: center;
       gap: 8px;
     }
-    .grid-single {
-      display: grid;
-      grid-template-columns: 1fr;
-      margin-bottom: 24px;
-    }
     .card {
       background: #fff;
       border: 2px solid var(--line);
@@ -187,6 +181,7 @@
       flex-direction: column;
       justify-content: space-between;
       box-shadow: 0 10px 30px rgba(13,122,95,0.08);
+      margin-bottom: 24px;
     }
     .card h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 20px; }
     .card p { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
@@ -202,9 +197,8 @@
       font-size: 15px;
       text-decoration: none;
       box-shadow: 0 6px 18px rgba(13,122,95,0.18);
-      transition: all 0.2s;
     }
-    .btn-card:hover { background: var(--green-dark); transform: translateY(-2px); }
+    .btn-card:hover { background: var(--green-dark); }
 
     .guide-box {
       background: #fff;
@@ -255,7 +249,7 @@
       <form id="siswaLoginForm">
         <div class="form-group">
           <label for="usernameInput">NIS / Username:</label>
-          <input type="text" id="usernameInput" class="input-field" placeholder="Contoh: 2026001" autofocus required>
+          <input type="text" id="usernameInput" class="input-field" placeholder="Contoh: 123456" autofocus required>
         </div>
         
         <div class="form-group">
@@ -276,11 +270,11 @@
         <div class="action-card elearning-card">
           <div>
             <div style="font-size: 30px; margin-bottom: 6px;">💻</div>
-            <h2 id="titleElearning">Ruang E-Learning & Ujian</h2>
-            <p id="descElearning">Akses kelas digital, evaluasi mandiri, dan Ujian Online Terawasi (CBT) resmi.</p>
+            <h2 id="titleElearning">Ruang Ujian Online CBT</h2>
+            <p id="descElearning">Evaluasi berkala dan Ujian Terawasi resmi sesuai tingkatan kelas Anda.</p>
           </div>
           <a id="btnElearning" href="ujian.html" class="btn-action">
-            Mulai Belajar & Ujian →
+            Masuk Ujian Sekarang →
           </a>
         </div>
 
@@ -289,7 +283,7 @@
           <div>
             <div style="font-size: 30px; margin-bottom: 6px;">📤</div>
             <h2 id="titleTugas">Pengumpulan Tugas</h2>
-            <p id="descTugas">Kirimkan tugas harian, lembar kerja adab, dan portofolio kegiatan ananda di sini.</p>
+            <p id="descTugas">Kirimkan tugas harian, lembar kerja adab, dan portofolio kegiatan santri di sini.</p>
           </div>
           <a id="btnTugas" href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-action">
             Formulir Kirim Tugas →
@@ -299,39 +293,19 @@
 
       <!-- 3. BANK MATERI -->
       <h2 class="section-title">📚 Bank Materi & Modul Belajar</h2>
-      
-      <div class="grid-single">
-        <div class="card" id="cardPaketA" style="display:none;">
-          <div>
-            <h3>📁 Folder Modul & Materi: Paket A (Setara SD)</h3>
-            <p>Materi tematik, lembar kegiatan adab, modul literasi & numerasi Kelas 1 s.d. Kelas 6.</p>
-          </div>
-          <a id="linkPaketA" href="https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing" target="_blank" class="btn-card">🚀 Buka Folder Google Drive Paket A →</a>
+      <div class="card" id="cardModul">
+        <div>
+          <h3 id="modulTitle">📁 Folder Modul & Materi</h3>
+          <p id="modulDesc">Modul pembelajaran dan panduan proyek mandiri yang sesuai dengan tingkatan kelas Anda.</p>
         </div>
-
-        <div class="card" id="cardPaketB" style="display:none;">
-          <div>
-            <h3>📁 Folder Modul & Materi: Paket B (Setara SMP)</h3>
-            <p>Modul kurikulum kesetaraan, panduan proyek mandiri, dan materi ajar Kelas 7 s.d. Kelas 9.</p>
-          </div>
-          <a id="linkPaketB" href="https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing" target="_blank" class="btn-card">🚀 Buka Folder Google Drive Paket B →</a>
-        </div>
-
-        <div class="card" id="cardPaketC" style="display:none;">
-          <div>
-            <h3>📁 Folder Modul & Materi: Paket C (Setara SMA)</h3>
-            <p>Modul peminatan, persiapan ujian kesetaraan, dan portofolio keahlian Kelas 10 s.d. Kelas 12.</p>
-          </div>
-          <a id="linkPaketC" href="https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing" target="_blank" class="btn-card">🚀 Buka Folder Google Drive Paket C →</a>
-        </div>
+        <a id="linkModul" href="#" target="_blank" class="btn-card">🚀 Buka Folder Google Drive →</a>
       </div>
 
       <div class="guide-box">
         <h4>📌 Petunjuk Pembelajaran & Ujian:</h4>
         <ol>
-          <li>Pastikan kamera dan mikrofon aktif saat mengikuti evaluasi/ujian daring terawasi.</li>
-          <li>Untuk tugas foto/dokumen: Pastikan tulisan terbaca jelas sebelum diunggah.</li>
-          <li>Untuk tugas video: Rekam dengan posisi stabil, lalu unggah file ke formulir.</li>
+          <li>Pastikan kamera aktif saat mengikuti ujian daring terawasi.</li>
+          <li>Dilarang membuka tab lain selama ujian berlangsung.</li>
         </ol>
         <div style="text-align: right;">
           <button id="btnLogoutSiswa" class="btn-logout">🔒 Keluar dari Portal Siswa</button>
@@ -360,20 +334,14 @@
     const btnLogoutSiswa = document.getElementById("btnLogoutSiswa");
 
     const titleTugas = document.getElementById("titleTugas");
-    const descTugas = document.getElementById("descTugas");
-    const btnTugas = document.getElementById("btnTugas");
-
     const titleElearning = document.getElementById("titleElearning");
-    const descElearning = document.getElementById("descElearning");
     const btnElearning = document.getElementById("btnElearning");
+    const modulTitle = document.getElementById("modulTitle");
+    const linkModul = document.getElementById("linkModul");
 
-    // Cek Sesi Sebelumnya (Mendukung localStorage & sessionStorage)
     const savedSiswa = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
     if (savedSiswa) {
-      try {
-        const data = JSON.parse(savedSiswa);
-        tampilkanDashboard(data);
-      } catch(e) {}
+      try { tampilkanDashboard(JSON.parse(savedSiswa)); } catch(e) {}
     }
 
     siswaLoginForm.addEventListener("submit", async function(e) {
@@ -390,7 +358,6 @@
         const result = await response.json();
 
         if (result.success) {
-          // Simpan ke localStorage agar bisa diakses semua tab
           localStorage.setItem("siswaAuth", JSON.stringify(result));
           sessionStorage.setItem("siswaAuth", JSON.stringify(result));
           tampilkanDashboard(result);
@@ -420,38 +387,39 @@
       siswaDashboard.style.display = "block";
       
       const nama = data.nama || "Santri";
-      let jenjang = data.jenjang || "Paket A";
+      let jenjang = data.jenjang || "Paket C";
+      let kelasRaw = String(data.kelas || "").trim();
+      let kelasStr = "";
 
-      if (jenjang === "A" || jenjang.toLowerCase().includes("paket a")) jenjang = "Paket A";
-      else if (jenjang === "B" || jenjang.toLowerCase().includes("paket b")) jenjang = "Paket B";
-      else if (jenjang === "C" || jenjang.toLowerCase().includes("paket c")) jenjang = "Paket C";
+      // Normalisasi Jenjang & Kelas
+      if (jenjang.toLowerCase().includes("paket a") || jenjang === "A") jenjang = "Paket A";
+      else if (jenjang.toLowerCase().includes("paket b") || jenjang === "B") jenjang = "Paket B";
+      else if (jenjang.toLowerCase().includes("paket c") || jenjang === "C") jenjang = "Paket C";
 
-      userBadge.textContent = `👤 ${nama} (${jenjang})`;
-
-      // Sesuaikan Tombol & Teks
-      titleTugas.textContent = `📤 Tugas & Portofolio - ${jenjang}`;
-      descTugas.textContent = `Kirimkan tugas harian, lembar kerja, dan portofolio ${jenjang} di sini.`;
-      btnTugas.textContent = `Formulir Tugas ${jenjang} →`;
-
-      titleElearning.textContent = `💻 E-Learning & Ujian - ${jenjang}`;
-      descElearning.textContent = `Ruang belajar daring, evaluasi berkala, dan Ujian Terawasi untuk jenjang ${jenjang}.`;
-      btnElearning.textContent = `Masuk Ujian ${jenjang} →`;
-      btnElearning.href = "ujian.html";
-
-      document.getElementById("cardPaketA").style.display = "none";
-      document.getElementById("cardPaketB").style.display = "none";
-      document.getElementById("cardPaketC").style.display = "none";
-
-      if (jenjang === "Paket A") {
-        document.getElementById("cardPaketA").style.display = "flex";
-        document.getElementById("linkPaketA").href = FOLDER_DRIVE["Paket A"];
-      } else if (jenjang === "Paket B") {
-        document.getElementById("cardPaketB").style.display = "flex";
-        document.getElementById("linkPaketB").href = FOLDER_DRIVE["Paket B"];
-      } else if (jenjang === "Paket C") {
-        document.getElementById("cardPaketC").style.display = "flex";
-        document.getElementById("linkPaketC").href = FOLDER_DRIVE["Paket C"];
+      if (kelasRaw) {
+        kelasStr = kelasRaw.toLowerCase().startsWith("kelas") ? kelasRaw : `Kelas ${kelasRaw}`;
+      } else {
+        // Fallback default kelas bila kosong di database
+        if (jenjang === "Paket A") kelasStr = "Kelas 1";
+        else if (jenjang === "Paket B") kelasStr = "Kelas 7";
+        else kelasStr = "Kelas 10";
       }
+
+      // Simpan kelas yang sudah dinormalisasi
+      data.kelasNorm = kelasStr;
+      data.jenjangNorm = jenjang;
+      localStorage.setItem("siswaAuth", JSON.stringify(data));
+
+      userBadge.textContent = `👤 ${nama} (${jenjang} • ${kelasStr})`;
+      titleElearning.textContent = `💻 Ujian CBT - ${kelasStr}`;
+      btnElearning.textContent = `Masuk Ujian ${kelasStr} →`;
+
+      titleTugas.textContent = `📤 Tugas & Portofolio (${jenjang})`;
+      modulTitle.textContent = `📁 Folder Modul & Materi: ${jenjang} (${kelasStr})`;
+      linkModul.href = FOLDER_DRIVE[jenjang] || FOLDER_DRIVE["Paket C"];
+
+      // Pasang tiket auth ke ujian.html
+      btnElearning.href = `ujian.html?auth=${encodeURIComponent(JSON.stringify(data))}`;
     }
   </script>
 </body>
