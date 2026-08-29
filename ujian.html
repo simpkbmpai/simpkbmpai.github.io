@@ -223,41 +223,39 @@
   </main>
 
   <script>
-    // 1. DATA USER DARI TIKET LOGIN
+    // 1. BACA DATA LOGIN
     const savedString = rawAuth.startsWith("{") ? rawAuth : decodeURIComponent(rawAuth);
     let user = {};
-    try { user = JSON.parse(savedString); } catch(e) { user = { nama: "Siswa PKBM", jenjang: "Paket C" }; }
+    try { user = JSON.parse(savedString); } catch(e) { user = { nama: "Siswa PKBM", jenjang: "Paket C", kelas: "12" }; }
 
-    let jenjangUser = user.jenjang || "Paket C";
-    if (jenjangUser === "A" || jenjangUser.toLowerCase().includes("paket a")) jenjangUser = "Paket A";
-    else if (jenjangUser === "B" || jenjangUser.toLowerCase().includes("paket b")) jenjangUser = "Paket B";
-    else if (jenjangUser === "C" || jenjangUser.toLowerCase().includes("paket c")) jenjangUser = "Paket C";
+    let jenjang = user.jenjangNorm || user.jenjang || "Paket C";
+    let kelas = user.kelasNorm || user.kelas || "Kelas 10";
+    if (!kelas.toLowerCase().startsWith("kelas")) kelas = `Kelas ${kelas}`;
 
     document.getElementById("dispNama").textContent = user.nama || "Siswa PKBM";
-    document.getElementById("dispJenjang").textContent = `${jenjangUser} • NIS: ${user.nis || user.username || "-"}`;
+    document.getElementById("dispJenjang").textContent = `${jenjang} (${kelas}) • NIS: ${user.nis || user.username || "-"}`;
 
-    // 2. AMBIL LINK SOAL SECARA DINAMIS DARI data-ujian.json
+    // 2. AMBIL LINK SOAL SESUAI KELAS DARI data-ujian.json
     async function loadExamForm() {
       try {
         const res = await fetch("data-ujian.json?t=" + Date.now());
         if (res.ok) {
           const examData = await res.json();
-          let targetUrl = examData[jenjangUser];
+          // Cari spesifik per Kelas, jika belum ada cari per Paket
+          let targetUrl = examData[kelas] || examData[user.kelas] || examData[jenjang];
           if (targetUrl) {
             document.getElementById("examFrame").src = targetUrl;
             return;
           }
         }
       } catch(e) {}
-      // Link Fallback jika data-ujian.json belum ada
       document.getElementById("examFrame").src = "https://docs.google.com/forms";
     }
     loadExamForm();
 
-    // 3. PENGATURAN KAMERA & PENGAWAS
+    // 3. LOGIKA KAMERA & ANTI-PINDAH TAB
     let violations = 0;
     const videoEl = document.getElementById("webcam");
-    const canvasEl = document.getElementById("snapshotCanvas");
     const startModal = document.getElementById("startModal");
     const btnStart = document.getElementById("btnStartExam");
     const violationCountEl = document.getElementById("violationCount");
