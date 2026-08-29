@@ -14,7 +14,6 @@
       --text: #1f2937;
       --muted: #6b7280;
       --danger: #b91c1c;
-      --gold: #d97706;
     }
     * { box-sizing: border-box; }
     body {
@@ -24,63 +23,31 @@
       color: var(--text);
       line-height: 1.6;
     }
-    .container { max-width: 1020px; margin: auto; padding: 20px; }
+    .container { max-width: 1040px; margin: auto; padding: 20px; }
     
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .btn-nav {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--green-dark);
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 13.5px;
-      background: #fff;
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1.5px solid var(--line);
-      box-shadow: 0 4px 12px rgba(13,122,95,0.06);
+      display: inline-flex; align-items: center; gap: 6px; color: var(--green-dark); text-decoration: none;
+      font-weight: 800; font-size: 13.5px; background: #fff; padding: 8px 16px; border-radius: 999px;
+      border: 1.5px solid var(--line); box-shadow: 0 4px 12px rgba(13,122,95,0.06);
     }
     .btn-nav:hover { background: var(--green-soft); }
 
     .hero {
-      text-align: center;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      padding: 28px 20px;
-      box-shadow: 0 12px 30px rgba(13,122,95,0.08);
-      margin-bottom: 24px;
+      text-align: center; background: #fff; border: 1px solid var(--line); border-radius: 26px;
+      padding: 28px 20px; box-shadow: 0 12px 30px rgba(13,122,95,0.08); margin-bottom: 24px;
     }
     .hero img { width: 70px; height: 70px; object-fit: contain; margin-bottom: 10px; }
     .hero h1 { margin: 0; color: var(--green-dark); font-size: 25px; }
     .hero p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
     .badge-user {
-      display: inline-block;
-      background: var(--green-soft);
-      color: var(--green-dark);
-      border: 1px solid var(--line);
-      padding: 4px 14px;
-      border-radius: 999px;
-      font-size: 12.5px;
-      font-weight: 800;
-      margin-bottom: 8px;
+      display: inline-block; background: var(--green-soft); color: var(--green-dark); border: 1px solid var(--line);
+      padding: 4px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 800; margin-bottom: 8px;
     }
 
     .lock-box {
-      max-width: 420px;
-      margin: 30px auto;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 32px 24px;
-      text-align: center;
-      box-shadow: 0 16px 40px rgba(13,122,95,0.12);
+      max-width: 420px; margin: 30px auto; background: #fff; border: 1px solid var(--line);
+      border-radius: 24px; padding: 32px 24px; text-align: center; box-shadow: 0 16px 40px rgba(13,122,95,0.12);
     }
     .lock-box h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 20px; }
     .lock-box p { font-size: 13.5px; color: var(--muted); margin-bottom: 20px; }
@@ -88,143 +55,66 @@
     .form-group { text-align: left; margin-bottom: 14px; }
     .form-group label { display: block; font-size: 13px; font-weight: 800; color: var(--green-dark); margin-bottom: 6px; }
     .input-field {
-      width: 100%;
-      padding: 13px 16px;
-      font-size: 15px;
-      border: 2px solid var(--line);
-      border-radius: 14px;
-      outline: none;
-      color: var(--text);
+      width: 100%; padding: 13px 16px; font-size: 15px; border: 2px solid var(--line);
+      border-radius: 14px; outline: none; color: var(--text);
     }
     .input-field:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(13,122,95,0.12); }
     
     .btn-login {
-      width: 100%;
-      padding: 14px;
-      background: var(--green);
-      color: #fff;
-      border: 0;
-      border-radius: 16px;
-      font-weight: 800;
-      font-size: 15px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(13,122,95,0.2);
+      width: 100%; padding: 14px; background: var(--green); color: #fff; border: 0;
+      border-radius: 16px; font-weight: 800; font-size: 15px; cursor: pointer; box-shadow: 0 8px 20px rgba(13,122,95,0.2);
       margin-top: 8px;
-      transition: all 0.2s;
     }
     .btn-login:disabled { background: #9ca3af; cursor: not-allowed; }
-    .btn-login:hover:not(:disabled) { background: var(--green-dark); }
-    
-    .login-error {
-      color: var(--danger);
-      font-size: 13px;
-      font-weight: bold;
-      margin-top: 12px;
-      display: none;
-    }
+    .login-error { color: var(--danger); font-size: 13px; font-weight: bold; margin-top: 12px; display: none; }
 
     #tutorDashboard { display: none; }
 
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-bottom: 26px;
-    }
-    @media(max-width: 860px) {
-      .dashboard-grid { grid-template-columns: 1fr; }
-    }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 26px; }
+    @media(max-width: 860px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
     .tutor-card {
-      background: #fff;
-      border: 2px solid var(--line);
-      border-radius: 22px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 10px 30px rgba(13,122,95,0.07);
-      transition: transform 0.2s;
+      background: #fff; border: 2px solid var(--line); border-radius: 22px; padding: 22px;
+      display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(13,122,95,0.07);
     }
-    .tutor-card:hover { transform: translateY(-3px); }
     .tutor-card-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 16px;
-      background: var(--green-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 14px;
+      width: 48px; height: 48px; border-radius: 14px; background: var(--green-soft);
+      display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px;
     }
-    .tutor-card h3 { margin: 0 0 6px; color: var(--green-dark); font-size: 19px; }
-    .tutor-card p { margin: 0 0 18px; color: var(--muted); font-size: 13.5px; flex-grow: 1; }
+    .tutor-card h3 { margin: 0 0 6px; color: var(--green-dark); font-size: 18px; }
+    .tutor-card p { margin: 0 0 16px; color: var(--muted); font-size: 13px; flex-grow: 1; }
     
     .btn-tutor {
-      display: block;
-      text-align: center;
-      background: var(--green);
-      color: #fff;
-      border: 0;
-      padding: 12px;
-      border-radius: 14px;
-      font-weight: 800;
-      font-size: 14px;
-      text-decoration: none;
+      display: block; text-align: center; background: var(--green); color: #fff; border: 0;
+      padding: 11px; border-radius: 12px; font-weight: 800; font-size: 13.5px; text-decoration: none;
       box-shadow: 0 6px 16px rgba(13,122,95,0.18);
-      transition: all 0.2s;
     }
     .btn-tutor:hover { background: var(--green-dark); }
-    .btn-tutor.outline {
-      background: #fff;
-      color: var(--green-dark);
-      border: 1.5px solid var(--line);
-      box-shadow: none;
-    }
+    .btn-tutor.outline { background: #fff; color: var(--green-dark); border: 1.5px solid var(--line); box-shadow: none; }
     .btn-tutor.outline:hover { background: var(--green-soft); }
 
-    .section-title {
-      font-size: 20px;
-      color: var(--green-dark);
-      margin: 28px 0 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .section-title { font-size: 20px; color: var(--green-dark); margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
+    .package-heading { font-weight: bold; color: var(--green-dark); margin: 16px 0 8px; font-size: 16px; border-bottom: 2px solid var(--line); padding-bottom: 4px; }
+    
+    .folder-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 16px; }
+    @media(max-width: 860px) { .folder-grid { grid-template-columns: 1fr; } }
 
-    .folder-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 26px;
+    .class-card {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 18px; padding: 16px;
+      display: flex; justify-content: space-between; align-items: center;
     }
-    @media(max-width: 860px) {
-      .folder-grid { grid-template-columns: 1fr; }
-    }
+    .class-card b { color: var(--green-dark); font-size: 15px; }
+    .class-card a { font-size: 13px; font-weight: 800; color: var(--green); text-decoration: none; padding: 6px 12px; border: 1px solid var(--line); border-radius: 10px; }
+    .class-card a:hover { background: var(--green-soft); }
 
-    .guide-box {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 22px;
-      font-size: 13.5px;
-      color: var(--text);
-    }
+    .guide-box { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 22px; font-size: 13.5px; color: var(--text); }
     .guide-box h4 { margin: 0 0 10px; color: var(--green-dark); font-size: 16px; }
     .guide-box ol { margin: 0; padding-left: 20px; }
     .guide-box li { margin-bottom: 6px; }
 
     .btn-logout {
-      display: inline-block;
-      margin-top: 20px;
-      color: var(--danger);
-      background: none;
-      border: 0;
-      font-weight: 800;
-      font-size: 13px;
-      cursor: pointer;
-      text-decoration: underline;
+      display: inline-block; margin-top: 20px; color: var(--danger); background: none; border: 0;
+      font-weight: 800; font-size: 13px; cursor: pointer; text-decoration: underline;
     }
   </style>
 </head>
@@ -243,7 +133,6 @@
       <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Kesetaraan)</p>
     </div>
 
-    <!-- FORM LOGIN TUTOR -->
     <div id="loginGate" class="lock-box">
       <div style="font-size: 36px; margin-bottom: 8px;">👨‍🏫</div>
       <h3>Login Ruang Tutor</h3>
@@ -265,11 +154,9 @@
       <div id="loginError" class="login-error"></div>
     </div>
 
-    <!-- DASHBOARD UTAMA TUTOR -->
     <div id="tutorDashboard">
       
       <div class="dashboard-grid">
-        <!-- 1. HASIL UJIAN & CBT -->
         <div class="tutor-card">
           <div>
             <div class="tutor-card-icon">📊</div>
@@ -281,59 +168,45 @@
           </a>
         </div>
 
-        <!-- 2. PEMERIKSAAN TUGAS -->
         <div class="tutor-card">
           <div>
             <div class="tutor-card-icon">📥</div>
-            <h3>Tugas & Lembar Kerja</h3>
-            <p>Periksa unggahan portofolio harian, foto dokumen, dan video yang dikirim oleh santri.</p>
+            <h3>Tugas & Portofolio</h3>
+            <p>Folder Google Drive utama tempat pengumpulan tugas santri tersimpan.</p>
           </div>
           <a id="linkDriveTugas" href="https://drive.google.com" target="_blank" class="btn-tutor">
-            Buka Folder Tugas Masuk →
+            Buka Folder Tugas Utama →
           </a>
         </div>
 
-        <!-- 3. KELOLA LINK SOAL UJIAN -->
         <div class="tutor-card">
           <div>
             <div class="tutor-card-icon">⚙️</div>
-            <h3>Ganti Link Soal Ujian</h3>
-            <p>Perbarui link Google Form soal ujian CBT tanpa perlu mengedit file kode web.</p>
+            <h3>Kelola Soal & Materi</h3>
+            <p>Perbarui link Google Form dan Folder Drive materi per kelas di dashboard admin.</p>
           </div>
-          <a href="admin.html#pengaturan-ujian" target="_blank" class="btn-tutor outline">
-            Buka Panel Admin Soal ↗
+          <a href="admin.html#pengaturan-materi-tugas" target="_blank" class="btn-tutor outline">
+            Buka Panel Admin Materi ↗
           </a>
         </div>
       </div>
 
-      <!-- BANK MODUL PEMBELAJARAN (DRIVE) -->
-      <h2 class="section-title">📁 Manajemen Modul Belajar (Google Drive)</h2>
-      <div class="folder-grid">
-        <div class="tutor-card">
-          <h3>Paket A (Setara SD)</h3>
-          <p>Materi tematik, literasi & numerasi Kelas 1 s.d. 6.</p>
-          <a id="tutorLinkA" href="#" target="_blank" class="btn-tutor outline">Buka Drive Paket A ↗</a>
-        </div>
+      <h2 class="section-title">📁 Manajemen Modul Belajar Google Drive (Kelas 1 s.d. 12)</h2>
+      
+      <div class="package-heading">🟢 Paket A (Kelas 1 - 6)</div>
+      <div class="folder-grid" id="gridTutorA"></div>
 
-        <div class="tutor-card">
-          <h3>Paket B (Setara SMP)</h3>
-          <p>Modul kurikulum kesetaraan Kelas 7 s.d. 9.</p>
-          <a id="tutorLinkB" href="#" target="_blank" class="btn-tutor outline">Buka Drive Paket B ↗</a>
-        </div>
+      <div class="package-heading">🔵 Paket B (Kelas 7 - 9)</div>
+      <div class="folder-grid" id="gridTutorB"></div>
 
-        <div class="tutor-card">
-          <h3>Paket C (Setara SMA)</h3>
-          <p>Modul peminatan & keahlian Kelas 10 s.d. 12.</p>
-          <a id="tutorLinkC" href="#" target="_blank" class="btn-tutor outline">Buka Drive Paket C ↗</a>
-        </div>
-      </div>
+      <div class="package-heading">🟡 Paket C (Kelas 10 - 12)</div>
+      <div class="folder-grid" id="gridTutorC"></div>
 
       <div class="guide-box">
         <h4>📌 Panduan Fasilitator / Tutor:</h4>
         <ol>
-          <li>Hasil ujian CBT tersinkronisasi otomatis pada Google Spreadsheet setelah santri menekan tombol <b>Kirim</b> pada lembar ujian.</li>
-          <li>Untuk mengunggah materi baru, masukkan file ke dalam folder Google Drive yang sesuai jenjangnya di atas.</li>
-          <li>Pastikan hak akses folder Google Drive diatur ke <b>"Siapa saja yang memiliki link dapat melihat"</b> agar santri dapat mengunduh materi ajar.</li>
+          <li>Untuk menambah modul/materi baru, klik tombol <b>Buka Drive ↗</b> pada kelas yang bersangkutan lalu unggah file ke dalamnya.</li>
+          <li>Pastikan hak akses folder materi Google Drive diatur ke <b>"Siapa saja yang memiliki link dapat melihat"</b>.</li>
         </ol>
         <div style="text-align: right;">
           <button id="btnLogoutTutor" class="btn-logout">🔒 Keluar dari Ruang Tutor</button>
@@ -346,27 +219,46 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    // FUNGSI MEMBACA LINK DINAMIS DARI data-tutor.json
-    async function loadDynamicTutorLinks() {
-      try {
-        const res = await fetch("data-tutor.json?t=" + Date.now());
-        if (res.ok) {
-          const cfg = await res.json();
-          if (cfg.rekapNilai) document.getElementById("linkRekapNilai").href = cfg.rekapNilai;
-          if (cfg.driveTugas) document.getElementById("linkDriveTugas").href = cfg.driveTugas;
-          if (cfg.drivePaketA) document.getElementById("tutorLinkA").href = cfg.drivePaketA;
-          if (cfg.drivePaketB) document.getElementById("tutorLinkB").href = cfg.drivePaketB;
-          if (cfg.drivePaketC) document.getElementById("tutorLinkC").href = cfg.drivePaketC;
-          return;
-        }
-      } catch(e) {}
-
-      // Fallback Link bawaan jika belum ada data-tutor.json
-      document.getElementById("tutorLinkA").href = "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing";
-      document.getElementById("tutorLinkB").href = "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing";
-      document.getElementById("tutorLinkC").href = "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing";
+    function renderTutorClassGrid(containerId, start, end, materiMap) {
+      let html = "";
+      for(let i=start; i<=end; i++){
+        const link = materiMap[`Kelas ${i}`] || "#";
+        html += `
+          <div class="class-card">
+            <b>Kelas ${i}</b>
+            <a href="${link}" target="_blank">Buka Drive ↗</a>
+          </div>
+        `;
+      }
+      document.getElementById(containerId).innerHTML = html;
     }
-    loadDynamicTutorLinks();
+
+    async function loadTutorData() {
+      // 1. Muat Link Rekap & Tugas
+      try {
+        const resTutor = await fetch("data-tutor.json?t=" + Date.now());
+        if(resTutor.ok){
+          const d = await resTutor.json();
+          if(d.rekapNilai) document.getElementById("linkRekapNilai").href = d.rekapNilai;
+          if(d.driveTugas) document.getElementById("linkDriveTugas").href = d.driveTugas;
+        }
+      } catch(e){}
+
+      // 2. Muat Link Drive Kelas 1-12
+      let materiMap = {};
+      try {
+        const resMateri = await fetch("data-materi.json?t=" + Date.now());
+        if(resMateri.ok){
+          const d = await resMateri.json();
+          materiMap = d.materi || {};
+        }
+      } catch(e){}
+
+      renderTutorClassGrid("gridTutorA", 1, 6, materiMap);
+      renderTutorClassGrid("gridTutorB", 7, 9, materiMap);
+      renderTutorClassGrid("gridTutorC", 10, 12, materiMap);
+    }
+    loadTutorData();
 
     const loginGate = document.getElementById("loginGate");
     const tutorDashboard = document.getElementById("tutorDashboard");
@@ -378,20 +270,16 @@
     const btnSubmitTutor = document.getElementById("btnSubmitTutor");
     const btnLogoutTutor = document.getElementById("btnLogoutTutor");
 
-    // Cek Sesi Tutor Sebelumnya
     const savedTutor = localStorage.getItem("tutorAuth") || sessionStorage.getItem("tutorAuth");
     if (savedTutor) {
-      try {
-        const data = JSON.parse(savedTutor);
-        tampilkanDashboardTutor(data);
-      } catch(e) {}
+      try { tampilkanDashboardTutor(JSON.parse(savedTutor)); } catch(e) {}
     }
 
     tutorLoginForm.addEventListener("submit", async function(e) {
       e.preventDefault();
       loginError.style.display = "none";
       btnSubmitTutor.disabled = true;
-      btnSubmitTutor.textContent = "Memverifikasi database...";
+      btnSubmitTutor.textContent = "Memverifikasi...";
 
       const u = usernameInput.value.trim();
       const p = passwordInput.value.trim();
@@ -411,7 +299,7 @@
           passwordInput.focus();
         }
       } catch (err) {
-        loginError.textContent = "❌ Gagal terhubung ke database. Periksa koneksi internet.";
+        loginError.textContent = "❌ Gagal terhubung ke server.";
         loginError.style.display = "block";
       } finally {
         btnSubmitTutor.disabled = false;
@@ -428,8 +316,7 @@
     function tampilkanDashboardTutor(data) {
       loginGate.style.display = "none";
       tutorDashboard.style.display = "block";
-      const nama = data.nama || "Tutor PKBM";
-      userBadge.textContent = `👨‍🏫 ${nama} (Tutor)`;
+      userBadge.textContent = `👨‍🏫 ${data.nama || "Tutor"} (Tutor)`;
     }
   </script>
 </body>
