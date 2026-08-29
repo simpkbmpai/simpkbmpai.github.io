@@ -184,8 +184,8 @@
         <b>Aturan Pelaksanaan Ujian:</b>
         <ol style="margin: 6px 0 0; padding-left: 18px;">
           <li>Izinkan akses <b>Kamera (Webcam)</b> untuk pengawasan otomatis.</li>
-          <li><b>Dilarang berpindah tab</b> atau membuka jendela aplikasi lain.</li>
-          <li>Pelanggaran akan otomatis tercatat oleh sistem.</li>
+          <li><b>Dilarang berpindah tab</b> atau membuka aplikasi lain.</li>
+          <li>Setiap pelanggaran akan <b>difoto otomatis</b> dan dicatat ke spreadsheet tutor.</li>
         </ol>
       </div>
 
@@ -216,6 +216,7 @@
     </div>
   </header>
 
+  <!-- Canvas Tersembunyi untuk Snapshot Foto -->
   <canvas id="snapshotCanvas" style="display:none;"></canvas>
 
   <main>
@@ -223,7 +224,9 @@
   </main>
 
   <script>
-    // 1. BACA DATA LOGIN
+    const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
+
+    // 1. DATA USER DARI TIKET LOGIN
     const savedString = rawAuth.startsWith("{") ? rawAuth : decodeURIComponent(rawAuth);
     let user = {};
     try { user = JSON.parse(savedString); } catch(e) { user = { nama: "Siswa PKBM", jenjang: "Paket C", kelas: "12" }; }
@@ -235,13 +238,12 @@
     document.getElementById("dispNama").textContent = user.nama || "Siswa PKBM";
     document.getElementById("dispJenjang").textContent = `${jenjang} (${kelas}) • NIS: ${user.nis || user.username || "-"}`;
 
-    // 2. AMBIL LINK SOAL SESUAI KELAS DARI data-ujian.json
+    // 2. MUAT SOAL SESUAI TINGKAT KELAS
     async function loadExamForm() {
       try {
         const res = await fetch("data-ujian.json?t=" + Date.now());
         if (res.ok) {
           const examData = await res.json();
-          // Cari spesifik per Kelas, jika belum ada cari per Paket
           let targetUrl = examData[kelas] || examData[user.kelas] || examData[jenjang];
           if (targetUrl) {
             document.getElementById("examFrame").src = targetUrl;
@@ -253,9 +255,10 @@
     }
     loadExamForm();
 
-    // 3. LOGIKA KAMERA & ANTI-PINDAH TAB
+    // 3. SISTEM PENGAWAS, AMBIL FOTO & KIRIM LOG KE GOOGLE SHEET
     let violations = 0;
     const videoEl = document.getElementById("webcam");
+    const canvasEl = document.getElementById("snapshotCanvas");
     const startModal = document.getElementById("startModal");
     const btnStart = document.getElementById("btnStartExam");
     const violationCountEl = document.getElementById("violationCount");
@@ -269,17 +272,54 @@
           document.documentElement.requestFullscreen().catch(() => {});
         }
       } catch (err) {
-        alert("PENTING: Akses kamera diperlukan untuk mengikuti Ujian Terawasi. Mohon izinkan akses kamera.");
+        alert("PENTING: Akses kamera diperlukan untuk mengikuti Ujian Terawasi. Mohon izinkan kamera.");
       }
     });
 
+    // Deteksi Berpindah Tab
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && startModal.style.display === "none") {
         violations++;
         violationCountEl.textContent = violations;
-        alert(`⚠️ PERINGATAN ${violations}!\nAnda terdeteksi meninggalkan halaman ujian/membuka tab lain.`);
+        alert(`⚠️ PERINGATAN ${violations}!\nAnda terdeteksi meninggalkan halaman ujian. Foto wajah dan catatan pelanggaran Anda telah dikirim ke guru/tutor!`);
+        captureAndSendLog(`Pindah Tab (Pelanggaran ke-${violations})`);
       }
     });
+
+    // Fungsi Pengambilan Foto & Pengiriman ke Apps Script
+    function captureAndSendLog(eventMsg) {
+      if (!videoEl || !videoEl.videoWidth) return;
+      try {
+        canvasEl.width = videoEl.videoWidth;
+        canvasEl.height = videoEl.videoHeight;
+        const ctx = canvasEl.getContext("2d");
+        ctx.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
+        
+        // Kompresi foto JPEG kualitas 0.4 agar proses kirim cepat dan ringan
+        const photoBase64 = canvasEl.toDataURL("image/jpeg", 0.4);
+
+        const payload = {
+          action: "log_pelanggaran",
+          nis: user.nis || user.username || "-",
+          nama: user.nama || "Siswa PKBM",
+          jenjang: jenjang,
+          kelas: kelas,
+          violationCount: violations,
+          event: eventMsg,
+          imageBase64: photoBase64
+        };
+
+        // Kirim log ke Google Apps Script di latar belakang
+        fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+
+      } catch(err) {
+        console.error("Gagal capture log:", err);
+      }
+    }
 
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.addEventListener("copy", e => e.preventDefault());
