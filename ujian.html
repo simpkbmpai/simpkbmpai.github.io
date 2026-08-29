@@ -183,9 +183,9 @@
       <div class="rules-list">
         <b>Aturan Pelaksanaan Ujian:</b>
         <ol style="margin: 6px 0 0; padding-left: 18px;">
-          <li>Izinkan akses <b>Kamera (Webcam)</b> untuk pengawasan otomatis.</li>
+          <li>Izinkan akses <b>Kamera (Webcam)</b> untuk verifikasi presensi wajah otomatis.</li>
           <li><b>Dilarang berpindah tab</b> atau membuka aplikasi lain.</li>
-          <li>Setiap pelanggaran akan <b>difoto otomatis</b> dan dicatat ke spreadsheet tutor.</li>
+          <li>Foto pengerjaan ujian Anda tersimpan di lembar penilaian tutor.</li>
         </ol>
       </div>
 
@@ -216,7 +216,6 @@
     </div>
   </header>
 
-  <!-- Canvas Tersembunyi untuk Snapshot Foto -->
   <canvas id="snapshotCanvas" style="display:none;"></canvas>
 
   <main>
@@ -255,7 +254,7 @@
     }
     loadExamForm();
 
-    // 3. SISTEM PENGAWAS, AMBIL FOTO & KIRIM LOG KE GOOGLE SHEET
+    // 3. SISTEM PENGAWAS, PRESENSI FOTO & LOG OTOMATIS
     let violations = 0;
     const videoEl = document.getElementById("webcam");
     const canvasEl = document.getElementById("snapshotCanvas");
@@ -268,26 +267,40 @@
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         videoEl.srcObject = stream;
         startModal.style.display = "none";
+        
         if (document.documentElement.requestFullscreen) {
           document.documentElement.requestFullscreen().catch(() => {});
         }
+
+        // FOTO 1: PRESENSI OTOMATIS SAAT MEMULAI UJIAN (Jeda 2.5 detik agar kamera stabil)
+        setTimeout(() => {
+          captureAndSendLog("Presensi Mulai Mengerjakan Ujian", 0);
+        }, 2500);
+
+        // FOTO 2: MONITORING BERKALA SETIAP 5 MENIT SEKALI
+        setInterval(() => {
+          if (videoEl && videoEl.srcObject) {
+            captureAndSendLog("Monitoring Berkala (Ujian Berlangsung)", violations);
+          }
+        }, 300000); // 300.000 ms = 5 Menit
+
       } catch (err) {
-        alert("PENTING: Akses kamera diperlukan untuk mengikuti Ujian Terawasi. Mohon izinkan kamera.");
+        alert("PENTING: Akses kamera diperlukan untuk verifikasi presensi ujian. Mohon izinkan akses kamera.");
       }
     });
 
-    // Deteksi Berpindah Tab
+    // FOTO 3: DETEKSI BERPINDAH TAB (PELANGGARAN)
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && startModal.style.display === "none") {
         violations++;
         violationCountEl.textContent = violations;
         alert(`⚠️ PERINGATAN ${violations}!\nAnda terdeteksi meninggalkan halaman ujian. Foto wajah dan catatan pelanggaran Anda telah dikirim ke guru/tutor!`);
-        captureAndSendLog(`Pindah Tab (Pelanggaran ke-${violations})`);
+        captureAndSendLog(`Pindah Tab (Pelanggaran ke-${violations})`, violations);
       }
     });
 
-    // Fungsi Pengambilan Foto & Pengiriman ke Apps Script
-    function captureAndSendLog(eventMsg) {
+    // Fungsi Pengambilan Snapshot & Pengiriman ke Google Sheet
+    function captureAndSendLog(eventMsg, countVal) {
       if (!videoEl || !videoEl.videoWidth) return;
       try {
         canvasEl.width = videoEl.videoWidth;
@@ -295,7 +308,7 @@
         const ctx = canvasEl.getContext("2d");
         ctx.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
         
-        // Kompresi foto JPEG kualitas 0.4 agar proses kirim cepat dan ringan
+        // Kompresi foto JPEG 0.4 agar proses upload cepat & ringan
         const photoBase64 = canvasEl.toDataURL("image/jpeg", 0.4);
 
         const payload = {
@@ -304,12 +317,12 @@
           nama: user.nama || "Siswa PKBM",
           jenjang: jenjang,
           kelas: kelas,
-          violationCount: violations,
+          violationCount: countVal === 0 ? "0 (Presensi Wajah)" : countVal,
           event: eventMsg,
           imageBase64: photoBase64
         };
 
-        // Kirim log ke Google Apps Script di latar belakang
+        // Kirim log ke Google Apps Script
         fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
@@ -317,10 +330,11 @@
         }).catch(() => {});
 
       } catch(err) {
-        console.error("Gagal capture log:", err);
+        console.error("Gagal mengirim snapshot log:", err);
       }
     }
 
+    // Blokir Klik Kanan & Salin Teks
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.addEventListener("copy", e => e.preventDefault());
     document.addEventListener("paste", e => e.preventDefault());
