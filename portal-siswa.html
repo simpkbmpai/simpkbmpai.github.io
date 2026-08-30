@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Portal Siswa & Buku Penghubung Wali Santri - PKBM Pelita Aushaf</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
-  
-  <!-- Library Grafik Interaktif Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
@@ -19,7 +17,6 @@
       --muted: #6b7280;
       --danger: #b91c1c;
       --orange: #ea580c;
-      --purple: #7c3aed;
       --blue: #2563eb;
     }
     * { box-sizing: border-box; }
@@ -79,14 +76,14 @@
     .stat-val { font-size: 24px; font-weight: 900; color: var(--green-dark); }
     .stat-label { font-size: 12px; color: var(--muted); font-weight: bold; margin-top: 2px; }
 
-    /* GRAFIK & EVALUASI KARAKTER / SENSORI */
+    /* GRAFIK KARAKTER & KEMANDIRIAN */
     .chart-box {
       background: #fff; border: 1.5px solid var(--line); border-radius: 22px; padding: 20px; margin-bottom: 24px;
       display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;
     }
     @media(max-width: 768px) { .chart-box { grid-template-columns: 1fr; } }
 
-    /* DAFTAR TUGAS / PEMBIASAAN DI RUMAH */
+    /* DAFTAR TUGAS PEMBIASAAN */
     .tugas-container {
       background: #fff; border: 2px solid #fed7aa; border-radius: 22px; padding: 22px; margin-bottom: 24px;
     }
@@ -94,7 +91,7 @@
       background: #fffaf5; border: 1.5px solid #ffedd5; border-radius: 14px; padding: 14px; margin-bottom: 10px;
     }
 
-    /* RAPORT CARD */
+    /* RAPORT DETAIL */
     .raport-card {
       background: #fff; border: 2px solid var(--line); border-radius: 24px; padding: 24px; margin-bottom: 24px;
     }
@@ -102,7 +99,7 @@
     .jurnal-table th { background: var(--green-soft); color: var(--green-dark); padding: 10px; text-align: left; border: 1px solid var(--line); }
     .jurnal-table td { padding: 12px 10px; border: 1px solid var(--line); vertical-align: top; }
 
-    /* TANDA TANGAN DIGITAL WALI SANTRI */
+    /* TANDA TANGAN DIGITAL */
     .signature-card {
       background: #f0fdf4; border: 2px dashed #34d399; border-radius: 22px; padding: 22px; margin-top: 24px;
     }
@@ -117,7 +114,6 @@
     }
     .btn-action:hover { background: var(--green-dark); }
 
-    /* MENU PENDUKUNG */
     .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
     @media(max-width: 860px) { .dashboard-grid { grid-template-columns: 1fr; } }
     .action-card {
@@ -145,14 +141,14 @@
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div><span class="badge-user" id="userBadge">Portal Akademik & Wali Santri</span></div>
       <h1>Buku Penghubung & Raport Digital Santri</h1>
-      <p>PKBM Pelita Aushaf Indonesia (Kesetaraan & Inklusi PAT)</p>
+      <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Pendidikan Kesetaraan)</p>
     </div>
 
-    <!-- 1. FORM LOGIN WALI SANTRI -->
+    <!-- 1. LOGIN -->
     <div id="loginGate" class="lock-box">
       <div style="font-size: 36px; margin-bottom: 8px;">🎓</div>
       <h3>Login Santri / Wali Murid</h3>
-      <p>Masukkan NIS Santri untuk membuka buku penghubung & rekam perkembangan ananda.</p>
+      <p>Masukkan NIS Santri untuk membuka buku penghubung & perkembangan ananda.</p>
       
       <form id="siswaLoginForm">
         <input type="text" id="usernameInput" class="input-field" placeholder="NIS Santri (Contoh: siswa1)" required>
@@ -161,14 +157,14 @@
       </form>
     </div>
 
-    <!-- 2. DASHBOARD LENGKAP WALI SANTRI -->
+    <!-- 2. DASHBOARD WALI SANTRI -->
     <div id="siswaDashboard">
 
-      <!-- 1. STATS DISIPLIN & PRESENSI BULAN INI -->
+      <!-- 1. STATS PRESENSI -->
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-val" id="statHadir" style="color:#059669;">0</div>
-          <div class="stat-label">Sesi Pembelajaran / Terapi</div>
+          <div class="stat-label">Sesi Pembelajaran</div>
         </div>
         <div class="stat-card">
           <div class="stat-val" id="statTerlambat" style="color:#ea580c;">0</div>
@@ -184,14 +180,14 @@
         </div>
       </div>
 
-      <!-- 2. GRAFIK CAPAIAN KARAKTER & REGULASI DIRI -->
+      <!-- 2. GRAFIK CAPAIAN KARAKTER -->
       <div class="chart-box">
         <div>
-          <h3 style="margin:0 0 6px; color:var(--green-dark);">📊 Capaian Karakter & Regulasi Diri</h3>
-          <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Evaluasi perkembangan konsentrasi belajar, adab, kemandirian, dan ketenangan sensori santri.</p>
+          <h3 style="margin:0 0 6px; color:var(--green-dark);">📊 Capaian Karakter & Pembiasaan</h3>
+          <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Evaluasi perkembangan konsentrasi, adab, kemandirian, dan ketertiban belajar santri.</p>
           <div style="font-size:13.5px;">
             <div>🌟 <b>Indeks Fokus / Ketenangan:</b> <span id="valFokusPersen" style="color:#059669; font-weight:bold;">100%</span></div>
-            <div style="margin-top:4px;">🌿 <b>Indeks Adab & Kooperatif:</b> <span id="valAdabPersen" style="color:#2563eb; font-weight:bold;">100%</span></div>
+            <div style="margin-top:4px;">🌿 <b>Indeks Adab & Kesantunan:</b> <span id="valAdabPersen" style="color:#2563eb; font-weight:bold;">100%</span></div>
           </div>
         </div>
         <div style="max-height: 220px; display:flex; justify-content:center;">
@@ -199,11 +195,11 @@
         </div>
       </div>
 
-      <!-- 3. KOTAK DAFTAR TUGAS & PEMBIASAAN MANDIRI DI RUMAH -->
+      <!-- 3. KOTAK DAFTAR TUGAS PEMBIASAAN -->
       <div class="tugas-container">
         <h3 style="margin:0 0 12px; color:var(--orange);">📌 Tugas & Pembiasaan Mandiri di Rumah</h3>
         <div id="tugasListContainer">
-          <div style="color:var(--muted); font-size:13px;">Belum ada tugas/pembiasaan baru dari ustadz/tutor.</div>
+          <div style="color:var(--muted); font-size:13px;">Belum ada tugas/pembiasaan baru dari pengajar.</div>
         </div>
       </div>
 
@@ -223,10 +219,10 @@
           <table class="jurnal-table">
             <thead>
               <tr>
-                <th style="width:24%;">Tgl & Mapel / Sesi Terapi</th>
-                <th style="width:28%;">Materi / Milestone Terapi</th>
-                <th style="width:22%;">Adab, Fokus & Regulasi</th>
-                <th style="width:26%;">Catatan Khusus Pengajar</th>
+                <th style="width:24%;">Tgl & Mata Pelajaran / Bidang</th>
+                <th style="width:28%;">Materi / Pokok Pembahasan</th>
+                <th style="width:22%;">Adab & Fokus</th>
+                <th style="width:26%;">Catatan Perkembangan</th>
               </tr>
             </thead>
             <tbody id="raportTableBody"></tbody>
@@ -249,7 +245,7 @@
                 <input type="text" id="inputNamaWali" class="input-field" placeholder="Nama Lengkap Orang Tua">
               </div>
               <div>
-                <label style="font-size:12.5px; font-weight:bold;">Pesan / Masukan untuk Sekolah & Tutor:</label>
+                <label style="font-size:12.5px; font-weight:bold;">Pesan / Masukan untuk Sekolah & Pengajar:</label>
                 <input type="text" id="inputPesanWali" class="input-field" placeholder="Perkembangan ananda di rumah...">
               </div>
             </div>
@@ -265,19 +261,19 @@
 
       </div>
 
-      <!-- 6. LAYANAN & FASILITAS AKADEMIK LAINNYA -->
+      <!-- 6. LAYANAN & FASILITAS LAINNYA -->
       <div class="dashboard-grid">
         <div class="action-card">
           <div>
             <h4>💻 Ruang Ujian Online (CBT)</h4>
-            <p>Evaluasi berkala daring resmi santri sesuai program.</p>
+            <p>Evaluasi berkala daring resmi santri sesuai tingkatan.</p>
           </div>
           <a href="ujian.html" class="btn-card">Masuk Ujian CBT →</a>
         </div>
         <div class="action-card">
           <div>
             <h4>📁 Modul & Materi Belajar</h4>
-            <p>Akses arsip materi, modul ajar, dan e-book kelas.</p>
+            <p>Akses arsip materi, modul ajar, dan panduan belajar.</p>
           </div>
           <a href="portal-siswa.html" class="btn-card">Buka Modul Pembelajaran →</a>
         </div>
@@ -336,7 +332,15 @@
     async function tampilkanDashboard(data) {
       document.getElementById("loginGate").style.display = "none";
       document.getElementById("siswaDashboard").style.display = "block";
-      document.getElementById("userBadge").textContent = `👤 Ananda: ${data.nama} (${data.jenjang} • ${data.kelas})`;
+      
+      // Sanitasi Tampilan Jenjang (Mencegah kata PAT/PDPD muncul)
+      let jStr = data.jenjang || "Paket A";
+      if (jStr.toUpperCase().includes("PAT") || jStr.toUpperCase().includes("PDPD")) {
+        jStr = "Program Kesetaraan & Pengembangan";
+      }
+      let kStr = data.kelas || "Kelas 1";
+
+      document.getElementById("userBadge").textContent = `👤 Ananda: ${data.nama} (${jStr} • ${kStr})`;
 
       loadDataRaport(data.nis);
       initCanvasSignature();
@@ -370,7 +374,7 @@
       chartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: ['Fokus / Ketenangan', 'Adab & Kooperatif', 'Kemandirian'],
+          labels: ['Fokus & Ketenangan', 'Adab & Kesantunan', 'Kemandirian'],
           datasets: [{
             data: [fokus, adab, 90],
             backgroundColor: ['#10b981', '#3b82f6', '#7c3aed']
@@ -395,13 +399,13 @@
                 <small style="color:var(--muted);">${t.tanggal}</small>
               </div>
               <div style="font-size:13.5px; margin-top:4px;">${t.tugas}</div>
-              <small style="color:var(--muted); display:block; margin-top:4px;">Ustadz/Tutor: ${t.tutor}</small>
+              <small style="color:var(--muted); display:block; margin-top:4px;">Pengajar: ${t.tutor}</small>
             </div>
           `;
         });
         c.innerHTML = html;
       } else {
-        c.innerHTML = '<div style="color:#059669; font-weight:bold; font-size:13px;">✅ Tidak ada tugas/pembiasaan aktif. Ananda telah menuntaskan seluruh kegiatan.</div>';
+        c.innerHTML = '<div style="color:#059669; font-weight:bold; font-size:13px;">✅ Tidak ada tugas/pembiasaan aktif. Ananda telah menyelesaikan seluruh kegiatan.</div>';
       }
     }
 
