@@ -19,6 +19,7 @@
       --muted: #6b7280;
       --danger: #b91c1c;
       --orange: #ea580c;
+      --purple: #7c3aed;
       --blue: #2563eb;
     }
     * { box-sizing: border-box; }
@@ -78,14 +79,14 @@
     .stat-val { font-size: 24px; font-weight: 900; color: var(--green-dark); }
     .stat-label { font-size: 12px; color: var(--muted); font-weight: bold; margin-top: 2px; }
 
-    /* GRAFIK & EVALUASI KARAKTER */
+    /* GRAFIK & EVALUASI KARAKTER / SENSORI */
     .chart-box {
       background: #fff; border: 1.5px solid var(--line); border-radius: 22px; padding: 20px; margin-bottom: 24px;
       display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;
     }
     @media(max-width: 768px) { .chart-box { grid-template-columns: 1fr; } }
 
-    /* DAFTAR TUGAS PR */
+    /* DAFTAR TUGAS / PEMBIASAAN DI RUMAH */
     .tugas-container {
       background: #fff; border: 2px solid #fed7aa; border-radius: 22px; padding: 22px; margin-bottom: 24px;
     }
@@ -101,7 +102,7 @@
     .jurnal-table th { background: var(--green-soft); color: var(--green-dark); padding: 10px; text-align: left; border: 1px solid var(--line); }
     .jurnal-table td { padding: 12px 10px; border: 1px solid var(--line); vertical-align: top; }
 
-    /* WADAH TANDA TANGAN DIGITAL WALI SANTRI */
+    /* TANDA TANGAN DIGITAL WALI SANTRI */
     .signature-card {
       background: #f0fdf4; border: 2px dashed #34d399; border-radius: 22px; padding: 22px; margin-top: 24px;
     }
@@ -115,6 +116,21 @@
       font-weight: 800; font-size: 13.5px; cursor: pointer;
     }
     .btn-action:hover { background: var(--green-dark); }
+
+    /* MENU PENDUKUNG */
+    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    @media(max-width: 860px) { .dashboard-grid { grid-template-columns: 1fr; } }
+    .action-card {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 20px; padding: 20px;
+      display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    }
+    .action-card h4 { margin: 0 0 6px; color: var(--green-dark); font-size: 16px; }
+    .action-card p { margin: 0 0 14px; color: var(--muted); font-size: 12.5px; flex-grow: 1; }
+    .btn-card {
+      display: block; text-align: center; background: var(--green); color: #fff; padding: 10px;
+      border-radius: 12px; font-weight: 800; font-size: 13px; text-decoration: none;
+    }
+    .btn-card:hover { background: var(--green-dark); }
   </style>
 </head>
 <body>
@@ -129,14 +145,14 @@
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div><span class="badge-user" id="userBadge">Portal Akademik & Wali Santri</span></div>
       <h1>Buku Penghubung & Raport Digital Santri</h1>
-      <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Kesetaraan)</p>
+      <p>PKBM Pelita Aushaf Indonesia (Kesetaraan & Inklusi PAT)</p>
     </div>
 
     <!-- 1. FORM LOGIN WALI SANTRI -->
     <div id="loginGate" class="lock-box">
       <div style="font-size: 36px; margin-bottom: 8px;">🎓</div>
       <h3>Login Santri / Wali Murid</h3>
-      <p>Masukkan NIS Santri untuk membuka raport perkembangan.</p>
+      <p>Masukkan NIS Santri untuk membuka buku penghubung & rekam perkembangan ananda.</p>
       
       <form id="siswaLoginForm">
         <input type="text" id="usernameInput" class="input-field" placeholder="NIS Santri (Contoh: siswa1)" required>
@@ -152,7 +168,7 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-val" id="statHadir" style="color:#059669;">0</div>
-          <div class="stat-label">Sesi Hadir</div>
+          <div class="stat-label">Sesi Pembelajaran / Terapi</div>
         </div>
         <div class="stat-card">
           <div class="stat-val" id="statTerlambat" style="color:#ea580c;">0</div>
@@ -164,18 +180,18 @@
         </div>
         <div class="stat-card">
           <div class="stat-val" id="statAlpa" style="color:#dc2626;">0</div>
-          <div class="stat-label">Alpa</div>
+          <div class="stat-label">Tanpa Keterangan</div>
         </div>
       </div>
 
-      <!-- 2. GRAFIK RADAR ADAB & KONSENTRASI BELAJAR -->
+      <!-- 2. GRAFIK CAPAIAN KARAKTER & REGULASI DIRI -->
       <div class="chart-box">
         <div>
-          <h3 style="margin:0 0 6px; color:var(--green-dark);">📊 Grafik Capaian Karakter Santri</h3>
-          <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Evaluasi perkembangan konsentrasi, adab, dan kedisiplinan dari para pengajar.</p>
+          <h3 style="margin:0 0 6px; color:var(--green-dark);">📊 Capaian Karakter & Regulasi Diri</h3>
+          <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Evaluasi perkembangan konsentrasi belajar, adab, kemandirian, dan ketenangan sensori santri.</p>
           <div style="font-size:13.5px;">
-            <div>🌟 <b>Indeks Fokus Belajar:</b> <span id="valFokusPersen" style="color:#059669; font-weight:bold;">100%</span></div>
-            <div style="margin-top:4px;">🌿 <b>Indeks Adab & Kesantunan:</b> <span id="valAdabPersen" style="color:#2563eb; font-weight:bold;">100%</span></div>
+            <div>🌟 <b>Indeks Fokus / Ketenangan:</b> <span id="valFokusPersen" style="color:#059669; font-weight:bold;">100%</span></div>
+            <div style="margin-top:4px;">🌿 <b>Indeks Adab & Kooperatif:</b> <span id="valAdabPersen" style="color:#2563eb; font-weight:bold;">100%</span></div>
           </div>
         </div>
         <div style="max-height: 220px; display:flex; justify-content:center;">
@@ -183,11 +199,11 @@
         </div>
       </div>
 
-      <!-- 3. KOTAK DAFTAR TUGAS / PR RUMAH -->
+      <!-- 3. KOTAK DAFTAR TUGAS & PEMBIASAAN MANDIRI DI RUMAH -->
       <div class="tugas-container">
-        <h3 style="margin:0 0 12px; color:var(--orange);">📌 Tugas & PR Rumah Santri</h3>
+        <h3 style="margin:0 0 12px; color:var(--orange);">📌 Tugas & Pembiasaan Mandiri di Rumah</h3>
         <div id="tugasListContainer">
-          <div style="color:var(--muted); font-size:13px;">Belum ada tugas/PR baru dari tutor.</div>
+          <div style="color:var(--muted); font-size:13px;">Belum ada tugas/pembiasaan baru dari ustadz/tutor.</div>
         </div>
       </div>
 
@@ -207,10 +223,10 @@
           <table class="jurnal-table">
             <thead>
               <tr>
-                <th style="width:22%;">Tgl & Mapel</th>
-                <th style="width:28%;">Materi Pembahasan</th>
-                <th style="width:22%;">Adab & Fokus</th>
-                <th style="width:28%;">Catatan Khusus Pengajar</th>
+                <th style="width:24%;">Tgl & Mapel / Sesi Terapi</th>
+                <th style="width:28%;">Materi / Milestone Terapi</th>
+                <th style="width:22%;">Adab, Fokus & Regulasi</th>
+                <th style="width:26%;">Catatan Khusus Pengajar</th>
               </tr>
             </thead>
             <tbody id="raportTableBody"></tbody>
@@ -220,7 +236,7 @@
         <!-- 5. TANDA TANGAN DIGITAL & DIALOG WALI SANTRI -->
         <div class="signature-card" id="boxTtdWali">
           <h3 style="margin:0 0 4px; color:var(--green-dark);">✍️ Konfirmasi & Tanda Tangan Orang Tua / Wali</h3>
-          <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Sebagai wujud kepedulian & kemitraan dengan sekolah, mohon bubuhkan tanda tangan dan pesan evaluasi untuk ananda.</p>
+          <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Sebagai wujud kemitraan antara sekolah dan orang tua, mohon bubuhkan tanda tangan serta catatan perkembangan ananda di rumah.</p>
 
           <div id="statusTtdBox" style="margin-bottom:12px; font-weight:bold; font-size:13.5px; color:#065f46; display:none;">
             ✅ Raport bulan ini telah dilihat & ditandatangani oleh Wali Santri.
@@ -234,7 +250,7 @@
               </div>
               <div>
                 <label style="font-size:12.5px; font-weight:bold;">Pesan / Masukan untuk Sekolah & Tutor:</label>
-                <input type="text" id="inputPesanWali" class="input-field" placeholder="Catatan perkembangan ananda di rumah...">
+                <input type="text" id="inputPesanWali" class="input-field" placeholder="Perkembangan ananda di rumah...">
               </div>
             </div>
 
@@ -247,6 +263,31 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- 6. LAYANAN & FASILITAS AKADEMIK LAINNYA -->
+      <div class="dashboard-grid">
+        <div class="action-card">
+          <div>
+            <h4>💻 Ruang Ujian Online (CBT)</h4>
+            <p>Evaluasi berkala daring resmi santri sesuai program.</p>
+          </div>
+          <a href="ujian.html" class="btn-card">Masuk Ujian CBT →</a>
+        </div>
+        <div class="action-card">
+          <div>
+            <h4>📁 Modul & Materi Belajar</h4>
+            <p>Akses arsip materi, modul ajar, dan e-book kelas.</p>
+          </div>
+          <a href="portal-siswa.html" class="btn-card">Buka Modul Pembelajaran →</a>
+        </div>
+        <div class="action-card">
+          <div>
+            <h4>🪪 Kartu Tanda Santri</h4>
+            <p>Lihat kartu resmi santri dan QR code identitas absensi.</p>
+          </div>
+          <a href="kartu.html" class="btn-card" style="background:#334155;">Lihat Kartu Santri →</a>
+        </div>
       </div>
 
       <div style="text-align: right; margin-top:20px;">
@@ -315,13 +356,8 @@
         document.getElementById("valFokusPersen").textContent = `${json.stats.skorFokusPersen}%`;
         document.getElementById("valAdabPersen").textContent = `${json.stats.skorAdabPersen}%`;
 
-        // Render Grafik Radar / Bar
         renderChart(json.stats.skorFokusPersen, json.stats.skorAdabPersen);
-
-        // Render Tugas PR
         renderTugas(json.tugasAktif || []);
-
-        // Dropdown Bulan
         setupDropdownBulan(allRiwayat, json.konfirmasiWali || {});
         renderTable(allRiwayat);
       }
@@ -334,10 +370,10 @@
       chartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: ['Fokus Belajar', 'Adab & Kesantunan', 'Kemandirian'],
+          labels: ['Fokus / Ketenangan', 'Adab & Kooperatif', 'Kemandirian'],
           datasets: [{
             data: [fokus, adab, 90],
-            backgroundColor: ['#10b981', '#3b82f6', '#f59e0b']
+            backgroundColor: ['#10b981', '#3b82f6', '#7c3aed']
           }]
         },
         options: {
@@ -359,13 +395,13 @@
                 <small style="color:var(--muted);">${t.tanggal}</small>
               </div>
               <div style="font-size:13.5px; margin-top:4px;">${t.tugas}</div>
-              <small style="color:var(--muted); display:block; margin-top:4px;">Pengajar: ${t.tutor}</small>
+              <small style="color:var(--muted); display:block; margin-top:4px;">Ustadz/Tutor: ${t.tutor}</small>
             </div>
           `;
         });
         c.innerHTML = html;
       } else {
-        c.innerHTML = '<div style="color:#059669; font-weight:bold; font-size:13px;">✅ Tidak ada PR aktif. Ananda telah menyelesaikan seluruh tugas.</div>';
+        c.innerHTML = '<div style="color:#059669; font-weight:bold; font-size:13px;">✅ Tidak ada tugas/pembiasaan aktif. Ananda telah menuntaskan seluruh kegiatan.</div>';
       }
     }
 
@@ -388,7 +424,6 @@
         const filtered = currentBulanKey === "all" ? allRiwayat : allRiwayat.filter(r => r.bulanKey === currentBulanKey);
         renderTable(filtered);
 
-        // Update status tanda tangan
         const statusBox = document.getElementById("statusTtdBox");
         const formArea = document.getElementById("formTtdArea");
         if(konfirmasiMap[currentBulanKey]) {
@@ -412,17 +447,20 @@
       dataArr.forEach(r => {
         html += `
           <tr>
-            <td><b>${r.mapel}</b><br><small style="color:var(--muted);">${r.tanggal} ${r.waktu}</small></td>
-            <td>${r.materi}</td>
+            <td><b style="color:var(--green-dark);">${r.mapel}</b><br><small style="color:var(--muted);">${r.tanggal}<br>${r.waktu} WIB</small></td>
+            <td>
+              <div>${r.materi}</div>
+              ${r.tugas && r.tugas !== '-' ? `<small style="color:var(--orange); display:block; margin-top:4px;"><b>Pembiasaan:</b> ${r.tugas}</small>` : ''}
+            </td>
             <td><span style="color:#059669; font-weight:bold;">${r.konsentrasi}</span><br><span style="color:#2563eb; font-weight:bold;">${r.adab}</span></td>
-            <td>${r.catatan}<br><small style="color:var(--muted);">Tutor: ${r.tutor}</small></td>
+            <td>${r.catatan}<br><small style="color:var(--muted); display:block; margin-top:4px;">Pengajar: <b>${r.tutor}</b></small></td>
           </tr>
         `;
       });
       tbody.innerHTML = html;
     }
 
-    // ================= CANVAS SIGNATURE ENGINE =================
+    // TANDA TANGAN DIGITAL
     let canvas, ctx, isDrawing = false;
     function initCanvasSignature() {
       canvas = document.getElementById("signCanvas");
