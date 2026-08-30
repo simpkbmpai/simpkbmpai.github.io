@@ -58,9 +58,7 @@
     .hero-banner p { margin: 0 0 18px; font-size: 13.5px; opacity: 0.9; max-width: 700px; }
 
     /* QUICK PILLS NAVIGATION */
-    .pills-grid {
-      display: flex; flex-wrap: wrap; gap: 8px;
-    }
+    .pills-grid { display: flex; flex-wrap: wrap; gap: 8px; }
     .pill-btn {
       background: #fff; color: var(--green-dark); padding: 7px 14px; border-radius: 999px;
       font-weight: 800; font-size: 12.5px; text-decoration: none; border: 0; cursor: pointer;
@@ -75,7 +73,7 @@
       margin-bottom: 24px; font-size: 13.5px; color: #92400e;
     }
 
-    /* KARTU MENU OPERATOR AKADEMIK (NEW PANEL) */
+    /* PANEL OPERATOR AKADEMIK */
     .section-title { font-size: 19px; color: var(--green-dark); margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
     
     .operator-grid {
@@ -103,7 +101,7 @@
     .btn-op.blue { background: var(--blue); }
     .btn-op.orange { background: var(--orange); }
 
-    /* SECTION CARD PENGATURAN JSON WEBSITE */
+    /* SECTION CARD UMUM */
     .admin-section {
       background: #fff; border: 1.5px solid var(--line); border-radius: 22px;
       padding: 24px; margin-bottom: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.03);
@@ -120,10 +118,26 @@
 
     .btn-save {
       background: var(--green); color: #fff; border: 0; padding: 11px 22px; border-radius: 12px;
-      font-weight: 800; font-size: 13.5px; cursor: pointer; margin-top: 14px;
+      font-weight: 800; font-size: 13.5px; cursor: pointer; margin-top: 14px; display: inline-flex; align-items: center; gap: 6px;
     }
     .btn-save:hover { background: var(--green-dark); }
     .btn-save:disabled { background: #9ca3af; cursor: not-allowed; }
+
+    .btn-add-item {
+      background: var(--green-soft); color: var(--green-dark); border: 1.5px dashed var(--green);
+      padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer; margin-bottom: 14px; display: inline-block;
+    }
+    .btn-add-item:hover { background: #d1fae5; }
+
+    /* ITEM CARD UNTUK ARTIKEL & KALENDER */
+    .item-card {
+      background: #f8fcfa; border: 1.5px solid var(--line); border-radius: 16px;
+      padding: 18px; margin-bottom: 14px; position: relative;
+    }
+    .btn-del-item {
+      position: absolute; right: 14px; top: 14px; background: #fee2e2; color: var(--danger);
+      border: 0; padding: 5px 12px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;
+    }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -131,7 +145,6 @@
 
     .status-badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: bold; margin-top: 8px; }
     .status-ok { background: #dcfce7; color: #15803d; }
-    .status-err { background: #fee2e2; color: #b91c1c; }
   </style>
 </head>
 <body>
@@ -164,18 +177,18 @@
         <a href="#secTutor" class="pill-btn">Link Tutor</a>
         <a href="#secVideo" class="pill-btn">Video</a>
         <a href="#secKontak" class="pill-btn">Kontak</a>
-        <a href="#secFoto" class="pill-btn">Foto Kegiatan</a>
-        <a href="#secBrosur" class="pill-btn">Brosur</a>
         <a href="#secArtikel" class="pill-btn">Artikel</a>
         <a href="#secKalender" class="pill-btn">Kalender</a>
+        <a href="#secBrosur" class="pill-btn">Brosur</a>
+        <a href="#secFoto" class="pill-btn">Foto Kegiatan</a>
       </div>
     </div>
 
     <div class="alert-box">
-      <b>📌 Penting:</b> Untuk menyimpan perubahan data konten website ke publik, pastikan <b>GitHub Token</b> sudah terisi di Bagian 1.
+      <b>📌 Penting:</b> Untuk menyimpan perubahan data konten website ke repositori publik, pastikan <b>GitHub Token</b> sudah terisi di Bagian 1.
     </div>
 
-    <!-- ================= PANEL OPERATOR AKADEMIK (FITUR BARU) ================= -->
+    <!-- ================= PANEL OPERATOR AKADEMIK ================= -->
     <h2 class="section-title" id="secOperator">🎓 Panel Operasional Akademik & Cetak Kartu</h2>
     
     <div class="operator-grid">
@@ -185,7 +198,7 @@
         <div>
           <div class="op-card-icon" style="background:#d1fae5;">🖨️</div>
           <h3>Cetak Kartu Santri & Tutor</h3>
-          <p>Cetak kartu tanda pengenal standar ATM (ISO CR80) lengkap dengan foto dan QR code absensi.</p>
+          <p>Cetak kartu tanda pengenal standar ATM (ISO CR80) lengkap dengan pas foto dan QR code absensi.</p>
         </div>
         <a href="kartu.html" target="_blank" class="btn-op">Buka Alat Cetak Kartu ↗</a>
       </div>
@@ -200,7 +213,7 @@
         <a href="https://docs.google.com/spreadsheets" target="_blank" class="btn-op blue">Buka Google Spreadsheet ↗</a>
       </div>
 
-      <!-- 3. SCANNER QR & ABSEN TUTOR GPS -->
+      <!-- 3. SCANNER QR & RUANG TUTOR -->
       <div class="op-card" style="border-color: #f59e0b; background: #fffbeb;">
         <div>
           <div class="op-card-icon" style="background:#fef3c7;">📲</div>
@@ -218,7 +231,7 @@
     <!-- ================= 1. PENGATURAN GITHUB ================= -->
     <div class="admin-section" id="secGithub">
       <h3>1. Pengaturan GitHub (Kunci Penyimpanan Website)</h3>
-      <p>Masukkan Personal Access Token (PAT) GitHub untuk menyimpan perubahan file JSON ke repositori.</p>
+      <p>Masukkan Personal Access Token (PAT) GitHub untuk menyimpan perubahan file ke repositori.</p>
       
       <div class="grid-2">
         <div>
@@ -237,7 +250,7 @@
     <!-- ================= 2. KELOLA SOAL CBT ================= -->
     <div class="admin-section" id="secCbt">
       <h3>2. Kelola Link Soal Ujian Online (CBT)</h3>
-      <p>File: <code>data-ujian.json</code> • Masukkan tautan Google Form / CBT per paket ujian.</p>
+      <p>File: <code>data-ujian.json</code> • Masukkan tautan Google Form / CBT per jenjang ujian.</p>
       <div id="formCbtContainer">Memuat data CBT...</div>
       <button type="button" onclick="simpanJson('data-ujian.json', 'cbt')" class="btn-save">💾 Simpan Perubahan Soal CBT</button>
     </div>
@@ -246,21 +259,21 @@
     <div class="admin-section" id="secMateri">
       <h3>3. Kelola Folder Materi Google Drive (Kelas 1 s.d. 12)</h3>
       <p>File: <code>data-materi.json</code> • Tautan Google Drive folder materi pembelajaran santri.</p>
-      <div class="grid-3" id="formMateriContainer">Memuat data modul...</div>
+      <div class="grid-3" id="formMateriContainer"></div>
       <button type="button" onclick="simpanJson('data-materi.json', 'materi')" class="btn-save">💾 Simpan Link Materi Drive</button>
     </div>
 
     <!-- ================= 4. KELOLA LINK RUANG TUTOR ================= -->
     <div class="admin-section" id="secTutor">
       <h3>4. Kelola Tautan Ruang Tutor & Nilai</h3>
-      <p>File: <code>data-tutor.json</code> • Link Google Spreadsheet rekap nilai dan Folder Tugas Masuk.</p>
+      <p>File: <code>data-tutor.json</code> • Link Google Spreadsheet rekap nilai dan Folder Portofolio Tugas.</p>
       <div class="grid-2">
         <div>
           <label>Link Spreadsheet Rekap Nilai CBT:</label>
           <input type="text" id="inputTutorNilai" placeholder="https://docs.google.com/spreadsheets/...">
         </div>
         <div>
-          <label>Link Google Drive Folder Tugas Masuk:</label>
+          <label>Link Google Drive Folder Portofolio Tugas:</label>
           <input type="text" id="inputTutorTugas" placeholder="https://drive.google.com/drive/folders/...">
         </div>
       </div>
@@ -270,8 +283,8 @@
     <!-- ================= 5. KELOLA VIDEO PROFIL ================= -->
     <div class="admin-section" id="secVideo">
       <h3>5. Kelola Video Profil Website</h3>
-      <p>File: <code>data-video.json</code> • ID atau URL Video YouTube profil sekolah.</p>
-      <label>Link / Embed YouTube Video Profil:</label>
+      <p>File: <code>data-video.json</code> • URL Video YouTube profil sekolah.</p>
+      <label>Link Video YouTube Profil:</label>
       <input type="text" id="inputVideoUrl" placeholder="https://www.youtube.com/watch?v=...">
       <button type="button" onclick="simpanJson('data-video.json', 'video')" class="btn-save">💾 Simpan Video Profil</button>
     </div>
@@ -286,7 +299,7 @@
           <input type="text" id="inputKontakWA" placeholder="6287751325199">
         </div>
         <div>
-          <label>Email Resmi:</label>
+          <label>Email Resmi Sekolah:</label>
           <input type="text" id="inputKontakEmail" placeholder="admin@pkbmpelitaaushafindonesia.sch.id">
         </div>
         <div>
@@ -297,26 +310,67 @@
       <button type="button" onclick="simpanJson('data-kontak.json', 'kontak')" class="btn-save">💾 Simpan Kontak</button>
     </div>
 
-    <!-- ================= 7. KELOLA ARTIKEL, BROSUR, KALENDER & ALBUM ================= -->
+    <!-- ================= 7. KELOLA ARTIKEL & PENGUMUMAN (FORMULIR VISUAL) ================= -->
     <div class="admin-section" id="secArtikel">
-      <h3>7. Kelola Artikel & Pengumuman</h3>
-      <p>File: <code>data-artikel.json</code> • Berita dan pengumuman terbaru di beranda.</p>
-      <textarea id="rawArtikelJson" style="min-height:120px; font-family:monospace; font-size:12.5px;"></textarea>
-      <button type="button" onclick="simpanRawJson('data-artikel.json', 'rawArtikelJson')" class="btn-save">💾 Simpan Artikel</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
+        <div>
+          <h3 style="margin:0;">7. Kelola Artikel & Pengumuman</h3>
+          <p style="margin:0;">File: <code>data-artikel.json</code> • Berita, panduan, dan pengumuman terbaru.</p>
+        </div>
+        <button type="button" onclick="tambahArtikelBaru()" class="btn-add-item">➕ Tambah Artikel Baru</button>
+      </div>
+
+      <div id="listArtikelContainer">Memuat data artikel...</div>
+      <button type="button" onclick="simpanArtikelList()" class="btn-save">💾 Simpan Seluruh Artikel ke Website</button>
     </div>
 
+    <!-- ================= 8. KELOLA KALENDER AKADEMIK (FORMULIR VISUAL) ================= -->
     <div class="admin-section" id="secKalender">
-      <h3>8. Kelola Kalender Akademik</h3>
-      <p>File: <code>data-kalender.json</code> • Agenda kegiatan sekolah tahun ajaran berjalan.</p>
-      <textarea id="rawKalenderJson" style="min-height:120px; font-family:monospace; font-size:12.5px;"></textarea>
-      <button type="button" onclick="simpanRawJson('data-kalender.json', 'rawKalenderJson')" class="btn-save">💾 Simpan Kalender</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
+        <div>
+          <h3 style="margin:0;">8. Kelola Kalender & Agenda Akademik</h3>
+          <p style="margin:0;">File: <code>data-kalender.json</code> • Agenda kegiatan sekolah tahun ajaran berjalan.</p>
+        </div>
+        <button type="button" onclick="tambahKalenderBaru()" class="btn-add-item">➕ Tambah Agenda Baru</button>
+      </div>
+
+      <div id="listKalenderContainer">Memuat data kalender...</div>
+      <button type="button" onclick="simpanKalenderList()" class="btn-save">💾 Simpan Kalender Akademik</button>
     </div>
 
+    <!-- ================= 9. KELOLA BROSUR PPDB (FORMULIR VISUAL) ================= -->
     <div class="admin-section" id="secBrosur">
       <h3>9. Kelola Brosur & Flyer PPDB</h3>
       <p>File: <code>data-brosur.json</code> • Informasi unduhan brosur pendaftaran santri baru.</p>
-      <textarea id="rawBrosurJson" style="min-height:100px; font-family:monospace; font-size:12.5px;"></textarea>
-      <button type="button" onclick="simpanRawJson('data-brosur.json', 'rawBrosurJson')" class="btn-save">💾 Simpan Brosur</button>
+      
+      <div class="grid-2">
+        <div>
+          <label>Judul Brosur:</label>
+          <input type="text" id="brosurTitle" placeholder="Brosur Resmi PKBM Pelita Aushaf">
+        </div>
+        <div>
+          <label>Nama File / Link PDF Brosur:</label>
+          <input type="text" id="brosurPath" placeholder="brosur-pkbm-pelita-aushaf-indonesia.pdf">
+        </div>
+      </div>
+      <label>Deskripsi Singkat Brosur:</label>
+      <input type="text" id="brosurDesc" placeholder="Profil singkat, layanan pendidikan, alur pendaftaran, dan kontak resmi.">
+
+      <button type="button" onclick="simpanBrosurForm()" class="btn-save">💾 Simpan Informasi Brosur</button>
+    </div>
+
+    <!-- ================= 10. KELOLA FOTO KEGIATAN & ALBUM ================= -->
+    <div class="admin-section" id="secFoto">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
+        <div>
+          <h3 style="margin:0;">10. Kelola Galeri & Foto Kegiatan</h3>
+          <p style="margin:0;">File: <code>data-kegiatan.json</code> • Galeri dokumentasi aktivitas belajar & outing santri.</p>
+        </div>
+        <button type="button" onclick="tambahFotoKegiatan()" class="btn-add-item">➕ Tambah Foto Kegiatan</button>
+      </div>
+
+      <div id="listFotoContainer">Memuat galeri...</div>
+      <button type="button" onclick="simpanFotoList()" class="btn-save">💾 Simpan Galeri Foto Kegiatan</button>
     </div>
 
   </div>
@@ -346,25 +400,30 @@
       badge.textContent = "✅ Token aktif siap digunakan";
     }
 
-    // 1. LOAD DATA AWAL JSON DARI REPO
+    // Variabel Global Data List
+    let artikelData = [];
+    let kalenderData = [];
+    let fotoData = [];
+
+    // 1. INISIALISASI DATA
     async function initData() {
-      // Load Materi
+      // Load Materi (Kelas 1-12)
       try {
         const res = await fetch("data-materi.json?t=" + Date.now());
-        if(res.ok) {
-          const d = await res.json();
-          renderMateriInputs(d.materi || {});
-        }
-      } catch(e){}
+        const d = res.ok ? await res.json() : {};
+        renderMateriInputs(d.materi || d || {});
+      } catch(e){
+        renderMateriInputs({});
+      }
 
       // Load CBT
       try {
         const res = await fetch("data-ujian.json?t=" + Date.now());
-        if(res.ok) {
-          const d = await res.json();
-          renderCbtInputs(d);
-        }
-      } catch(e){}
+        const d = res.ok ? await res.json() : {};
+        renderCbtInputs(d);
+      } catch(e){
+        renderCbtInputs({});
+      }
 
       // Load Tutor
       try {
@@ -396,22 +455,44 @@
         }
       } catch(e){}
 
-      // Load Raw JSONs
-      loadRawField("data-artikel.json", "rawArtikelJson");
-      loadRawField("data-kalender.json", "rawKalenderJson");
-      loadRawField("data-brosur.json", "rawBrosurJson");
-    }
-
-    async function loadRawField(file, elemId) {
+      // Load Artikel (Visual Form)
       try {
-        const res = await fetch(file + "?t=" + Date.now());
+        const res = await fetch("data-artikel.json?t=" + Date.now());
+        artikelData = res.ok ? await res.json() : [];
+        if (!Array.isArray(artikelData)) artikelData = [];
+      } catch(e){ artikelData = []; }
+      renderArtikelList();
+
+      // Load Kalender (Visual Form)
+      try {
+        const res = await fetch("data-kalender.json?t=" + Date.now());
+        kalenderData = res.ok ? await res.json() : [];
+        if (!Array.isArray(kalenderData)) kalenderData = [];
+      } catch(e){ kalenderData = []; }
+      renderKalenderList();
+
+      // Load Brosur (Visual Form)
+      try {
+        const res = await fetch("data-brosur.json?t=" + Date.now());
         if(res.ok) {
-          const json = await res.json();
-          document.getElementById(elemId).value = JSON.stringify(json, null, 2);
+          const d = await res.json();
+          const item = d.brosurUmum || (Array.isArray(d) ? d[0] : d) || {};
+          document.getElementById("brosurTitle").value = item.title || "Brosur Resmi PKBM Pelita Aushaf";
+          document.getElementById("brosurPath").value = item.path || "brosur-pkbm-pelita-aushaf-indonesia.pdf";
+          document.getElementById("brosurDesc").value = item.desc || "Profil singkat, layanan pendidikan, dan alur pendaftaran.";
         }
       } catch(e){}
+
+      // Load Foto Kegiatan (Visual Form)
+      try {
+        const res = await fetch("data-kegiatan.json?t=" + Date.now());
+        fotoData = res.ok ? await res.json() : [];
+        if (!Array.isArray(fotoData)) fotoData = [];
+      } catch(e){ fotoData = []; }
+      renderFotoList();
     }
 
+    // 2. RENDER FORMS
     function renderMateriInputs(map) {
       const c = document.getElementById("formMateriContainer");
       let html = "";
@@ -421,7 +502,7 @@
         html += `
           <div>
             <label style="font-size:12px;">Folder Drive ${k}:</label>
-            <input type="text" id="materi_kelas_${i}" value="${val}" placeholder="Link Drive...">
+            <input type="text" id="materi_kelas_${i}" value="${val}" placeholder="Link Drive ${k}...">
           </div>
         `;
       }
@@ -432,18 +513,259 @@
       const c = document.getElementById("formCbtContainer");
       c.innerHTML = `
         <div class="grid-3">
-          <div><label>Link Ujian Paket A:</label><input type="text" id="cbt_paket_a" value="${data.paketA || ''}" placeholder="Link Soal..."></div>
-          <div><label>Link Ujian Paket B:</label><input type="text" id="cbt_paket_b" value="${data.paketB || ''}" placeholder="Link Soal..."></div>
-          <div><label>Link Ujian Paket C:</label><input type="text" id="cbt_paket_c" value="${data.paketC || ''}" placeholder="Link Soal..."></div>
+          <div><label>Link Ujian Paket A:</label><input type="text" id="cbt_paket_a" value="${data.paketA || ''}" placeholder="Link Soal Paket A..."></div>
+          <div><label>Link Ujian Paket B:</label><input type="text" id="cbt_paket_b" value="${data.paketB || ''}" placeholder="Link Soal Paket B..."></div>
+          <div><label>Link Ujian Paket C:</label><input type="text" id="cbt_paket_c" value="${data.paketC || ''}" placeholder="Link Soal Paket C..."></div>
         </div>
       `;
     }
 
-    // 2. FUNGSI COMMIT FILE KE GITHUB REST API
+    // ================= BUILDER 7: ARTIKEL =================
+    function renderArtikelList() {
+      const c = document.getElementById("listArtikelContainer");
+      if(artikelData.length === 0) {
+        c.innerHTML = '<div style="color:var(--muted); font-size:13px; padding:12px 0;">Belum ada artikel. Klik tombol di atas untuk menambah artikel baru.</div>';
+        return;
+      }
+      let html = "";
+      artikelData.forEach((item, idx) => {
+        html += `
+          <div class="item-card">
+            <button type="button" onclick="hapusArtikel(${idx})" class="btn-del-item">🗑️ Hapus</button>
+            <div class="grid-2">
+              <div>
+                <label>Judul Artikel:</label>
+                <input type="text" id="art_title_${idx}" value="${item.title || ''}" placeholder="Judul artikel...">
+              </div>
+              <div>
+                <label>Kategori Artikel:</label>
+                <select id="art_cat_${idx}">
+                  <option value="Parenting" ${item.category === 'Parenting' ? 'selected' : ''}>Parenting & Karakter</option>
+                  <option value="Akademik" ${item.category === 'Akademik' ? 'selected' : ''}>Akademik & Pembelajaran</option>
+                  <option value="Kegiatan" ${item.category === 'Kegiatan' ? 'selected' : ''}>Kegiatan Sekolah</option>
+                  <option value="Pengumuman" ${item.category === 'Pengumuman' ? 'selected' : ''}>Pengumuman Resmi</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label>Tanggal Rilis (YYYY-MM-DD):</label>
+                <input type="date" id="art_date_${idx}" value="${item.date || ''}">
+              </div>
+              <div>
+                <label>Link / Path Foto Cover:</label>
+                <input type="text" id="art_cover_${idx}" value="${item.cover || item.image || 'artikel-cover/default.jpg'}" placeholder="artikel-cover/nama-foto.jpg">
+              </div>
+            </div>
+            <label>Ringkasan Singkat (Summary):</label>
+            <input type="text" id="art_sum_${idx}" value="${item.summary || ''}" placeholder="Ringkasan 1-2 kalimat...">
+            <label>Isi Lengkap Artikel:</label>
+            <textarea id="art_cnt_${idx}" placeholder="Tuliskan isi lengkap artikel di sini...">${item.content || ''}</textarea>
+          </div>
+        `;
+      });
+      c.innerHTML = html;
+    }
+
+    function tambahArtikelBaru() {
+      artikelData.unshift({
+        id: "artikel-" + Date.now(),
+        title: "Judul Artikel Baru",
+        category: "Parenting",
+        date: new Date().toISOString().split('T')[0],
+        summary: "Ringkasan artikel...",
+        content: "Isi artikel lengkap...",
+        cover: "artikel-cover/default.jpg"
+      });
+      renderArtikelList();
+    }
+
+    function hapusArtikel(idx) {
+      if(confirm("Apakah Anda yakin ingin menghapus artikel ini?")) {
+        artikelData.splice(idx, 1);
+        renderArtikelList();
+      }
+    }
+
+    async function simpanArtikelList() {
+      const updated = [];
+      for(let i=0; i<artikelData.length; i++) {
+        updated.push({
+          id: artikelData[i].id || ("artikel-" + (i+1)),
+          title: document.getElementById(`art_title_${i}`).value.trim(),
+          category: document.getElementById(`art_cat_${i}`).value,
+          date: document.getElementById(`art_date_${i}`).value,
+          cover: document.getElementById(`art_cover_${i}`).value.trim(),
+          summary: document.getElementById(`art_sum_${i}`).value.trim(),
+          content: document.getElementById(`art_cnt_${i}`).value.trim()
+        });
+      }
+      artikelData = updated;
+      await commitToGithub("data-artikel.json", artikelData);
+    }
+
+    // ================= BUILDER 8: KALENDER =================
+    function renderKalenderList() {
+      const c = document.getElementById("listKalenderContainer");
+      if(kalenderData.length === 0) {
+        c.innerHTML = '<div style="color:var(--muted); font-size:13px; padding:12px 0;">Belum ada agenda kalender. Klik tombol di atas untuk menambah.</div>';
+        return;
+      }
+      let html = "";
+      kalenderData.forEach((item, idx) => {
+        html += `
+          <div class="item-card">
+            <button type="button" onclick="hapusKalender(${idx})" class="btn-del-item">🗑️ Hapus</button>
+            <div class="grid-2">
+              <div>
+                <label>Nama Agenda / Kegiatan:</label>
+                <input type="text" id="cal_title_${idx}" value="${item.title || ''}" placeholder="Nama kegiatan...">
+              </div>
+              <div>
+                <label>Kategori Agenda:</label>
+                <select id="cal_cat_${idx}">
+                  <option value="SPMB" ${item.category === 'SPMB' ? 'selected' : ''}>SPMB / Pendaftaran</option>
+                  <option value="Akademik" ${item.category === 'Akademik' ? 'selected' : ''}>Akademik & Ujian</option>
+                  <option value="Libur" ${item.category === 'Libur' ? 'selected' : ''}>Libur Sekolah</option>
+                  <option value="Kegiatan" ${item.category === 'Kegiatan' ? 'selected' : ''}>Kegiatan Santri / Outing</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid-3">
+              <div>
+                <label>Tanggal Kegiatan:</label>
+                <input type="date" id="cal_date_${idx}" value="${item.date || ''}">
+              </div>
+              <div>
+                <label>Waktu / Jam:</label>
+                <input type="text" id="cal_time_${idx}" value="${item.time || '08.00 - 12.00 WIB'}">
+              </div>
+              <div>
+                <label>Lokasi / Gedung:</label>
+                <input type="text" id="cal_loc_${idx}" value="${item.location || 'PKBM Pelita Aushaf'}">
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      c.innerHTML = html;
+    }
+
+    function tambahKalenderBaru() {
+      kalenderData.unshift({
+        id: "agenda-" + Date.now(),
+        title: "Kegiatan Akademik Baru",
+        category: "Akademik",
+        date: new Date().toISOString().split('T')[0],
+        time: "08.00 - 12.00 WIB",
+        location: "Gedung G2 / I5"
+      });
+      renderKalenderList();
+    }
+
+    function hapusKalender(idx) {
+      if(confirm("Apakah Anda yakin ingin menghapus agenda ini?")) {
+        kalenderData.splice(idx, 1);
+        renderKalenderList();
+      }
+    }
+
+    async function simpanKalenderList() {
+      const updated = [];
+      for(let i=0; i<kalenderData.length; i++) {
+        updated.push({
+          id: kalenderData[i].id || ("agenda-" + (i+1)),
+          title: document.getElementById(`cal_title_${i}`).value.trim(),
+          category: document.getElementById(`cal_cat_${i}`).value,
+          date: document.getElementById(`cal_date_${i}`).value,
+          time: document.getElementById(`cal_time_${i}`).value.trim(),
+          location: document.getElementById(`cal_loc_${i}`).value.trim()
+        });
+      }
+      kalenderData = updated;
+      await commitToGithub("data-kalender.json", kalenderData);
+    }
+
+    // ================= BUILDER 9: BROSUR =================
+    async function simpanBrosurForm() {
+      const payload = {
+        brosurUmum: {
+          title: document.getElementById("brosurTitle").value.trim(),
+          desc: document.getElementById("brosurDesc").value.trim(),
+          path: document.getElementById("brosurPath").value.trim(),
+          updatedAt: new Date().toISOString().split('T')[0]
+        }
+      };
+      await commitToGithub("data-brosur.json", payload);
+    }
+
+    // ================= BUILDER 10: FOTO KEGIATAN =================
+    function renderFotoList() {
+      const c = document.getElementById("listFotoContainer");
+      if(fotoData.length === 0) {
+        c.innerHTML = '<div style="color:var(--muted); font-size:13px; padding:12px 0;">Belum ada foto kegiatan. Klik tombol di atas untuk menambah.</div>';
+        return;
+      }
+      let html = "";
+      fotoData.forEach((item, idx) => {
+        html += `
+          <div class="item-card">
+            <button type="button" onclick="hapusFoto(${idx})" class="btn-del-item">🗑️ Hapus</button>
+            <div class="grid-3">
+              <div>
+                <label>Judul Kegiatan:</label>
+                <input type="text" id="foto_title_${idx}" value="${item.title || ''}" placeholder="Contoh: Outing Class">
+              </div>
+              <div>
+                <label>Tanggal / Tahun:</label>
+                <input type="text" id="foto_date_${idx}" value="${item.date || ''}" placeholder="Contoh: Agustus 2026">
+              </div>
+              <div>
+                <label>Link / Path File Foto:</label>
+                <input type="text" id="foto_img_${idx}" value="${item.image || ''}" placeholder="foto-kegiatan/foto1.jpg">
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      c.innerHTML = html;
+    }
+
+    function tambahFotoKegiatan() {
+      fotoData.unshift({
+        title: "Dokumentasi Kegiatan Santri",
+        date: "2026",
+        image: "foto-kegiatan/default.jpg"
+      });
+      renderFotoList();
+    }
+
+    function hapusFoto(idx) {
+      if(confirm("Apakah Anda yakin ingin menghapus foto kegiatan ini?")) {
+        fotoData.splice(idx, 1);
+        renderFotoList();
+      }
+    }
+
+    async function simpanFotoList() {
+      const updated = [];
+      for(let i=0; i<fotoData.length; i++) {
+        updated.push({
+          title: document.getElementById(`foto_title_${i}`).value.trim(),
+          date: document.getElementById(`foto_date_${i}`).value.trim(),
+          image: document.getElementById(`foto_img_${i}`).value.trim()
+        });
+      }
+      fotoData = updated;
+      await commitToGithub("data-kegiatan.json", fotoData);
+    }
+
+    // ================= 3. FUNGSI COMMIT KE GITHUB REST API =================
     async function commitToGithub(fileName, jsonContent) {
       const token = document.getElementById("ghToken").value.trim() || localStorage.getItem("pkbm_gh_token");
       if(!token) {
-        alert("❌ Masukkan GitHub Token di bagian 1 terlebih dahulu!");
+        alert("❌ Masukkan GitHub Personal Access Token di bagian 1 terlebih dahulu!");
+        document.getElementById("ghToken").focus();
         return false;
       }
 
@@ -460,7 +782,7 @@
         }
       } catch(e){}
 
-      // Encode UTF-8 to Base64
+      // Encode UTF-8 ke Base64
       const contentStr = typeof jsonContent === "string" ? jsonContent : JSON.stringify(jsonContent, null, 2);
       const encoded = btoa(unescape(encodeURIComponent(contentStr)));
 
@@ -481,7 +803,7 @@
         });
 
         if(putRes.ok) {
-          alert(`✅ Berhasil! File ${fileName} berhasil diperbarui di GitHub.`);
+          alert(`✅ Berhasil! Data ${fileName} berhasil disimpan dan diperbarui ke GitHub.`);
           return true;
         } else {
           const errData = await putRes.json();
@@ -489,12 +811,12 @@
           return false;
         }
       } catch(err) {
-        alert(`❌ Error koneksi GitHub: ${err.message}`);
+        alert(`❌ Kendala koneksi GitHub: ${err.message}`);
         return false;
       }
     }
 
-    // Simpan Form Builders
+    // Simpan Builder Sederhana (CBT, Materi, Tutor, Video, Kontak)
     async function simpanJson(fileName, type) {
       let payload = {};
 
@@ -526,17 +848,6 @@
       }
 
       await commitToGithub(fileName, payload);
-    }
-
-    async function simpanRawJson(fileName, textareaId) {
-      const val = document.getElementById(textareaId).value.trim();
-      try {
-        JSON.parse(val); // Validasi format JSON
-      } catch(e) {
-        alert("❌ Format JSON tidak valid! Periksa tanda koma dan kurung kurawal.");
-        return;
-      }
-      await commitToGithub(fileName, val);
     }
 
     initData();
