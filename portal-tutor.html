@@ -18,6 +18,7 @@
       --danger: #b91c1c;
       --orange: #ea580c;
       --purple: #7c3aed;
+      --blue: #2563eb;
     }
     * { box-sizing: border-box; }
     body {
@@ -41,7 +42,6 @@
     }
     .hero img { width: 70px; height: 70px; object-fit: contain; margin-bottom: 10px; }
     .hero h1 { margin: 0; color: var(--green-dark); font-size: 25px; }
-    .hero p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
     .badge-user {
       display: inline-block; background: var(--green-soft); color: var(--green-dark); border: 1px solid var(--line);
       padding: 4px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 800; margin-bottom: 8px;
@@ -73,16 +73,32 @@
       padding: 12px; border-radius: 14px; font-weight: 800; font-size: 14px; text-decoration: none; cursor: pointer;
     }
     .btn-action.orange { background: var(--orange); }
+    .btn-action.purple { background: var(--purple); }
+    .btn-action.blue { background: var(--blue); }
 
     /* MODAL POPUP */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; display: none; align-items: center; justify-content: center; padding: 16px; }
-    .modal-box { background: #fff; width: 100%; max-width: 620px; max-height: 90vh; overflow-y: auto; border-radius: 26px; padding: 26px; position: relative; }
+    .modal-box { background: #fff; width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; border-radius: 26px; padding: 26px; position: relative; }
     .modal-close { position: absolute; right: 18px; top: 18px; background: #fee2e2; color: var(--danger); border: 0; width: 32px; height: 32px; border-radius: 50%; font-weight: 900; cursor: pointer; }
 
     label { display: block; font-weight: 800; font-size: 13px; color: var(--green-dark); margin: 10px 0 4px; }
     select, input, textarea { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1.5px solid var(--line); outline: none; font-size: 14px; background: #fff; }
     textarea { min-height: 65px; }
     #reader { width: 100%; max-width: 320px; margin: 12px auto; border-radius: 16px; overflow: hidden; border: 3px solid var(--green); background: #000; }
+
+    /* TABEL MONITORING TTD WALI */
+    .table-monitoring { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 12.5px; }
+    .table-monitoring th { background: var(--green-soft); color: var(--green-dark); padding: 10px 8px; text-align: left; border: 1px solid var(--line); font-size: 12px; }
+    .table-monitoring td { padding: 10px 8px; border: 1px solid var(--line); vertical-align: middle; }
+    
+    .badge-ttd-ok { background: #dcfce7; color: #15803d; padding: 3px 8px; border-radius: 999px; font-weight: 800; font-size: 11.5px; display: inline-block; }
+    .badge-ttd-no { background: #fee2e2; color: #b91c1c; padding: 3px 8px; border-radius: 999px; font-weight: 800; font-size: 11.5px; display: inline-block; }
+
+    .btn-wa-remind {
+      background: #25d366; color: #fff; border: 0; padding: 6px 12px; border-radius: 10px;
+      font-weight: 800; font-size: 11.5px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+    }
+    .btn-wa-remind:hover { background: #1eb956; }
   </style>
 </head>
 <body>
@@ -121,10 +137,22 @@
           <div>
             <div class="tutor-card-icon" style="background:#d1fae5;">📲</div>
             <h3>Scan Absen, Jurnal & Tugas</h3>
-            <p>Scan kartu santri per mata pelajaran, evaluasi karakter, & berikan tugas yang langsung tampil di HP orang tua.</p>
+            <p>Scan kartu santri per mapel, evaluasi karakter/adab, & berikan tugas rumah ke wali santri.</p>
           </div>
           <button type="button" onclick="bukaModalScanMapel()" class="btn-action">
             Mulai Presensi Kelas →
+          </button>
+        </div>
+
+        <!-- FITUR BARU: MONITORING TTD WALI & PENGINGAT WA -->
+        <div class="tutor-card" style="border: 2px solid #7c3aed; background: #faf5ff;">
+          <div>
+            <div class="tutor-card-icon" style="background:#f3e8ff;">📱</div>
+            <h3>Monitoring TTD & Ingatkan WA</h3>
+            <p>Pantau orang tua yang sudah/belum tanda tangan raport bulanan & kirim pengingat 1-Klik via WhatsApp.</p>
+          </div>
+          <button type="button" onclick="bukaModalMonitoring()" class="btn-action purple">
+            Pantau & Ingatkan Wali →
           </button>
         </div>
 
@@ -160,7 +188,7 @@
     </div>
   </div>
 
-  <!-- MODAL: SCAN ABSEN MAPEL + PEMILIHAN PROGRAM RAMAH INKLUSI -->
+  <!-- ================= MODAL 1: SCAN ABSEN MAPEL ================= -->
   <div id="modalScanMapel" class="modal-overlay">
     <div class="modal-box">
       <button class="modal-close" onclick="tutupModal('modalScanMapel')">✕</button>
@@ -185,9 +213,8 @@
         </div>
       </div>
 
-      <!-- OPSI JIKA ADA MAPEL / MATERI KHUSUS LAINNYA -->
       <div id="boxCustomMapel" style="display:none; margin-top:6px;">
-        <label style="color:var(--purple);">Ketik Mata Pelajaran / Bidang Pengembangan Lainnya:</label>
+        <label style="color:var(--purple);">Ketik Mata Pelajaran / Bidang Lainnya:</label>
         <input type="text" id="inputCustomMapel" placeholder="Contoh: Terapi Sensori Motorik / Literasi Terapan">
       </div>
 
@@ -196,13 +223,11 @@
         <input type="text" id="scanMateriInput" placeholder="Contoh: Latihan Kemandirian Merapikan Alat Belajar / Pecahan">
       </div>
 
-      <!-- SCANNER KAMERA -->
       <div id="reader"></div>
       <div id="scanStatusMsg" style="text-align:center; font-weight:bold; font-size:13px; color:var(--green-dark); margin:6px 0;">
         📷 Arahkan kamera HP ke QR Code Kartu Santri
       </div>
 
-      <!-- FORM EVALUASI & TUGAS -->
       <div id="boxEvaluasiSantri" style="display:none; background:#f8fcfa; border:1.5px solid var(--line); border-radius:16px; padding:14px; margin-top:10px;">
         <b style="color:var(--green-dark);" id="evalNamaSantri">Santri Terdeteksi</b>
         <input type="hidden" id="evalNIS">
@@ -240,10 +265,44 @@
     </div>
   </div>
 
+  <!-- ================= MODAL 2: MONITORING TTD WALI & PENGINGAT WA ================= -->
+  <div id="modalMonitoring" class="modal-overlay">
+    <div class="modal-box" style="max-width:750px;">
+      <button class="modal-close" onclick="tutupModal('modalMonitoring')">✕</button>
+      <h3 style="margin:0 0 4px; color:var(--purple);">📱 Monitoring Tanda Tangan Raport Bulanan</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Pantau wali santri yang sudah/belum menandatangani buku penghubung bulanan.</p>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 16px;">
+        <div>
+          <label style="margin:0; font-size:12.5px; color:#5b21b6;">Pilih Periode Bulan:</label>
+          <input type="month" id="filterBulanMon" style="padding:6px 10px; border-radius:10px; border:1px solid #c4b5fd; font-weight:bold; width:auto;">
+        </div>
+        <div id="summaryStatsMon" style="font-size:13px; font-weight:bold; color:#6b21a8;">
+          Memuat status...
+        </div>
+      </div>
+
+      <div style="max-height:360px; overflow-y:auto; margin-top:12px;">
+        <table class="table-monitoring">
+          <thead>
+            <tr>
+              <th>Santri & Kelas</th>
+              <th>Status TTD Wali</th>
+              <th>Tindakan Pengingat</th>
+            </tr>
+          </thead>
+          <tbody id="monitoringTableBody">
+            <tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">⏳ Mengambil data monitoring...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    // DAFTAR MAPEL DENGAN ISTILAH POSITIF & TERHORMAT
     const MAPEL_DEFAULT = {
       "Paket A": [
         "Pendidikan Agama Islam & Adab",
@@ -354,11 +413,23 @@
       document.getElementById("modalScanMapel").style.display = "flex";
       startScanner();
     }
+    function bukaModalMonitoring() {
+      document.getElementById("modalMonitoring").style.display = "flex";
+      
+      const now = new Date();
+      const yr = now.getFullYear();
+      const mo = String(now.getMonth() + 1).padStart(2, "0");
+      document.getElementById("filterBulanMon").value = `${yr}-${mo}`;
+      
+      loadMonitoringData(`${yr}-${mo}`);
+    }
+
     function tutupModal(id) {
       document.getElementById(id).style.display = "none";
       if(html5QrCode && isScanning) { html5QrCode.stop().then(() => { isScanning = false; }).catch(()=>{}); }
     }
 
+    // ================= SCANNER PRESENSI =================
     let html5QrCode = null;
     let isScanning = false;
     let isProcessing = false;
@@ -422,6 +493,75 @@
         isProcessing = false;
       }
     });
+
+    // ================= ENGINE MONITORING TTD & WA =================
+    document.getElementById("filterBulanMon").addEventListener("change", (e) => {
+      loadMonitoringData(e.target.value);
+    });
+
+    async function loadMonitoringData(bulanKey) {
+      const tbody = document.getElementById("monitoringTableBody");
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">⏳ Mengambil data monitoring...</td></tr>';
+      
+      try {
+        const res = await fetch(`${API_URL}?action=get_monitoring_wali&bulanKey=${encodeURIComponent(bulanKey)}`);
+        const json = await res.json();
+
+        if (json.success && json.data.length > 0) {
+          let total = json.data.length;
+          let countSudah = 0;
+          let countBelum = 0;
+          let rows = "";
+
+          const pParts = bulanKey.split("-");
+          const namaBulanStr = new Date(pParts[0], pParts[1]-1, 1).toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+
+          json.data.forEach(s => {
+            if (s.sudahTtd) {
+              countSudah++;
+              rows += `
+                <tr>
+                  <td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td>
+                  <td><span class="badge-ttd-ok">✅ Sudah TTD</span><br><small style="color:#059669;">Oleh: ${s.namaWaliTtd} (${s.waktuTtd})</small></td>
+                  <td><small style="color:#059669; font-weight:bold;">Selesai Dikonfirmasi</small></td>
+                </tr>
+              `;
+            } else {
+              countBelum++;
+              
+              // Format WA link
+              let cleanHp = String(s.hpWali || "").replace(/[^0-9]/g, "");
+              if (cleanHp.startsWith("0")) cleanHp = "62" + cleanHp.slice(1);
+
+              const pesanWA = `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nKepada Yth. Ayah/Bunda dari ananda *${s.nama}* (${s.kelas}).\n\nBuku Penghubung & Raport Perkembangan Ananda untuk periode *${namaBulanStr}* telah diperbarui oleh Ustadz/Tutor PKBM Pelita Aushaf Indonesia.\n\nMohon Ayah/Bunda berkenan memeriksa rekam jejak belajar, adab, pembiasaan mandiri di rumah, serta membubuhkan tanda tangan konfirmasi digital melalui portal siswa:\n👉 https://pkbmpelitaaushafindonesia.sch.id/portal-siswa.html\n(Gunakan NIS: *${s.nis}* untuk login).\n\nTerima kasih atas perhatian dan kerja sama Ayah/Bunda dalam mendampingi pendidikan ananda. 🙏✨\n- PKBM Pelita Aushaf Indonesia -`;
+
+              const waLink = cleanHp 
+                ? `https://wa.me/${cleanHp}?text=${encodeURIComponent(pesanWA)}`
+                : `https://wa.me/?text=${encodeURIComponent(pesanWA)}`;
+
+              rows += `
+                <tr>
+                  <td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td>
+                  <td><span class="badge-ttd-no">⚠️ Belum TTD</span></td>
+                  <td>
+                    <a href="${waLink}" target="_blank" class="btn-wa-remind">
+                      📲 Ingatkan via WA
+                    </a>
+                  </td>
+                </tr>
+              `;
+            }
+          });
+
+          document.getElementById("summaryStatsMon").innerHTML = `Total: <b>${total}</b> Santri | <span style="color:#059669;">✅ Sudah: ${countSudah}</span> | <span style="color:#dc2626;">⚠️ Belum: ${countBelum}</span>`;
+          tbody.innerHTML = rows;
+        } else {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">Tidak ada data santri pada periode ini.</td></tr>';
+        }
+      } catch(err) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--danger);">Gagal memuat: ${err.message}</td></tr>`;
+      }
+    }
   </script>
 </body>
 </html>
