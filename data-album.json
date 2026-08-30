@@ -1,12 +1,12 @@
 [
   {
     "id": "album-kegiatan-paud",
-    "title": "Kegiatan PAUD Non Formal",
-    "program": "PAUD Non Formal",
+    "title": "Kegiatan PAUD Non Formal (Kelompok Bermain)",
+    "program": "PAUD Non Formal (Kelompok Bermain)",
     "date": "2026-05-30",
-    "desc": "Dokumentasi kegiatan pembelajaran dan bermain anak.",
+    "desc": "Dokumentasi kegiatan stimulasi, pembelajaran, dan eksplorasi bermain anak.",
     "cover": "",
-    "linkProgram": "PAUD Non Formal",
+    "linkProgram": "PAUD Non Formal (Kelompok Bermain)",
     "createdAt": "2026-05-30"
   }
 ]
