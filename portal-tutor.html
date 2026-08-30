@@ -133,6 +133,7 @@
       <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Kesetaraan)</p>
     </div>
 
+    <!-- 1. FORM LOGIN TUTOR -->
     <div id="loginGate" class="lock-box">
       <div style="font-size: 36px; margin-bottom: 8px;">👨‍🏫</div>
       <h3>Login Ruang Tutor</h3>
@@ -154,31 +155,71 @@
       <div id="loginError" class="login-error"></div>
     </div>
 
+    <!-- 2. DASHBOARD TUTOR -->
     <div id="tutorDashboard">
       
       <div class="dashboard-grid">
+        <!-- REKAP NILAI CBT -->
         <div class="tutor-card">
           <div>
             <div class="tutor-card-icon">📊</div>
-            <h3>Rekap Nilai & Ujian CBT</h3>
+            <h3>Rekap Nilai & CBT</h3>
             <p>Buka spreadsheet respons hasil pengerjaan soal ujian daring santri per jenjang.</p>
           </div>
           <a id="linkRekapNilai" href="https://docs.google.com/spreadsheets" target="_blank" class="btn-tutor">
-            Buka Rekap Spreadsheet →
+            Buka Spreadsheet Nilai →
           </a>
         </div>
 
+        <!-- DRIVE TUGAS UTAMA -->
         <div class="tutor-card">
           <div>
             <div class="tutor-card-icon">📥</div>
             <h3>Tugas & Portofolio</h3>
-            <p>Folder Google Drive utama tempat pengumpulan tugas santri tersimpan.</p>
+            <p>Folder Google Drive utama tempat arsip pengumpulan tugas santri tersimpan.</p>
           </div>
           <a id="linkDriveTugas" href="https://drive.google.com" target="_blank" class="btn-tutor">
-            Buka Folder Tugas Utama →
+            Buka Folder Tugas →
           </a>
         </div>
 
+        <!-- SCAN QR ABSENSI MASUK / PULANG TUTOR -->
+        <div class="tutor-card" style="border: 2px solid #34d399; background: #f0fdf4;">
+          <div>
+            <div class="tutor-card-icon" style="background:#d1fae5;">📲</div>
+            <h3>Absensi QR (GPS)</h3>
+            <p>Scan QR saat tiba & pulang di Gedung G2 atau I5 lewat HP / Laptop.</p>
+          </div>
+          <a href="absensi-qr.html" class="btn-tutor">
+            Buka Scanner Absensi →
+          </a>
+        </div>
+
+        <!-- KARTU TANDA TUTOR -->
+        <div class="tutor-card" style="border: 2px solid #64748b; background: #f8fafc;">
+          <div>
+            <div class="tutor-card-icon" style="background:#e2e8f0;">🪪</div>
+            <h3>Kartu Tanda Tutor</h3>
+            <p>Cetak Kartu Tanda Pengajar resmi dengan QR Code standar kartu ATM.</p>
+          </div>
+          <a href="kartu.html?role=tutor" class="btn-tutor">
+            Cetak Kartu Saya →
+          </a>
+        </div>
+
+        <!-- PRESENSI SELFIE & JURNAL TUTOR -->
+        <div class="tutor-card" style="border: 2px solid #38bdf8; background: #f0f9ff;">
+          <div>
+            <div class="tutor-card-icon" style="background:#e0f2fe;">📸</div>
+            <h3>Presensi Selfie Harian</h3>
+            <p>Presensi kehadiran selfie dan catatan jurnal mengajar harian tutor.</p>
+          </div>
+          <a href="presensi.html" class="btn-tutor">
+            Isi Presensi Selfie →
+          </a>
+        </div>
+
+        <!-- KELOLA MATERI DI PANEL ADMIN -->
         <div class="tutor-card">
           <div>
             <div class="tutor-card-icon">⚙️</div>
@@ -191,6 +232,7 @@
         </div>
       </div>
 
+      <!-- DAFTAR FOLDER MATERI GOOGLE DRIVE KELAS 1-12 -->
       <h2 class="section-title">📁 Manajemen Modul Belajar Google Drive (Kelas 1 s.d. 12)</h2>
       
       <div class="package-heading">🟢 Paket A (Kelas 1 - 6)</div>
@@ -207,6 +249,7 @@
         <ol>
           <li>Untuk menambah modul/materi baru, klik tombol <b>Buka Drive ↗</b> pada kelas yang bersangkutan lalu unggah file ke dalamnya.</li>
           <li>Pastikan hak akses folder materi Google Drive diatur ke <b>"Siapa saja yang memiliki link dapat melihat"</b>.</li>
+          <li>Gunakan kartu tutor untuk verifikasi identitas saat mengajar di sekolah.</li>
         </ol>
         <div style="text-align: right;">
           <button id="btnLogoutTutor" class="btn-logout">🔒 Keluar dari Ruang Tutor</button>
@@ -234,7 +277,6 @@
     }
 
     async function loadTutorData() {
-      // 1. Muat Link Rekap & Tugas
       try {
         const resTutor = await fetch("data-tutor.json?t=" + Date.now());
         if(resTutor.ok){
@@ -244,7 +286,6 @@
         }
       } catch(e){}
 
-      // 2. Muat Link Drive Kelas 1-12
       let materiMap = {};
       try {
         const resMateri = await fetch("data-materi.json?t=" + Date.now());
