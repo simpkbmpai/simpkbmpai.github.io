@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Portal Siswa & Buku Penghubung Wali Santri - PKBM Pelita Aushaf</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
+  
+  <!-- Library Grafik Interaktif Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
@@ -17,6 +19,7 @@
       --muted: #6b7280;
       --danger: #b91c1c;
       --orange: #ea580c;
+      --purple: #7c3aed;
       --blue: #2563eb;
     }
     * { box-sizing: border-box; }
@@ -104,8 +107,19 @@
       background: #f0fdf4; border: 2px dashed #34d399; border-radius: 22px; padding: 22px; margin-top: 24px;
     }
     #signCanvas {
-      background: #fff; border: 2px solid #a7f3d0; border-radius: 14px; width: 100%; max-width: 400px;
-      height: 160px; touch-action: none; cursor: crosshair; display: block; margin: 10px 0;
+      background: #ffffff;
+      border: 2px solid #86efac;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 480px;
+      height: 180px;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: crosshair;
+      display: block;
+      margin: 10px 0;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
     }
 
     .btn-action {
@@ -250,7 +264,7 @@
               </div>
             </div>
 
-            <label style="font-size:12.5px; font-weight:bold;">Tanda Tangan Digital (Goreskan jari di kotak bawah):</label>
+            <label style="font-size:12.5px; font-weight:bold;">Tanda Tangan Digital (Goreskan jari / mouse di kotak bawah):</label>
             <canvas id="signCanvas"></canvas>
             <div style="display:flex; gap:10px;">
               <button type="button" id="btnClearSign" style="background:#fee2e2; color:var(--danger); border:0; padding:8px 14px; border-radius:10px; font-weight:bold; cursor:pointer;">Hapus TTD</button>
@@ -333,7 +347,6 @@
       document.getElementById("loginGate").style.display = "none";
       document.getElementById("siswaDashboard").style.display = "block";
       
-      // Sanitasi Tampilan Jenjang (Mencegah kata PAT/PDPD muncul)
       let jStr = data.jenjang || "Paket A";
       if (jStr.toUpperCase().includes("PAT") || jStr.toUpperCase().includes("PDPD")) {
         jStr = "Program Kesetaraan & Pengembangan";
@@ -343,7 +356,9 @@
       document.getElementById("userBadge").textContent = `👤 Ananda: ${data.nama} (${jStr} • ${kStr})`;
 
       loadDataRaport(data.nis);
-      initCanvasSignature();
+      
+      // Tunggu layout ter-render, baru inisialisasi ukuran canvas tanda tangan
+      setTimeout(initCanvasSignature, 150);
     }
 
     async function loadDataRaport(nis) {
@@ -437,6 +452,7 @@
         } else {
           statusBox.style.display = "none";
           formArea.style.display = "block";
+          setTimeout(initCanvasSignature, 50);
         }
       });
     }
@@ -464,43 +480,110 @@
       tbody.innerHTML = html;
     }
 
-    // TANDA TANGAN DIGITAL
-    let canvas, ctx, isDrawing = false;
+    // ================= UNIFIED CANVAS SIGNATURE ENGINE (HP TOUCH & LAPTOP MOUSE) =================
+    let canvas, ctx, isDrawing = false, hasSigned = false;
+
     function initCanvasSignature() {
       canvas = document.getElementById("signCanvas");
+      if (!canvas) return;
       ctx = canvas.getContext("2d");
-      canvas.width = 400;
-      canvas.height = 160;
-      ctx.lineWidth = 2.5;
-      ctx.lineCap = "round";
-      ctx.strokeStyle = "#000000";
+
+      function updateCanvasResolution() {
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const w = rect.width || 380;
+        const h = rect.height || 180;
+
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.scale(dpr, dpr);
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "#1e293b";
+      }
+
+      updateCanvasResolution();
 
       function getPos(e) {
         const rect = canvas.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return { x: clientX - rect.left, y: clientY - rect.top };
+        let clientX = e.clientX;
+        let clientY = e.clientY;
+
+        if (e.touches && e.touches.length > 0) {
+          clientX = e.touches[0].clientX;
+          clientY = e.touches[0].clientY;
+        } else if (e.changedTouches && e.changedTouches.length > 0) {
+          clientX = e.changedTouches[0].clientX;
+          clientY = e.changedTouches[0].clientY;
+        }
+
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top
+        };
       }
 
-      function startDraw(e) { isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
-      function draw(e) { if(!isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
-      function stopDraw() { isDrawing = false; }
+      function startDrawing(e) {
+        if (e.cancelable) e.preventDefault();
+        isDrawing = true;
+        hasSigned = true;
+        const pos = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+      }
 
-      canvas.addEventListener("mousedown", startDraw);
-      canvas.addEventListener("mousemove", draw);
-      canvas.addEventListener("mouseup", stopDraw);
+      function draw(e) {
+        if (!isDrawing) return;
+        if (e.cancelable) e.preventDefault();
+        const pos = getPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+      }
 
-      canvas.addEventListener("touchstart", (e) => { e.preventDefault(); startDraw(e); });
-      canvas.addEventListener("touchmove", (e) => { e.preventDefault(); draw(e); });
-      canvas.addEventListener("touchend", stopDraw);
+      function stopDrawing(e) {
+        if (isDrawing) {
+          if (e && e.cancelable) e.preventDefault();
+          isDrawing = false;
+          ctx.closePath();
+        }
+      }
 
-      document.getElementById("btnClearSign").addEventListener("click", () => {
+      // Pointer Events Modern API (Satu mekanisme untuk sentuhan jari HP, stylus pen, & mouse laptop)
+      if (window.PointerEvent) {
+        canvas.onpointerdown = (e) => {
+          try { canvas.setPointerCapture(e.pointerId); } catch(err){}
+          startDrawing(e);
+        };
+        canvas.onpointermove = draw;
+        canvas.onpointerup = (e) => {
+          try { canvas.releasePointerCapture(e.pointerId); } catch(err){}
+          stopDrawing(e);
+        };
+        canvas.onpointercancel = stopDrawing;
+        canvas.onpointerleave = stopDrawing;
+      } else {
+        // Fallback klasik Mouse & Touch
+        canvas.onmousedown = startDrawing;
+        canvas.onmousemove = draw;
+        canvas.onmouseup = stopDrawing;
+        canvas.onmouseleave = stopDrawing;
+
+        canvas.addEventListener("touchstart", startDrawing, { passive: false });
+        canvas.addEventListener("touchmove", draw, { passive: false });
+        canvas.addEventListener("touchend", stopDrawing, { passive: false });
+        canvas.addEventListener("touchcancel", stopDrawing, { passive: false });
+      }
+
+      document.getElementById("btnClearSign").onclick = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-      });
+        hasSigned = false;
+      };
 
-      document.getElementById("btnSubmitSign").addEventListener("click", async function() {
+      document.getElementById("btnSubmitSign").onclick = async function() {
         const namaWali = document.getElementById("inputNamaWali").value.trim();
         if(!namaWali) { alert("Mohon isi Nama Orang Tua / Wali terlebih dahulu."); return; }
+        if(!hasSigned) { alert("Mohon bubuhkan tanda tangan Anda pada kotak terlebih dahulu."); return; }
 
         this.disabled = true;
         this.textContent = "Mengirim Verifikasi...";
@@ -525,6 +608,8 @@
           if(json.success) {
             alert("✅ Terima kasih! Raport & Buku Penghubung berhasil ditandatangani.");
             location.reload();
+          } else {
+            alert("Gagal: " + (json.message || "Terjadi kesalahan saat menyimpan"));
           }
         } catch(err) {
           alert("Gagal: " + err.message);
@@ -532,7 +617,7 @@
           this.disabled = false;
           this.textContent = "Kirim Tanda Tangan & Konfirmasi";
         }
-      });
+      };
     }
   </script>
 </body>
