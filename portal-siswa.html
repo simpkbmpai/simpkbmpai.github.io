@@ -3,8 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portal Siswa & Wali Santri - PKBM Pelita Aushaf Indonesia</title>
+  <title>Portal Siswa & Buku Penghubung Wali Santri - PKBM Pelita Aushaf</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
+  
+  <!-- Library Grafik Interaktif Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     :root {
       --green: #0d7a5f;
@@ -47,89 +51,70 @@
       padding: 5px 16px; border-radius: 999px; font-size: 13px; font-weight: 800; margin-bottom: 8px;
     }
 
-    /* LOGIN GATE */
+    /* LOGIN */
     .lock-box {
       max-width: 420px; margin: 30px auto; background: #fff; border: 1px solid var(--line);
       border-radius: 24px; padding: 32px 24px; text-align: center; box-shadow: 0 16px 40px rgba(13,122,95,0.12);
     }
-    .lock-box h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 20px; }
-    .lock-box p { font-size: 13.5px; color: var(--muted); margin-bottom: 20px; }
-    .form-group { text-align: left; margin-bottom: 14px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 800; color: var(--green-dark); margin-bottom: 6px; }
     .input-field {
       width: 100%; padding: 13px 16px; font-size: 15px; border: 2px solid var(--line);
-      border-radius: 14px; outline: none;
+      border-radius: 14px; outline: none; margin-bottom: 14px;
     }
     .btn-login {
       width: 100%; padding: 14px; background: var(--green); color: #fff; border: 0;
-      border-radius: 16px; font-weight: 800; font-size: 15px; cursor: pointer; box-shadow: 0 8px 20px rgba(13,122,95,0.2);
+      border-radius: 16px; font-weight: 800; font-size: 15px; cursor: pointer;
     }
-    .login-error { color: var(--danger); font-size: 13px; font-weight: bold; margin-top: 12px; display: none; }
     #siswaDashboard { display: none; }
 
-    /* DASHBOARD WALI SANTRI */
-    .section-title { font-size: 20px; color: var(--green-dark); margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
-
-    /* KOTAK TUGAS / PR AKTIF */
-    .tugas-container {
-      background: #fff; border: 2px solid #fed7aa; border-radius: 22px; padding: 22px;
-      box-shadow: 0 10px 25px rgba(234,88,12,0.06); margin-bottom: 24px;
+    /* STATS SUMMARY KARTU */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px;
     }
-    .tugas-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .tugas-header h3 { margin: 0; color: var(--orange); font-size: 18px; display: flex; align-items: center; gap: 6px; }
+    @media(max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .stat-card {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 18px; padding: 16px; text-align: center;
+    }
+    .stat-val { font-size: 24px; font-weight: 900; color: var(--green-dark); }
+    .stat-label { font-size: 12px; color: var(--muted); font-weight: bold; margin-top: 2px; }
+
+    /* GRAFIK & EVALUASI KARAKTER */
+    .chart-box {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 22px; padding: 20px; margin-bottom: 24px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;
+    }
+    @media(max-width: 768px) { .chart-box { grid-template-columns: 1fr; } }
+
+    /* DAFTAR TUGAS PR */
+    .tugas-container {
+      background: #fff; border: 2px solid #fed7aa; border-radius: 22px; padding: 22px; margin-bottom: 24px;
+    }
     .tugas-item {
       background: #fffaf5; border: 1.5px solid #ffedd5; border-radius: 14px; padding: 14px; margin-bottom: 10px;
     }
-    .tugas-item b { color: var(--orange); font-size: 14.5px; }
 
-    /* RAPORT HARIAN & JURNAL ADAB */
+    /* RAPORT CARD */
     .raport-card {
-      background: #fff; border: 2px solid var(--line); border-radius: 24px; padding: 24px;
-      box-shadow: 0 12px 30px rgba(13,122,95,0.08); margin-bottom: 24px;
+      background: #fff; border: 2px solid var(--line); border-radius: 24px; padding: 24px; margin-bottom: 24px;
     }
-    .raport-controls {
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-      border-bottom: 2px solid var(--line); padding-bottom: 16px; margin-bottom: 16px;
-    }
-    .select-month {
-      padding: 9px 14px; border-radius: 12px; border: 1.5px solid var(--line); outline: none;
-      font-weight: bold; font-size: 13.5px; background: #fff;
-    }
-    .btn-print-raport {
-      background: var(--green); color: #fff; border: 0; padding: 9px 18px; border-radius: 999px;
-      font-weight: 800; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
-    }
-    .btn-print-raport:hover { background: var(--green-dark); }
-
-    /* TABEL JURNAL RAPORT */
-    .jurnal-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    .jurnal-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
     .jurnal-table th { background: var(--green-soft); color: var(--green-dark); padding: 10px; text-align: left; border: 1px solid var(--line); }
     .jurnal-table td { padding: 12px 10px; border: 1px solid var(--line); vertical-align: top; }
-    .badge-fokus { background: #dcfce7; color: #15803d; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 11.5px; display: inline-block; }
-    .badge-adab { background: #dbeafe; color: #1d4ed8; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 11.5px; display: inline-block; margin-top: 4px; }
 
-    /* MENU AKADEMIK LAINNYA */
-    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-    @media(max-width: 860px) { .dashboard-grid { grid-template-columns: 1fr; } }
-    .action-card {
-      background: #fff; border: 1.5px solid var(--line); border-radius: 20px; padding: 20px;
-      display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    /* WADAH TANDA TANGAN DIGITAL WALI SANTRI */
+    .signature-card {
+      background: #f0fdf4; border: 2px dashed #34d399; border-radius: 22px; padding: 22px; margin-top: 24px;
     }
-    .action-card h4 { margin: 0 0 6px; color: var(--green-dark); font-size: 16px; }
-    .action-card p { margin: 0 0 14px; color: var(--muted); font-size: 12.5px; flex-grow: 1; }
-    .btn-card {
-      display: block; text-align: center; background: var(--green); color: #fff; padding: 10px;
-      border-radius: 12px; font-weight: 800; font-size: 13px; text-decoration: none;
+    #signCanvas {
+      background: #fff; border: 2px solid #a7f3d0; border-radius: 14px; width: 100%; max-width: 400px;
+      height: 160px; touch-action: none; cursor: crosshair; display: block; margin: 10px 0;
     }
-    .btn-card:hover { background: var(--green-dark); }
-    .btn-logout { color: var(--danger); background: none; border: 0; font-weight: 800; font-size: 13px; cursor: pointer; text-decoration: underline; }
 
-    @media print {
-      body { background: #fff; padding: 0; }
-      .top-bar, .hero, .tugas-container, .dashboard-grid, .raport-controls, .btn-logout, #boxDriveMateri { display: none !important; }
-      .raport-card { border: none; box-shadow: none; padding: 0; }
-      .jurnal-table th, .jurnal-table td { border: 1px solid #333; }
+    .btn-action {
+      background: var(--green); color: #fff; border: 0; padding: 11px 20px; border-radius: 12px;
+      font-weight: 800; font-size: 13.5px; cursor: pointer;
     }
+    .btn-action:hover { background: var(--green-dark); }
   </style>
 </head>
 <body>
@@ -137,70 +122,85 @@
   <div class="container">
     <div class="top-bar">
       <a href="index.html" class="btn-nav">← Beranda Website</a>
-      <a href="https://wa.me/6287751325199" target="_blank" class="btn-nav">Hubungi Admin Sekolah WA</a>
+      <a href="https://wa.me/6287751325199" target="_blank" class="btn-nav">Admin Sekolah WA</a>
     </div>
 
     <div class="hero">
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div><span class="badge-user" id="userBadge">Portal Akademik & Wali Santri</span></div>
-      <h1>Buku Penghubung & Raport Harian Santri</h1>
+      <h1>Buku Penghubung & Raport Digital Santri</h1>
       <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Kesetaraan)</p>
     </div>
 
-    <!-- 1. LOGIN WALI SANTRI / SANTRI -->
+    <!-- 1. FORM LOGIN WALI SANTRI -->
     <div id="loginGate" class="lock-box">
       <div style="font-size: 36px; margin-bottom: 8px;">🎓</div>
       <h3>Login Santri / Wali Murid</h3>
-      <p>Masukkan NIS Santri dan Password untuk melihat perkembangan belajar ananda.</p>
+      <p>Masukkan NIS Santri untuk membuka raport perkembangan.</p>
       
       <form id="siswaLoginForm">
-        <div class="form-group">
-          <label for="usernameInput">NIS Santri:</label>
-          <input type="text" id="usernameInput" class="input-field" placeholder="Contoh: siswa1" autofocus required>
-        </div>
-        
-        <div class="form-group">
-          <label for="passwordInput">Password:</label>
-          <input type="password" id="passwordInput" class="input-field" placeholder="••••••••" required>
-        </div>
-
+        <input type="text" id="usernameInput" class="input-field" placeholder="NIS Santri (Contoh: siswa1)" required>
+        <input type="password" id="passwordInput" class="input-field" placeholder="Password" required>
         <button type="submit" id="btnSubmitSiswa" class="btn-login">Buka Raport & Buku Penghubung</button>
       </form>
-      <div id="loginError" class="login-error"></div>
     </div>
 
-    <!-- 2. DASHBOARD WALI SANTRI -->
+    <!-- 2. DASHBOARD LENGKAP WALI SANTRI -->
     <div id="siswaDashboard">
 
-      <!-- FITUR 1: DAFTAR TUGAS / PR AKTIF DARI TUTOR -->
-      <div class="tugas-container">
-        <div class="tugas-header">
-          <h3>📌 Daftar Tugas & PR Rumah Santri</h3>
-          <span id="badgeCountTugas" style="background:#ea580c; color:#fff; padding:3px 10px; border-radius:999px; font-weight:800; font-size:12px;">0 Tugas</span>
+      <!-- 1. STATS DISIPLIN & PRESENSI BULAN INI -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="statHadir" style="color:#059669;">0</div>
+          <div class="stat-label">Sesi Hadir</div>
         </div>
-        <div id="tugasListContainer">
-          <div style="color:var(--muted); font-size:13px; text-align:center; padding:10px;">⏳ Memeriksa tugas terbaru dari ustadz/tutor...</div>
+        <div class="stat-card">
+          <div class="stat-val" id="statTerlambat" style="color:#ea580c;">0</div>
+          <div class="stat-label">Terlambat</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="statIzin" style="color:#0284c7;">0</div>
+          <div class="stat-label">Izin / Sakit</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="statAlpa" style="color:#dc2626;">0</div>
+          <div class="stat-label">Alpa</div>
         </div>
       </div>
 
-      <!-- FITUR 2: RAPORT HARIAN & REKAP BULANAN -->
-      <h2 class="section-title">📊 Raport Perkembangan Harian & Karakter Santri</h2>
+      <!-- 2. GRAFIK RADAR ADAB & KONSENTRASI BELAJAR -->
+      <div class="chart-box">
+        <div>
+          <h3 style="margin:0 0 6px; color:var(--green-dark);">📊 Grafik Capaian Karakter Santri</h3>
+          <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Evaluasi perkembangan konsentrasi, adab, dan kedisiplinan dari para pengajar.</p>
+          <div style="font-size:13.5px;">
+            <div>🌟 <b>Indeks Fokus Belajar:</b> <span id="valFokusPersen" style="color:#059669; font-weight:bold;">100%</span></div>
+            <div style="margin-top:4px;">🌿 <b>Indeks Adab & Kesantunan:</b> <span id="valAdabPersen" style="color:#2563eb; font-weight:bold;">100%</span></div>
+          </div>
+        </div>
+        <div style="max-height: 220px; display:flex; justify-content:center;">
+          <canvas id="karakterChart"></canvas>
+        </div>
+      </div>
+
+      <!-- 3. KOTAK DAFTAR TUGAS / PR RUMAH -->
+      <div class="tugas-container">
+        <h3 style="margin:0 0 12px; color:var(--orange);">📌 Tugas & PR Rumah Santri</h3>
+        <div id="tugasListContainer">
+          <div style="color:var(--muted); font-size:13px;">Belum ada tugas/PR baru dari tutor.</div>
+        </div>
+      </div>
+
+      <!-- 4. TABEL JURNAL & RAPORT DETAIL -->
       <div class="raport-card">
-        
-        <div class="raport-controls">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
           <div>
-            <label style="font-size:13px; font-weight:bold; color:var(--green-dark); margin-right:6px;">Pilih Periode Bulan:</label>
-            <select id="filterBulanSelect" class="select-month">
-              <option value="all">-- Semua Riwayat Pembelajaran --</option>
+            <label style="font-size:13px; font-weight:bold; color:var(--green-dark);">Pilih Periode Bulan:</label>
+            <select id="filterBulanSelect" style="padding:8px 14px; border-radius:12px; border:1.5px solid var(--line); font-weight:bold;">
+              <option value="all">-- Semua Riwayat --</option>
             </select>
           </div>
-          <button onclick="window.print()" class="btn-print-raport">🖨️ Cetak Raport Bulanan (PDF)</button>
-        </div>
-
-        <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:14px;">
-          <div style="background:var(--green-soft); padding:8px 14px; border-radius:12px; font-size:13px; color:var(--green-dark); font-weight:bold;">
-            Total Sesi Pembelajaran: <span id="statTotalSesi">0</span> Pertemuan
-          </div>
+          <button onclick="window.print()" class="btn-action" style="background:#334155;">🖨️ Cetak Raport (PDF)</button>
         </div>
 
         <div style="overflow-x:auto;">
@@ -209,52 +209,48 @@
               <tr>
                 <th style="width:22%;">Tgl & Mapel</th>
                 <th style="width:28%;">Materi Pembahasan</th>
-                <th style="width:22%;">Evaluasi Adab & Fokus</th>
-                <th style="width:28%;">Catatan Khusus Tutor</th>
+                <th style="width:22%;">Adab & Fokus</th>
+                <th style="width:28%;">Catatan Khusus Pengajar</th>
               </tr>
             </thead>
-            <tbody id="raportTableBody">
-              <tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted);">Memuat rekap raport harian santri...</td></tr>
-            </tbody>
+            <tbody id="raportTableBody"></tbody>
           </table>
         </div>
+
+        <!-- 5. TANDA TANGAN DIGITAL & DIALOG WALI SANTRI -->
+        <div class="signature-card" id="boxTtdWali">
+          <h3 style="margin:0 0 4px; color:var(--green-dark);">✍️ Konfirmasi & Tanda Tangan Orang Tua / Wali</h3>
+          <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Sebagai wujud kepedulian & kemitraan dengan sekolah, mohon bubuhkan tanda tangan dan pesan evaluasi untuk ananda.</p>
+
+          <div id="statusTtdBox" style="margin-bottom:12px; font-weight:bold; font-size:13.5px; color:#065f46; display:none;">
+            ✅ Raport bulan ini telah dilihat & ditandatangani oleh Wali Santri.
+          </div>
+
+          <div id="formTtdArea">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div>
+                <label style="font-size:12.5px; font-weight:bold;">Nama Orang Tua / Wali:</label>
+                <input type="text" id="inputNamaWali" class="input-field" placeholder="Nama Lengkap Orang Tua">
+              </div>
+              <div>
+                <label style="font-size:12.5px; font-weight:bold;">Pesan / Masukan untuk Sekolah & Tutor:</label>
+                <input type="text" id="inputPesanWali" class="input-field" placeholder="Catatan perkembangan ananda di rumah...">
+              </div>
+            </div>
+
+            <label style="font-size:12.5px; font-weight:bold;">Tanda Tangan Digital (Goreskan jari di kotak bawah):</label>
+            <canvas id="signCanvas"></canvas>
+            <div style="display:flex; gap:10px;">
+              <button type="button" id="btnClearSign" style="background:#fee2e2; color:var(--danger); border:0; padding:8px 14px; border-radius:10px; font-weight:bold; cursor:pointer;">Hapus TTD</button>
+              <button type="button" id="btnSubmitSign" class="btn-action">Kirim Tanda Tangan & Konfirmasi</button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- FITUR 3: MENU PENDUKUNG AKADEMIK LAINNYA -->
-      <h2 class="section-title">🚀 Layanan & Fasilitas Belajar</h2>
-      <div class="dashboard-grid">
-        
-        <!-- CBT UJIAN -->
-        <div class="action-card">
-          <div>
-            <h4>💻 Ruang Ujian Online (CBT)</h4>
-            <p>Evaluasi berkala dan ujian online terawasi resmi santri.</p>
-          </div>
-          <a id="btnElearning" href="ujian.html" class="btn-card">Masuk Ujian CBT →</a>
-        </div>
-
-        <!-- FOLDER MATERI GOOGLE DRIVE -->
-        <div class="action-card" id="boxDriveMateri">
-          <div>
-            <h4 id="modulTitle">📁 Modul & Materi Belajar</h4>
-            <p>Akses arsip materi dan e-book pembelajaran resmi kelas.</p>
-          </div>
-          <a id="linkModul" href="#" target="_blank" class="btn-card">Buka Folder Materi ↗</a>
-        </div>
-
-        <!-- KARTU SANTRI & QR -->
-        <div class="action-card">
-          <div>
-            <h4>🪪 Kartu Tanda Santri</h4>
-            <p>Lihat kartu resmi santri dan QR code identitas absensi.</p>
-          </div>
-          <a href="kartu.html" class="btn-card" style="background:#334155;">Lihat Kartu Santri →</a>
-        </div>
-
-      </div>
-
-      <div style="text-align: right; margin-top: 20px;">
-        <button id="btnLogoutSiswa" class="btn-logout">🔒 Keluar dari Akun Santri</button>
+      <div style="text-align: right; margin-top:20px;">
+        <button id="btnLogoutSiswa" style="color:var(--danger); background:none; border:0; font-weight:800; cursor:pointer; text-decoration:underline;">🔒 Keluar dari Akun</button>
       </div>
 
     </div>
@@ -263,179 +259,238 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    const loginGate = document.getElementById("loginGate");
-    const siswaDashboard = document.getElementById("siswaDashboard");
-    const siswaLoginForm = document.getElementById("siswaLoginForm");
-    const usernameInput = document.getElementById("usernameInput");
-    const passwordInput = document.getElementById("passwordInput");
-    const loginError = document.getElementById("loginError");
-    const userBadge = document.getElementById("userBadge");
-    const btnSubmitSiswa = document.getElementById("btnSubmitSiswa");
-    const btnLogoutSiswa = document.getElementById("btnLogoutSiswa");
-
-    let allRiwayatRaport = [];
+    let chartInstance = null;
+    let currentSantri = null;
+    let currentBulanKey = "all";
+    let allRiwayat = [];
 
     const savedSiswa = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
     if (savedSiswa) {
-      try { tampilkanDashboardWali(JSON.parse(savedSiswa)); } catch(e) {}
+      try {
+        currentSantri = JSON.parse(savedSiswa);
+        tampilkanDashboard(currentSantri);
+      } catch(e){}
     }
 
-    siswaLoginForm.addEventListener("submit", async function(e) {
+    document.getElementById("siswaLoginForm").addEventListener("submit", async function(e) {
       e.preventDefault();
-      loginError.style.display = "none";
-      btnSubmitSiswa.disabled = true;
-      btnSubmitSiswa.textContent = "Memverifikasi...";
+      const u = document.getElementById("usernameInput").value.trim();
+      const p = document.getElementById("passwordInput").value.trim();
 
-      const u = usernameInput.value.trim();
-      const p = passwordInput.value.trim();
-
-      try {
-        const response = await fetch(`${API_URL}?action=login_santri&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
-        const result = await response.json();
-
-        if (result.success) {
-          localStorage.setItem("siswaAuth", JSON.stringify(result));
-          sessionStorage.setItem("siswaAuth", JSON.stringify(result));
-          tampilkanDashboardWali(result);
-        } else {
-          loginError.textContent = "❌ " + (result.message || "NIS atau Password salah!");
-          loginError.style.display = "block";
-          passwordInput.value = "";
-          passwordInput.focus();
-        }
-      } catch (err) {
-        loginError.textContent = "❌ Gagal terhubung ke database. Periksa koneksi internet.";
-        loginError.style.display = "block";
-      } finally {
-        btnSubmitSiswa.disabled = false;
-        btnSubmitSiswa.textContent = "Buka Raport & Buku Penghubung";
+      const res = await fetch(`${API_URL}?action=login_santri&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
+      const json = await res.json();
+      if(json.success) {
+        localStorage.setItem("siswaAuth", JSON.stringify(json));
+        location.reload();
+      } else {
+        alert("NIS atau Password salah!");
       }
     });
 
-    btnLogoutSiswa.addEventListener("click", function() {
+    document.getElementById("btnLogoutSiswa").addEventListener("click", () => {
       localStorage.removeItem("siswaAuth");
-      sessionStorage.removeItem("siswaAuth");
       location.reload();
     });
 
-    async function tampilkanDashboardWali(data) {
-      loginGate.style.display = "none";
-      siswaDashboard.style.display = "block";
-      
-      const nama = data.nama || "Santri";
-      const nis = data.nis || data.username || "-";
-      let jenjang = data.jenjang || "Paket A";
-      let kelas = data.kelas || "Kelas 1";
+    async function tampilkanDashboard(data) {
+      document.getElementById("loginGate").style.display = "none";
+      document.getElementById("siswaDashboard").style.display = "block";
+      document.getElementById("userBadge").textContent = `👤 Ananda: ${data.nama} (${data.jenjang} • ${data.kelas})`;
 
-      userBadge.textContent = `👤 Ananda: ${nama} (${jenjang} • ${kelas})`;
-      
-      // Ambil Rekap Raport & Tugas Aktif
-      loadRaportHarian(nis);
+      loadDataRaport(data.nis);
+      initCanvasSignature();
     }
 
-    async function loadRaportHarian(nis) {
-      try {
-        const res = await fetch(`${API_URL}?action=get_raport_santri&nis=${encodeURIComponent(nis)}`);
-        const json = await res.json();
+    async function loadDataRaport(nis) {
+      const res = await fetch(`${API_URL}?action=get_raport_santri&nis=${encodeURIComponent(nis)}`);
+      const json = await res.json();
 
-        if (json.success) {
-          allRiwayatRaport = json.riwayat || [];
-          document.getElementById("statTotalSesi").textContent = json.totalHadir || 0;
+      if(json.success) {
+        allRiwayat = json.riwayat || [];
+        document.getElementById("statHadir").textContent = json.stats.totalHadir;
+        document.getElementById("statTerlambat").textContent = json.stats.totalTerlambat;
+        document.getElementById("statIzin").textContent = json.stats.totalIzin;
+        document.getElementById("statAlpa").textContent = json.stats.totalAlpa;
 
-          // 1. RENDER KOTAK TUGAS / PR AKTIF
-          const tugasContainer = document.getElementById("tugasListContainer");
-          const tugasArr = json.tugasAktif || [];
-          document.getElementById("badgeCountTugas").textContent = `${tugasArr.length} Tugas`;
+        document.getElementById("valFokusPersen").textContent = `${json.stats.skorFokusPersen}%`;
+        document.getElementById("valAdabPersen").textContent = `${json.stats.skorAdabPersen}%`;
 
-          if (tugasArr.length > 0) {
-            let tugasHtml = "";
-            tugasArr.forEach(t => {
-              tugasHtml += `
-                <div class="tugas-item">
-                  <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                    <b>📖 ${t.mapel}</b>
-                    <small style="color:var(--muted);">${t.tanggal}</small>
-                  </div>
-                  <div style="font-size:13.5px; color:#374151;">${t.tugas}</div>
-                  <small style="color:var(--muted); display:block; margin-top:4px;">Diberikan oleh: ${t.tutor}</small>
-                </div>
-              `;
-            });
-            tugasContainer.innerHTML = tugasHtml;
-          } else {
-            tugasContainer.innerHTML = '<div style="color:#059669; font-size:13px; text-align:center; padding:10px; font-weight:bold;">✅ Alhamdulillah, belum ada tugas/PR baru dari tutor.</div>';
-          }
+        // Render Grafik Radar / Bar
+        renderChart(json.stats.skorFokusPersen, json.stats.skorAdabPersen);
 
-          // 2. SETUP DROPDOWN FILTER BULAN
-          setupFilterBulan(allRiwayatRaport);
-          renderRaportTable(allRiwayatRaport);
-        }
-      } catch (err) {
-        document.getElementById("raportTableBody").innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--danger);">Gagal memuat raport: ${err.message}</td></tr>`;
+        // Render Tugas PR
+        renderTugas(json.tugasAktif || []);
+
+        // Dropdown Bulan
+        setupDropdownBulan(allRiwayat, json.konfirmasiWali || {});
+        renderTable(allRiwayat);
       }
     }
 
-    function setupFilterBulan(riwayat) {
-      const sel = document.getElementById("filterBulanSelect");
-      sel.innerHTML = '<option value="all">-- Semua Riwayat Pembelajaran --</option>';
-      const uniqueMonths = new Set();
+    function renderChart(fokus, adab) {
+      const ctx = document.getElementById("karakterChart").getContext("2d");
+      if(chartInstance) chartInstance.destroy();
 
-      riwayat.forEach(r => {
-        if (r.bulanKey) uniqueMonths.add(r.bulanKey);
+      chartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Fokus Belajar', 'Adab & Kesantunan', 'Kemandirian'],
+          datasets: [{
+            data: [fokus, adab, 90],
+            backgroundColor: ['#10b981', '#3b82f6', '#f59e0b']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'bottom' } }
+        }
       });
+    }
 
-      uniqueMonths.forEach(m => {
+    function renderTugas(tugasArr) {
+      const c = document.getElementById("tugasListContainer");
+      if(tugasArr.length > 0) {
+        let html = "";
+        tugasArr.forEach(t => {
+          html += `
+            <div class="tugas-item">
+              <div style="display:flex; justify-content:space-between;">
+                <b>📖 ${t.mapel}</b>
+                <small style="color:var(--muted);">${t.tanggal}</small>
+              </div>
+              <div style="font-size:13.5px; margin-top:4px;">${t.tugas}</div>
+              <small style="color:var(--muted); display:block; margin-top:4px;">Pengajar: ${t.tutor}</small>
+            </div>
+          `;
+        });
+        c.innerHTML = html;
+      } else {
+        c.innerHTML = '<div style="color:#059669; font-weight:bold; font-size:13px;">✅ Tidak ada PR aktif. Ananda telah menyelesaikan seluruh tugas.</div>';
+      }
+    }
+
+    function setupDropdownBulan(riwayat, konfirmasiMap) {
+      const sel = document.getElementById("filterBulanSelect");
+      sel.innerHTML = '<option value="all">-- Semua Riwayat --</option>';
+      const setM = new Set();
+      riwayat.forEach(r => { if(r.bulanKey) setM.add(r.bulanKey); });
+
+      setM.forEach(m => {
         const opt = document.createElement("option");
         opt.value = m;
-        // Format Tampilan Bulan (Contoh: 2026-08 -> Agustus 2026)
-        const parts = m.split("-");
-        const dateSample = new Date(parts[0], parts[1] - 1, 1);
-        opt.textContent = dateSample.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+        const p = m.split("-");
+        opt.textContent = new Date(p[0], p[1]-1, 1).toLocaleDateString("id-ID", { month: "long", year: "numeric" });
         sel.appendChild(opt);
       });
 
       sel.addEventListener("change", (e) => {
-        const val = e.target.value;
-        if (val === "all") {
-          renderRaportTable(allRiwayatRaport);
+        currentBulanKey = e.target.value;
+        const filtered = currentBulanKey === "all" ? allRiwayat : allRiwayat.filter(r => r.bulanKey === currentBulanKey);
+        renderTable(filtered);
+
+        // Update status tanda tangan
+        const statusBox = document.getElementById("statusTtdBox");
+        const formArea = document.getElementById("formTtdArea");
+        if(konfirmasiMap[currentBulanKey]) {
+          statusBox.style.display = "block";
+          statusBox.innerHTML = `✅ Raport bulan ini telah ditandatangani oleh <b>${konfirmasiMap[currentBulanKey].namaWali}</b> pada ${konfirmasiMap[currentBulanKey].waktu} WIB.`;
+          formArea.style.display = "none";
         } else {
-          const filtered = allRiwayatRaport.filter(r => r.bulanKey === val);
-          renderRaportTable(filtered);
+          statusBox.style.display = "none";
+          formArea.style.display = "block";
         }
       });
     }
 
-    function renderRaportTable(dataArr) {
+    function renderTable(dataArr) {
       const tbody = document.getElementById("raportTableBody");
-      if (!dataArr || dataArr.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:18px; color:var(--muted);">Belum ada catatan pembelajaran pada periode ini.</td></tr>';
+      if(dataArr.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:16px; color:var(--muted);">Belum ada catatan jurnal pada periode ini.</td></tr>';
         return;
       }
-
-      let rows = "";
+      let html = "";
       dataArr.forEach(r => {
-        rows += `
+        html += `
           <tr>
-            <td>
-              <b style="color:var(--green-dark);">${r.mapel}</b><br>
-              <small style="color:var(--muted);">${r.tanggal}<br>${r.waktu} WIB</small>
-            </td>
-            <td>
-              <div style="font-weight:600;">${r.materi}</div>
-              ${r.tugas && r.tugas !== '-' ? `<div style="margin-top:6px; font-size:12px; color:var(--orange);"><b>PR:</b> ${r.tugas}</div>` : ''}
-            </td>
-            <td>
-              <span class="badge-fokus">Fokus: ${r.konsentrasi}</span><br>
-              <span class="badge-adab">Adab: ${r.adab}</span>
-            </td>
-            <td>
-              <div style="color:#1f2937;">${r.catatan}</div>
-              <small style="color:var(--muted); display:block; margin-top:4px;">Ustadz/Tutor: <b>${r.tutor}</b></small>
-            </td>
+            <td><b>${r.mapel}</b><br><small style="color:var(--muted);">${r.tanggal} ${r.waktu}</small></td>
+            <td>${r.materi}</td>
+            <td><span style="color:#059669; font-weight:bold;">${r.konsentrasi}</span><br><span style="color:#2563eb; font-weight:bold;">${r.adab}</span></td>
+            <td>${r.catatan}<br><small style="color:var(--muted);">Tutor: ${r.tutor}</small></td>
           </tr>
         `;
       });
-      tbody.innerHTML = rows;
+      tbody.innerHTML = html;
+    }
+
+    // ================= CANVAS SIGNATURE ENGINE =================
+    let canvas, ctx, isDrawing = false;
+    function initCanvasSignature() {
+      canvas = document.getElementById("signCanvas");
+      ctx = canvas.getContext("2d");
+      canvas.width = 400;
+      canvas.height = 160;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "#000000";
+
+      function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+      }
+
+      function startDraw(e) { isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+      function draw(e) { if(!isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+      function stopDraw() { isDrawing = false; }
+
+      canvas.addEventListener("mousedown", startDraw);
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mouseup", stopDraw);
+
+      canvas.addEventListener("touchstart", (e) => { e.preventDefault(); startDraw(e); });
+      canvas.addEventListener("touchmove", (e) => { e.preventDefault(); draw(e); });
+      canvas.addEventListener("touchend", stopDraw);
+
+      document.getElementById("btnClearSign").addEventListener("click", () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      });
+
+      document.getElementById("btnSubmitSign").addEventListener("click", async function() {
+        const namaWali = document.getElementById("inputNamaWali").value.trim();
+        if(!namaWali) { alert("Mohon isi Nama Orang Tua / Wali terlebih dahulu."); return; }
+
+        this.disabled = true;
+        this.textContent = "Mengirim Verifikasi...";
+
+        const payload = {
+          action: "simpan_ttd_wali",
+          nis: currentSantri.nis,
+          nama: currentSantri.nama,
+          bulanKey: currentBulanKey,
+          namaWali: namaWali,
+          pesanWali: document.getElementById("inputPesanWali").value.trim() || "-",
+          ttdBase64: canvas.toDataURL("image/png")
+        };
+
+        try {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify(payload)
+          });
+          const json = await res.json();
+          if(json.success) {
+            alert("✅ Terima kasih! Raport & Buku Penghubung berhasil ditandatangani.");
+            location.reload();
+          }
+        } catch(err) {
+          alert("Gagal: " + err.message);
+        } finally {
+          this.disabled = false;
+          this.textContent = "Kirim Tanda Tangan & Konfirmasi";
+        }
+      });
     }
   </script>
 </body>
