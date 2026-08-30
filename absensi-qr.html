@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Absensi QR Masuk & Pulang - PKBM Pelita Aushaf Indonesia</title>
+  <link rel="icon" type="image/png" href="logo-pkbm.png" />
+  
+  <!-- Library QR Scanner Universal untuk HP & Laptop -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+  <style>
+    :root {
+      --green: #0d7a5f;
+      --green-dark: #0a5c48;
+      --green-soft: #eef8f4;
+      --line: #d6eee5;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --danger: #dc2626;
+      --orange: #ea580c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef8f4, #ffffff 40%, #f8fcfa);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .container { max-width: 560px; margin: auto; padding: 18px; }
+    
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .btn-nav {
+      display: inline-flex; align-items: center; gap: 6px; color: var(--green-dark); text-decoration: none;
+      font-weight: 800; font-size: 13px; background: #fff; padding: 7px 14px; border-radius: 999px;
+      border: 1.5px solid var(--line); box-shadow: 0 4px 12px rgba(13,122,95,0.06);
+    }
+    .btn-nav:hover { background: var(--green-soft); }
+
+    .card {
+      background: #fff; border: 1px solid var(--line); border-radius: 24px;
+      padding: 22px; box-shadow: 0 14px 36px rgba(13,122,95,0.08); text-align: center;
+    }
+    .card h1 { margin: 0 0 6px; color: var(--green-dark); font-size: 22px; }
+    .card p { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
+
+    .badge-user {
+      background: var(--green-soft); color: var(--green-dark); border: 1px solid var(--line);
+      padding: 6px 16px; border-radius: 999px; font-weight: 800; font-size: 13.5px; display: inline-block; margin-bottom: 16px;
+    }
+
+    /* TOMBOL PILIHAN MASUK / PULANG */
+    .absen-type-toggle {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;
+    }
+    .type-btn {
+      padding: 13px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer;
+      border: 2px solid var(--line); background: #f8fcfa; color: var(--text); transition: all 0.2s;
+    }
+    .type-btn.active.masuk {
+      background: var(--green); color: #fff; border-color: var(--green); box-shadow: 0 6px 16px rgba(13,122,95,0.25);
+    }
+    .type-btn.active.pulang {
+      background: var(--orange); color: #fff; border-color: var(--orange); box-shadow: 0 6px 16px rgba(234,88,12,0.25);
+    }
+
+    /* STATUS GPS RADIUS */
+    .gps-status-box {
+      border-radius: 16px; padding: 14px; margin-bottom: 16px; text-align: left; font-size: 13px;
+      border: 1.5px solid #d1d5db; background: #f9fafb;
+    }
+    .gps-status-box.in-range {
+      background: #ecfdf5; border-color: #34d399; color: #065f46;
+    }
+    .gps-status-box.out-range {
+      background: #fef2f2; border-color: #f87171; color: #991b1b;
+    }
+
+    /* SCANNER CONTAINER */
+    #reader {
+      width: 100%; max-width: 380px; margin: 0 auto 14px; border-radius: 20px; overflow: hidden;
+      border: 3px solid var(--green); background: #000;
+    }
+
+    .device-info {
+      font-size: 12px; color: var(--muted); font-weight: bold; margin-bottom: 12px;
+    }
+
+    .btn-action {
+      width: 100%; padding: 13px; background: var(--green); color: #fff; border: 0;
+      border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer;
+    }
+    .btn-action:hover { background: var(--green-dark); }
+
+    .result-box {
+      margin-top: 14px; padding: 14px; border-radius: 14px; font-size: 13.5px; font-weight: bold; display: none;
+    }
+    .result-success { background: #ecfdf5; color: #065f46; border: 1.5px solid #a7f3d0; }
+    .result-error { background: #fef2f2; color: #991b1b; border: 1.5px solid #fecaca; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="top-bar">
+      <a id="btnBackToPortal" href="portal-siswa.html" class="btn-nav">← Kembali ke Portal</a>
+      <span id="liveClock" style="font-weight: 800; font-size: 13px; color: var(--green-dark);">--:--:-- WIB</span>
+    </div>
+
+    <div class="card">
+      <img src="logo-pkbm.png" alt="Logo" style="width:58px;height:58px;object-fit:contain;margin-bottom:6px;">
+      <h1>Absensi Digital QR Code</h1>
+      <p>Presensi Kehadiran & Kepulangan (Gedung G2 & I5)</p>
+
+      <div class="badge-user" id="userBadge">Memuat Data User...</div>
+
+      <!-- PILIH TIPE ABSEN: MASUK ATAU PULANG -->
+      <div class="absen-type-toggle">
+        <button type="button" id="btnTipeMasuk" class="type-btn active masuk">🟢 Absen Masuk</button>
+        <button type="button" id="btnTipePulang" class="type-btn">🔴 Absen Pulang</button>
+      </div>
+
+      <!-- KOTAK STATUS RADIUS GPS -->
+      <div id="gpsStatusBox" class="gps-status-box">
+        <b>📡 Mengukur Titik GPS Perangkat...</b>
+        <div style="margin-top:4px; font-size:12px; color:var(--muted);">Mohon izinkan akses Lokasi (GPS) browser Anda.</div>
+      </div>
+
+      <!-- AREA SCANNER KAMERA (HP / LAPTOP) -->
+      <div id="scannerContainer" style="display:none;">
+        <div id="reader"></div>
+        <div class="device-info" id="deviceLabel">📸 Kamera Aktif (Siap Scan QR Code Kartu)</div>
+      </div>
+
+      <button id="btnRefreshGps" class="btn-action" style="margin-top:6px;" type="button">🔄 Perbarui Posisi GPS Saya</button>
+
+      <div id="resultBox" class="result-box"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
+
+    // 1. TITIK KOORDINAT RESMI KEDUA GEDUNG PKBM
+    const LOCATIONS = [
+      { name: "Gedung G2 (Daycare, PAUD & Kantor)", lat: -7.3841099, lng: 112.718273 },
+      { name: "Gedung I5 (Paket A Kesetaraan)", lat: -7.3869413, lng: 112.717721 }
+    ];
+
+    const MAX_ALLOWED_DISTANCE_METERS = 15; // Batas radius toleransi GPS (15 Meter)
+
+    // Jam Realtime
+    setInterval(() => {
+      document.getElementById("liveClock").textContent = new Date().toLocaleTimeString("id-ID") + " WIB";
+    }, 1000);
+
+    // 2. CEK IDENTITAS USER (TUTOR ATAU SANTRI)
+    const savedSiswa = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
+    const savedTutor = localStorage.getItem("tutorAuth") || sessionStorage.getItem("tutorAuth");
+    let user = null;
+    let role = "santri";
+
+    if (savedTutor) {
+      try { user = JSON.parse(savedTutor); role = "tutor"; } catch(e){}
+    } else if (savedSiswa) {
+      try { user = JSON.parse(savedSiswa); role = "santri"; } catch(e){}
+    }
+
+    if (!user) {
+      alert("Silakan login terlebih dahulu melalui Portal Siswa atau Ruang Tutor.");
+      window.location.replace("portal-siswa.html");
+    }
+
+    const btnBack = document.getElementById("btnBackToPortal");
+    btnBack.href = role === "tutor" ? "portal-tutor.html" : "portal-siswa.html";
+
+    const namaUser = user.nama || (role === "tutor" ? "Tutor PKBM" : "Santri PKBM");
+    const jenjangUser = user.jenjangNorm || user.jenjang || "-";
+    const kelasUser = user.kelasNorm || user.kelas || "-";
+    const idUser = user.nis || user.username || "-";
+
+    document.getElementById("userBadge").textContent = role === "tutor" 
+      ? `👨‍🏫 ${namaUser} (Tutor / Fasilitator)` 
+      : `👤 ${namaUser} (${jenjangUser} • ${kelasUser})`;
+
+    // Deteksi HP atau Laptop
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const deviceType = isMobile ? "Smartphone (HP)" : "Laptop / PC";
+
+    // 3. PILIHAN TIPE ABSENSI (MASUK / PULANG)
+    let tipeAbsen = "Masuk";
+    const btnMasuk = document.getElementById("btnTipeMasuk");
+    const btnPulang = document.getElementById("btnTipePulang");
+
+    btnMasuk.addEventListener("click", () => {
+      tipeAbsen = "Masuk";
+      btnMasuk.className = "type-btn active masuk";
+      btnPulang.className = "type-btn";
+    });
+
+    btnPulang.addEventListener("click", () => {
+      tipeAbsen = "Pulang";
+      btnPulang.className = "type-btn active pulang";
+      btnMasuk.className = "type-btn";
+    });
+
+    // 4. RUMUS HAVERSINE JARAK GPS
+    function getDistanceMeters(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const φ1 = lat1 * Math.PI / 180;
+      const φ2 = lat2 * Math.PI / 180;
+      const Δφ = (lat2 - lat1) * Math.PI / 180;
+      const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return Math.round(R * c);
+    }
+
+    let nearestLocation = null;
+    let nearestDistance = 999999;
+    let html5QrCode = null;
+    let isScanning = false;
+
+    const gpsStatusBox = document.getElementById("gpsStatusBox");
+    const scannerContainer = document.getElementById("scannerContainer");
+    const resultBox = document.getElementById("resultBox");
+    const btnRefreshGps = document.getElementById("btnRefreshGps");
+
+    // 5. VALIDASI POSISI GPS
+    function checkUserLocation() {
+      gpsStatusBox.className = "gps-status-box";
+      gpsStatusBox.innerHTML = "<b>📡 Mengukur Titik GPS Akurat...</b><div>Pastikan GPS perangkat aktif dan sinyal stabil.</div>";
+      scannerContainer.style.display = "none";
+      if (html5QrCode && isScanning) {
+        html5QrCode.stop().then(() => { isScanning = false; }).catch(() => {});
+      }
+
+      if (!navigator.geolocation) {
+        gpsStatusBox.className = "gps-status-box out-range";
+        gpsStatusBox.innerHTML = "❌ Browser/Perangkat Anda tidak mendukung sensor GPS Geolocation.";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const userLat = pos.coords.latitude;
+          const userLng = pos.coords.longitude;
+          const accuracy = Math.round(pos.coords.accuracy);
+
+          let minDistance = 999999;
+          let bestGedung = null;
+
+          LOCATIONS.forEach(loc => {
+            const d = getDistanceMeters(userLat, userLng, loc.lat, loc.lng);
+            if (d < minDistance) {
+              minDistance = d;
+              bestGedung = loc;
+            }
+          });
+
+          nearestLocation = bestGedung;
+          nearestDistance = minDistance;
+
+          if (nearestDistance <= MAX_ALLOWED_DISTANCE_METERS) {
+            // DI DALAM AREA SEKOLAH
+            gpsStatusBox.className = "gps-status-box in-range";
+            gpsStatusBox.innerHTML = `
+              <b>✅ Lokasi Terverifikasi di Area Sekolah!</b>
+              <div>• Lokasi: <b>${nearestLocation.name}</b></div>
+              <div>• Jarak: <b>${nearestDistance} Meter</b> (Perangkat: ${deviceType})</div>
+            `;
+            scannerContainer.style.display = "block";
+            startQRScanner();
+          } else {
+            // DI LUAR AREA SEKOLAH
+            gpsStatusBox.className = "gps-status-box out-range";
+            gpsStatusBox.innerHTML = `
+              <b>❌ Akses Absensi Terkunci (Di Luar Jangkauan)!</b>
+              <div>Anda berjarak <b>${nearestDistance} Meter</b> dari titik terdekat (<b>${nearestLocation.name}</b>).</div>
+              <div style="margin-top:4px; font-size:12px;">Maksimal jarak yang diizinkan adalah ${MAX_ALLOWED_DISTANCE_METERS} meter. Silakan mendekat ke area kelas/gedung sekolah.</div>
+            `;
+          }
+        },
+        (err) => {
+          gpsStatusBox.className = "gps-status-box out-range";
+          gpsStatusBox.innerHTML = `<b>❌ Gagal Mengambil GPS:</b> ${err.message}. Mohon izinkan akses Lokasi pada browser Anda.`;
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    // 6. MENJALANKAN SCANNER KAMERA UNIVERSAL (HP / LAPTOP)
+    function startQRScanner() {
+      if (isScanning) return;
+      html5QrCode = new Html5Qrcode("reader");
+      const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+      html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
+        .then(() => { isScanning = true; })
+        .catch(() => {
+          html5QrCode.start({ facingMode: "user" }, config, onScanSuccess)
+            .then(() => { isScanning = true; })
+            .catch(err => { console.error("Kamera gagal:", err); });
+        });
+    }
+
+    // 7. SAAT QR CODE TERDETEKSI
+    let isSubmitting = false;
+    async function onScanSuccess(decodedText) {
+      if (isSubmitting) return;
+      isSubmitting = true;
+
+      if (html5QrCode && isScanning) {
+        try { await html5QrCode.stop(); isScanning = false; } catch(e){}
+      }
+
+      resultBox.style.display = "block";
+      resultBox.className = "result-box";
+      resultBox.innerHTML = `⏳ Mencatat Absensi <b>${tipeAbsen}</b> ke spreadsheet...`;
+
+      const payload = {
+        action: "absensi_qr",
+        nis: idUser,
+        nama: namaUser,
+        role: role,
+        kelas: role === "tutor" ? "Tutor" : `${jenjangUser} (${kelasUser})`,
+        tipeAbsen: tipeAbsen,
+        lokasiGedung: nearestLocation ? nearestLocation.name : "Gedung Sekolah",
+        jarakMeter: nearestDistance,
+        perangkat: deviceType,
+        qrData: decodedText
+      };
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          resultBox.className = "result-box result-success";
+          resultBox.innerHTML = `
+            🎉 <b>ABSENSI ${tipeAbsen.toUpperCase()} BERHASIL!</b><br>
+            • Nama: ${namaUser} (${role.toUpperCase()})<br>
+            • Waktu: ${result.jam || new Date().toLocaleTimeString("id-ID")} WIB<br>
+            • Lokasi: ${nearestLocation.name} (${nearestDistance}m)
+          `;
+          setTimeout(() => {
+            window.location.href = role === "tutor" ? "portal-tutor.html" : "portal-siswa.html";
+          }, 3000);
+        } else {
+          throw new Error(result.message || "Gagal menyimpan absensi.");
+        }
+      } catch (err) {
+        resultBox.className = "result-box result-error";
+        resultBox.innerHTML = "❌ Terjadi kendala: " + err.message;
+        setTimeout(() => { isSubmitting = false; checkUserLocation(); }, 3000);
+      }
+    }
+
+    btnRefreshGps.addEventListener("click", checkUserLocation);
+    checkUserLocation();
+  </script>
+</body>
+</html>
