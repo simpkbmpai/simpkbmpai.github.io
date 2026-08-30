@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Portal Akademik & E-Jurnal Tutor - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
+  
+  <!-- Library Scanner QR Kamera Universal -->
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
   <style>
@@ -17,6 +19,7 @@
       --muted: #6b7280;
       --danger: #b91c1c;
       --orange: #ea580c;
+      --blue: #2563eb;
     }
     * { box-sizing: border-box; }
     body {
@@ -27,12 +30,14 @@
       line-height: 1.6;
     }
     .container { max-width: 1040px; margin: auto; padding: 20px; }
+    
     .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .btn-nav {
       display: inline-flex; align-items: center; gap: 6px; color: var(--green-dark); text-decoration: none;
       font-weight: 800; font-size: 13.5px; background: #fff; padding: 8px 16px; border-radius: 999px;
-      border: 1.5px solid var(--line);
+      border: 1.5px solid var(--line); box-shadow: 0 4px 12px rgba(13,122,95,0.06);
     }
+    .btn-nav:hover { background: var(--green-soft); }
 
     .hero {
       text-align: center; background: #fff; border: 1px solid var(--line); border-radius: 26px;
@@ -40,21 +45,32 @@
     }
     .hero img { width: 70px; height: 70px; object-fit: contain; margin-bottom: 10px; }
     .hero h1 { margin: 0; color: var(--green-dark); font-size: 25px; }
+    .hero p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
     .badge-user {
       display: inline-block; background: var(--green-soft); color: var(--green-dark); border: 1px solid var(--line);
       padding: 4px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 800; margin-bottom: 8px;
     }
 
-    /* LOGIN */
+    /* KOTAK LOGIN TUTOR */
     .lock-box {
       max-width: 420px; margin: 30px auto; background: #fff; border: 1px solid var(--line);
       border-radius: 24px; padding: 32px 24px; text-align: center; box-shadow: 0 16px 40px rgba(13,122,95,0.12);
     }
-    .input-field { width: 100%; padding: 13px 16px; font-size: 15px; border: 2px solid var(--line); border-radius: 14px; outline: none; margin-bottom: 14px; }
-    .btn-login { width: 100%; padding: 14px; background: var(--green); color: #fff; border: 0; border-radius: 16px; font-weight: 800; font-size: 15px; cursor: pointer; }
+    .lock-box h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 20px; }
+    .lock-box p { font-size: 13.5px; color: var(--muted); margin-bottom: 20px; }
+    .input-field {
+      width: 100%; padding: 13px 16px; font-size: 15px; border: 2px solid var(--line);
+      border-radius: 14px; outline: none; margin-bottom: 14px;
+    }
+    .btn-login {
+      width: 100%; padding: 14px; background: var(--green); color: #fff; border: 0;
+      border-radius: 16px; font-weight: 800; font-size: 15px; cursor: pointer;
+    }
+    .login-error { color: var(--danger); font-size: 13px; font-weight: bold; margin-top: 12px; display: none; }
+
     #tutorDashboard { display: none; }
 
-    /* DASHBOARD */
+    /* MENU UTAMA DASHBOARD TUTOR */
     .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 26px; }
     @media(max-width: 860px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
@@ -62,7 +78,10 @@
       background: #fff; border: 2px solid var(--line); border-radius: 22px; padding: 22px;
       display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(13,122,95,0.07);
     }
-    .tutor-card-icon { width: 48px; height: 48px; border-radius: 14px; background: var(--green-soft); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; }
+    .tutor-card-icon {
+      width: 48px; height: 48px; border-radius: 14px; background: var(--green-soft);
+      display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px;
+    }
     .tutor-card h3 { margin: 0 0 6px; color: var(--green-dark); font-size: 18px; }
     .tutor-card p { margin: 0 0 16px; color: var(--muted); font-size: 13px; flex-grow: 1; }
     
@@ -70,17 +89,47 @@
       display: block; text-align: center; background: var(--green); color: #fff; border: 0;
       padding: 12px; border-radius: 14px; font-weight: 800; font-size: 14px; text-decoration: none; cursor: pointer;
     }
+    .btn-action:hover { background: var(--green-dark); }
     .btn-action.orange { background: var(--orange); }
 
     /* MODAL POPUP */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; display: none; align-items: center; justify-content: center; padding: 16px; }
-    .modal-box { background: #fff; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; border-radius: 26px; padding: 26px; position: relative; }
-    .modal-close { position: absolute; right: 18px; top: 18px; background: #fee2e2; color: var(--danger); border: 0; width: 32px; height: 32px; border-radius: 50%; font-weight: 900; cursor: pointer; }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999;
+      display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-box {
+      background: #fff; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+      border-radius: 26px; padding: 26px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative;
+    }
+    .modal-close {
+      position: absolute; right: 18px; top: 18px; background: #fee2e2; color: var(--danger);
+      border: 0; width: 32px; height: 32px; border-radius: 50%; font-weight: 900; cursor: pointer;
+    }
 
+    /* ELEMEN FORM DI DALAM MODAL */
     label { display: block; font-weight: 800; font-size: 13px; color: var(--green-dark); margin: 10px 0 4px; }
-    select, input, textarea { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1.5px solid var(--line); outline: none; font-size: 14px; background: #fff; }
-    textarea { min-height: 65px; }
+    select, input, textarea {
+      width: 100%; padding: 10px 14px; border-radius: 12px; border: 1.5px solid var(--line);
+      outline: none; font-size: 14px; background: #fff; font-family: inherit;
+    }
+    textarea { min-height: 65px; resize: vertical; }
+
     #reader { width: 100%; max-width: 320px; margin: 12px auto; border-radius: 16px; overflow: hidden; border: 3px solid var(--green); background: #000; }
+
+    /* TABEL PROGRES SANTRI */
+    .progress-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 12.5px; }
+    .progress-table th { background: var(--green-soft); color: var(--green-dark); padding: 8px; text-align: left; border: 1px solid var(--line); }
+    .progress-table td { padding: 8px; border: 1px solid var(--line); vertical-align: top; }
+
+    /* GRID FOLDER GOOGLE DRIVE KELAS 1-12 */
+    .section-title { font-size: 20px; color: var(--green-dark); margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
+    .package-heading { font-weight: bold; color: var(--green-dark); margin: 16px 0 8px; font-size: 16px; border-bottom: 2px solid var(--line); padding-bottom: 4px; }
+    .folder-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 16px; }
+    @media(max-width: 860px) { .folder-grid { grid-template-columns: 1fr; } }
+    .class-card { background: #fff; border: 1.5px solid var(--line); border-radius: 18px; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .class-card a { font-size: 13px; font-weight: 800; color: var(--green); text-decoration: none; padding: 6px 12px; border: 1px solid var(--line); border-radius: 10px; }
+
+    .btn-logout { display: inline-block; margin-top: 20px; color: var(--danger); background: none; border: 0; font-weight: 800; font-size: 13px; cursor: pointer; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -88,7 +137,7 @@
   <div class="container">
     <div class="top-bar">
       <a href="index.html" class="btn-nav">← Beranda Website</a>
-      <a href="https://wa.me/6287751325199" target="_blank" class="btn-nav">Bantuan WA</a>
+      <a href="https://wa.me/6287751325199" target="_blank" class="btn-nav">Bantuan Admin WA</a>
     </div>
 
     <div class="hero">
@@ -103,30 +152,45 @@
       <div style="font-size: 36px; margin-bottom: 8px;">👨‍🏫</div>
       <h3>Login Ruang Tutor</h3>
       <p>Masukkan Username / NIP Tutor untuk membuka sistem.</p>
+      
       <form id="tutorLoginForm">
         <input type="text" id="usernameInput" class="input-field" placeholder="Username / NIP Tutor" autofocus required>
         <input type="password" id="passwordInput" class="input-field" placeholder="Password" required>
         <button type="submit" id="btnSubmitTutor" class="btn-login">Masuk ke Ruang Tutor</button>
       </form>
+      <div id="loginError" class="login-error"></div>
     </div>
 
-    <!-- 2. DASHBOARD TUTOR -->
+    <!-- 2. DASHBOARD LENGKAP TUTOR -->
     <div id="tutorDashboard">
+      
       <div class="dashboard-grid">
         
-        <!-- PRESENSI MAPEL & INPUT TUGAS -->
+        <!-- FITUR 1: SCAN ABSEN MAPEL + E-JURNAL + TUGAS PR -->
         <div class="tutor-card" style="border: 2px solid #10b981; background: #f0fdf4;">
           <div>
             <div class="tutor-card-icon" style="background:#d1fae5;">📲</div>
             <h3>Scan Absen, Jurnal & PR</h3>
-            <p>Scan kartu santri, catat perkembangan adab & berikan tugas rumah yang langsung tampil di HP orang tua.</p>
+            <p>Scan kartu santri per mata pelajaran, evaluasi adab, & berikan tugas yang langsung tampil di HP orang tua.</p>
           </div>
           <button type="button" onclick="bukaModalScanMapel()" class="btn-action">
             Mulai Presensi Kelas →
           </button>
         </div>
 
-        <!-- ABSEN MANDIRI TUTOR GPS -->
+        <!-- FITUR 2: PANTAU PROGRES SANTRI -->
+        <div class="tutor-card" style="border: 2px solid #3b82f6; background: #eff6ff;">
+          <div>
+            <div class="tutor-card-icon" style="background:#dbeafe;">📈</div>
+            <h3>Progres & Adab Santri</h3>
+            <p>Lihat rekam jejak riwayat kehadiran sesi, fokus belajar, dan catatan karakter santri.</p>
+          </div>
+          <button type="button" onclick="bukaModalProgres()" class="btn-action" style="background:#2563eb;">
+            Lihat Progres Santri →
+          </button>
+        </div>
+
+        <!-- FITUR 3: ABSEN MANDIRI TUTOR (GPS ≤ 10 METER) -->
         <div class="tutor-card" style="border: 2px solid #f59e0b; background: #fffbeb;">
           <div>
             <div class="tutor-card-icon" style="background:#fef3c7;">📍</div>
@@ -138,12 +202,36 @@
           </a>
         </div>
 
-        <!-- KARTU TUTOR -->
+        <!-- REKAP NILAI SPREADSHEET -->
+        <div class="tutor-card">
+          <div>
+            <div class="tutor-card-icon">📊</div>
+            <h3>Rekap Nilai CBT</h3>
+            <p>Spreadsheet respons pengerjaan soal ujian CBT daring santri per jenjang.</p>
+          </div>
+          <a id="linkRekapNilai" href="https://docs.google.com/spreadsheets" target="_blank" class="btn-action">
+            Buka Spreadsheet Nilai ↗
+          </a>
+        </div>
+
+        <!-- DRIVE PENGUMPULAN TUGAS -->
+        <div class="tutor-card">
+          <div>
+            <div class="tutor-card-icon">📥</div>
+            <h3>Folder Tugas Masuk</h3>
+            <p>Folder Google Drive utama tempat arsip pengumpulan portofolio tugas santri.</p>
+          </div>
+          <a id="linkDriveTugas" href="https://drive.google.com" target="_blank" class="btn-action">
+            Buka Folder Tugas ↗
+          </a>
+        </div>
+
+        <!-- KARTU TUTOR RESMI -->
         <div class="tutor-card">
           <div>
             <div class="tutor-card-icon">🪪</div>
             <h3>Kartu Tanda Tutor</h3>
-            <p>Cetak kartu pengajar resmi standar kartu ATM ISO CR80.</p>
+            <p>Cetak kartu pengajar resmi dengan QR Code standar kartu ATM.</p>
           </div>
           <a href="kartu.html?role=tutor" class="btn-action" style="background:#475569;">
             Cetak Kartu Tutor ↗
@@ -152,13 +240,26 @@
 
       </div>
 
+      <!-- DAFTAR FOLDER MATERI GOOGLE DRIVE KELAS 1-12 -->
+      <h2 class="section-title">📁 Manajemen Modul Belajar Google Drive (Kelas 1 s.d. 12)</h2>
+      
+      <div class="package-heading">🟢 Paket A (Kelas 1 - 6)</div>
+      <div class="folder-grid" id="gridTutorA"></div>
+
+      <div class="package-heading">🔵 Paket B (Kelas 7 - 9)</div>
+      <div class="folder-grid" id="gridTutorB"></div>
+
+      <div class="package-heading">🟡 Paket C (Kelas 10 - 12)</div>
+      <div class="folder-grid" id="gridTutorC"></div>
+
       <div style="text-align: right; margin-top:20px;">
-        <button id="btnLogoutTutor" style="color:var(--danger); background:none; border:0; font-weight:800; cursor:pointer; text-decoration:underline;">🔒 Keluar dari Ruang Tutor</button>
+        <button id="btnLogoutTutor" class="btn-logout">🔒 Keluar dari Ruang Tutor</button>
       </div>
+
     </div>
   </div>
 
-  <!-- MODAL: SCAN ABSEN MAPEL + E-JURNAL + TUGAS PR -->
+  <!-- ================= MODAL 1: SCAN ABSEN MAPEL + E-JURNAL + TUGAS PR ================= -->
   <div id="modalScanMapel" class="modal-overlay">
     <div class="modal-box">
       <button class="modal-close" onclick="tutupModal('modalScanMapel')">✕</button>
@@ -173,14 +274,15 @@
             <option>Matematika</option>
             <option>Bahasa Indonesia</option>
             <option>Bahasa Inggris</option>
-            <option>IPA (Sains)</option>
-            <option>IPS (Sosial)</option>
+            <option>IPA (Ilmu Pengetahuan Alam)</option>
+            <option>IPS (Ilmu Pengetahuan Sosial)</option>
+            <option>Pendidikan Pancasila / PKn</option>
             <option>Tahfidz & Adab</option>
             <option>Tematik Mandiri</option>
           </select>
         </div>
         <div>
-          <label>Materi / Topik Hari Ini:</label>
+          <label>Topik / Materi Hari Ini:</label>
           <input type="text" id="scanMateriInput" placeholder="Contoh: Pecahan Senilai">
         </div>
       </div>
@@ -191,7 +293,7 @@
         📷 Arahkan kamera HP ke QR Code Kartu Santri
       </div>
 
-      <!-- FORM EVALUASI & TUGAS -->
+      <!-- FORM EVALUASI & TUGAS SANTRI TERPINDAI -->
       <div id="boxEvaluasiSantri" style="display:none; background:#f8fcfa; border:1.5px solid var(--line); border-radius:16px; padding:14px; margin-top:10px;">
         <b style="color:var(--green-dark);" id="evalNamaSantri">Santri Terdeteksi</b>
         <input type="hidden" id="evalNIS">
@@ -216,10 +318,10 @@
         </div>
 
         <label>Catatan Pembelajaran untuk Orang Tua:</label>
-        <textarea id="evalCatatan" placeholder="Catatan perkembangan sikap atau materi santri..."></textarea>
+        <textarea id="evalCatatan" placeholder="Catatan perkembangan pemahaman materi atau perilaku santri..."></textarea>
 
         <label style="color:var(--orange);">Tugas / PR Rumah (Opsional):</label>
-        <input type="text" id="evalTugas" placeholder="Contoh: Mengerjakan soal Hal. 24 No 1-5">
+        <input type="text" id="evalTugas" placeholder="Contoh: Mengerjakan Latihan Hal. 20 No 1-5">
 
         <button type="button" id="btnSimpanJurnal" class="btn-action" style="margin-top:10px; width:100%;">
           💾 Simpan & Kirim ke Raport Wali Santri
@@ -229,65 +331,195 @@
     </div>
   </div>
 
+  <!-- ================= MODAL 2: PANTAU PROGRES & REKAM JEJAK SANTRI ================= -->
+  <div id="modalProgres" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" onclick="tutupModal('modalProgres')">✕</button>
+      <h3 style="margin:0 0 4px; color:#1d4ed8;">Rekam Jejak & Progres Santri</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Lihat riwayat kehadiran mapel, konsentrasi belajar, dan catatan adab santri.</p>
+
+      <label>Pilih Santri:</label>
+      <select id="selectProgresSantri">
+        <option value="">-- Pilih Santri dari Database --</option>
+      </select>
+
+      <div id="progresContent" style="margin-top:16px; display:none;">
+        <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:14px; padding:12px; margin-bottom:12px;">
+          <b id="progresNamaSantri" style="font-size:15px; color:#0369a1;">-</b>
+          <div style="font-size:13px; color:#0284c7; margin-top:2px;">
+            Total Sesi Hadir Mapel: <b id="progresTotalHadir">0</b> Sesi
+          </div>
+        </div>
+
+        <div style="max-height:280px; overflow-y:auto;">
+          <table class="progress-table">
+            <thead>
+              <tr>
+                <th>Tgl & Mapel</th>
+                <th>Materi</th>
+                <th>Adab & Fokus</th>
+                <th>Catatan / PR</th>
+              </tr>
+            </thead>
+            <tbody id="progresTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
+    // 1. RENDER FOLDER GOOGLE DRIVE KELAS 1-12
+    function renderTutorClassGrid(containerId, start, end, materiMap) {
+      let html = "";
+      for(let i=start; i<=end; i++){
+        const link = materiMap[`Kelas ${i}`] || "#";
+        html += `
+          <div class="class-card">
+            <b>Kelas ${i}</b>
+            <a href="${link}" target="_blank">Buka Drive ↗</a>
+          </div>
+        `;
+      }
+      document.getElementById(containerId).innerHTML = html;
+    }
+
+    async function loadTutorData() {
+      try {
+        const resTutor = await fetch("data-tutor.json?t=" + Date.now());
+        if(resTutor.ok){
+          const d = await resTutor.json();
+          if(d.rekapNilai) document.getElementById("linkRekapNilai").href = d.rekapNilai;
+          if(d.driveTugas) document.getElementById("linkDriveTugas").href = d.driveTugas;
+        }
+      } catch(e){}
+
+      let materiMap = {};
+      try {
+        const resMateri = await fetch("data-materi.json?t=" + Date.now());
+        if(resMateri.ok){
+          const d = await resMateri.json();
+          materiMap = d.materi || {};
+        }
+      } catch(e){}
+
+      renderTutorClassGrid("gridTutorA", 1, 6, materiMap);
+      renderTutorClassGrid("gridTutorB", 7, 9, materiMap);
+      renderTutorClassGrid("gridTutorC", 10, 12, materiMap);
+    }
+    loadTutorData();
+
+    // 2. AUTENTIKASI TUTOR
     let activeTutor = null;
+    const loginGate = document.getElementById("loginGate");
+    const tutorDashboard = document.getElementById("tutorDashboard");
+    const tutorLoginForm = document.getElementById("tutorLoginForm");
+    const usernameInput = document.getElementById("usernameInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const loginError = document.getElementById("loginError");
+    const userBadge = document.getElementById("userBadge");
+    const btnSubmitTutor = document.getElementById("btnSubmitTutor");
+
     const savedTutor = localStorage.getItem("tutorAuth") || sessionStorage.getItem("tutorAuth");
     if (savedTutor) {
       try { 
         activeTutor = JSON.parse(savedTutor);
-        document.getElementById("loginGate").style.display = "none";
-        document.getElementById("tutorDashboard").style.display = "block";
-        document.getElementById("userBadge").textContent = `👨‍🏫 ${activeTutor.nama || "Tutor"} (Tutor PKBM)`;
+        tampilkanDashboardTutor(activeTutor); 
       } catch(e) {}
     }
 
-    document.getElementById("tutorLoginForm").addEventListener("submit", async function(e) {
+    tutorLoginForm.addEventListener("submit", async function(e) {
       e.preventDefault();
-      const u = document.getElementById("usernameInput").value.trim();
-      const p = document.getElementById("passwordInput").value.trim();
+      loginError.style.display = "none";
+      btnSubmitTutor.disabled = true;
+      btnSubmitTutor.textContent = "Memverifikasi...";
 
-      const res = await fetch(`${API_URL}?action=login_tutor&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
-      const json = await res.json();
-      if(json.success) {
-        localStorage.setItem("tutorAuth", JSON.stringify(json));
-        location.reload();
-      } else {
-        alert("Login gagal: " + json.message);
+      const u = usernameInput.value.trim();
+      const p = passwordInput.value.trim();
+
+      try {
+        const response = await fetch(`${API_URL}?action=login_tutor&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
+        const result = await response.json();
+
+        if (result.success) {
+          activeTutor = result;
+          localStorage.setItem("tutorAuth", JSON.stringify(result));
+          sessionStorage.setItem("tutorAuth", JSON.stringify(result));
+          tampilkanDashboardTutor(result);
+        } else {
+          loginError.textContent = "❌ " + (result.message || "Username atau Password salah!");
+          loginError.style.display = "block";
+          passwordInput.value = "";
+          passwordInput.focus();
+        }
+      } catch (err) {
+        loginError.textContent = "❌ Gagal terhubung ke server.";
+        loginError.style.display = "block";
+      } finally {
+        btnSubmitTutor.disabled = false;
+        btnSubmitTutor.textContent = "Masuk ke Ruang Tutor";
       }
     });
 
-    document.getElementById("btnLogoutTutor").addEventListener("click", () => {
+    document.getElementById("btnLogoutTutor").addEventListener("click", function() {
       localStorage.removeItem("tutorAuth");
+      sessionStorage.removeItem("tutorAuth");
       location.reload();
     });
 
+    function tampilkanDashboardTutor(data) {
+      loginGate.style.display = "none";
+      tutorDashboard.style.display = "block";
+      userBadge.textContent = `👨‍🏫 ${data.nama || "Tutor"} (Tutor PKBM)`;
+      loadDaftarSantriDropdown();
+    }
+
+    // 3. MODAL CONTROLLER
     function bukaModalScanMapel() {
       document.getElementById("modalScanMapel").style.display = "flex";
-      startScanner();
+      startMapelScanner();
+    }
+    function bukaModalProgres() {
+      document.getElementById("modalProgres").style.display = "flex";
     }
     function tutupModal(id) {
       document.getElementById(id).style.display = "none";
-      if(html5QrCode && isScanning) { html5QrCode.stop().then(() => { isScanning = false; }).catch(()=>{}); }
+      if(html5QrCode && isScanning) {
+        html5QrCode.stop().then(() => { isScanning = false; }).catch(()=>{});
+      }
     }
 
+    // 4. SCANNER ABSEN MAPEL & JURNAL
     let html5QrCode = null;
     let isScanning = false;
-    let isProcessing = false;
+    let isProcessingScan = false;
 
-    function startScanner() {
+    function startMapelScanner() {
       if(isScanning) return;
       html5QrCode = new Html5Qrcode("reader");
-      html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 220 }, (decodedText) => {
-        if(isProcessing) return;
-        isProcessing = true;
-        const nis = decodedText.trim();
-        document.getElementById("evalNIS").value = nis;
-        document.getElementById("evalNamaSantri").textContent = `Santri Terdeteksi (NIS: ${nis})`;
-        document.getElementById("boxEvaluasiSantri").style.display = "block";
-        document.getElementById("scanStatusMsg").innerHTML = `✅ Kartu <b>${nis}</b> Terpindai!`;
-      }).then(() => { isScanning = true; }).catch(()=>{});
+      const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+
+      html5QrCode.start({ facingMode: "environment" }, config, onScanMapelSuccess)
+        .then(() => { isScanning = true; })
+        .catch(() => {
+          html5QrCode.start({ facingMode: "user" }, config, onScanMapelSuccess)
+            .then(() => { isScanning = true; })
+            .catch(err => { console.error("Kamera gagal:", err); });
+        });
+    }
+
+    function onScanMapelSuccess(decodedText) {
+      if(isProcessingScan) return;
+      isProcessingScan = true;
+
+      const nis = decodedText.trim();
+      document.getElementById("evalNIS").value = nis;
+      document.getElementById("evalNamaSantri").textContent = `Santri Terdeteksi (NIS: ${nis})`;
+      document.getElementById("boxEvaluasiSantri").style.display = "block";
+      document.getElementById("scanStatusMsg").innerHTML = `✅ Kartu Santri <b>${nis}</b> Terpindai! Silakan isi evaluasi.`;
     }
 
     document.getElementById("btnSimpanJurnal").addEventListener("click", async function() {
@@ -314,19 +546,85 @@
           body: JSON.stringify(payload)
         });
         const result = await res.json();
-        if(result.success) {
-          alert(`✅ Raport ${result.nama} Berhasil Dikirim ke Wali Santri!`);
+
+        if (result.success) {
+          alert(`✅ Raport ${result.nama} (${result.mapel}) Berhasil Dikirim ke Wali Santri!`);
           document.getElementById("boxEvaluasiSantri").style.display = "none";
           document.getElementById("evalCatatan").value = "";
           document.getElementById("evalTugas").value = "";
           document.getElementById("scanStatusMsg").innerHTML = "📷 Siap Scan Kartu Santri Berikutnya...";
+        } else {
+          alert("❌ Gagal: " + result.message);
         }
       } catch(err) {
-        alert("Error: " + err.message);
+        alert("❌ Error: " + err.message);
       } finally {
         btn.disabled = false;
         btn.textContent = "💾 Simpan & Kirim ke Raport Wali Santri";
-        isProcessing = false;
+        isProcessingScan = false;
+      }
+    });
+
+    // 5. PROGRES & REKAM JEJAK SANTRI
+    async function loadDaftarSantriDropdown() {
+      try {
+        const res = await fetch(`${API_URL}?action=get_all_santri`);
+        const json = await res.json();
+        if(json.success && json.data.length > 0) {
+          const sel = document.getElementById("selectProgresSantri");
+          sel.innerHTML = '<option value="">-- Pilih Santri dari Database --</option>';
+          json.data.forEach(s => {
+            const opt = document.createElement("option");
+            opt.value = s.nis;
+            opt.textContent = `${s.nis} - ${s.nama} (${s.kelas})`;
+            sel.appendChild(opt);
+          });
+        }
+      } catch(e){}
+    }
+
+    document.getElementById("selectProgresSantri").addEventListener("change", async function(e) {
+      const nis = e.target.value;
+      if(!nis) {
+        document.getElementById("progresContent").style.display = "none";
+        return;
+      }
+
+      const tableBody = document.getElementById("progresTableBody");
+      tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">⏳ Mengambil data progres santri...</td></tr>';
+      document.getElementById("progresContent").style.display = "block";
+
+      try {
+        const res = await fetch(`${API_URL}?action=get_raport_santri&nis=${encodeURIComponent(nis)}`);
+        const json = await res.json();
+
+        if(json.success) {
+          document.getElementById("progresNamaSantri").textContent = `NIS: ${nis}`;
+          document.getElementById("progresTotalHadir").textContent = json.stats ? json.stats.totalHadir : (json.riwayat ? json.riwayat.length : 0);
+
+          if(json.riwayat && json.riwayat.length > 0) {
+            let rows = "";
+            json.riwayat.forEach(r => {
+              rows += `
+                <tr>
+                  <td><b>${r.mapel}</b><br><small style="color:var(--muted);">${r.tanggal} ${r.waktu}</small></td>
+                  <td>${r.materi}</td>
+                  <td><span style="color:#059669; font-weight:bold;">${r.konsentrasi}</span><br><span style="color:#2563eb; font-weight:bold;">${r.adab}</span></td>
+                  <td>
+                    ${r.catatan}
+                    ${r.tugas && r.tugas !== '-' ? `<br><small style="color:var(--orange);"><b>PR:</b> ${r.tugas}</small>` : ''}
+                    <br><small style="color:var(--muted);">Tutor: ${r.tutor}</small>
+                  </td>
+                </tr>
+              `;
+            });
+            tableBody.innerHTML = rows;
+          } else {
+            tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--muted);">Belum ada riwayat catatan sesi mapel untuk santri ini.</td></tr>';
+          }
+        }
+      } catch(err) {
+        tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--danger);">Gagal memuat: ${err.message}</td></tr>`;
       }
     });
   </script>
