@@ -70,35 +70,34 @@
     .login-error { color: var(--danger); font-size: 13px; font-weight: bold; margin-top: 12px; display: none; }
     #siswaDashboard { display: none; }
 
-    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
     @media(max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
     .action-card {
       background: linear-gradient(135deg, #0d7a5f, #0a5c48); color: #fff; border-radius: 24px;
-      padding: 26px 22px; text-align: center; box-shadow: 0 14px 36px rgba(13,122,95,0.20);
+      padding: 24px 20px; text-align: center; box-shadow: 0 12px 30px rgba(13,122,95,0.18);
       display: flex; flex-direction: column; justify-content: space-between;
     }
-    .action-card.elearning-card { background: linear-gradient(135deg, #145a43, #0a3d2e); border: 2px solid #34d399; }
-    .action-card h2 { margin: 0 0 8px; font-size: 21px; color: #fff; }
-    .action-card p { margin: 0 0 18px; color: #e8fff4; font-size: 13.5px; flex-grow: 1; }
+    .action-card h2 { margin: 0 0 6px; font-size: 20px; color: #fff; }
+    .action-card p { margin: 0 0 16px; color: #e8fff4; font-size: 13px; flex-grow: 1; }
     .btn-action {
       display: inline-block; background: #fff; color: var(--green-dark); text-decoration: none;
-      font-weight: 900; font-size: 14.5px; padding: 13px 20px; border-radius: 14px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15); transition: transform 0.2s, background 0.2s;
+      font-weight: 900; font-size: 14px; padding: 12px 18px; border-radius: 14px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12); transition: transform 0.2s, background 0.2s;
     }
     .btn-action:hover { transform: translateY(-2px); background: #f0fdf4; }
 
     .section-title { font-size: 20px; color: var(--green-dark); margin: 28px 0 16px; display: flex; align-items: center; gap: 8px; }
     .card {
-      background: #fff; border: 2px solid var(--line); border-radius: 22px; padding: 26px;
+      background: #fff; border: 2px solid var(--line); border-radius: 22px; padding: 24px;
       display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(13,122,95,0.08);
       margin-bottom: 24px;
     }
-    .card h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 20px; }
-    .card p { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
+    .card h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 19px; }
+    .card p { margin: 0 0 18px; color: var(--muted); font-size: 13.5px; }
     .btn-card {
       display: block; text-align: center; background: var(--green); color: #fff; border: 0;
-      padding: 14px; border-radius: 14px; font-weight: 800; font-size: 15px; text-decoration: none;
+      padding: 13px; border-radius: 14px; font-weight: 800; font-size: 14.5px; text-decoration: none;
       box-shadow: 0 6px 18px rgba(13,122,95,0.18);
     }
     .btn-card:hover { background: var(--green-dark); }
@@ -129,6 +128,7 @@
       <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Kesetaraan)</p>
     </div>
 
+    <!-- 1. FORM LOGIN SANTRI -->
     <div id="loginGate" class="lock-box">
       <div style="font-size: 36px; margin-bottom: 8px;">🎓</div>
       <h3>Login Santri / Wali Murid</h3>
@@ -150,10 +150,12 @@
       <div id="loginError" class="login-error"></div>
     </div>
 
+    <!-- 2. DASHBOARD SANTRI -->
     <div id="siswaDashboard">
       
       <div class="dashboard-grid">
-        <div class="action-card elearning-card">
+        <!-- CBT UJIAN -->
+        <div class="action-card" style="background: linear-gradient(135deg, #145a43, #0a3d2e); border: 2px solid #34d399;">
           <div>
             <div style="font-size: 30px; margin-bottom: 6px;">💻</div>
             <h2 id="titleElearning">Ruang Ujian Online CBT</h2>
@@ -164,18 +166,56 @@
           </a>
         </div>
 
-        <div class="action-card">
+        <!-- SCAN QR ABSENSI MASUK / PULANG -->
+        <div class="action-card" style="background: linear-gradient(135deg, #059669, #065f46); border: 2px solid #6ee7b7;">
+          <div>
+            <div style="font-size: 30px; margin-bottom: 6px;">📲</div>
+            <h2>Scan QR Absensi</h2>
+            <p>Presensi Masuk & Pulang saat berada di radius Gedung G2 atau Gedung I5.</p>
+          </div>
+          <a href="absensi-qr.html" class="btn-action">
+            Buka Scanner QR →
+          </a>
+        </div>
+
+        <!-- KARTU SANTRI & QR CODE -->
+        <div class="action-card" style="background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #64748b;">
+          <div>
+            <div style="font-size: 30px; margin-bottom: 6px;">🪪</div>
+            <h2>Kartu Tanda Santri</h2>
+            <p>Lihat dan cetak Kartu Santri resmi dengan QR Code standar kartu ATM.</p>
+          </div>
+          <a href="kartu.html" class="btn-action">
+            Lihat Kartu Saya →
+          </a>
+        </div>
+
+        <!-- PENGUMPULAN TUGAS KELAS -->
+        <div class="action-card" style="background: linear-gradient(135deg, #0d7a5f, #0a5c48);">
           <div>
             <div style="font-size: 30px; margin-bottom: 6px;">📤</div>
             <h2 id="titleTugas">Pengumpulan Tugas</h2>
-            <p id="descTugas">Kirimkan tugas harian, lembar kerja adab, dan portofolio kegiatan santri di sini.</p>
+            <p id="descTugas">Kirimkan tugas harian, lembar kerja adab, dan portofolio santri di sini.</p>
           </div>
           <a id="btnTugas" href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-action">
             Formulir Kirim Tugas →
           </a>
         </div>
+
+        <!-- PRESENSI SELFIE & JURNAL -->
+        <div class="action-card" style="background: linear-gradient(135deg, #0369a1, #075985); grid-column: 1 / -1;">
+          <div>
+            <div style="font-size: 30px; margin-bottom: 6px;">📸</div>
+            <h2>Presensi Selfie Harian & Jurnal Belajar</h2>
+            <p>Ambil foto kehadiran selfie santri mandiri dan tuliskan ringkasan jurnal belajar.</p>
+          </div>
+          <a href="presensi.html" class="btn-action" style="max-width: 280px; margin: auto;">
+            Isi Presensi Selfie →
+          </a>
+        </div>
       </div>
 
+      <!-- BANK MATERI KELAS -->
       <h2 class="section-title">📚 Bank Materi & Modul Belajar</h2>
       <div class="card" id="cardModul">
         <div>
@@ -188,7 +228,8 @@
       <div class="guide-box">
         <h4>📌 Petunjuk Pembelajaran & Ujian:</h4>
         <ol>
-          <li>Pastikan mengunggah tugas pada formulir kelas yang sesuai.</li>
+          <li>Gunakan fitur <b>Scan QR</b> saat hadir di sekolah, atau <b>Presensi Selfie</b> jika belajar mandiri dari rumah.</li>
+          <li>Kartu Santri dapat dicetak di kertas tebal/kartu PVC untuk tanda pengenal resmi.</li>
           <li>Kamera wajib diizinkan saat mengikuti Ujian Online Terawasi.</li>
         </ol>
         <div style="text-align: right;">
@@ -201,7 +242,6 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    // Fallback Bawaan Paket
     const FOLDER_DRIVE_DEFAULT = {
       "Paket A": "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing",
       "Paket B": "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing",
@@ -301,7 +341,6 @@
       titleTugas.textContent = `📤 Tugas & Portofolio ${kelasStr}`;
       modulTitle.textContent = `📁 Folder Modul & Materi: ${kelasStr}`;
 
-      // AMBIL LINK FOLDER MATERI & TUGAS SPESIFIK KELAS DARI data-materi.json
       try {
         const resMateri = await fetch("data-materi.json?t=" + Date.now());
         if (resMateri.ok) {
