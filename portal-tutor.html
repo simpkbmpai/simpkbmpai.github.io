@@ -41,6 +41,7 @@
     }
     .hero img { width: 70px; height: 70px; object-fit: contain; margin-bottom: 10px; }
     .hero h1 { margin: 0; color: var(--green-dark); font-size: 25px; }
+    .hero p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
     .badge-user {
       display: inline-block; background: var(--green-soft); color: var(--green-dark); border: 1px solid var(--line);
       padding: 4px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 800; margin-bottom: 8px;
@@ -96,7 +97,7 @@
       <img src="logo-pkbm.png" alt="Logo PKBM">
       <div><span class="badge-user" id="userBadge">Area Tutor & Fasilitator Terdaftar</span></div>
       <h1>Portal Akademik & E-Jurnal Tutor</h1>
-      <p>PKBM Pelita Aushaf Indonesia (Inklusi & Kesetaraan)</p>
+      <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Pendidikan Kesetaraan)</p>
     </div>
 
     <!-- 1. LOGIN TUTOR -->
@@ -115,12 +116,12 @@
     <div id="tutorDashboard">
       <div class="dashboard-grid">
         
-        <!-- PRESENSI MAPEL & INPUT TUGAS -->
+        <!-- PRESENSI MAPEL & INPUT JURNAL -->
         <div class="tutor-card" style="border: 2px solid #10b981; background: #f0fdf4;">
           <div>
             <div class="tutor-card-icon" style="background:#d1fae5;">📲</div>
-            <h3>Scan Absen, Jurnal & PR</h3>
-            <p>Scan kartu santri per mata pelajaran (Reguler Paket A/B/C & Terapi Inklusi PAT).</p>
+            <h3>Scan Absen, Jurnal & Tugas</h3>
+            <p>Scan kartu santri per mata pelajaran, evaluasi karakter, & berikan tugas yang langsung tampil di HP orang tua.</p>
           </div>
           <button type="button" onclick="bukaModalScanMapel()" class="btn-action">
             Mulai Presensi Kelas →
@@ -159,40 +160,40 @@
     </div>
   </div>
 
-  <!-- MODAL: SCAN ABSEN MAPEL + MODIFIKASI PROGRAM & PAT PDPD -->
+  <!-- MODAL: SCAN ABSEN MAPEL + PEMILIHAN PROGRAM RAMAH INKLUSI -->
   <div id="modalScanMapel" class="modal-overlay">
     <div class="modal-box">
       <button class="modal-close" onclick="tutupModal('modalScanMapel')">✕</button>
-      <h3 style="margin:0 0 4px; color:var(--green-dark);">Presensi Kelas & Jurnal Terpadu</h3>
-      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Mendukung kurikulum Reguler & Program Anak Tercinta (Inklusi PDPD).</p>
+      <h3 style="margin:0 0 4px; color:var(--green-dark);">Presensi Kelas & E-Jurnal Terpadu</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Pilih program pembelajaran/pengembangan, scan kartu santri, dan input evaluasi.</p>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <div>
-          <label>Pilih Jenjang / Program:</label>
+          <label>Pilih Program Belajar:</label>
           <select id="selectJenjangProgram">
             <option value="Paket A">🟢 Paket A (Kelas 1 - 6)</option>
             <option value="Paket B">🔵 Paket B (Kelas 7 - 9)</option>
             <option value="Paket C">🟡 Paket C (Kelas 10 - 12)</option>
-            <option value="Program Anak Tercinta (PAT)" selected>🟣 Program Anak Tercinta (Inklusi PAT / PDPD)</option>
+            <option value="Pengembangan Mandiri">🟣 Program Pengembangan Mandiri & Karakter</option>
           </select>
         </div>
         <div>
-          <label>Mata Pelajaran / Terapi:</label>
+          <label>Mata Pelajaran / Bidang:</label>
           <select id="scanMapelSelect">
-            <option value="">Memuat daftar pelajaran...</option>
+            <option value="">Memuat daftar mata pelajaran...</option>
           </select>
         </div>
       </div>
 
-      <!-- OPSI JIKA ADA MAPEL / TERAPI KHUSUS LAINNYA -->
+      <!-- OPSI JIKA ADA MAPEL / MATERI KHUSUS LAINNYA -->
       <div id="boxCustomMapel" style="display:none; margin-top:6px;">
-        <label style="color:var(--purple);">Ketik Mata Pelajaran / Terapi Kustom Baru:</label>
-        <input type="text" id="inputCustomMapel" placeholder="Contoh: Terapi Sensori Vestibular / Braille">
+        <label style="color:var(--purple);">Ketik Mata Pelajaran / Bidang Pengembangan Lainnya:</label>
+        <input type="text" id="inputCustomMapel" placeholder="Contoh: Terapi Sensori Motorik / Literasi Terapan">
       </div>
 
       <div>
         <label>Topik / Pokok Pembahasan Hari Ini:</label>
-        <input type="text" id="scanMateriInput" placeholder="Contoh: Latihan Kemandirian Mengancing Baju / Pecahan">
+        <input type="text" id="scanMateriInput" placeholder="Contoh: Latihan Kemandirian Merapikan Alat Belajar / Pecahan">
       </div>
 
       <!-- SCANNER KAMERA -->
@@ -208,11 +209,11 @@
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px;">
           <div>
-            <label>Fokus / Konsentrasi:</label>
+            <label>Fokus & Ketenangan Belajar:</label>
             <select id="evalKonsentrasi">
               <option value="Sangat Fokus">🌟 Sangat Fokus / Tenang</option>
-              <option value="Fokus / Baik" selected>✅ Fokus / Terkendali</option>
-              <option value="Perlu Bimbingan & Sensori">⚠️ Perlu Bimbingan & Stimulus</option>
+              <option value="Fokus / Baik" selected>✅ Fokus / Terkendali Baik</option>
+              <option value="Perlu Pendampingan">⚠️ Perlu Stimulus / Pendampingan</option>
             </select>
           </div>
           <div>
@@ -220,16 +221,16 @@
             <select id="evalAdab">
               <option value="Sangat Santun & Kooperatif">🌟 Sangat Santun & Kooperatif</option>
               <option value="Baik & Tertib" selected>✅ Baik & Tertib</option>
-              <option value="Perlu Penguatan Adab & Emosi">⚠️ Perlu Penguatan Adab & Regulasi</option>
+              <option value="Perlu Penguatan">⚠️ Perlu Penguatan Karakter</option>
             </select>
           </div>
         </div>
 
-        <label>Catatan Perkembangan Pembelajaran / Terapi (PPI):</label>
-        <textarea id="evalCatatan" placeholder="Catatan respon santri, pemahaman materi, atau milestone terapi hari ini..."></textarea>
+        <label>Catatan Pembelajaran & Perkembangan Santri:</label>
+        <textarea id="evalCatatan" placeholder="Catatan respon santri, pemahaman materi, atau kemajuan hari ini..."></textarea>
 
-        <label style="color:var(--orange);">Tugas Rumah / Pembiasaan di Rumah (Opsional):</label>
-        <input type="text" id="evalTugas" placeholder="Contoh: Latihan motorik meronce manik di rumah bersama bunda">
+        <label style="color:var(--orange);">Tugas / Pembiasaan di Rumah (Opsional):</label>
+        <input type="text" id="evalTugas" placeholder="Contoh: Latihan merapikan tempat tidur / Latihan membaca mandiri">
 
         <button type="button" id="btnSimpanJurnal" class="btn-action" style="margin-top:10px; width:100%;">
           💾 Simpan & Kirim ke Raport Wali Santri
@@ -242,9 +243,53 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    let dbMapelData = {};
-    let activeTutor = null;
+    // DAFTAR MAPEL DENGAN ISTILAH POSITIF & TERHORMAT
+    const MAPEL_DEFAULT = {
+      "Paket A": [
+        "Pendidikan Agama Islam & Adab",
+        "Pendidikan Pancasila",
+        "Bahasa Indonesia",
+        "Matematika",
+        "IPAS (Alam & Sosial)",
+        "Seni Budaya & Prakarya",
+        "Bahasa Inggris Dasar",
+        "PJOK & Kebugaran Jasmani"
+      ],
+      "Paket B": [
+        "Pendidikan Agama Islam",
+        "Pendidikan Pancasila",
+        "Bahasa Indonesia",
+        "Matematika Terapan",
+        "Ilmu Pengetahuan Alam (IPA)",
+        "Ilmu Pengetahuan Sosial (IPS)",
+        "Bahasa Inggris",
+        "Informatika & Komputer",
+        "Prakarya & Kewirausahaan"
+      ],
+      "Paket C": [
+        "Pendidikan Agama Islam",
+        "Pendidikan Pancasila",
+        "Bahasa Indonesia",
+        "Matematika Umum",
+        "Bahasa Inggris Komunikatif",
+        "Sejarah Indonesia",
+        "Mata Pelajaran Pilihan (Soshum/Saintek)",
+        "Pemberdayaan & Keterampilan Vokasi"
+      ],
+      "Pengembangan Mandiri": [
+        "Bina Diri & Kemandirian Hidup",
+        "Komunikasi & Bahasa Fungsional",
+        "Interaksi Sosial & Regulasi Diri",
+        "Pengembangan Literasi & Motorik",
+        "Pengembangan Numerasi & Logika",
+        "Orientasi Sensori & Motorik Terpadu",
+        "Akademik Fungsional & Kognisi Terapan",
+        "Adab, Karakter & Ibadah Praktis",
+        "Keterampilan Praktis & Karya Kreatif"
+      ]
+    };
 
+    let activeTutor = null;
     const savedTutor = localStorage.getItem("tutorAuth") || sessionStorage.getItem("tutorAuth");
     if (savedTutor) {
       try { 
@@ -255,46 +300,22 @@
       } catch(e) {}
     }
 
-    // Ambil Data Mapel dari Spreadsheet
-    async function loadDatabaseMapel() {
-      try {
-        const res = await fetch(`${API_URL}?action=get_mapel`);
-        const json = await res.json();
-        if (json.success && json.data) {
-          dbMapelData = json.data;
-          updateMapelDropdown();
-        }
-      } catch (e) {
-        console.error("Gagal load mapel:", e);
-      }
-    }
-    loadDatabaseMapel();
-
     function updateMapelDropdown() {
       const jenjang = document.getElementById("selectJenjangProgram").value;
       const selectMapel = document.getElementById("scanMapelSelect");
       selectMapel.innerHTML = "";
 
-      const list = dbMapelData[jenjang] || [];
-      if (list.length > 0) {
-        list.forEach(m => {
-          const opt = document.createElement("option");
-          opt.value = m.nama;
-          opt.textContent = m.ket ? `${m.nama} (${m.ket})` : m.nama;
-          selectMapel.appendChild(opt);
-        });
-      } else {
-        // Fallback default
+      const list = MAPEL_DEFAULT[jenjang] || MAPEL_DEFAULT["Paket A"];
+      list.forEach(m => {
         const opt = document.createElement("option");
-        opt.value = "Pembelajaran Tematik & Adab";
-        opt.textContent = "Pembelajaran Tematik & Adab";
+        opt.value = m;
+        opt.textContent = m;
         selectMapel.appendChild(opt);
-      }
+      });
 
-      // Opsi Tambah Kustom Manual
       const optCustom = document.createElement("option");
       optCustom.value = "CUSTOM_OTHER";
-      optCustom.textContent = "➕ [ Ketik Mata Pelajaran / Terapi Lainnya... ]";
+      optCustom.textContent = "➕ [ Ketik Mata Pelajaran / Bidang Lainnya... ]";
       selectMapel.appendChild(optCustom);
 
       toggleCustomMapelInput();
@@ -307,6 +328,7 @@
       const isCustom = document.getElementById("scanMapelSelect").value === "CUSTOM_OTHER";
       document.getElementById("boxCustomMapel").style.display = isCustom ? "block" : "none";
     }
+    updateMapelDropdown();
 
     document.getElementById("tutorLoginForm").addEventListener("submit", async function(e) {
       e.preventDefault();
@@ -362,7 +384,7 @@
 
       let finalMapel = document.getElementById("scanMapelSelect").value;
       if (finalMapel === "CUSTOM_OTHER") {
-        finalMapel = document.getElementById("inputCustomMapel").value.trim() || "Terapi Khusus PAT";
+        finalMapel = document.getElementById("inputCustomMapel").value.trim() || "Pengembangan Karakter Mandiri";
       }
 
       const payload = {
