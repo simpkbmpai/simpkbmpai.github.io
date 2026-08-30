@@ -5,705 +5,541 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dashboard Admin Website - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
+
   <style>
-    :root{
-      --green:#0d7a5f;
-      --green-dark:#0a5c48;
-      --green-soft:#eef8f4;
-      --line:#d6eee5;
-      --muted:#6b7280;
-      --bg:#f5fbf8;
-      --danger:#b91c1c;
+    :root {
+      --green: #0d7a5f;
+      --green-dark: #0a5c48;
+      --green-soft: #eef8f4;
+      --line: #d6eee5;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --danger: #b91c1c;
+      --orange: #ea580c;
+      --blue: #2563eb;
+      --purple: #7c3aed;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#eef8f4,#fff);color:#1f2937;line-height:1.6}
-    a{color:var(--green);font-weight:800;text-decoration:none}
-    .container{max-width:1040px;margin:auto;padding:24px}
-    .top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
-    .top-left{display:flex;align-items:center;gap:14px;}
-    .top img{width:64px;height:64px;object-fit:contain;border-radius:50%;background:#fff;padding:4px;border:1px solid var(--line)}
-    h1{margin:0;color:#0f172a;font-size:30px;line-height:1.15}
-    .sub{margin:4px 0 0;color:var(--muted)}
-    .card{background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;margin-bottom:18px;box-shadow:0 14px 36px rgba(13,122,95,.08)}
-    label{display:block;font-weight:800;margin:12px 0 6px}
-    input,select,textarea{
-      width:100%;border:1px solid #dbeee6;border-radius:16px;padding:12px 14px;font-size:14.5px;outline:none;background:#fff;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef8f4, #ffffff 40%, #f8fcfa);
+      color: var(--text);
+      line-height: 1.6;
     }
-    textarea{min-height:86px;resize:vertical}
-    input:focus,select:focus,textarea:focus{border-color:#81c9ab;box-shadow:0 0 0 4px rgba(129,201,171,.18)}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .grid-3{display:grid;grid-template-columns:repeat(3, 1fr);gap:14px}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:16px;padding:14px 18px;
-      font-weight:900;cursor:pointer;background:var(--green);color:#fff;margin-top:14px;
-      box-shadow:0 12px 28px rgba(13,122,95,.18);
-    }
-    .btn:hover{background:var(--green-dark)}
-    .btn:disabled{background:#9ca3af;cursor:not-allowed;box-shadow:none}
-    .btn.secondary{background:#fff;color:var(--green-dark);border:1px solid var(--line);box-shadow:none}
-    .warning{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:18px;padding:14px}
-    .success{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:18px;padding:14px;margin-top:14px;display:none}
-    .error{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:18px;padding:14px;margin-top:14px;display:none}
-    .log{background:#0f172a;color:#d1fae5;border-radius:18px;padding:14px;white-space:pre-wrap;min-height:120px;font-family:Consolas,monospace;font-size:13px}
-    .preview{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
-    .preview img{width:100%;height:140px;object-fit:contain;background:#eef8f4;border-radius:18px;border:1px solid var(--line)}
-    .manage-tools{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end}
-    .manage-list{display:grid;gap:12px;margin-top:14px}
-    .manage-item{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:12px;background:#f8fcfa}
-    .manage-item img{width:120px;height:90px;object-fit:contain;background:#eef8f4;border-radius:14px;border:1px solid #e4f4ed}
-    .manage-item b{display:block;color:#0f172a}
-    .manage-item small{display:block;margin-top:4px}
-    .delete-btn{border:0;border-radius:14px;padding:11px 14px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
-    .delete-btn:hover{filter:brightness(.92)}
-    .empty{border:2px dashed #cce8dd;border-radius:18px;padding:18px;text-align:center;color:#6b7280;background:#f8fcfa;margin-top:14px}
-    small{color:var(--muted)}
-    code{background:#eef8f4;padding:2px 6px;border-radius:7px}
+    .container { max-width: 1100px; margin: auto; padding: 20px; }
 
-    .pdf-tools{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .pdf-list{display:grid;gap:12px;margin-top:14px}
-    .pdf-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:12px;background:#f8fcfa}
-    .pdf-item b{display:block;color:#0f172a}
-    .pdf-item small{display:block;margin-top:4px}
-    .pdf-link{border:1px solid var(--line);border-radius:14px;padding:10px 12px;color:var(--green-dark);font-weight:900;background:#fff}
-    .pdf-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
-    .pdf-delete{border:0;border-radius:14px;padding:10px 12px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
-    .pdf-delete:hover{filter:brightness(.92)}
-
-    .stage3-tools{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .stage3-list{display:grid;gap:12px;margin-top:14px}
-    .stage3-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:12px;background:#f8fcfa}
-    .stage3-item b{display:block;color:#0f172a}
-    .stage3-item small{display:block;margin-top:4px}
-    .stage3-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
-    .stage3-edit{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff;color:var(--green-dark);font-weight:900;cursor:pointer}
-    .stage3-edit:hover{background:#eef8f4}
-    .stage3-cancel{display:none;border:1px solid #fed7aa;border-radius:16px;padding:14px 18px;background:#fff7ed;color:#7c2d12;font-weight:900;cursor:pointer;margin-top:14px;margin-left:8px}
-    .stage3-cancel.show{display:inline-flex}
-    .edit-mode-note{display:none;margin-top:12px;border:1px solid #a7f3d0;background:#ecfdf5;color:#065f46;border-radius:16px;padding:12px;font-weight:800}
-    .edit-mode-note.show{display:block}
-    .stage3-delete{border:0;border-radius:14px;padding:10px 12px;background:var(--danger);color:#fff;font-weight:900;cursor:pointer}
-    .stage3-delete:hover{filter:brightness(.92)}
-
-    .package-title{color:var(--green-dark);margin:16px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--line);font-size:16px;font-weight:bold;display:flex;align-items:center;gap:6px;}
-    .row-class-box{background:#f8fcfa;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;}
-
-    .dashboard-hero{
-      display:grid;grid-template-columns:1fr 1.25fr;gap:18px;align-items:center;
-      background:linear-gradient(135deg,#0d7a5f,#0a5c48);color:#fff;border:0;overflow:hidden;position:relative;
+    /* HEADER */
+    .header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+      background: #fff; border: 1.5px solid var(--line); border-radius: 20px; padding: 14px 22px;
+      box-shadow: 0 4px 16px rgba(13,122,95,0.06); flex-wrap: wrap; gap: 12px;
     }
-    .dashboard-hero:before{
-      content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-90px;top:-90px;background:rgba(255,255,255,.10);
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .header-left img { width: 48px; height: 48px; object-fit: contain; }
+    .header-title h1 { margin: 0; font-size: 20px; color: var(--green-dark); }
+    .header-title p { margin: 0; font-size: 13px; color: var(--muted); }
+    .btn-logout {
+      background: #fee2e2; color: var(--danger); border: 1.5px solid #fca5a5;
+      padding: 8px 16px; border-radius: 999px; font-weight: 800; font-size: 13px; cursor: pointer; text-decoration: none;
     }
-    .dashboard-hero > *{position:relative;z-index:1}
-    .dashboard-hero h2{margin:8px 0 8px;color:#fff;font-size:32px;line-height:1.14}
-    .dashboard-hero p{margin:0;color:#e8fff4}
-    .dash-badge{display:inline-flex;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:7px 12px;font-weight:900;color:#fff;font-size:13px}
-    .quick-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-    .quick-grid a{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:8px;border-radius:16px;background:#fff;color:#0a5c48;font-weight:900;font-size:12px;box-shadow:0 10px 24px rgba(0,0,0,.10)}
-    .quick-grid a:hover{background:#eef8f4}
-    .contact-preview{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
-    .contact-preview div{background:#f3fbf7;border:1px solid #e4f4ed;border-radius:18px;padding:14px}
-    .contact-preview b{display:block;color:#0f172a;margin-bottom:4px}
-    .contact-preview span{display:block;color:#0a5c48;font-weight:900;font-size:18px}
-    .mini-note{margin-top:10px;color:#6b7280;font-size:13px}
 
-    /* KOTAK LOGIN ADMIN */
-    .lock-box{
-      max-width:440px;margin:50px auto;background:#fff;border:1px solid var(--line);
-      border-radius:26px;padding:36px 26px;text-align:center;box-shadow:0 18px 45px rgba(13,122,95,.14);
+    /* HERO BANNER */
+    .hero-banner {
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #fff; border-radius: 24px; padding: 26px; margin-bottom: 24px;
+      box-shadow: 0 12px 30px rgba(13,122,95,0.18);
     }
-    .lock-box h2{margin:0 0 8px;color:var(--green-dark);font-size:22px;}
-    .lock-box p{font-size:13.5px;color:var(--muted);margin-bottom:22px;}
-    .btn-lock{width:100%;padding:14px;background:var(--green);color:#fff;border:0;border-radius:16px;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px;}
-    .btn-lock:hover{background:var(--green-dark);}
-    .btn-logout-top{background:#fee2e2;color:var(--danger);border:1px solid #fecaca;padding:8px 16px;border-radius:999px;font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;}
-    .btn-logout-top:hover{background:#fecaca;}
+    .hero-badge {
+      display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 14px;
+      border-radius: 999px; font-size: 12px; font-weight: 800; margin-bottom: 8px;
+    }
+    .hero-banner h2 { margin: 0 0 6px; font-size: 24px; }
+    .hero-banner p { margin: 0 0 18px; font-size: 13.5px; opacity: 0.9; max-width: 700px; }
 
-    @media(max-width:760px){
-      .grid,.grid-3,.preview,.manage-tools,.pdf-tools,.stage3-tools,.dashboard-hero,.quick-grid,.contact-preview{grid-template-columns:1fr}
-      .pdf-item{grid-template-columns:1fr}
-      .pdf-actions,.stage3-actions{justify-content:flex-start}
-      .pdf-delete,.pdf-link,.stage3-delete,.stage3-edit{width:100%;text-align:center}
-      .manage-item{grid-template-columns:1fr}
-      .manage-item img{width:100%;height:190px}
-      .delete-btn{width:100%}
-      h1{font-size:26px}
-      .container{padding:16px}
+    /* QUICK PILLS NAVIGATION */
+    .pills-grid {
+      display: flex; flex-wrap: wrap; gap: 8px;
     }
+    .pill-btn {
+      background: #fff; color: var(--green-dark); padding: 7px 14px; border-radius: 999px;
+      font-weight: 800; font-size: 12.5px; text-decoration: none; border: 0; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: transform 0.15s;
+    }
+    .pill-btn:hover { transform: translateY(-2px); background: var(--green-soft); }
+    .pill-btn.highlight { background: #fef08a; color: #854d0e; }
+
+    /* ALERT BOX */
+    .alert-box {
+      background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 16px; padding: 14px 18px;
+      margin-bottom: 24px; font-size: 13.5px; color: #92400e;
+    }
+
+    /* KARTU MENU OPERATOR AKADEMIK (NEW PANEL) */
+    .section-title { font-size: 19px; color: var(--green-dark); margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
+    
+    .operator-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 26px;
+    }
+    @media(max-width: 860px) { .operator-grid { grid-template-columns: 1fr; } }
+
+    .op-card {
+      background: #fff; border: 2px solid var(--line); border-radius: 20px; padding: 20px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      box-shadow: 0 8px 24px rgba(13,122,95,0.06);
+    }
+    .op-card-icon {
+      width: 44px; height: 44px; border-radius: 12px; background: var(--green-soft);
+      display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 12px;
+    }
+    .op-card h3 { margin: 0 0 4px; color: var(--green-dark); font-size: 17px; }
+    .op-card p { margin: 0 0 14px; color: var(--muted); font-size: 12.5px; flex-grow: 1; }
+    .btn-op {
+      display: block; text-align: center; background: var(--green); color: #fff;
+      padding: 10px; border-radius: 12px; font-weight: 800; font-size: 13px; text-decoration: none;
+    }
+    .btn-op:hover { background: var(--green-dark); }
+    .btn-op.purple { background: var(--purple); }
+    .btn-op.blue { background: var(--blue); }
+    .btn-op.orange { background: var(--orange); }
+
+    /* SECTION CARD PENGATURAN JSON WEBSITE */
+    .admin-section {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 22px;
+      padding: 24px; margin-bottom: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.03);
+    }
+    .admin-section h3 { margin: 0 0 6px; color: var(--green-dark); font-size: 18px; }
+    .admin-section p { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
+
+    label { display: block; font-weight: 800; font-size: 13px; color: var(--green-dark); margin: 12px 0 4px; }
+    input, textarea, select {
+      width: 100%; padding: 11px 14px; border-radius: 12px; border: 1.5px solid var(--line);
+      outline: none; font-size: 13.5px; background: #fff; font-family: inherit;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+
+    .btn-save {
+      background: var(--green); color: #fff; border: 0; padding: 11px 22px; border-radius: 12px;
+      font-weight: 800; font-size: 13.5px; cursor: pointer; margin-top: 14px;
+    }
+    .btn-save:hover { background: var(--green-dark); }
+    .btn-save:disabled { background: #9ca3af; cursor: not-allowed; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media(max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    .status-badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: bold; margin-top: 8px; }
+    .status-ok { background: #dcfce7; color: #15803d; }
+    .status-err { background: #fee2e2; color: #b91c1c; }
   </style>
 </head>
 <body>
 
-  <div id="adminLoginGate" class="lock-box">
-    <img src="logo-pkbm.png" alt="Logo" style="width:72px;height:72px;object-fit:contain;margin-bottom:12px;">
-    <h2>Login Admin Website</h2>
-    <p>Area khusus pengelola & admin PKBM Pelita Aushaf Indonesia.</p>
-
-    <form id="formAdminLogin" style="text-align:left;">
-      <label>Username Admin:
-        <input type="text" id="adminUser" placeholder="Masukkan username" required autofocus>
-      </label>
-      <label>Password:
-        <input type="password" id="adminPass" placeholder="••••••••" required>
-      </label>
-      <button type="submit" id="btnSubmitAdmin" class="btn-lock">Buka Dashboard Admin</button>
-    </form>
-    <div id="adminLoginErr" style="color:var(--danger);font-weight:bold;font-size:13px;margin-top:14px;display:none;"></div>
-  </div>
-
-  <div id="adminMainContent" class="container" style="display:none;">
-    <div class="top">
-      <div class="top-left">
+  <div class="container">
+    
+    <!-- HEADER ADMIN -->
+    <div class="header">
+      <div class="header-left">
         <img src="logo-pkbm.png" alt="Logo PKBM">
-        <div>
+        <div class="header-title">
           <h1>Dashboard Admin Website</h1>
-          <p class="sub" id="adminGreeting">Kelola CBT, Materi, Video, Kontak, dan Konten PKBM</p>
+          <p>Selamat datang, <b>Operator PKBM</b> • Kelola Akademik, CBT & Konten</p>
         </div>
       </div>
-      <div>
-        <button id="btnAdminLogout" class="btn-logout-top">🔒 Keluar Admin</button>
+      <a href="index.html" class="btn-logout">🔒 Keluar Admin</a>
+    </div>
+
+    <!-- HERO BANNER -->
+    <div class="hero-banner">
+      <span class="hero-badge">Dashboard Admin & Operator</span>
+      <h2>Kelola Seluruh Sistem dari Satu Tempat</h2>
+      <p>Pusat kendali pencetakan kartu santri & tutor, absensi QR, rekap spreadsheet akademik, materi Google Drive, soal ujian CBT, dan konten publik website.</p>
+      
+      <div class="pills-grid">
+        <a href="#secOperator" class="pill-btn highlight">🖨️ Cetak Kartu & Presensi</a>
+        <a href="#secGithub" class="pill-btn">GitHub Token</a>
+        <a href="#secCbt" class="pill-btn">Soal CBT</a>
+        <a href="#secMateri" class="pill-btn">Materi & Tugas</a>
+        <a href="#secTutor" class="pill-btn">Link Tutor</a>
+        <a href="#secVideo" class="pill-btn">Video</a>
+        <a href="#secKontak" class="pill-btn">Kontak</a>
+        <a href="#secFoto" class="pill-btn">Foto Kegiatan</a>
+        <a href="#secBrosur" class="pill-btn">Brosur</a>
+        <a href="#secArtikel" class="pill-btn">Artikel</a>
+        <a href="#secKalender" class="pill-btn">Kalender</a>
       </div>
     </div>
 
-    <div class="card dashboard-hero">
-      <div>
-        <span class="dash-badge">Dashboard Admin</span>
-        <h2>Kelola Website dari Satu Tempat</h2>
-        <p>Menu utama: Soal CBT, Folder Materi & Tugas Kelas 1-12, link tutor, video profil, kontak, foto, brosur, artikel, dan album.</p>
-      </div>
-      <div class="quick-grid">
-        <a href="#pengaturan-github">GitHub</a>
-        <a href="#pengaturan-ujian">Soal CBT</a>
-        <a href="#pengaturan-materi-tugas">Materi & Tugas</a>
-        <a href="#pengaturan-tutor">Link Tutor</a>
-        <a href="#pengaturan-video">Video</a>
-        <a href="#kontak-website">Kontak</a>
-        <a href="#upload-foto">Foto</a>
-        <a href="#brosur-pdf">Brosur</a>
-        <a href="#artikel-edukasi">Artikel</a>
-        <a href="#kalender-kegiatan">Kalender</a>
-      </div>
+    <div class="alert-box">
+      <b>📌 Penting:</b> Untuk menyimpan perubahan data konten website ke publik, pastikan <b>GitHub Token</b> sudah terisi di Bagian 1.
     </div>
 
-    <div class="card warning">
-      <b>Penting:</b> Untuk menyimpan data perubahan ke website publik, masukkan <b>GitHub token</b> di bagian 1.
+    <!-- ================= PANEL OPERATOR AKADEMIK (FITUR BARU) ================= -->
+    <h2 class="section-title" id="secOperator">🎓 Panel Operasional Akademik & Cetak Kartu</h2>
+    
+    <div class="operator-grid">
+      
+      <!-- 1. CETAK KARTU SANTRI & TUTOR -->
+      <div class="op-card" style="border-color: #10b981; background: #f0fdf4;">
+        <div>
+          <div class="op-card-icon" style="background:#d1fae5;">🖨️</div>
+          <h3>Cetak Kartu Santri & Tutor</h3>
+          <p>Cetak kartu tanda pengenal standar ATM (ISO CR80) lengkap dengan foto dan QR code absensi.</p>
+        </div>
+        <a href="kartu.html" target="_blank" class="btn-op">Buka Alat Cetak Kartu ↗</a>
+      </div>
+
+      <!-- 2. DATABASE SPREADSHEET INDUK -->
+      <div class="op-card" style="border-color: #3b82f6; background: #eff6ff;">
+        <div>
+          <div class="op-card-icon" style="background:#dbeafe;">📊</div>
+          <h3>Database Google Sheets</h3>
+          <p>Buka spreadsheet induk <b>DB_AKADEMIK_AUSHAF</b> untuk rekap presensi, jurnal, nilai, dan tanda tangan wali.</p>
+        </div>
+        <a href="https://docs.google.com/spreadsheets" target="_blank" class="btn-op blue">Buka Google Spreadsheet ↗</a>
+      </div>
+
+      <!-- 3. SCANNER QR & ABSEN TUTOR GPS -->
+      <div class="op-card" style="border-color: #f59e0b; background: #fffbeb;">
+        <div>
+          <div class="op-card-icon" style="background:#fef3c7;">📲</div>
+          <h3>Portal Presensi & Tutor</h3>
+          <p>Akses cepat ke Portal Tutor untuk scan absen per mapel atau Absen Mandiri Tutor (GPS $\le 10$m).</p>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+          <a href="portal-tutor.html" target="_blank" class="btn-op orange" style="font-size:11.5px; padding:8px 4px;">Ruang Tutor ↗</a>
+          <a href="portal-siswa.html" target="_blank" class="btn-op purple" style="font-size:11.5px; padding:8px 4px;">Portal Siswa ↗</a>
+        </div>
+      </div>
+
     </div>
 
-    <div class="card" id="pengaturan-github">
-      <h2>1. Pengaturan GitHub</h2>
-      <div class="grid">
-        <label>Owner GitHub
-          <input id="owner" value="simpkbmpai">
-        </label>
-        <label>Repository
-          <input id="repo" value="simpkbmpai.github.io">
-        </label>
+    <!-- ================= 1. PENGATURAN GITHUB ================= -->
+    <div class="admin-section" id="secGithub">
+      <h3>1. Pengaturan GitHub (Kunci Penyimpanan Website)</h3>
+      <p>Masukkan Personal Access Token (PAT) GitHub untuk menyimpan perubahan file JSON ke repositori.</p>
+      
+      <div class="grid-2">
+        <div>
+          <label>GitHub Personal Access Token (ghp_...):</label>
+          <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        </div>
+        <div>
+          <label>Nama Repositori:</label>
+          <input type="text" id="ghRepo" value="simpkbmpai.github.io" readonly style="background:#f3f4f6;">
+        </div>
       </div>
-      <div class="grid">
-        <label>Branch
-          <input id="branch" value="main">
-        </label>
-        <label>GitHub Token
-          <input id="token" type="password" placeholder="Tempel token GitHub di sini">
-        </label>
-      </div>
-      <small>Token disimpan di browser untuk simpan data ke repository GitHub.</small>
+      <button type="button" onclick="saveGhToken()" class="btn-save">💾 Simpan Token di Browser</button>
+      <span id="tokenStatus" class="status-badge" style="display:none;"></span>
     </div>
 
-    <div class="card" id="pengaturan-ujian">
-      <h2>2. Pengaturan Link Soal Ujian Online CBT (Kelas 1 s.d. 12)</h2>
-      <p>Tempel link Google Form soal ujian per tingkatan kelas. Siswa hanya akan menerima soal sesuai kelasnya.</p>
+    <!-- ================= 2. KELOLA SOAL CBT ================= -->
+    <div class="admin-section" id="secCbt">
+      <h3>2. Kelola Link Soal Ujian Online (CBT)</h3>
+      <p>File: <code>data-ujian.json</code> • Masukkan tautan Google Form / CBT per paket ujian.</p>
+      <div id="formCbtContainer">Memuat data CBT...</div>
+      <button type="button" onclick="simpanJson('data-ujian.json', 'cbt')" class="btn-save">💾 Simpan Perubahan Soal CBT</button>
+    </div>
 
-      <div class="package-title">🟢 Paket A (Setara SD)</div>
-      <div class="grid">
-        <label>Soal Kelas 1 <input id="ujianKelas1" placeholder="Link Google Form Kelas 1"></label>
-        <label>Soal Kelas 2 <input id="ujianKelas2" placeholder="Link Google Form Kelas 2"></label>
-      </div>
-      <div class="grid">
-        <label>Soal Kelas 3 <input id="ujianKelas3" placeholder="Link Google Form Kelas 3"></label>
-        <label>Soal Kelas 4 <input id="ujianKelas4" placeholder="Link Google Form Kelas 4"></label>
-      </div>
-      <div class="grid">
-        <label>Soal Kelas 5 <input id="ujianKelas5" placeholder="Link Google Form Kelas 5"></label>
-        <label>Soal Kelas 6 <input id="ujianKelas6" placeholder="Link Google Form Kelas 6"></label>
-      </div>
+    <!-- ================= 3. KELOLA FOLDER MATERI KELAS 1-12 ================= -->
+    <div class="admin-section" id="secMateri">
+      <h3>3. Kelola Folder Materi Google Drive (Kelas 1 s.d. 12)</h3>
+      <p>File: <code>data-materi.json</code> • Tautan Google Drive folder materi pembelajaran santri.</p>
+      <div class="grid-3" id="formMateriContainer">Memuat data modul...</div>
+      <button type="button" onclick="simpanJson('data-materi.json', 'materi')" class="btn-save">💾 Simpan Link Materi Drive</button>
+    </div>
 
-      <div class="package-title" style="margin-top:20px;">🔵 Paket B (Setara SMP)</div>
+    <!-- ================= 4. KELOLA LINK RUANG TUTOR ================= -->
+    <div class="admin-section" id="secTutor">
+      <h3>4. Kelola Tautan Ruang Tutor & Nilai</h3>
+      <p>File: <code>data-tutor.json</code> • Link Google Spreadsheet rekap nilai dan Folder Tugas Masuk.</p>
+      <div class="grid-2">
+        <div>
+          <label>Link Spreadsheet Rekap Nilai CBT:</label>
+          <input type="text" id="inputTutorNilai" placeholder="https://docs.google.com/spreadsheets/...">
+        </div>
+        <div>
+          <label>Link Google Drive Folder Tugas Masuk:</label>
+          <input type="text" id="inputTutorTugas" placeholder="https://drive.google.com/drive/folders/...">
+        </div>
+      </div>
+      <button type="button" onclick="simpanJson('data-tutor.json', 'tutor')" class="btn-save">💾 Simpan Link Ruang Tutor</button>
+    </div>
+
+    <!-- ================= 5. KELOLA VIDEO PROFIL ================= -->
+    <div class="admin-section" id="secVideo">
+      <h3>5. Kelola Video Profil Website</h3>
+      <p>File: <code>data-video.json</code> • ID atau URL Video YouTube profil sekolah.</p>
+      <label>Link / Embed YouTube Video Profil:</label>
+      <input type="text" id="inputVideoUrl" placeholder="https://www.youtube.com/watch?v=...">
+      <button type="button" onclick="simpanJson('data-video.json', 'video')" class="btn-save">💾 Simpan Video Profil</button>
+    </div>
+
+    <!-- ================= 6. KELOLA KONTAK ================= -->
+    <div class="admin-section" id="secKontak">
+      <h3>6. Kelola Kontak & Pendaftaran</h3>
+      <p>File: <code>data-kontak.json</code> • Nomor WhatsApp resmi, email, dan alamat sekolah.</p>
       <div class="grid-3">
-        <label>Soal Kelas 7 <input id="ujianKelas7" placeholder="Link Google Form Kelas 7"></label>
-        <label>Soal Kelas 8 <input id="ujianKelas8" placeholder="Link Google Form Kelas 8"></label>
-        <label>Soal Kelas 9 <input id="ujianKelas9" placeholder="Link Google Form Kelas 9"></label>
+        <div>
+          <label>Nomor WhatsApp Admin (628xxx):</label>
+          <input type="text" id="inputKontakWA" placeholder="6287751325199">
+        </div>
+        <div>
+          <label>Email Resmi:</label>
+          <input type="text" id="inputKontakEmail" placeholder="admin@pkbmpelitaaushafindonesia.sch.id">
+        </div>
+        <div>
+          <label>Alamat Sekolah:</label>
+          <input type="text" id="inputKontakAlamat" placeholder="Sidoarjo, Jawa Timur">
+        </div>
       </div>
-
-      <div class="package-title" style="margin-top:20px;">🟡 Paket C (Setara SMA)</div>
-      <div class="grid-3">
-        <label>Soal Kelas 10 <input id="ujianKelas10" placeholder="Link Google Form Kelas 10"></label>
-        <label>Soal Kelas 11 <input id="ujianKelas11" placeholder="Link Google Form Kelas 11"></label>
-        <label>Soal Kelas 12 <input id="ujianKelas12" placeholder="Link Google Form Kelas 12"></label>
-      </div>
-
-      <button class="btn" id="saveUjianBtn" type="button">Simpan Semua Link Soal Ujian</button>
-      <button class="btn secondary" id="loadUjianBtn" type="button">Muat Link Soal Saat Ini</button>
-      <div id="ujianStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
+      <button type="button" onclick="simpanJson('data-kontak.json', 'kontak')" class="btn-save">💾 Simpan Kontak</button>
     </div>
 
-    <div class="card" id="pengaturan-materi-tugas">
-      <h2>3. Pengaturan Link Folder Materi & Tugas Masuk (Kelas 1 s.d. 12)</h2>
-      <p>Masukkan link <b>Folder Google Drive Modul Materi</b> dan <b>Formulir/Folder Kirim Tugas</b> per tingkatan kelas.</p>
-
-      <div class="package-title">🟢 Paket A (Setara SD)</div>
-      <div id="boxMateriPaketA"></div>
-
-      <div class="package-title" style="margin-top:20px;">🔵 Paket B (Setara SMP)</div>
-      <div id="boxMateriPaketB"></div>
-
-      <div class="package-title" style="margin-top:20px;">🟡 Paket C (Setara SMA)</div>
-      <div id="boxMateriPaketC"></div>
-
-      <button class="btn" id="saveMateriBtn" type="button">Simpan Link Materi & Tugas (1-12)</button>
-      <button class="btn secondary" id="loadMateriBtn" type="button">Muat Link Materi Saat Ini</button>
-      <div id="materiStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
+    <!-- ================= 7. KELOLA ARTIKEL, BROSUR, KALENDER & ALBUM ================= -->
+    <div class="admin-section" id="secArtikel">
+      <h3>7. Kelola Artikel & Pengumuman</h3>
+      <p>File: <code>data-artikel.json</code> • Berita dan pengumuman terbaru di beranda.</p>
+      <textarea id="rawArtikelJson" style="min-height:120px; font-family:monospace; font-size:12.5px;"></textarea>
+      <button type="button" onclick="simpanRawJson('data-artikel.json', 'rawArtikelJson')" class="btn-save">💾 Simpan Artikel</button>
     </div>
 
-    <div class="card" id="pengaturan-tutor">
-      <h2>4. Pengaturan Link Portal Tutor</h2>
-      <label>Link Google Spreadsheet Rekap Nilai Siswa
-        <input id="tutorRekapNilai" placeholder="https://docs.google.com/spreadsheets/d/...">
-      </label>
-      <label>Link Folder Google Drive Utama Tugas Masuk
-        <input id="tutorDriveTugas" placeholder="https://drive.google.com/drive/folders/...">
-      </label>
-      <button class="btn" id="saveTutorBtn" type="button">Simpan Link Portal Tutor</button>
-      <button class="btn secondary" id="loadTutorBtn" type="button">Muat Link Tutor Saat Ini</button>
-      <div id="tutorStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
+    <div class="admin-section" id="secKalender">
+      <h3>8. Kelola Kalender Akademik</h3>
+      <p>File: <code>data-kalender.json</code> • Agenda kegiatan sekolah tahun ajaran berjalan.</p>
+      <textarea id="rawKalenderJson" style="min-height:120px; font-family:monospace; font-size:12.5px;"></textarea>
+      <button type="button" onclick="simpanRawJson('data-kalender.json', 'rawKalenderJson')" class="btn-save">💾 Simpan Kalender</button>
     </div>
 
-    <div class="card" id="pengaturan-video">
-      <h2>5. Pengaturan Video Profil YouTube</h2>
-      <label>Link Video YouTube (atau ID Video)
-        <input id="videoUrlInput" placeholder="https://www.youtube.com/watch?v=eOHkg5rBSLo">
-      </label>
-      <div class="stage3-tools">
-        <label>Judul Video <input id="videoTitleInput" placeholder="Mengenal PKBM Pelita Aushaf Indonesia"></label>
-        <label>Deskripsi Singkat <input id="videoDescInput" placeholder="Simak dokumentasi suasana belajar."></label>
-      </div>
-      <button class="btn" id="saveVideoBtn" type="button">Simpan Video ke Web</button>
-      <button class="btn secondary" id="loadVideoBtn" type="button">Muat Video Saat Ini</button>
-      <div id="videoStatus" style="display:none; margin-top:14px; padding:14px; border-radius:16px; font-weight:bold;"></div>
+    <div class="admin-section" id="secBrosur">
+      <h3>9. Kelola Brosur & Flyer PPDB</h3>
+      <p>File: <code>data-brosur.json</code> • Informasi unduhan brosur pendaftaran santri baru.</p>
+      <textarea id="rawBrosurJson" style="min-height:100px; font-family:monospace; font-size:12.5px;"></textarea>
+      <button type="button" onclick="simpanRawJson('data-brosur.json', 'rawBrosurJson')" class="btn-save">💾 Simpan Brosur</button>
     </div>
 
-    <div class="card" id="kontak-website">
-      <h2>6. Pengaturan Kontak Website</h2>
-      <div class="stage3-tools">
-        <label>Nomor WhatsApp Admin <input id="contactAdminInput" value="0877-5132-5199"></label>
-        <label>Nomor CP Humas <input id="contactHumasInput" value="0821-4004-6047"></label>
-      </div>
-      <label>Catatan Kontak / Jam Layanan
-        <textarea id="contactNoteInput"></textarea>
-      </label>
-      <div class="contact-preview">
-        <div><b>Preview WhatsApp Admin</b><span id="contactAdminPreview">0877-5132-5199</span></div>
-        <div><b>Preview CP Humas</b><span id="contactHumasPreview">0821-4004-6047</span></div>
-      </div>
-      <button class="btn" id="saveContactBtn">Simpan Kontak ke Web</button>
-      <button class="btn secondary" id="loadContactBtn">Muat Kontak dari Web</button>
-    </div>
-
-    <div class="card" id="upload-foto">
-      <h2>7. Upload Foto Kegiatan</h2>
-      <div class="grid">
-        <label>Pilih Program
-          <select id="program">
-            <option>Daycare</option><option>PAUD Non Formal</option><option>Kelompok Bermain</option>
-            <option>Paket A</option><option>Paket B</option><option>Paket C</option><option>Program Home Schooling</option>
-          </select>
-        </label>
-        <label>Tanggal Kegiatan <input id="date" type="date"></label>
-      </div>
-      <label>Judul / Keterangan Foto <textarea id="caption" placeholder="Kegiatan santri"></textarea></label>
-      <label>Pilih Foto <input id="photos" type="file" accept="image/*" multiple></label>
-      <div id="preview" class="preview"></div>
-      <button class="btn" id="uploadBtn">Upload Foto ke Web</button>
-      <div id="success" class="success"></div><div id="error" class="error"></div>
-    </div>
-
-    <div class="card" id="kelola-foto">
-      <h2>8. Kelola / Hapus Foto Kegiatan</h2>
-      <div class="manage-tools">
-        <label>Pilih Program
-          <select id="manageProgram">
-            <option>Daycare</option><option>PAUD Non Formal</option><option>Kelompok Bermain</option>
-            <option>Paket A</option><option>Paket B</option><option>Paket C</option><option>Program Home Schooling</option>
-          </select>
-        </label>
-        <button class="btn secondary" id="loadManageBtn">Muat Foto</button>
-      </div>
-      <div id="manageList" class="manage-list"><div class="empty">Pilih program lalu klik Muat Foto.</div></div>
-    </div>
-
-    <div class="card" id="brosur-pdf">
-      <h2>9. Upload Brosur PDF Per Program</h2>
-      <div class="pdf-tools">
-        <label>Pilih Program Brosur
-          <select id="brosurProgram">
-            <option>Brosur Umum</option><option>Daycare</option><option>PAUD Non Formal</option><option>Kelompok Bermain</option>
-            <option>Paket A</option><option>Paket B</option><option>Paket C</option><option>Program Home Schooling</option><option>Pendidikan Inklusi</option>
-          </select>
-        </label>
-        <label>File Brosur PDF <input id="brosurPdf" type="file" accept="application/pdf,.pdf"></label>
-      </div>
-      <label>Judul Brosur <input id="brosurTitleInput" placeholder="Brosur Program Paket C"></label>
-      <label>Keterangan Singkat <textarea id="brosurDescInput" placeholder="Rincian kurikulum"></textarea></label>
-      <button class="btn" id="uploadBrosurBtn">Upload Brosur PDF</button>
-      <button class="btn secondary" id="loadBrosurBtn">Kelola / Hapus Brosur</button>
-      <div id="brosurManageList" class="pdf-list"><div class="empty">Klik Kelola Brosur untuk melihat daftar.</div></div>
-    </div>
-
-    <div class="card" id="artikel-edukasi">
-      <h2>10. Artikel Parenting & Edukasi</h2>
-      <div class="stage3-tools">
-        <label>Judul Artikel <input id="articleTitleInput"></label>
-        <label>Kategori <input id="articleCategoryInput" placeholder="Parenting / Inklusi"></label>
-      </div>
-      <div class="stage3-tools">
-        <label>Tanggal <input id="articleDateInput" type="date"></label>
-        <label>Foto Sampul <input id="articleCoverInput" type="file" accept="image/*"></label>
-      </div>
-      <label>Ringkasan <textarea id="articleSummaryInput"></textarea></label>
-      <label>Isi Lengkap <textarea id="articleContentInput"></textarea></label>
-      <button class="btn" id="saveArticleBtn">Simpan Artikel</button>
-      <button class="stage3-cancel" id="articleCancelEditBtn" type="button">Batal Edit</button>
-      <button class="btn secondary" id="loadArticleBtn">Kelola / Hapus Artikel</button>
-      <div class="edit-mode-note" id="articleEditNote">Mode edit artikel aktif.</div>
-      <div id="articleManageList" class="stage3-list"><div class="empty">Klik Kelola Artikel untuk memuat.</div></div>
-    </div>
-
-    <div class="card" id="kalender-kegiatan">
-      <h2>11. Kalender Akademik & Kegiatan</h2>
-      <div class="stage3-tools">
-        <label>Judul Kegiatan <input id="eventTitleInput"></label>
-        <label>Kategori <input id="eventCategoryInput"></label>
-      </div>
-      <div class="stage3-tools">
-        <label>Tanggal <input id="eventDateInput" type="date"></label>
-        <label>Waktu <input id="eventTimeInput" placeholder="08.00 - 12.00"></label>
-      </div>
-      <label>Lokasi <input id="eventLocationInput"></label>
-      <label>Keterangan <textarea id="eventDescInput"></textarea></label>
-      <button class="btn" id="saveEventBtn">Simpan Kegiatan</button>
-      <button class="stage3-cancel" id="eventCancelEditBtn" type="button">Batal Edit</button>
-      <button class="btn secondary" id="loadEventBtn">Kelola / Hapus Kegiatan</button>
-      <div class="edit-mode-note" id="eventEditNote">Mode edit kegiatan aktif.</div>
-      <div id="eventManageList" class="stage3-list"><div class="empty">Klik Kelola Kegiatan untuk memuat.</div></div>
-    </div>
-
-    <div class="card" id="galeri-album">
-      <h2>12. Galeri Album</h2>
-      <div class="stage3-tools">
-        <label>Judul Album <input id="albumTitleInput"></label>
-        <label>Program
-          <select id="albumProgramInput">
-            <option>Daycare</option><option>PAUD Non Formal</option><option>Kelompok Bermain</option>
-            <option>Paket A</option><option>Paket B</option><option>Paket C</option><option>Program Home Schooling</option><option>Pendidikan Inklusi</option>
-          </select>
-        </label>
-      </div>
-      <div class="stage3-tools">
-        <label>Tanggal <input id="albumDateInput" type="date"></label>
-        <label>Cover Album <input id="albumCoverInput" type="file" accept="image/*"></label>
-      </div>
-      <label>Keterangan <textarea id="albumDescInput"></textarea></label>
-      <button class="btn" id="saveAlbumBtn">Simpan Album</button>
-      <button class="btn secondary" id="loadAlbumBtn">Kelola / Hapus Album</button>
-      <div id="albumManageList" class="stage3-list"><div class="empty">Klik Kelola Album untuk memuat.</div></div>
-    </div>
-
-    <div class="card" id="catatan-proses">
-      <h2>13. Catatan Proses</h2>
-      <div id="log" class="log">Siap upload & sinkronisasi data...</div>
-    </div>
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
+    const GH_OWNER = "simpkbmpai";
+    const GH_REPO = "simpkbmpai.github.io";
 
-    const programs = ["Daycare","PAUD Non Formal","Kelompok Bermain","Paket A","Paket B","Paket C","Program Home Schooling"];
-    const $ = (id) => document.getElementById(id);
-    const logBox = $("log");
-
-    function log(msg){ if(!logBox) return; logBox.textContent += "\n" + msg; logBox.scrollTop = logBox.scrollHeight; }
-    function show(type, msg){
-      if($("success")) $("success").style.display = "none";
-      if($("error")) $("error").style.display = "none";
-      const el = type === "success" ? $("success") : $("error");
-      if(el){ el.textContent = msg; el.style.display = "block"; }
-    }
-    function slugify(text){ return text.toLowerCase().replace(/program /g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
-    function safeName(name){ return name.toLowerCase().replace(/\.[^.]+$/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "foto"; }
-
-    /* ===== SISTEM LOGIN ADMIN ===== */
-    const adminLoginGate = $("adminLoginGate");
-    const adminMainContent = $("adminMainContent");
-    const formAdminLogin = $("formAdminLogin");
-    const adminUser = $("adminUser");
-    const adminPass = $("adminPass");
-    const adminLoginErr = $("adminLoginErr");
-    const btnSubmitAdmin = $("btnSubmitAdmin");
-    const btnAdminLogout = $("btnAdminLogout");
-    const adminGreeting = $("adminGreeting");
-
-    // Cek Sesi Login Admin
-    const savedAdmin = sessionStorage.getItem("adminAuth") || localStorage.getItem("adminAuth");
-    if(savedAdmin){
-      try{
-        const data = JSON.parse(savedAdmin);
-        bukaDashboardAdmin(data);
-      }catch(e){}
-    }
-
-    formAdminLogin.addEventListener("submit", async function(e){
-      e.preventDefault();
-      adminLoginErr.style.display = "none";
-      btnSubmitAdmin.disabled = true;
-      btnSubmitAdmin.textContent = "Memverifikasi...";
-
-      const u = adminUser.value.trim();
-      const p = adminPass.value.trim();
-
-      try{
-        const res = await fetch(`${API_URL}?action=login_admin&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
-        const result = await res.json();
-
-        if(result.success){
-          sessionStorage.setItem("adminAuth", JSON.stringify(result));
-          localStorage.setItem("adminAuth", JSON.stringify(result));
-          bukaDashboardAdmin(result);
-        } else {
-          adminLoginErr.textContent = "❌ " + (result.message || "Username / Password salah!");
-          adminLoginErr.style.display = "block";
-          adminPass.value = "";
-          adminPass.focus();
-        }
-      }catch(err){
-        adminLoginErr.textContent = "❌ Gagal koneksi ke server. Periksa internet.";
-        adminLoginErr.style.display = "block";
-      }finally{
-        btnSubmitAdmin.disabled = false;
-        btnSubmitAdmin.textContent = "Buka Dashboard Admin";
+    // Simpan Token di LocalStorage
+    function saveGhToken() {
+      const t = document.getElementById("ghToken").value.trim();
+      if(t) {
+        localStorage.setItem("pkbm_gh_token", t);
+        const badge = document.getElementById("tokenStatus");
+        badge.style.display = "inline-block";
+        badge.className = "status-badge status-ok";
+        badge.textContent = "✅ Token tersimpan di browser!";
       }
-    });
-
-    btnAdminLogout.addEventListener("click", function(){
-      sessionStorage.removeItem("adminAuth");
-      localStorage.removeItem("adminAuth");
-      location.reload();
-    });
-
-    function bukaDashboardAdmin(data){
-      adminLoginGate.style.display = "none";
-      adminMainContent.style.display = "block";
-      if(adminGreeting) adminGreeting.textContent = `Selamat datang, ${data.nama || "Admin"} • Kelola CBT, Materi, dan Konten PKBM`;
     }
 
-    /* ===== GITHUB API UTILITY ===== */
-    function arrayBufferToBase64(buffer){
-      let binary = ""; const bytes = new Uint8Array(buffer);
-      for(let i=0; i<bytes.byteLength; i++){ binary += String.fromCharCode(bytes[i]); }
-      return btoa(binary);
-    }
-    async function resizeImage(file, maxSize=1400, quality=.78){
-      return new Promise((resolve, reject) => {
-        const img = new Image(); const reader = new FileReader();
-        reader.onload = () => { img.src = reader.result; };
-        reader.onerror = reject;
-        img.onload = () => {
-          let w = img.width, h = img.height;
-          if(w > h && w > maxSize){ h = Math.round(h * maxSize / w); w = maxSize; }
-          else if(h >= w && h > maxSize){ w = Math.round(w * maxSize / h); h = maxSize; }
-          const canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h;
-          const ctx = canvas.getContext("2d"); ctx.drawImage(img, 0, 0, w, h);
-          canvas.toBlob(async (blob) => {
-            const buffer = await blob.arrayBuffer();
-            resolve({ base64: arrayBufferToBase64(buffer), blobUrl: URL.createObjectURL(blob), extension: "jpg" });
-          }, "image/jpeg", quality);
-        };
-        img.onerror = reject; reader.readAsDataURL(file);
-      });
-    }
-    async function githubRequest(method, path, body=null){
-      const owner = $("owner").value.trim();
-      const repo = $("repo").value.trim();
-      const token = $("token").value.trim();
-      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-      const opts = {
-        method,
-        headers: { "Authorization": `Bearer ${token}`, "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" }
-      };
-      if(body){ opts.body = JSON.stringify(body); }
-      const res = await fetch(url, opts);
-      const text = await res.text();
-      let json;
-      try { json = JSON.parse(text); } catch { json = {message:text}; }
-      if(!res.ok){ throw new Error(json.message || "GitHub API error (" + res.status + ")"); }
-      return json;
-    }
-    function utf8ToBase64(str){ return btoa(unescape(encodeURIComponent(str))); }
-    function base64ToUtf8(b64){ return decodeURIComponent(escape(atob(b64.replace(/\n/g, "")))); }
-    async function getGithubFile(path){ const branch = $("branch").value.trim() || "main"; return await githubRequest("GET", `${path}?ref=${encodeURIComponent(branch)}`); }
-    async function putFile(path, base64Content, message, sha=null){
-      const branch = $("branch").value.trim() || "main";
-      const body = { message, content: base64Content, branch };
-      if(sha){ body.sha = sha; }
-      return await githubRequest("PUT", path, body);
-    }
-    async function putBinaryFile(path, base64Content, message){
-      let sha = null; try{ const old = await getGithubFile(path); sha = old.sha; }catch(err){}
-      return await putFile(path, base64Content, message, sha);
-    }
-    async function deleteGithubFile(path, message){
-      const branch = $("branch").value.trim() || "main";
-      const fileInfo = await githubRequest("GET", `${path}?ref=${encodeURIComponent(branch)}`);
-      return await githubRequest("DELETE", path, { message, sha: fileInfo.sha, branch });
-    }
-    function escapeHtml(str){ return String(str || "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[ch] || ch)); }
-    function cleanEmbedUrl(input) {
-      if(!input) return "";
-      let url = input.trim();
-      const match = url.match(/src=["']([^"']+)["']/i);
-      if(match && match[1]) { url = match[1]; }
-      if(url.includes("docs.google.com/forms") && !url.includes("embedded=true")) {
-        url += (url.includes("?") ? "&" : "?") + "embedded=true";
-      }
-      return url;
-    }
-    function showStatus(elId, type, msg){
-      const el = $(elId); if(!el) return; el.style.display = "block";
-      el.style.background = type === "success" ? "#ecfdf5" : (type === "loading" ? "#eff6ff" : "#fef2f2");
-      el.style.color = type === "success" ? "#065f46" : (type === "loading" ? "#1e40af" : "#991b1b");
-      el.innerHTML = (type === "success" ? "✅ " : (type === "loading" ? "⏳ " : "❌ ")) + msg;
+    const savedT = localStorage.getItem("pkbm_gh_token");
+    if(savedT) {
+      document.getElementById("ghToken").value = savedT;
+      const badge = document.getElementById("tokenStatus");
+      badge.style.display = "inline-block";
+      badge.className = "status-badge status-ok";
+      badge.textContent = "✅ Token aktif siap digunakan";
     }
 
-    /* RENDER FORM MATERI & TUGAS KELAS 1 - 12 */
-    function renderMateriInputs() {
-      const renderBox = (containerId, start, end) => {
-        let html = "";
-        for(let i=start; i<=end; i++){
-          html += `
-            <div class="row-class-box">
-              <b style="color:var(--green-dark); font-size:15px;">📁 Tingkat Kelas ${i}</b>
-              <div class="grid" style="margin-top:6px;">
-                <div>
-                  <label style="margin:4px 0 2px; font-size:13px;">Folder Drive Modul Materi Kelas ${i}:</label>
-                  <input id="driveMateriKelas${i}" placeholder="https://drive.google.com/drive/folders/...">
-                </div>
-                <div>
-                  <label style="margin:4px 0 2px; font-size:13px;">Formulir Kirim Tugas Kelas ${i}:</label>
-                  <input id="formTugasKelas${i}" placeholder="https://forms.gle/... atau Link Drive">
-                </div>
-              </div>
-            </div>
-          `;
-        }
-        $(containerId).innerHTML = html;
-      };
-      renderBox("boxMateriPaketA", 1, 6);
-      renderBox("boxMateriPaketB", 7, 9);
-      renderBox("boxMateriPaketC", 10, 12);
-    }
-    renderMateriInputs();
-
-    /* ===== MATERI & TUGAS KELAS 1-12 ===== */
-    async function getMateriJson(){
-      const token = $("token") ? $("token").value.trim() : "";
-      if(token){
-        try{ const data = await getGithubFile("data-materi.json"); return { json: JSON.parse(base64ToUtf8(data.content)), sha: data.sha }; }
-        catch(e){ return { json: {}, sha: null }; }
-      } else {
+    // 1. LOAD DATA AWAL JSON DARI REPO
+    async function initData() {
+      // Load Materi
+      try {
         const res = await fetch("data-materi.json?t=" + Date.now());
-        if(!res.ok) return { json: {}, sha: null };
-        return { json: await res.json(), sha: null };
-      }
-    }
-    async function loadMateriSettings(){
-      showStatus("materiStatus", "loading", "Memuat data link materi & tugas...");
-      try{
-        const fileData = await getMateriJson();
-        const d = fileData.json || {};
-        const materi = d.materi || {};
-        const tugas = d.tugas || {};
-        for(let i=1; i<=12; i++){
-          $(`driveMateriKelas${i}`).value = materi[`Kelas ${i}`] || materi[`${i}`] || "";
-          $(`formTugasKelas${i}`).value = tugas[`Kelas ${i}`] || tugas[`${i}`] || "";
+        if(res.ok) {
+          const d = await res.json();
+          renderMateriInputs(d.materi || {});
         }
-        showStatus("materiStatus", "success", "Link folder materi & tugas Kelas 1-12 berhasil dimuat!");
-      }catch(err){ showStatus("materiStatus", "error", "Gagal memuat: " + err.message); }
-    }
-    async function saveMateriSettings(){
-      const token = $("token") ? $("token").value.trim() : "";
-      if(!token){ showStatus("materiStatus", "error", "GitHub Token belum diisi pada Bagian 1."); $("token").focus(); return; }
-      const saveBtn = $("saveMateriBtn"); saveBtn.disabled = true;
-      showStatus("materiStatus", "loading", "Menyimpan data link materi & tugas...");
-      try{
-        let sha = null; try{ const old = await getGithubFile("data-materi.json"); sha = old.sha; }catch(e){}
-        const data = { materi: {}, tugas: {}, updatedAt: new Date().toISOString() };
-        for(let i=1; i<=12; i++){
-          data.materi[`Kelas ${i}`] = $(`driveMateriKelas${i}`).value.trim();
-          data.tugas[`Kelas ${i}`] = $(`formTugasKelas${i}`).value.trim();
-        }
-        await putFile("data-materi.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update link materi & tugas Kelas 1-12", sha);
-        showStatus("materiStatus", "success", "Semua link materi & tugas Kelas 1-12 berhasil disimpan!");
-        alert("Sukses! Link materi & tugas Kelas 1 s.d. 12 berhasil disimpan.");
-      }catch(err){ showStatus("materiStatus", "error", err.message); }
-      finally{ saveBtn.disabled = false; }
-    }
-    $("saveMateriBtn").addEventListener("click", saveMateriSettings);
-    $("loadMateriBtn").addEventListener("click", loadMateriSettings);
-    try { loadMateriSettings(); } catch(e){}
+      } catch(e){}
 
-    /* ===== SOAL CBT KELAS 1-12 ===== */
-    async function getUjianJson(){
-      const token = $("token") ? $("token").value.trim() : "";
-      if(token){
-        try{ const data = await getGithubFile("data-ujian.json"); return { json: JSON.parse(base64ToUtf8(data.content)), sha: data.sha }; }
-        catch(e){ return { json: {}, sha: null }; }
-      } else {
+      // Load CBT
+      try {
         const res = await fetch("data-ujian.json?t=" + Date.now());
-        if(!res.ok) return { json: {}, sha: null };
-        return { json: await res.json(), sha: null };
+        if(res.ok) {
+          const d = await res.json();
+          renderCbtInputs(d);
+        }
+      } catch(e){}
+
+      // Load Tutor
+      try {
+        const res = await fetch("data-tutor.json?t=" + Date.now());
+        if(res.ok) {
+          const d = await res.json();
+          if(d.rekapNilai) document.getElementById("inputTutorNilai").value = d.rekapNilai;
+          if(d.driveTugas) document.getElementById("inputTutorTugas").value = d.driveTugas;
+        }
+      } catch(e){}
+
+      // Load Video
+      try {
+        const res = await fetch("data-video.json?t=" + Date.now());
+        if(res.ok) {
+          const d = await res.json();
+          if(d.url) document.getElementById("inputVideoUrl").value = d.url;
+        }
+      } catch(e){}
+
+      // Load Kontak
+      try {
+        const res = await fetch("data-kontak.json?t=" + Date.now());
+        if(res.ok) {
+          const d = await res.json();
+          if(d.wa) document.getElementById("inputKontakWA").value = d.wa;
+          if(d.email) document.getElementById("inputKontakEmail").value = d.email;
+          if(d.alamat) document.getElementById("inputKontakAlamat").value = d.alamat;
+        }
+      } catch(e){}
+
+      // Load Raw JSONs
+      loadRawField("data-artikel.json", "rawArtikelJson");
+      loadRawField("data-kalender.json", "rawKalenderJson");
+      loadRawField("data-brosur.json", "rawBrosurJson");
+    }
+
+    async function loadRawField(file, elemId) {
+      try {
+        const res = await fetch(file + "?t=" + Date.now());
+        if(res.ok) {
+          const json = await res.json();
+          document.getElementById(elemId).value = JSON.stringify(json, null, 2);
+        }
+      } catch(e){}
+    }
+
+    function renderMateriInputs(map) {
+      const c = document.getElementById("formMateriContainer");
+      let html = "";
+      for(let i=1; i<=12; i++) {
+        const k = `Kelas ${i}`;
+        const val = map[k] || "";
+        html += `
+          <div>
+            <label style="font-size:12px;">Folder Drive ${k}:</label>
+            <input type="text" id="materi_kelas_${i}" value="${val}" placeholder="Link Drive...">
+          </div>
+        `;
+      }
+      c.innerHTML = html;
+    }
+
+    function renderCbtInputs(data) {
+      const c = document.getElementById("formCbtContainer");
+      c.innerHTML = `
+        <div class="grid-3">
+          <div><label>Link Ujian Paket A:</label><input type="text" id="cbt_paket_a" value="${data.paketA || ''}" placeholder="Link Soal..."></div>
+          <div><label>Link Ujian Paket B:</label><input type="text" id="cbt_paket_b" value="${data.paketB || ''}" placeholder="Link Soal..."></div>
+          <div><label>Link Ujian Paket C:</label><input type="text" id="cbt_paket_c" value="${data.paketC || ''}" placeholder="Link Soal..."></div>
+        </div>
+      `;
+    }
+
+    // 2. FUNGSI COMMIT FILE KE GITHUB REST API
+    async function commitToGithub(fileName, jsonContent) {
+      const token = document.getElementById("ghToken").value.trim() || localStorage.getItem("pkbm_gh_token");
+      if(!token) {
+        alert("❌ Masukkan GitHub Token di bagian 1 terlebih dahulu!");
+        return false;
+      }
+
+      const path = fileName;
+      const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
+
+      // Ambil SHA file lama
+      let sha = "";
+      try {
+        const getRes = await fetch(url, { headers: { "Authorization": `token ${token}` } });
+        if(getRes.ok) {
+          const getData = await getRes.json();
+          sha = getData.sha;
+        }
+      } catch(e){}
+
+      // Encode UTF-8 to Base64
+      const contentStr = typeof jsonContent === "string" ? jsonContent : JSON.stringify(jsonContent, null, 2);
+      const encoded = btoa(unescape(encodeURIComponent(contentStr)));
+
+      const body = {
+        message: `Update ${fileName} via Admin Dashboard`,
+        content: encoded
+      };
+      if(sha) body.sha = sha;
+
+      try {
+        const putRes = await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Authorization": `token ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        });
+
+        if(putRes.ok) {
+          alert(`✅ Berhasil! File ${fileName} berhasil diperbarui di GitHub.`);
+          return true;
+        } else {
+          const errData = await putRes.json();
+          alert(`❌ Gagal menyimpan ke GitHub: ${errData.message}`);
+          return false;
+        }
+      } catch(err) {
+        alert(`❌ Error koneksi GitHub: ${err.message}`);
+        return false;
       }
     }
-    async function loadUjianSettings(){
-      try{
-        const fileData = await getUjianJson(); const d = fileData.json || {};
-        for(let i=1; i<=12; i++){ $(`ujianKelas${i}`).value = d[`Kelas ${i}`] || d[`${i}`] || ""; }
-      }catch(e){}
-    }
-    async function saveUjianSettings(){
-      const token = $("token") ? $("token").value.trim() : "";
-      if(!token){ alert("Mohon isi GitHub token pada Bagian 1."); return; }
-      try{
-        let sha = null; try{ const old = await getGithubFile("data-ujian.json"); sha = old.sha; }catch(e){}
-        const data = { updatedAt: new Date().toISOString() };
-        for(let i=1; i<=12; i++){ const val = cleanEmbedUrl($(`ujianKelas${i}`).value); data[`Kelas ${i}`] = val; $(`ujianKelas${i}`).value = val; }
-        await putFile("data-ujian.json", utf8ToBase64(JSON.stringify(data, null, 2)), "Update link soal CBT 1-12", sha);
-        alert("Sukses! Link soal ujian berhasil disimpan.");
-      }catch(err){ alert("Error: " + err.message); }
-    }
-    $("saveUjianBtn").addEventListener("click", saveUjianSettings);
-    $("loadUjianBtn").addEventListener("click", loadUjianSettings);
-    try { loadUjianSettings(); } catch(e){}
 
-    /* ===== LINK TUTOR, VIDEO, KONTAK, FOTO, BROSUR, ARTIKEL, DLL ===== */
-    async function getTutorJson(){ try{ const data = await getGithubFile("data-tutor.json"); return { json: JSON.parse(base64ToUtf8(data.content)), sha: data.sha }; }catch(e){ return { json:{}, sha:null }; } }
-    async function loadTutorSettings(){ try{ const f = await getTutorJson(); $("tutorRekapNilai").value = f.json.rekapNilai||""; $("tutorDriveTugas").value = f.json.driveTugas||""; }catch(e){} }
-    async function saveTutorSettings(){
-      const token = $("token")?.value.trim(); if(!token) return;
-      let sha=null; try{ const old = await getGithubFile("data-tutor.json"); sha=old.sha; }catch(e){}
-      const d = { rekapNilai: $("tutorRekapNilai").value.trim(), driveTugas: $("tutorDriveTugas").value.trim(), updatedAt: new Date().toISOString() };
-      await putFile("data-tutor.json", utf8ToBase64(JSON.stringify(d,null,2)), "Update portal tutor", sha); alert("Link tutor disimpan!");
+    // Simpan Form Builders
+    async function simpanJson(fileName, type) {
+      let payload = {};
+
+      if(type === 'materi') {
+        const materiMap = {};
+        for(let i=1; i<=12; i++) {
+          materiMap[`Kelas ${i}`] = document.getElementById(`materi_kelas_${i}`).value.trim();
+        }
+        payload = { materi: materiMap };
+      } else if(type === 'cbt') {
+        payload = {
+          paketA: document.getElementById("cbt_paket_a").value.trim(),
+          paketB: document.getElementById("cbt_paket_b").value.trim(),
+          paketC: document.getElementById("cbt_paket_c").value.trim()
+        };
+      } else if(type === 'tutor') {
+        payload = {
+          rekapNilai: document.getElementById("inputTutorNilai").value.trim(),
+          driveTugas: document.getElementById("inputTutorTugas").value.trim()
+        };
+      } else if(type === 'video') {
+        payload = { url: document.getElementById("inputVideoUrl").value.trim() };
+      } else if(type === 'kontak') {
+        payload = {
+          wa: document.getElementById("inputKontakWA").value.trim(),
+          email: document.getElementById("inputKontakEmail").value.trim(),
+          alamat: document.getElementById("inputKontakAlamat").value.trim()
+        };
+      }
+
+      await commitToGithub(fileName, payload);
     }
-    $("saveTutorBtn")?.addEventListener("click", saveTutorSettings);
-    try{ loadTutorSettings(); }catch(e){}
+
+    async function simpanRawJson(fileName, textareaId) {
+      const val = document.getElementById(textareaId).value.trim();
+      try {
+        JSON.parse(val); // Validasi format JSON
+      } catch(e) {
+        alert("❌ Format JSON tidak valid! Periksa tanda koma dan kurung kurawal.");
+        return;
+      }
+      await commitToGithub(fileName, val);
+    }
+
+    initData();
   </script>
 </body>
 </html>
