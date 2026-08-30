@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portal Siswa & E-Learning - PKBM Pelita Aushaf Indonesia</title>
+  <title>Portal Siswa & Wali Santri - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
   <style>
     :root {
@@ -14,6 +14,8 @@
       --text: #1f2937;
       --muted: #6b7280;
       --danger: #b91c1c;
+      --orange: #ea580c;
+      --blue: #2563eb;
     }
     * { box-sizing: border-box; }
     body {
@@ -23,7 +25,7 @@
       color: var(--text);
       line-height: 1.6;
     }
-    .container { max-width: 960px; margin: auto; padding: 20px; }
+    .container { max-width: 980px; margin: auto; padding: 20px; }
     
     .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .btn-nav {
@@ -42,74 +44,91 @@
     .hero p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
     .badge-user {
       display: inline-block; background: var(--green-soft); color: var(--green-dark); border: 1px solid var(--line);
-      padding: 4px 14px; border-radius: 999px; font-size: 13px; font-weight: 800; margin-bottom: 8px;
+      padding: 5px 16px; border-radius: 999px; font-size: 13px; font-weight: 800; margin-bottom: 8px;
     }
 
+    /* LOGIN GATE */
     .lock-box {
       max-width: 420px; margin: 30px auto; background: #fff; border: 1px solid var(--line);
       border-radius: 24px; padding: 32px 24px; text-align: center; box-shadow: 0 16px 40px rgba(13,122,95,0.12);
     }
     .lock-box h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 20px; }
     .lock-box p { font-size: 13.5px; color: var(--muted); margin-bottom: 20px; }
-    
     .form-group { text-align: left; margin-bottom: 14px; }
     .form-group label { display: block; font-size: 13px; font-weight: 800; color: var(--green-dark); margin-bottom: 6px; }
     .input-field {
       width: 100%; padding: 13px 16px; font-size: 15px; border: 2px solid var(--line);
-      border-radius: 14px; outline: none; color: var(--text);
+      border-radius: 14px; outline: none;
     }
-    .input-field:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(13,122,95,0.12); }
-    
     .btn-login {
       width: 100%; padding: 14px; background: var(--green); color: #fff; border: 0;
       border-radius: 16px; font-weight: 800; font-size: 15px; cursor: pointer; box-shadow: 0 8px 20px rgba(13,122,95,0.2);
-      margin-top: 8px;
     }
-    .btn-login:disabled { background: #9ca3af; cursor: not-allowed; }
-    
     .login-error { color: var(--danger); font-size: 13px; font-weight: bold; margin-top: 12px; display: none; }
     #siswaDashboard { display: none; }
 
-    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
-    @media(max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
+    /* DASHBOARD WALI SANTRI */
+    .section-title { font-size: 20px; color: var(--green-dark); margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
 
+    /* KOTAK TUGAS / PR AKTIF */
+    .tugas-container {
+      background: #fff; border: 2px solid #fed7aa; border-radius: 22px; padding: 22px;
+      box-shadow: 0 10px 25px rgba(234,88,12,0.06); margin-bottom: 24px;
+    }
+    .tugas-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .tugas-header h3 { margin: 0; color: var(--orange); font-size: 18px; display: flex; align-items: center; gap: 6px; }
+    .tugas-item {
+      background: #fffaf5; border: 1.5px solid #ffedd5; border-radius: 14px; padding: 14px; margin-bottom: 10px;
+    }
+    .tugas-item b { color: var(--orange); font-size: 14.5px; }
+
+    /* RAPORT HARIAN & JURNAL ADAB */
+    .raport-card {
+      background: #fff; border: 2px solid var(--line); border-radius: 24px; padding: 24px;
+      box-shadow: 0 12px 30px rgba(13,122,95,0.08); margin-bottom: 24px;
+    }
+    .raport-controls {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      border-bottom: 2px solid var(--line); padding-bottom: 16px; margin-bottom: 16px;
+    }
+    .select-month {
+      padding: 9px 14px; border-radius: 12px; border: 1.5px solid var(--line); outline: none;
+      font-weight: bold; font-size: 13.5px; background: #fff;
+    }
+    .btn-print-raport {
+      background: var(--green); color: #fff; border: 0; padding: 9px 18px; border-radius: 999px;
+      font-weight: 800; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-print-raport:hover { background: var(--green-dark); }
+
+    /* TABEL JURNAL RAPORT */
+    .jurnal-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    .jurnal-table th { background: var(--green-soft); color: var(--green-dark); padding: 10px; text-align: left; border: 1px solid var(--line); }
+    .jurnal-table td { padding: 12px 10px; border: 1px solid var(--line); vertical-align: top; }
+    .badge-fokus { background: #dcfce7; color: #15803d; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 11.5px; display: inline-block; }
+    .badge-adab { background: #dbeafe; color: #1d4ed8; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 11.5px; display: inline-block; margin-top: 4px; }
+
+    /* MENU AKADEMIK LAINNYA */
+    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    @media(max-width: 860px) { .dashboard-grid { grid-template-columns: 1fr; } }
     .action-card {
-      background: linear-gradient(135deg, #0d7a5f, #0a5c48); color: #fff; border-radius: 24px;
-      padding: 24px 20px; text-align: center; box-shadow: 0 12px 30px rgba(13,122,95,0.18);
-      display: flex; flex-direction: column; justify-content: space-between;
+      background: #fff; border: 1.5px solid var(--line); border-radius: 20px; padding: 20px;
+      display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.04);
     }
-    .action-card h2 { margin: 0 0 6px; font-size: 20px; color: #fff; }
-    .action-card p { margin: 0 0 16px; color: #e8fff4; font-size: 13px; flex-grow: 1; }
-    .btn-action {
-      display: inline-block; background: #fff; color: var(--green-dark); text-decoration: none;
-      font-weight: 900; font-size: 14px; padding: 12px 18px; border-radius: 14px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.12); transition: transform 0.2s, background 0.2s;
-    }
-    .btn-action:hover { transform: translateY(-2px); background: #f0fdf4; }
-
-    .section-title { font-size: 20px; color: var(--green-dark); margin: 28px 0 16px; display: flex; align-items: center; gap: 8px; }
-    .card {
-      background: #fff; border: 2px solid var(--line); border-radius: 22px; padding: 24px;
-      display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(13,122,95,0.08);
-      margin-bottom: 24px;
-    }
-    .card h3 { margin: 0 0 8px; color: var(--green-dark); font-size: 19px; }
-    .card p { margin: 0 0 18px; color: var(--muted); font-size: 13.5px; }
+    .action-card h4 { margin: 0 0 6px; color: var(--green-dark); font-size: 16px; }
+    .action-card p { margin: 0 0 14px; color: var(--muted); font-size: 12.5px; flex-grow: 1; }
     .btn-card {
-      display: block; text-align: center; background: var(--green); color: #fff; border: 0;
-      padding: 13px; border-radius: 14px; font-weight: 800; font-size: 14.5px; text-decoration: none;
-      box-shadow: 0 6px 18px rgba(13,122,95,0.18);
+      display: block; text-align: center; background: var(--green); color: #fff; padding: 10px;
+      border-radius: 12px; font-weight: 800; font-size: 13px; text-decoration: none;
     }
     .btn-card:hover { background: var(--green-dark); }
+    .btn-logout { color: var(--danger); background: none; border: 0; font-weight: 800; font-size: 13px; cursor: pointer; text-decoration: underline; }
 
-    .guide-box { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 22px; font-size: 13.5px; color: var(--text); }
-    .guide-box h4 { margin: 0 0 10px; color: var(--green-dark); font-size: 16px; }
-    .guide-box ol { margin: 0; padding-left: 20px; }
-    .guide-box li { margin-bottom: 6px; }
-
-    .btn-logout {
-      display: inline-block; margin-top: 20px; color: var(--danger); background: none; border: 0;
-      font-weight: 800; font-size: 13px; cursor: pointer; text-decoration: underline;
+    @media print {
+      body { background: #fff; padding: 0; }
+      .top-bar, .hero, .tugas-container, .dashboard-grid, .raport-controls, .btn-logout, #boxDriveMateri { display: none !important; }
+      .raport-card { border: none; box-shadow: none; padding: 0; }
+      .jurnal-table th, .jurnal-table td { border: 1px solid #333; }
     }
   </style>
 </head>
@@ -118,25 +137,25 @@
   <div class="container">
     <div class="top-bar">
       <a href="index.html" class="btn-nav">← Beranda Website</a>
-      <a href="https://wa.me/6287751325199" target="_blank" class="btn-nav">Bantuan Admin WA</a>
+      <a href="https://wa.me/6287751325199" target="_blank" class="btn-nav">Hubungi Admin Sekolah WA</a>
     </div>
 
     <div class="hero">
       <img src="logo-pkbm.png" alt="Logo PKBM">
-      <div><span class="badge-user" id="userBadge">Area Akademik Santri Terdaftar</span></div>
-      <h1>Portal Akademik Siswa & E-Learning</h1>
+      <div><span class="badge-user" id="userBadge">Portal Akademik & Wali Santri</span></div>
+      <h1>Buku Penghubung & Raport Harian Santri</h1>
       <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Kesetaraan)</p>
     </div>
 
-    <!-- 1. FORM LOGIN SANTRI -->
+    <!-- 1. LOGIN WALI SANTRI / SANTRI -->
     <div id="loginGate" class="lock-box">
       <div style="font-size: 36px; margin-bottom: 8px;">🎓</div>
       <h3>Login Santri / Wali Murid</h3>
-      <p>Masukkan NIS / Username dan Password sesuai database sekolah.</p>
+      <p>Masukkan NIS Santri dan Password untuk melihat perkembangan belajar ananda.</p>
       
       <form id="siswaLoginForm">
         <div class="form-group">
-          <label for="usernameInput">NIS / Username:</label>
+          <label for="usernameInput">NIS Santri:</label>
           <input type="text" id="usernameInput" class="input-field" placeholder="Contoh: siswa1" autofocus required>
         </div>
         
@@ -145,108 +164,104 @@
           <input type="password" id="passwordInput" class="input-field" placeholder="••••••••" required>
         </div>
 
-        <button type="submit" id="btnSubmitSiswa" class="btn-login">Masuk ke Portal Akademik</button>
+        <button type="submit" id="btnSubmitSiswa" class="btn-login">Buka Raport & Buku Penghubung</button>
       </form>
       <div id="loginError" class="login-error"></div>
     </div>
 
-    <!-- 2. DASHBOARD SANTRI -->
+    <!-- 2. DASHBOARD WALI SANTRI -->
     <div id="siswaDashboard">
-      
+
+      <!-- FITUR 1: DAFTAR TUGAS / PR AKTIF DARI TUTOR -->
+      <div class="tugas-container">
+        <div class="tugas-header">
+          <h3>📌 Daftar Tugas & PR Rumah Santri</h3>
+          <span id="badgeCountTugas" style="background:#ea580c; color:#fff; padding:3px 10px; border-radius:999px; font-weight:800; font-size:12px;">0 Tugas</span>
+        </div>
+        <div id="tugasListContainer">
+          <div style="color:var(--muted); font-size:13px; text-align:center; padding:10px;">⏳ Memeriksa tugas terbaru dari ustadz/tutor...</div>
+        </div>
+      </div>
+
+      <!-- FITUR 2: RAPORT HARIAN & REKAP BULANAN -->
+      <h2 class="section-title">📊 Raport Perkembangan Harian & Karakter Santri</h2>
+      <div class="raport-card">
+        
+        <div class="raport-controls">
+          <div>
+            <label style="font-size:13px; font-weight:bold; color:var(--green-dark); margin-right:6px;">Pilih Periode Bulan:</label>
+            <select id="filterBulanSelect" class="select-month">
+              <option value="all">-- Semua Riwayat Pembelajaran --</option>
+            </select>
+          </div>
+          <button onclick="window.print()" class="btn-print-raport">🖨️ Cetak Raport Bulanan (PDF)</button>
+        </div>
+
+        <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:14px;">
+          <div style="background:var(--green-soft); padding:8px 14px; border-radius:12px; font-size:13px; color:var(--green-dark); font-weight:bold;">
+            Total Sesi Pembelajaran: <span id="statTotalSesi">0</span> Pertemuan
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="jurnal-table">
+            <thead>
+              <tr>
+                <th style="width:22%;">Tgl & Mapel</th>
+                <th style="width:28%;">Materi Pembahasan</th>
+                <th style="width:22%;">Evaluasi Adab & Fokus</th>
+                <th style="width:28%;">Catatan Khusus Tutor</th>
+              </tr>
+            </thead>
+            <tbody id="raportTableBody">
+              <tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted);">Memuat rekap raport harian santri...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FITUR 3: MENU PENDUKUNG AKADEMIK LAINNYA -->
+      <h2 class="section-title">🚀 Layanan & Fasilitas Belajar</h2>
       <div class="dashboard-grid">
+        
         <!-- CBT UJIAN -->
-        <div class="action-card" style="background: linear-gradient(135deg, #145a43, #0a3d2e); border: 2px solid #34d399;">
+        <div class="action-card">
           <div>
-            <div style="font-size: 30px; margin-bottom: 6px;">💻</div>
-            <h2 id="titleElearning">Ruang Ujian Online CBT</h2>
-            <p id="descElearning">Evaluasi berkala dan Ujian Terawasi resmi sesuai tingkatan kelas Anda.</p>
+            <h4>💻 Ruang Ujian Online (CBT)</h4>
+            <p>Evaluasi berkala dan ujian online terawasi resmi santri.</p>
           </div>
-          <a id="btnElearning" href="ujian.html" class="btn-action">
-            Masuk Ujian Sekarang →
-          </a>
+          <a id="btnElearning" href="ujian.html" class="btn-card">Masuk Ujian CBT →</a>
         </div>
 
-        <!-- SCAN QR ABSENSI MASUK / PULANG -->
-        <div class="action-card" style="background: linear-gradient(135deg, #059669, #065f46); border: 2px solid #6ee7b7;">
+        <!-- FOLDER MATERI GOOGLE DRIVE -->
+        <div class="action-card" id="boxDriveMateri">
           <div>
-            <div style="font-size: 30px; margin-bottom: 6px;">📲</div>
-            <h2>Scan QR Absensi</h2>
-            <p>Presensi Masuk & Pulang saat berada di radius Gedung G2 atau Gedung I5.</p>
+            <h4 id="modulTitle">📁 Modul & Materi Belajar</h4>
+            <p>Akses arsip materi dan e-book pembelajaran resmi kelas.</p>
           </div>
-          <a href="absensi-qr.html" class="btn-action">
-            Buka Scanner QR →
-          </a>
+          <a id="linkModul" href="#" target="_blank" class="btn-card">Buka Folder Materi ↗</a>
         </div>
 
-        <!-- KARTU SANTRI & QR CODE -->
-        <div class="action-card" style="background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #64748b;">
+        <!-- KARTU SANTRI & QR -->
+        <div class="action-card">
           <div>
-            <div style="font-size: 30px; margin-bottom: 6px;">🪪</div>
-            <h2>Kartu Tanda Santri</h2>
-            <p>Lihat dan cetak Kartu Santri resmi dengan QR Code standar kartu ATM.</p>
+            <h4>🪪 Kartu Tanda Santri</h4>
+            <p>Lihat kartu resmi santri dan QR code identitas absensi.</p>
           </div>
-          <a href="kartu.html" class="btn-action">
-            Lihat Kartu Saya →
-          </a>
+          <a href="kartu.html" class="btn-card" style="background:#334155;">Lihat Kartu Santri →</a>
         </div>
 
-        <!-- PENGUMPULAN TUGAS KELAS -->
-        <div class="action-card" style="background: linear-gradient(135deg, #0d7a5f, #0a5c48);">
-          <div>
-            <div style="font-size: 30px; margin-bottom: 6px;">📤</div>
-            <h2 id="titleTugas">Pengumpulan Tugas</h2>
-            <p id="descTugas">Kirimkan tugas harian, lembar kerja adab, dan portofolio santri di sini.</p>
-          </div>
-          <a id="btnTugas" href="https://forms.gle/cbSFAhfKLiM2CEzx6" target="_blank" class="btn-action">
-            Formulir Kirim Tugas →
-          </a>
-        </div>
-
-        <!-- PRESENSI SELFIE & JURNAL -->
-        <div class="action-card" style="background: linear-gradient(135deg, #0369a1, #075985); grid-column: 1 / -1;">
-          <div>
-            <div style="font-size: 30px; margin-bottom: 6px;">📸</div>
-            <h2>Presensi Selfie Harian & Jurnal Belajar</h2>
-            <p>Ambil foto kehadiran selfie santri mandiri dan tuliskan ringkasan jurnal belajar.</p>
-          </div>
-          <a href="presensi.html" class="btn-action" style="max-width: 280px; margin: auto;">
-            Isi Presensi Selfie →
-          </a>
-        </div>
       </div>
 
-      <!-- BANK MATERI KELAS -->
-      <h2 class="section-title">📚 Bank Materi & Modul Belajar</h2>
-      <div class="card" id="cardModul">
-        <div>
-          <h3 id="modulTitle">📁 Folder Modul & Materi</h3>
-          <p id="modulDesc">Modul pembelajaran dan panduan proyek mandiri yang sesuai dengan tingkatan kelas Anda.</p>
-        </div>
-        <a id="linkModul" href="#" target="_blank" class="btn-card">🚀 Buka Folder Google Drive Kelas →</a>
+      <div style="text-align: right; margin-top: 20px;">
+        <button id="btnLogoutSiswa" class="btn-logout">🔒 Keluar dari Akun Santri</button>
       </div>
 
-      <div class="guide-box">
-        <h4>📌 Petunjuk Pembelajaran & Ujian:</h4>
-        <ol>
-          <li>Gunakan fitur <b>Scan QR</b> saat hadir di sekolah, atau <b>Presensi Selfie</b> jika belajar mandiri dari rumah.</li>
-          <li>Kartu Santri dapat dicetak di kertas tebal/kartu PVC untuk tanda pengenal resmi.</li>
-          <li>Kamera wajib diizinkan saat mengikuti Ujian Online Terawasi.</li>
-        </ol>
-        <div style="text-align: right;">
-          <button id="btnLogoutSiswa" class="btn-logout">🔒 Keluar dari Portal Siswa</button>
-        </div>
-      </div>
     </div>
   </div>
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
-
-    const FOLDER_DRIVE_DEFAULT = {
-      "Paket A": "https://drive.google.com/drive/folders/10StMhyNtswlQjwEveEddfWjKpS4LS31R?usp=sharing",
-      "Paket B": "https://drive.google.com/drive/folders/1SLLWovVJZDGObhoI7h5rKrAasa_-DsSb?usp=sharing",
-      "Paket C": "https://drive.google.com/drive/folders/1SSVBkPu6GvqYx1z6Xu4XbYwoaAQa3-qB?usp=sharing"
-    };
 
     const loginGate = document.getElementById("loginGate");
     const siswaDashboard = document.getElementById("siswaDashboard");
@@ -258,23 +273,18 @@
     const btnSubmitSiswa = document.getElementById("btnSubmitSiswa");
     const btnLogoutSiswa = document.getElementById("btnLogoutSiswa");
 
-    const titleTugas = document.getElementById("titleTugas");
-    const btnTugas = document.getElementById("btnTugas");
-    const titleElearning = document.getElementById("titleElearning");
-    const btnElearning = document.getElementById("btnElearning");
-    const modulTitle = document.getElementById("modulTitle");
-    const linkModul = document.getElementById("linkModul");
+    let allRiwayatRaport = [];
 
     const savedSiswa = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
     if (savedSiswa) {
-      try { tampilkanDashboard(JSON.parse(savedSiswa)); } catch(e) {}
+      try { tampilkanDashboardWali(JSON.parse(savedSiswa)); } catch(e) {}
     }
 
     siswaLoginForm.addEventListener("submit", async function(e) {
       e.preventDefault();
       loginError.style.display = "none";
       btnSubmitSiswa.disabled = true;
-      btnSubmitSiswa.textContent = "Memverifikasi database...";
+      btnSubmitSiswa.textContent = "Memverifikasi...";
 
       const u = usernameInput.value.trim();
       const p = passwordInput.value.trim();
@@ -286,7 +296,7 @@
         if (result.success) {
           localStorage.setItem("siswaAuth", JSON.stringify(result));
           sessionStorage.setItem("siswaAuth", JSON.stringify(result));
-          tampilkanDashboard(result);
+          tampilkanDashboardWali(result);
         } else {
           loginError.textContent = "❌ " + (result.message || "NIS atau Password salah!");
           loginError.style.display = "block";
@@ -298,7 +308,7 @@
         loginError.style.display = "block";
       } finally {
         btnSubmitSiswa.disabled = false;
-        btnSubmitSiswa.textContent = "Masuk ke Portal Akademik";
+        btnSubmitSiswa.textContent = "Buka Raport & Buku Penghubung";
       }
     });
 
@@ -308,60 +318,124 @@
       location.reload();
     });
 
-    async function tampilkanDashboard(data) {
+    async function tampilkanDashboardWali(data) {
       loginGate.style.display = "none";
       siswaDashboard.style.display = "block";
       
       const nama = data.nama || "Santri";
-      let jenjang = data.jenjang || "Paket C";
-      let kelasRaw = String(data.kelas || "").trim();
-      let kelasStr = "";
+      const nis = data.nis || data.username || "-";
+      let jenjang = data.jenjang || "Paket A";
+      let kelas = data.kelas || "Kelas 1";
 
-      if (jenjang.toLowerCase().includes("paket a") || jenjang === "A") jenjang = "Paket A";
-      else if (jenjang.toLowerCase().includes("paket b") || jenjang === "B") jenjang = "Paket B";
-      else if (jenjang.toLowerCase().includes("paket c") || jenjang === "C") jenjang = "Paket C";
+      userBadge.textContent = `👤 Ananda: ${nama} (${jenjang} • ${kelas})`;
+      
+      // Ambil Rekap Raport & Tugas Aktif
+      loadRaportHarian(nis);
+    }
 
-      if (kelasRaw) {
-        kelasStr = kelasRaw.toLowerCase().startsWith("kelas") ? kelasRaw : `Kelas ${kelasRaw}`;
-      } else {
-        if (jenjang === "Paket A") kelasStr = "Kelas 1";
-        else if (jenjang === "Paket B") kelasStr = "Kelas 7";
-        else kelasStr = "Kelas 10";
+    async function loadRaportHarian(nis) {
+      try {
+        const res = await fetch(`${API_URL}?action=get_raport_santri&nis=${encodeURIComponent(nis)}`);
+        const json = await res.json();
+
+        if (json.success) {
+          allRiwayatRaport = json.riwayat || [];
+          document.getElementById("statTotalSesi").textContent = json.totalHadir || 0;
+
+          // 1. RENDER KOTAK TUGAS / PR AKTIF
+          const tugasContainer = document.getElementById("tugasListContainer");
+          const tugasArr = json.tugasAktif || [];
+          document.getElementById("badgeCountTugas").textContent = `${tugasArr.length} Tugas`;
+
+          if (tugasArr.length > 0) {
+            let tugasHtml = "";
+            tugasArr.forEach(t => {
+              tugasHtml += `
+                <div class="tugas-item">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <b>📖 ${t.mapel}</b>
+                    <small style="color:var(--muted);">${t.tanggal}</small>
+                  </div>
+                  <div style="font-size:13.5px; color:#374151;">${t.tugas}</div>
+                  <small style="color:var(--muted); display:block; margin-top:4px;">Diberikan oleh: ${t.tutor}</small>
+                </div>
+              `;
+            });
+            tugasContainer.innerHTML = tugasHtml;
+          } else {
+            tugasContainer.innerHTML = '<div style="color:#059669; font-size:13px; text-align:center; padding:10px; font-weight:bold;">✅ Alhamdulillah, belum ada tugas/PR baru dari tutor.</div>';
+          }
+
+          // 2. SETUP DROPDOWN FILTER BULAN
+          setupFilterBulan(allRiwayatRaport);
+          renderRaportTable(allRiwayatRaport);
+        }
+      } catch (err) {
+        document.getElementById("raportTableBody").innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--danger);">Gagal memuat raport: ${err.message}</td></tr>`;
+      }
+    }
+
+    function setupFilterBulan(riwayat) {
+      const sel = document.getElementById("filterBulanSelect");
+      sel.innerHTML = '<option value="all">-- Semua Riwayat Pembelajaran --</option>';
+      const uniqueMonths = new Set();
+
+      riwayat.forEach(r => {
+        if (r.bulanKey) uniqueMonths.add(r.bulanKey);
+      });
+
+      uniqueMonths.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m;
+        // Format Tampilan Bulan (Contoh: 2026-08 -> Agustus 2026)
+        const parts = m.split("-");
+        const dateSample = new Date(parts[0], parts[1] - 1, 1);
+        opt.textContent = dateSample.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+        sel.appendChild(opt);
+      });
+
+      sel.addEventListener("change", (e) => {
+        const val = e.target.value;
+        if (val === "all") {
+          renderRaportTable(allRiwayatRaport);
+        } else {
+          const filtered = allRiwayatRaport.filter(r => r.bulanKey === val);
+          renderRaportTable(filtered);
+        }
+      });
+    }
+
+    function renderRaportTable(dataArr) {
+      const tbody = document.getElementById("raportTableBody");
+      if (!dataArr || dataArr.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:18px; color:var(--muted);">Belum ada catatan pembelajaran pada periode ini.</td></tr>';
+        return;
       }
 
-      data.kelasNorm = kelasStr;
-      data.jenjangNorm = jenjang;
-      localStorage.setItem("siswaAuth", JSON.stringify(data));
-
-      userBadge.textContent = `👤 ${nama} (${jenjang} • ${kelasStr})`;
-      titleElearning.textContent = `💻 Ujian CBT - ${kelasStr}`;
-      btnElearning.textContent = `Masuk Ujian ${kelasStr} →`;
-      btnElearning.href = `ujian.html?auth=${encodeURIComponent(JSON.stringify(data))}`;
-
-      titleTugas.textContent = `📤 Tugas & Portofolio ${kelasStr}`;
-      modulTitle.textContent = `📁 Folder Modul & Materi: ${kelasStr}`;
-
-      try {
-        const resMateri = await fetch("data-materi.json?t=" + Date.now());
-        if (resMateri.ok) {
-          const cfg = await resMateri.json();
-          const materiMap = cfg.materi || {};
-          const tugasMap = cfg.tugas || {};
-
-          if (materiMap[kelasStr]) {
-            linkModul.href = materiMap[kelasStr];
-          } else {
-            linkModul.href = FOLDER_DRIVE_DEFAULT[jenjang] || FOLDER_DRIVE_DEFAULT["Paket C"];
-          }
-
-          if (tugasMap[kelasStr]) {
-            btnTugas.href = tugasMap[kelasStr];
-          }
-          return;
-        }
-      } catch(e) {}
-
-      linkModul.href = FOLDER_DRIVE_DEFAULT[jenjang] || FOLDER_DRIVE_DEFAULT["Paket C"];
+      let rows = "";
+      dataArr.forEach(r => {
+        rows += `
+          <tr>
+            <td>
+              <b style="color:var(--green-dark);">${r.mapel}</b><br>
+              <small style="color:var(--muted);">${r.tanggal}<br>${r.waktu} WIB</small>
+            </td>
+            <td>
+              <div style="font-weight:600;">${r.materi}</div>
+              ${r.tugas && r.tugas !== '-' ? `<div style="margin-top:6px; font-size:12px; color:var(--orange);"><b>PR:</b> ${r.tugas}</div>` : ''}
+            </td>
+            <td>
+              <span class="badge-fokus">Fokus: ${r.konsentrasi}</span><br>
+              <span class="badge-adab">Adab: ${r.adab}</span>
+            </td>
+            <td>
+              <div style="color:#1f2937;">${r.catatan}</div>
+              <small style="color:var(--muted); display:block; margin-top:4px;">Ustadz/Tutor: <b>${r.tutor}</b></small>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = rows;
     }
   </script>
 </body>
