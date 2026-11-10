@@ -348,6 +348,7 @@
           <label>Pilih Kategori Program Brosur:</label>
           <select id="brosurKategori" onchange="gantiKategoriBrosur()">
             <option value="umum">Brosur Umum PKBM</option>
+            <option value="homeschooling">Homeschooling (HS)</option>
             <option value="daycare">Daycare (Penitipan Anak)</option>
             <option value="paud">PAUD Non Formal (Kelompok Bermain)</option>
             <option value="paket-a">Paket A (Setara SD)</option>
@@ -357,7 +358,7 @@
         </div>
         <div>
           <label>Judul Brosur / Flyer:</label>
-          <input type="text" id="brosurTitle" placeholder="Contoh: Brosur Resmi PKBM Pelita Aushaf Paket A">
+          <input type="text" id="brosurTitle" placeholder="Contoh: Brosur Resmi Homeschooling PKBM Pelita Aushaf">
         </div>
       </div>
 
@@ -730,8 +731,19 @@
         item = masterBrosurData[0] || {};
       }
 
-      document.getElementById("brosurTitle").value = item.title || item.judul || (kat === 'umum' ? "Brosur Resmi PKBM Pelita Aushaf" : `Brosur ${kat.toUpperCase()}`);
-      document.getElementById("brosurPath").value = item.path || item.file || (kat === 'umum' ? "brosur-pkbm-pelita-aushaf-indonesia.pdf" : `brosur-${kat}.pdf`);
+      let defaultTitle = `Brosur ${kat.toUpperCase()}`;
+      let defaultPath = `brosur-${kat}.pdf`;
+
+      if(kat === 'umum') {
+        defaultTitle = "Brosur Resmi PKBM Pelita Aushaf";
+        defaultPath = "brosur-pkbm-pelita-aushaf-indonesia.pdf";
+      } else if(kat === 'homeschooling') {
+        defaultTitle = "Brosur Resmi Homeschooling PKBM Pelita Aushaf";
+        defaultPath = "brosur-homeschooling.pdf";
+      }
+
+      document.getElementById("brosurTitle").value = item.title || item.judul || defaultTitle;
+      document.getElementById("brosurPath").value = item.path || item.file || defaultPath;
       document.getElementById("brosurDesc").value = item.desc || item.deskripsi || "Profil singkat, layanan pendidikan, alur pendaftaran, dan rincian program.";
       document.getElementById("brosurFileInput").value = "";
     }
