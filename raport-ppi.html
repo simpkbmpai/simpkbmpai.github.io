@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cetak Raport PPI - PKBM Pelita Aushaf Indonesia</title>
+  <style>
+    /* DESAIN UNTUK LAYAR (SCREEN) */
+    body { font-family: Arial, sans-serif; background: #eef8f4; color: #1f2937; margin: 0; padding: 20px; }
+    
+    .control-panel { 
+      max-width: 21cm; margin: 0 auto 20px; background: #fff; padding: 20px; 
+      border-radius: 12px; box-shadow: 0 4px 10px rgba(13,122,95,0.1); 
+      border: 2px solid #d6eee5;
+      display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;
+    }
+    .input-group { display: flex; flex-direction: column; }
+    .input-group label { font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #0a5c48; }
+    .input-group input, .input-group select { padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; }
+    
+    .btn { padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; color: white; font-weight: bold; font-size: 14px; text-decoration: none; }
+    .btn-blue { background: #2563eb; }
+    .btn-green { background: #10b981; }
+    .btn-gray { background: #6b7280; }
+
+    /* DESAIN KERTAS A4 */
+    .page-a4 { 
+      background: white; width: 21cm; min-height: 29.7cm; padding: 2cm; 
+      margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); box-sizing: border-box;
+    }
+    
+    .kop-surat { text-align: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+    .kop-surat h2 { margin: 0; color: #000; font-size: 22px; text-transform: uppercase; }
+    .kop-surat p { margin: 5px 0 0 0; font-size: 14px; }
+    
+    .identitas-tabel { width: 100%; margin-bottom: 20px; font-size: 14px; }
+    .identitas-tabel td { padding: 4px 0; vertical-align: top; }
+    
+    .raport-tabel { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    .raport-tabel th, .raport-tabel td { border: 1px solid #000; padding: 8px; font-size: 14px; text-align: left; }
+    .raport-tabel th { background-color: #f3f4f6; }
+    
+    .ttd-area { margin-top: 40px; display: flex; justify-content: space-between; font-size: 14px; }
+    .ttd-box { text-align: center; width: 220px; }
+    .ttd-box.center { margin: 0 auto; margin-top: 20px; }
+    .nama-ttd { font-weight: bold; text-decoration: underline; margin-top: 70px; display: block; }
+
+    /* DESAIN KHUSUS SAAT DICETAK (PRINT) */
+    @media print {
+      body { background: white; padding: 0; margin: 0; }
+      .control-panel { display: none !important; } /* Sembunyikan tombol-tombol pencarian */
+      .page-a4 { width: 100%; height: auto; margin: 0; padding: 0; box-shadow: none; border: none; }
+      @page { margin: 1.5cm; } /* Margin kertas fisik */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PANEL PENCARIAN (Hanya tampil di layar) -->
+  <div class="control-panel">
+    <div class="input-group">
+      <label>NIS Santri</label>
+      <input type="text" id="inputNis" placeholder="Contoh: 2026001">
+    </div>
+    <div class="input-group">
+      <label>Periode Bulan</label>
+      <input type="month" id="inputBulan">
+    </div>
+    <button type="button" class="btn btn-blue" onclick="tarikData()">Tarik Data Raport</button>
+    <button type="button" class="btn btn-green" onclick="window.print()">🖨️ Cetak A4</button>
+    <a href="portal-tutor.html" class="btn btn-gray">← Kembali</a>
+  </div>
+
+  <!-- AREA KERTAS RAPORT (Akan dicetak) -->
+  <div class="page-a4" id="areaCetak">
+    <div class="kop-surat">
+      <h2>PKBM PELITA AUSHAF INDONESIA</h2>
+      <p>Layanan Pendidikan Kesetaraan (Paket A, B, C) & Homeschooling Inklusi</p>
+      <p>Kecamatan Gedangan, Kabupaten Sidoarjo, Jawa Timur</p>
+    </div>
+
+    <h3 style="text-align: center; text-decoration: underline; margin-bottom: 20px;">RAPORT PROGRAM PEMBELAJARAN INDIVIDUAL (PPI)</h3>
+
+    <table class="identitas-tabel">
+      <tr>
+        <td width="150">Nama Santri</td>
+        <td width="10">:</td>
+        <td id="valNama">................................................</td>
+        <td width="150">Periode Raport</td>
+        <td width="10">:</td>
+        <td id="valBulan">................................................</td>
+      </tr>
+      <tr>
+        <td>NIS</td>
+        <td>:</td>
+        <td id="valNis">................................................</td>
+        <td>Total Pertemuan</td>
+        <td>:</td>
+        <td id="valPertemuan">................................................</td>
+      </tr>
+    </table>
+
+    <table class="raport-tabel">
+      <thead>
+        <tr>
+          <th width="30%">Aspek Fokus PPI</th>
+          <th width="70%">Perkembangan & Catatan Evaluasi Tutor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <b>Target Spesifik:</b><br>
+            <span id="valTarget">Menunggu penarikan data...</span>
+          </td>
+          <td>
+            <b>Rasio Kemandirian:</b> <span id="valMandiri">-</span><br>
+            <b>Rata-rata Skor Karakter:</b> <span id="valKarakter">-</span><br><br>
+            <b>Catatan Kualitatif / Dinamika Belajar:</b><br>
+            <div id="valCatatan" style="margin-top: 5px; line-height: 1.5;">
+              -
+            </div>
+            <br>
+            <b>Rekomendasi Lanjutan:</b><br>
+            <span id="valRekomendasi" style="font-weight: bold; color: #0a5c48;">-</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="ttd-area">
+      <div class="ttd-box">
+        Mengetahui,<br>Orang Tua / Wali Santri
+        <span class="nama-ttd" id="valWali">( ........................................ )</span>
+      </div>
+      <div class="ttd-box">
+        Gedangan, <span id="valTanggalCetak">...</span><br>Tutor Penanggung Jawab
+        <span class="nama-ttd" id="valTutor">( ........................................ )</span>
+      </div>
+    </div>
+    
+    <div class="ttd-box center">
+      Kepala PKBM / Koord. Inklusi
+      <span class="nama-ttd">Jos Bramasto, S.Psi</span>
+    </div>
+
+  </div>
+
+  <script>
+    // URL Web App Google Apps Script Anda (Samakan dengan portal-tutor)
+    const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
+
+    // Set default bulan ini & tanggal cetak
+    const now = new Date();
+    document.getElementById("inputBulan").value = now.toISOString().slice(0, 7);
+    document.getElementById("valTanggalCetak").textContent = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    async function tarikData() {
+      const nis = document.getElementById("inputNis").value.trim();
+      const bulan = document.getElementById("inputBulan").value;
+      
+      if(!nis) return alert("Masukkan NIS terlebih dahulu!");
+
+      const btn = document.querySelector(".btn-blue");
+      btn.textContent = "Menarik Data...";
+      
+      try {
+        // PERHATIAN: Pastikan di Apps Script Anda sudah membuat endpoint 'get_rekap_ppi'
+        // yang memanggil fungsi rekapEvaluasiSantriPpi(nis) yang ada di gambar kode Anda.
+        const res = await fetch(`${API_URL}?action=get_rekap_ppi&nis=${nis}&bulan=${bulan}`);
+        const json = await res.json();
+        
+        if(json.success) {
+          document.getElementById("valNama").textContent = json.data.nama;
+          document.getElementById("valNis").textContent = json.data.nis;
+          
+          const namaBulan = new Date(bulan + "-01").toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+          document.getElementById("valBulan").textContent = namaBulan;
+          
+          document.getElementById("valPertemuan").textContent = json.data.totalPertemuan + " Pertemuan";
+          document.getElementById("valTarget").textContent = json.data.targetSpesifik || "Target Umum";
+          document.getElementById("valMandiri").textContent = json.data.persentaseMandiri || "-";
+          document.getElementById("valKarakter").textContent = json.data.skorKarakter || "-";
+          document.getElementById("valRekomendasi").textContent = json.data.rekomendasiKenaikan || "-";
+          
+          // Format array catatan menjadi list
+          if(json.data.catatanRingkas && json.data.catatanRingkas.length > 0) {
+            document.getElementById("valCatatan").innerHTML = "<ul style='margin:0; padding-left:20px;'><li>" + json.data.catatanRingkas.join("</li><li>") + "</li></ul>";
+          } else {
+            document.getElementById("valCatatan").innerHTML = "Belum ada catatan jurnal di periode ini.";
+          }
+          
+          alert("✅ Data berhasil dimuat!");
+        } else {
+          alert("Gagal menarik data: " + json.message);
+        }
+      } catch(err) {
+        // Mockup sementara agar Anda bisa melihat tampilannya jika API belum siap
+        alert("Peringatan: API belum merespons, menampilkan format simulasi.");
+        document.getElementById("valNama").textContent = "Fulan bin Fulan";
+        document.getElementById("valNis").textContent = nis;
+      } finally {
+        btn.textContent = "Tarik Data Raport";
+      }
+    }
+  </script>
+</body>
+</html>
