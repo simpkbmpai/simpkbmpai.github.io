@@ -16,5 +16,11 @@
     "desc": "Profil singkat, layanan pendidikan, alur pendaftaran, dan rincian program.",
     "path": "brosur-paket-a.jpeg",
     "updatedAt": "2026-11-10"
+  },
+  "paket-b": {
+    "title": "Brosur PAKET-B",
+    "desc": "Profil singkat, layanan pendidikan, alur pendaftaran, dan rincian program.",
+    "path": "brosur-paket-b.jpeg",
+    "updatedAt": "2026-11-10"
   }
 }
