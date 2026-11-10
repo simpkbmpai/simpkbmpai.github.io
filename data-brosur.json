@@ -22,5 +22,11 @@
     "desc": "Profil singkat, layanan pendidikan, alur pendaftaran, dan rincian program.",
     "path": "brosur-paket-b.jpeg",
     "updatedAt": "2026-11-10"
+  },
+  "homeschooling": {
+    "title": "Brosur Resmi Homeschooling PKBM Pelita Aushaf",
+    "desc": "Profil singkat, layanan pendidikan, alur pendaftaran, dan rincian program.",
+    "path": "brosur-homeschooling.jpeg",
+    "updatedAt": "2026-11-10"
   }
 }
