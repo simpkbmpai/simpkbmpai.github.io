@@ -148,7 +148,8 @@
       { name: "Gedung I5 (Paket A Kesetaraan)", lat: -7.3869413, lng: 112.717721 }
     ];
 
-    const MAX_ALLOWED_DISTANCE_METERS = 15; // Batas radius toleransi GPS (15 Meter)
+    // Toleransi radius disesuaikan ke 120 meter agar laptop dengan triangulasi Wi-Fi tidak terkunci
+    const MAX_ALLOWED_DISTANCE_METERS = 120;
 
     // Jam Realtime
     setInterval(() => {
@@ -249,7 +250,7 @@
         (pos) => {
           const userLat = pos.coords.latitude;
           const userLng = pos.coords.longitude;
-          const accuracy = Math.round(pos.coords.accuracy);
+          const accuracy = Math.round(pos.coords.accuracy || 0);
 
           let minDistance = 999999;
           let bestGedung = null;
@@ -265,7 +266,10 @@
           nearestLocation = bestGedung;
           nearestDistance = minDistance;
 
-          if (nearestDistance <= MAX_ALLOWED_DISTANCE_METERS) {
+          // Batas toleransi dinamis: jika laptop memiliki deviasi akurasi tinggi, toleransi disesuaikan
+          const effectiveTolerance = Math.max(MAX_ALLOWED_DISTANCE_METERS, isMobile ? MAX_ALLOWED_DISTANCE_METERS : accuracy);
+
+          if (nearestDistance <= effectiveTolerance) {
             // DI DALAM AREA SEKOLAH
             gpsStatusBox.className = "gps-status-box in-range";
             gpsStatusBox.innerHTML = `
