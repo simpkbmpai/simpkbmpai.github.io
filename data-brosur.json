@@ -1,8 +1,14 @@
 {
   "brosurUmum": {
     "title": "Brosur Resmi PKBM Pelita Aushaf Paket A",
-    "desc": "Profil singkat, layanan pendidikan, dan alur pendaftaran.",
-    "path": "https://drive.google.com/file/d/1TOKD2bMC1dXajkE_GAkZTL6qqhCzRlf6/view?usp=drive_link",
+    "desc": "Profil singkat, layanan pendidikan, dan alur pendaftaran Paket A",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+    "updatedAt": "2026-11-10"
+  },
+  "umum": {
+    "title": "Brosur Resmi PKBM Pelita Aushaf Paket A",
+    "desc": "Profil singkat, layanan pendidikan, dan alur pendaftaran Paket A",
+    "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
     "updatedAt": "2026-11-10"
   }
 }
