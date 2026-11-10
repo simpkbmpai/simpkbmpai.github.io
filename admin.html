@@ -179,7 +179,7 @@
         <a href="#secKontak" class="pill-btn">Kontak</a>
         <a href="#secArtikel" class="pill-btn">Artikel</a>
         <a href="#secKalender" class="pill-btn">Kalender</a>
-        <a href="#secBrosur" class="pill-btn">Brosur</a>
+        <a href="#secBrosur" class="pill-btn">Brosur & Flyer</a>
         <a href="#secFoto" class="pill-btn">Foto Kegiatan</a>
       </div>
     </div>
@@ -218,7 +218,7 @@
         <div>
           <div class="op-card-icon" style="background:#fef3c7;">📲</div>
           <h3>Portal Presensi & Tutor</h3>
-          <p>Akses cepat ke Portal Tutor untuk scan absen per mapel atau Absen Mandiri Tutor (GPS $\le 10$m).</p>
+          <p>Akses cepat ke Portal Tutor untuk scan absen per mapel atau Absen Mandiri Tutor (GPS &le; 10m).</p>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
           <a href="portal-tutor.html" target="_blank" class="btn-op orange" style="font-size:11.5px; padding:8px 4px;">Ruang Tutor ↗</a>
@@ -338,25 +338,54 @@
       <button type="button" onclick="simpanKalenderList()" class="btn-save">💾 Simpan Kalender Akademik</button>
     </div>
 
-    <!-- ================= 9. KELOLA BROSUR PPDB (FORMULIR VISUAL) ================= -->
+    <!-- ================= 9. KELOLA BROSUR & FLYER PPDB (FORMULIR DINAMIS) ================= -->
     <div class="admin-section" id="secBrosur">
-      <h3>9. Kelola Brosur & Flyer PPDB</h3>
-      <p>File: <code>data-brosur.json</code> • Informasi unduhan brosur pendaftaran santri baru.</p>
+      <h3>9. Kelola Brosur & Flyer Per Program PPDB</h3>
+      <p>File: <code>data-brosur.json</code> • Unggah brosur/flyer spesifik untuk setiap program atau brosur umum.</p>
       
       <div class="grid-2">
         <div>
-          <label>Judul Brosur:</label>
-          <input type="text" id="brosurTitle" placeholder="Brosur Resmi PKBM Pelita Aushaf">
+          <label>Pilih Kategori Program Brosur:</label>
+          <select id="brosurKategori" onchange="gantiKategoriBrosur()">
+            <option value="umum">Brosur Umum PKBM</option>
+            <option value="daycare">Daycare (Penitipan Anak)</option>
+            <option value="paud">PAUD Non Formal (Kelompok Bermain)</option>
+            <option value="paket-a">Paket A (Setara SD)</option>
+            <option value="paket-b">Paket B (Setara SMP)</option>
+            <option value="paket-c">Paket C (Setara SMA)</option>
+          </select>
         </div>
         <div>
-          <label>Nama File / Link PDF Brosur:</label>
+          <label>Judul Brosur / Flyer:</label>
+          <input type="text" id="brosurTitle" placeholder="Contoh: Brosur Resmi PKBM Pelita Aushaf Paket A">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <label>Pilih File Brosur Langsung (PDF / JPG / PNG):</label>
+          <input type="file" id="brosurFileInput" accept=".pdf, image/*">
+          <small style="color:var(--muted); font-size:11.5px; display:block; margin-top:3px;">
+            File akan otomatis diunggah langsung ke GitHub repo simpkbmpai.github.io
+          </small>
+        </div>
+        <div>
+          <label>Nama File di GitHub / Link PDF Eksternal (Cadangan):</label>
           <input type="text" id="brosurPath" placeholder="brosur-pkbm-pelita-aushaf-indonesia.pdf">
         </div>
       </div>
-      <label>Deskripsi Singkat Brosur:</label>
-      <input type="text" id="brosurDesc" placeholder="Profil singkat, layanan pendidikan, alur pendaftaran, dan kontak resmi.">
 
-      <button type="button" onclick="simpanBrosurForm()" class="btn-save">💾 Simpan Informasi Brosur</button>
+      <label>Deskripsi Singkat Brosur:</label>
+      <input type="text" id="brosurDesc" placeholder="Profil singkat, layanan pendidikan, alur pendaftaran, dan rincian program.">
+
+      <div style="display:flex; align-items:center; gap:12px; margin-top:14px;">
+        <button type="button" onclick="simpanBrosurForm()" class="btn-save" id="btnSimpanBrosur" style="margin-top:0;">
+          💾 Simpan & Upload Brosur Program Ini
+        </button>
+        <span id="brosurLoading" class="status-badge" style="display:none; background:#dbeafe; color:#1d4ed8;">
+          ⏳ Sedang memproses dan mengunggah ke GitHub...
+        </span>
+      </div>
     </div>
 
     <!-- ================= 10. KELOLA FOTO KEGIATAN & ALBUM ================= -->
@@ -404,6 +433,7 @@
     let artikelData = [];
     let kalenderData = [];
     let fotoData = [];
+    let masterBrosurData = {};
 
     // 1. INISIALISASI DATA
     async function initData() {
@@ -471,17 +501,18 @@
       } catch(e){ kalenderData = []; }
       renderKalenderList();
 
-      // Load Brosur (Visual Form)
+      // Load Brosur (Dinamis Multi-Program)
       try {
         const res = await fetch("data-brosur.json?t=" + Date.now());
         if(res.ok) {
           const d = await res.json();
-          const item = d.brosurUmum || (Array.isArray(d) ? d[0] : d) || {};
-          document.getElementById("brosurTitle").value = item.title || "Brosur Resmi PKBM Pelita Aushaf";
-          document.getElementById("brosurPath").value = item.path || "brosur-pkbm-pelita-aushaf-indonesia.pdf";
-          document.getElementById("brosurDesc").value = item.desc || "Profil singkat, layanan pendidikan, dan alur pendaftaran.";
+          masterBrosurData = (typeof d === 'object' && d !== null) ? d : {};
+          gantiKategoriBrosur();
         }
-      } catch(e){}
+      } catch(e){
+        masterBrosurData = {};
+        gantiKategoriBrosur();
+      }
 
       // Load Foto Kegiatan (Visual Form)
       try {
@@ -686,17 +717,122 @@
       await commitToGithub("data-kalender.json", kalenderData);
     }
 
-    // ================= BUILDER 9: BROSUR =================
+    // ================= BUILDER 9: BROSUR MULTI-PROGRAM =================
+    function gantiKategoriBrosur() {
+      const kat = document.getElementById("brosurKategori").value;
+      let item = {};
+
+      if(masterBrosurData[kat]) {
+        item = masterBrosurData[kat];
+      } else if(kat === "umum" && masterBrosurData.brosurUmum) {
+        item = masterBrosurData.brosurUmum;
+      } else if(Array.isArray(masterBrosurData)) {
+        item = masterBrosurData[0] || {};
+      }
+
+      document.getElementById("brosurTitle").value = item.title || item.judul || (kat === 'umum' ? "Brosur Resmi PKBM Pelita Aushaf" : `Brosur ${kat.toUpperCase()}`);
+      document.getElementById("brosurPath").value = item.path || item.file || (kat === 'umum' ? "brosur-pkbm-pelita-aushaf-indonesia.pdf" : `brosur-${kat}.pdf`);
+      document.getElementById("brosurDesc").value = item.desc || item.deskripsi || "Profil singkat, layanan pendidikan, alur pendaftaran, dan rincian program.";
+      document.getElementById("brosurFileInput").value = "";
+    }
+
     async function simpanBrosurForm() {
-      const payload = {
-        brosurUmum: {
-          title: document.getElementById("brosurTitle").value.trim(),
-          desc: document.getElementById("brosurDesc").value.trim(),
-          path: document.getElementById("brosurPath").value.trim(),
-          updatedAt: new Date().toISOString().split('T')[0]
+      const kat = document.getElementById("brosurKategori").value;
+      const title = document.getElementById("brosurTitle").value.trim();
+      const desc = document.getElementById("brosurDesc").value.trim();
+      let pathVal = document.getElementById("brosurPath").value.trim();
+      const fileInput = document.getElementById("brosurFileInput");
+      const loading = document.getElementById("brosurLoading");
+      const btn = document.getElementById("btnSimpanBrosur");
+
+      const token = document.getElementById("ghToken").value.trim() || localStorage.getItem("pkbm_gh_token");
+      if(!token) {
+        alert("❌ Masukkan GitHub Personal Access Token di bagian 1 terlebih dahulu!");
+        document.getElementById("ghToken").focus();
+        return;
+      }
+
+      loading.style.display = "inline-block";
+      btn.disabled = true;
+
+      try {
+        // 1. Jika ada file fisik yang dipilih dari komputer/tablet
+        if(fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const ext = file.name.split('.').pop().toLowerCase();
+          const targetFileName = (kat === 'umum') ? 'brosur-pkbm-pelita-aushaf-indonesia.pdf' : `brosur-${kat}.${ext}`;
+          pathVal = targetFileName;
+
+          const reader = new FileReader();
+          const base64Promise = new Promise((resolve) => {
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.readAsDataURL(file);
+          });
+          const fileContentBase64 = await base64Promise;
+
+          // Cek SHA file jika sudah ada di repo
+          let shaFile = "";
+          try {
+            const urlFile = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${targetFileName}`;
+            const resCek = await fetch(urlFile, { headers: { "Authorization": `token ${token}` } });
+            if(resCek.ok) {
+              const fileData = await resCek.json();
+              shaFile = fileData.sha;
+            }
+          } catch(e){}
+
+          // Upload file fisik ke GitHub
+          const uploadRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${targetFileName}`, {
+            method: "PUT",
+            headers: {
+              "Authorization": `token ${token}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              message: `Upload file fisik brosur ${kat} via Admin Dashboard`,
+              content: fileContentBase64,
+              sha: shaFile || undefined
+            })
+          });
+
+          if(!uploadRes.ok) {
+            const errUpload = await uploadRes.json();
+            throw new Error("Gagal mengunggah file fisik brosur: " + errUpload.message);
+          }
         }
-      };
-      await commitToGithub("data-brosur.json", payload);
+
+        // 2. Perbarui Master Database Brosur
+        if(typeof masterBrosurData !== 'object' || Array.isArray(masterBrosurData) || masterBrosurData === null) {
+          masterBrosurData = {};
+        }
+
+        const itemData = {
+          title: title,
+          desc: desc,
+          path: pathVal,
+          updatedAt: new Date().toISOString().split('T')[0]
+        };
+
+        // Simpan ke kategori terkait
+        masterBrosurData[kat] = itemData;
+
+        // Jika kategori umum, perbarui juga brosurUmum demi kompatibilitas script lama
+        if(kat === 'umum') {
+          masterBrosurData.brosurUmum = itemData;
+        }
+
+        const simpanJsonSukses = await commitToGithub("data-brosur.json", masterBrosurData);
+        if(simpanJsonSukses) {
+          document.getElementById("brosurPath").value = pathVal;
+          document.getElementById("brosurFileInput").value = "";
+        }
+
+      } catch(err) {
+        alert("❌ Terjadi kesalahan: " + err.message);
+      } finally {
+        loading.style.display = "none";
+        btn.disabled = false;
+      }
     }
 
     // ================= BUILDER 10: FOTO KEGIATAN =================
