@@ -10,5 +10,11 @@
     "desc": "Profil singkat, layanan pendidikan, dan alur pendaftaran Paket A",
     "path": "brosur-pkbm-pelita-aushaf-indonesia.pdf",
     "updatedAt": "2026-11-10"
+  },
+  "paket-a": {
+    "title": "Brosur PAKET-A",
+    "desc": "Profil singkat, layanan pendidikan, alur pendaftaran, dan rincian program.",
+    "path": "brosur-paket-a.jpeg",
+    "updatedAt": "2026-11-10"
   }
 }
