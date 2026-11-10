@@ -166,7 +166,7 @@
     <!-- 2. DASHBOARD TUTOR -->
     <div id="tutorDashboard">
       <div class="dashboard-grid">
-        <!-- KARTU CETAK RAPORT PPI (VIA IFRAME) -->
+    <!-- KARTU CETAK RAPORT PPI (VIA IFRAME) -->
 <div class="tutor-card" style="border: 2px solid #2563eb; background: #eff6ff;">
   <div>
     <div class="tutor-card-icon" style="background:#dbeafe;">🖨️</div>
@@ -425,7 +425,19 @@
       </div>
     </div>
   </div>
-
+  <!-- MODAL IFRAME RAPORT PPI -->
+<div id="modalIframeRaport" class="modal-overlay">
+  <div class="modal-box" style="max-width: 900px; padding: 0; height: 90vh; display: flex; flex-direction: column;">
+    <!-- Header Modal -->
+    <div style="padding: 15px 20px; background: #fff; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; border-radius: 26px 26px 0 0;">
+      <h3 style="margin: 0; color: #2563eb;">🖨️ Menu Cetak Raport PPI</h3>
+      <button onclick="document.getElementById('modalIframeRaport').style.display = 'none'" style="background: #fee2e2; color: #b91c1c; border: 0; width: 32px; height: 32px; border-radius: 50%; font-weight: 900; cursor: pointer;">✕</button>
+    </div>
+    
+    <!-- Iframe yang memanggil raport-ppi.html -->
+    <iframe src="raport-ppi.html" style="width: 100%; flex-grow: 1; border: none; border-radius: 0 0 26px 26px;"></iframe>
+  </div>
+</div>
   <script>
     // URL GOOGLE APPS SCRIPT ANDA
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
