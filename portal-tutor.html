@@ -144,7 +144,7 @@
           </button>
         </div>
 
-        <!-- FITUR BARU: MONITORING TTD WALI & PENGINGAT WA -->
+        <!-- FITUR MONITORING TTD WALI & PENGINGAT WA -->
         <div class="tutor-card" style="border: 2px solid #7c3aed; background: #faf5ff;">
           <div>
             <div class="tutor-card-icon" style="background:#f3e8ff;">📱</div>
@@ -156,12 +156,12 @@
           </button>
         </div>
 
-        <!-- ABSEN MANDIRI TUTOR GPS -->
+        <!-- ABSEN MANDIRI TUTOR GPS (DIPERBARUI KE absensi-qr.html) -->
         <div class="tutor-card" style="border: 2px solid #f59e0b; background: #fffbeb;">
           <div>
             <div class="tutor-card-icon" style="background:#fef3c7;">📍</div>
             <h3>Absen Mandiri Tutor (GPS)</h3>
-            <p>Presensi kehadiran tutor di Gedung G2 / I5 (Radius GPS $\le 10$ meter).</p>
+            <p>Presensi kehadiran tutor di Gedung G2 / I5 (Radius GPS &le; 10 meter).</p>
           </div>
           <a href="absensi-qr.html" class="btn-action orange">
             Absen Datang / Pulang →
@@ -529,7 +529,6 @@
             } else {
               countBelum++;
               
-              // Format WA link
               let cleanHp = String(s.hpWali || "").replace(/[^0-9]/g, "");
               if (cleanHp.startsWith("0")) cleanHp = "62" + cleanHp.slice(1);
 
