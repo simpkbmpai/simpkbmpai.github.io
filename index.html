@@ -1128,6 +1128,7 @@
       </div>
     </section>
 
+    <!-- SECTION BROSUR DIPERBARUI LENGKAP DENGAN HOMESCHOOLING -->
     <section id="brosur">
       <div class="container">
         <div class="section-title">
@@ -1436,7 +1437,7 @@
       applyContactData();
     }
 
-    // DAFTAR PROGRAM TUNGGAL (PAUD & KB DISATUKAN)
+    // DAFTAR PROGRAM TUNGGAL
     const programs = ["Daycare", "PAUD Non Formal (Kelompok Bermain)", "Paket A", "Paket B", "Paket C", "Program Home Schooling"];
     let galleryData = {};
     let activeProgram = "Semua";
@@ -1608,7 +1609,6 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
         const res = await fetch("data-kegiatan.json?ts=" + Date.now());
         galleryData = await res.json();
         
-        // PENGGABUNGAN OTOMATIS JIKA MASIH ADA DATA LAMA
         if (galleryData["PAUD Non Formal"] || galleryData["Kelompok Bermain"]) {
           if (!galleryData["PAUD Non Formal (Kelompok Bermain)"]) {
             galleryData["PAUD Non Formal (Kelompok Bermain)"] = [];
@@ -1659,6 +1659,7 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
       });
     });
 
+    // MASTER BROSUR DENGAN HOMESCHOOLING
     const defaultBrosurData = {
       "Brosur Umum": {
         title: "Brosur Umum PKBM",
@@ -1666,46 +1667,40 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
         path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
         updatedAt: "default"
       },
+      "Homeschooling (HS)": {
+        title: "Brosur Resmi Homeschooling PKBM Pelita Aushaf",
+        desc: "Informasi program belajar fleksibel mandiri/komunitas sesuai potensi unik anak dan keluarga.",
+        path: "brosur-homeschooling.pdf",
+        updatedAt: "default"
+      },
       "Daycare": {
         title: "Brosur Daycare",
         desc: "Informasi pendampingan anak, suasana belajar, dan pendaftaran Daycare.",
-        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        path: "brosur-daycare.pdf",
         updatedAt: "default"
       },
       "PAUD Non Formal (Kelompok Bermain)": {
         title: "Brosur PAUD Non Formal (Kelompok Bermain)",
         desc: "Informasi stimulasi tumbuh kembang, adab, kemandirian, dan eksplorasi bermain.",
-        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        path: "brosur-paud.pdf",
         updatedAt: "default"
       },
       "Paket A": {
         title: "Brosur Paket A",
         desc: "Informasi program kesetaraan setara SD.",
-        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        path: "brosur-paket-a.pdf",
         updatedAt: "default"
       },
       "Paket B": {
         title: "Brosur Paket B",
         desc: "Informasi program kesetaraan setara SMP.",
-        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        path: "brosur-paket-b.pdf",
         updatedAt: "default"
       },
       "Paket C": {
         title: "Brosur Paket C",
         desc: "Informasi program kesetaraan setara SMA.",
-        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
-        updatedAt: "default"
-      },
-      "Program Home Schooling": {
-        title: "Brosur Program Home Schooling",
-        desc: "Informasi program belajar fleksibel sesuai kebutuhan anak dan keluarga.",
-        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
-        updatedAt: "default"
-      },
-      "Pendidikan Inklusi": {
-        title: "Brosur Pendidikan Inklusi",
-        desc: "Informasi pendampingan peserta didik tipikal dan PDPD.",
-        path: "brosur-pkbm-pelita-aushaf-indonesia.pdf",
+        path: "brosur-paket-c.pdf",
         updatedAt: "default"
       }
     };
@@ -1766,13 +1761,15 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
       downloadBtn.textContent = "Download " + selected;
       waBtn.href = buildWaLink("Assalamu'alaikum admin PKBM Pelita Aushaf Indonesia. Saya ingin bertanya tentang " + selected + ".");
       note.textContent = item.updatedAt && item.updatedAt !== "default"
-        ? "Brosur ini sudah diperbarui dari dashboard."
+        ? "Brosur ini sudah diperbarui dari dashboard admin."
         : "Brosur khusus belum diunggah, sementara memakai brosur umum.";
 
       if(list){
-        list.innerHTML = keys.slice(0, 6).map(k => {
+        // Menampilkan seluruh kategori program (Umum, HS, Daycare, PAUD, Paket A, Paket B, Paket C)
+        list.innerHTML = keys.map(k => {
           const b = brosurData[k];
-          return `<div class="brosur-mini"><b>${escapeHtml(k)}</b><small>${b && b.updatedAt && b.updatedAt !== "default" ? "PDF khusus tersedia" : "Memakai brosur umum"}</small></div>`;
+          const isCustom = b && b.updatedAt && b.updatedAt !== "default";
+          return `<div class="brosur-mini"><b>${escapeHtml(k)}</b><small>${isCustom ? "PDF khusus tersedia" : "Memakai brosur umum"}</small></div>`;
         }).join("");
       }
     }
@@ -1781,8 +1778,32 @@ Mohon informasi langkah pendaftaran selanjutnya.`;
       try{
         const res = await fetch("data-brosur.json?ts=" + Date.now());
         if(res.ok){
-          const loaded = await res.json();
-          brosurData = {...defaultBrosurData, ...loaded};
+          const raw = await res.json();
+          // Pemetaan jika admin menyimpan dengan format key lowercase (homeschooling, daycare, umum, dll.)
+          const mapped = {};
+          if(raw.umum || raw.brosurUmum) {
+            mapped["Brosur Umum"] = raw.umum || raw.brosurUmum;
+          }
+          if(raw.homeschooling || raw["Program Home Schooling"] || raw["Homeschooling (HS)"]) {
+            mapped["Homeschooling (HS)"] = raw.homeschooling || raw["Program Home Schooling"] || raw["Homeschooling (HS)"];
+          }
+          if(raw.daycare || raw["Daycare"]) {
+            mapped["Daycare"] = raw.daycare || raw["Daycare"];
+          }
+          if(raw.paud || raw["PAUD Non Formal (Kelompok Bermain)"]) {
+            mapped["PAUD Non Formal (Kelompok Bermain)"] = raw.paud || raw["PAUD Non Formal (Kelompok Bermain)"];
+          }
+          if(raw["paket-a"] || raw["Paket A"]) {
+            mapped["Paket A"] = raw["paket-a"] || raw["Paket A"];
+          }
+          if(raw["paket-b"] || raw["Paket B"]) {
+            mapped["Paket B"] = raw["paket-b"] || raw["Paket B"];
+          }
+          if(raw["paket-c"] || raw["Paket C"]) {
+            mapped["Paket C"] = raw["paket-c"] || raw["Paket C"];
+          }
+
+          brosurData = {...defaultBrosurData, ...mapped};
         }
       }catch(err){
         brosurData = defaultBrosurData;
