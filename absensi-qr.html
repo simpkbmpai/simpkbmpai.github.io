@@ -142,13 +142,13 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
-    // 1. TITIK KOORDINAT RESMI KEDUA GEDUNG PKBM
+    // TITIK KOORDINAT RESMI KEDUA GEDUNG PKBM
     const LOCATIONS = [
       { name: "Gedung G2 (Daycare, PAUD & Kantor)", lat: -7.3841099, lng: 112.718273 },
       { name: "Gedung I5 (Paket A Kesetaraan)", lat: -7.3869413, lng: 112.717721 }
     ];
 
-    // Toleransi radius disesuaikan ke 120 meter agar koneksi Wi-Fi laptop tidak terkunci
+    // Toleransi radius disesuaikan ke 120 meter
     const MAX_ALLOWED_DISTANCE_METERS = 120;
 
     // Jam Realtime
@@ -156,7 +156,7 @@
       document.getElementById("liveClock").textContent = new Date().toLocaleTimeString("id-ID") + " WIB";
     }, 1000);
 
-    // 2. CEK IDENTITAS USER (TUTOR ATAU SANTRI)
+    // CEK IDENTITAS USER
     const savedSiswa = localStorage.getItem("siswaAuth") || sessionStorage.getItem("siswaAuth");
     const savedTutor = localStorage.getItem("tutorAuth") || sessionStorage.getItem("tutorAuth");
     let user = null;
@@ -179,17 +179,15 @@
     const namaUser = user.nama || (role === "tutor" ? "Tutor PKBM" : "Santri PKBM");
     const jenjangUser = user.jenjangNorm || user.jenjang || "-";
     const kelasUser = user.kelasNorm || user.kelas || "-";
-    const idUser = user.nis || user.username || user.nip || "jos";
+    const idUser = user.nis || user.username || user.nip || "tutor";
 
     document.getElementById("userBadge").textContent = role === "tutor" 
       ? `👨‍🏫 ${namaUser} (Tutor / Fasilitator)` 
       : `👤 ${namaUser} (${jenjangUser} • ${kelasUser})`;
 
-    // Deteksi HP atau Laptop
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const deviceType = isMobile ? "Smartphone (HP)" : "Laptop / PC";
 
-    // 3. PILIHAN TIPE ABSENSI (MASUK / PULANG)
     let tipeAbsen = "Masuk";
     const btnMasuk = document.getElementById("btnTipeMasuk");
     const btnPulang = document.getElementById("btnTipePulang");
@@ -206,7 +204,7 @@
       btnMasuk.className = "type-btn";
     });
 
-    // 4. RUMUS HAVERSINE JARAK GPS
+    // RUMUS HAVERSINE JARAK GPS
     function getDistanceMeters(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
       const φ1 = lat1 * Math.PI / 180;
@@ -231,7 +229,7 @@
     const resultBox = document.getElementById("resultBox");
     const btnRefreshGps = document.getElementById("btnRefreshGps");
 
-    // 5. VALIDASI POSISI GPS
+    // VALIDASI POSISI GPS
     function checkUserLocation() {
       gpsStatusBox.className = "gps-status-box";
       gpsStatusBox.innerHTML = "<b>📡 Mengukur Titik GPS Akurat...</b><div>Pastikan GPS perangkat aktif dan sinyal stabil.</div>";
@@ -294,7 +292,6 @@
       );
     }
 
-    // 6. MENJALANKAN SCANNER KAMERA
     function startQRScanner() {
       if (isScanning) return;
       html5QrCode = new Html5Qrcode("reader");
@@ -309,7 +306,7 @@
         });
     }
 
-    // 7. SAAT QR CODE TERDETEKSI (MENGIRIM DENGAN ADAPTASI MULTI-AKSI)
+    // SAAT QR CODE TERDETEKSI (MENGIRIM DATA SESUAI KODE GOOGLE APPS SCRIPT)
     let isSubmitting = false;
     async function onScanSuccess(decodedText) {
       if (isSubmitting) return;
@@ -321,68 +318,46 @@
 
       resultBox.style.display = "block";
       resultBox.className = "result-box";
-      resultBox.innerHTML = `⏳ Mencatat Absensi <b>${tipeAbsen}</b> ke spreadsheet...`;
+      resultBox.innerHTML = `⏳ Mencatat Absensi <b>${tipeAbsen}</b> ke database...`;
 
-      // Ekstrak data jika QR berupa string atau URL
       const qrValue = decodedText.trim();
-
-      // Coba kirim dengan parameter action utama
-      const targetAction = (role === "tutor") ? "absen_tutor" : "absensi_qr";
+      
+      // NAMA AKSI DISESUAIKAN PERSIS DENGAN KODE SCRIPT PKBM
+      const targetAction = (role === "tutor") ? "absen_mandiri_tutor" : "absensi_qr";
       
       const payload = {
         action: targetAction,
-        aksi: targetAction, // redundansi jika GAS membaca 'aksi'
-        tipe: tipeAbsen,
-        tipeAbsen: tipeAbsen,
-        status: tipeAbsen,
+        nip: idUser,                  // Format NIP/User sesuai Apps Script
+        nama: namaUser,               // Format Nama
+        tipeAbsen: tipeAbsen,         // Format Tipe Absen
+        lokasiGedung: nearestLocation ? nearestLocation.name : "Gedung PKBM", // Format Lokasi
+        jarakMeter: nearestDistance,  // Format Jarak
+        perangkat: deviceType,        // Format Perangkat
+        
+        // Data pendukung tambahan (jika santri yang scan)
         nis: idUser,
-        username: idUser,
-        nip: idUser,
-        nama: namaUser,
         role: role,
         kelas: role === "tutor" ? "Tutor" : `${jenjangUser} (${kelasUser})`,
-        lokasiGedung: nearestLocation ? nearestLocation.name : "Gedung G2 & I5",
-        lokasi: nearestLocation ? nearestLocation.name : "Gedung G2 & I5",
-        jarakMeter: nearestDistance,
-        jarak: nearestDistance,
-        perangkat: deviceType,
-        qrData: qrValue,
-        qrCode: qrValue,
-        kode: qrValue
+        qrData: qrValue
       };
 
       try {
-        // Kirim action pada URL query dan body sekaligus agar Apps Script pasti menangkapnya
-        const sendUrl = `${API_URL}?action=${encodeURIComponent(targetAction)}&role=${encodeURIComponent(role)}&tipe=${encodeURIComponent(tipeAbsen)}`;
+        const requestUrl = `${API_URL}?action=${encodeURIComponent(targetAction)}`;
         
-        let res = await fetch(sendUrl, {
+        // Google Apps Script membaca data JSON dari e.postData.contents
+        const res = await fetch(requestUrl, {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify(payload)
         });
 
-        let result = await res.json();
-
-        // Jika respon server masih mengatakan "aksi tidak dikenal", fallback coba nama aksi kedua
-        if (!result.success && result.message && result.message.toLowerCase().includes("tidak dikenal")) {
-          const fallbackAction = "absensi_qr";
-          const fallbackUrl = `${API_URL}?action=${fallbackAction}`;
-          payload.action = fallbackAction;
-          payload.aksi = fallbackAction;
-          
-          res = await fetch(fallbackUrl, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify(payload)
-          });
-          result = await res.json();
-        }
+        const result = await res.json();
 
         if (result.success) {
           resultBox.className = "result-box result-success";
           resultBox.innerHTML = `
             🎉 <b>ABSENSI ${tipeAbsen.toUpperCase()} BERHASIL!</b><br>
-            • Nama: ${namaUser} (${role.toUpperCase()})<br>
+            • Nama: ${namaUser}<br>
             • Waktu: ${result.jam || new Date().toLocaleTimeString("id-ID")} WIB<br>
             • Lokasi: ${nearestLocation ? nearestLocation.name : "Area Sekolah"} (${nearestDistance}m)
           `;
@@ -390,7 +365,7 @@
             window.location.href = role === "tutor" ? "portal-tutor.html" : "portal-siswa.html";
           }, 3000);
         } else {
-          throw new Error(result.message || "Gagal menyimpan absensi.");
+          throw new Error(result.message || "Aksi ditolak oleh sistem server.");
         }
       } catch (err) {
         resultBox.className = "result-box result-error";
