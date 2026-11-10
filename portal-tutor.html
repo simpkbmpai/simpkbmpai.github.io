@@ -117,6 +117,23 @@
       background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; padding: 12px; border-radius: 12px;
       font-size: 13px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
     }
+    /* DESAIN KHUSUS CETAK RAPORT PPI DI DALAM MODAL */
+@media print {
+  body * { visibility: hidden; }
+  #areaKertasRaport, #areaKertasRaport * { visibility: visible; }
+  #areaKertasRaport { 
+    position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; 
+    box-shadow: none; border: none; 
+  }
+  .modal-overlay { background: transparent; position: absolute; }
+  .modal-box { padding: 0; border: none; width: 100%; max-width: 100%; max-height: none; overflow: visible; }
+  .no-print, .modal-close { display: none !important; }
+  @page { margin: 1cm; }
+}
+
+.tabel-raport-ppi { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+.tabel-raport-ppi th, .tabel-raport-ppi td { border: 1px solid #000; padding: 8px; text-align: left; }
+.kop-ppi { text-align: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
   </style>
 </head>
 <body>
