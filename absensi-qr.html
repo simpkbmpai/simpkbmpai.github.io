@@ -148,7 +148,7 @@
       { name: "Gedung I5 (Paket A Kesetaraan)", lat: -7.3869413, lng: 112.717721 }
     ];
 
-    // Toleransi radius disesuaikan ke 120 meter agar laptop dengan triangulasi Wi-Fi tidak terkunci
+    // Toleransi radius disesuaikan ke 120 meter agar koneksi Wi-Fi laptop tidak terkunci
     const MAX_ALLOWED_DISTANCE_METERS = 120;
 
     // Jam Realtime
@@ -179,7 +179,7 @@
     const namaUser = user.nama || (role === "tutor" ? "Tutor PKBM" : "Santri PKBM");
     const jenjangUser = user.jenjangNorm || user.jenjang || "-";
     const kelasUser = user.kelasNorm || user.kelas || "-";
-    const idUser = user.nis || user.username || "-";
+    const idUser = user.nis || user.username || user.nip || "jos";
 
     document.getElementById("userBadge").textContent = role === "tutor" 
       ? `👨‍🏫 ${namaUser} (Tutor / Fasilitator)` 
@@ -266,11 +266,9 @@
           nearestLocation = bestGedung;
           nearestDistance = minDistance;
 
-          // Batas toleransi dinamis: jika laptop memiliki deviasi akurasi tinggi, toleransi disesuaikan
           const effectiveTolerance = Math.max(MAX_ALLOWED_DISTANCE_METERS, isMobile ? MAX_ALLOWED_DISTANCE_METERS : accuracy);
 
           if (nearestDistance <= effectiveTolerance) {
-            // DI DALAM AREA SEKOLAH
             gpsStatusBox.className = "gps-status-box in-range";
             gpsStatusBox.innerHTML = `
               <b>✅ Lokasi Terverifikasi di Area Sekolah!</b>
@@ -280,7 +278,6 @@
             scannerContainer.style.display = "block";
             startQRScanner();
           } else {
-            // DI LUAR AREA SEKOLAH
             gpsStatusBox.className = "gps-status-box out-range";
             gpsStatusBox.innerHTML = `
               <b>❌ Akses Absensi Terkunci (Di Luar Jangkauan)!</b>
@@ -297,7 +294,7 @@
       );
     }
 
-    // 6. MENJALANKAN SCANNER KAMERA UNIVERSAL (HP / LAPTOP)
+    // 6. MENJALANKAN SCANNER KAMERA
     function startQRScanner() {
       if (isScanning) return;
       html5QrCode = new Html5Qrcode("reader");
@@ -312,7 +309,7 @@
         });
     }
 
-    // 7. SAAT QR CODE TERDETEKSI
+    // 7. SAAT QR CODE TERDETEKSI (MENGIRIM DENGAN ADAPTASI MULTI-AKSI)
     let isSubmitting = false;
     async function onScanSuccess(decodedText) {
       if (isSubmitting) return;
@@ -326,26 +323,60 @@
       resultBox.className = "result-box";
       resultBox.innerHTML = `⏳ Mencatat Absensi <b>${tipeAbsen}</b> ke spreadsheet...`;
 
+      // Ekstrak data jika QR berupa string atau URL
+      const qrValue = decodedText.trim();
+
+      // Coba kirim dengan parameter action utama
+      const targetAction = (role === "tutor") ? "absen_tutor" : "absensi_qr";
+      
       const payload = {
-        action: "absensi_qr",
+        action: targetAction,
+        aksi: targetAction, // redundansi jika GAS membaca 'aksi'
+        tipe: tipeAbsen,
+        tipeAbsen: tipeAbsen,
+        status: tipeAbsen,
         nis: idUser,
+        username: idUser,
+        nip: idUser,
         nama: namaUser,
         role: role,
         kelas: role === "tutor" ? "Tutor" : `${jenjangUser} (${kelasUser})`,
-        tipeAbsen: tipeAbsen,
-        lokasiGedung: nearestLocation ? nearestLocation.name : "Gedung Sekolah",
+        lokasiGedung: nearestLocation ? nearestLocation.name : "Gedung G2 & I5",
+        lokasi: nearestLocation ? nearestLocation.name : "Gedung G2 & I5",
         jarakMeter: nearestDistance,
+        jarak: nearestDistance,
         perangkat: deviceType,
-        qrData: decodedText
+        qrData: qrValue,
+        qrCode: qrValue,
+        kode: qrValue
       };
 
       try {
-        const res = await fetch(API_URL, {
+        // Kirim action pada URL query dan body sekaligus agar Apps Script pasti menangkapnya
+        const sendUrl = `${API_URL}?action=${encodeURIComponent(targetAction)}&role=${encodeURIComponent(role)}&tipe=${encodeURIComponent(tipeAbsen)}`;
+        
+        let res = await fetch(sendUrl, {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify(payload)
         });
-        const result = await res.json();
+
+        let result = await res.json();
+
+        // Jika respon server masih mengatakan "aksi tidak dikenal", fallback coba nama aksi kedua
+        if (!result.success && result.message && result.message.toLowerCase().includes("tidak dikenal")) {
+          const fallbackAction = "absensi_qr";
+          const fallbackUrl = `${API_URL}?action=${fallbackAction}`;
+          payload.action = fallbackAction;
+          payload.aksi = fallbackAction;
+          
+          res = await fetch(fallbackUrl, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify(payload)
+          });
+          result = await res.json();
+        }
 
         if (result.success) {
           resultBox.className = "result-box result-success";
@@ -353,7 +384,7 @@
             🎉 <b>ABSENSI ${tipeAbsen.toUpperCase()} BERHASIL!</b><br>
             • Nama: ${namaUser} (${role.toUpperCase()})<br>
             • Waktu: ${result.jam || new Date().toLocaleTimeString("id-ID")} WIB<br>
-            • Lokasi: ${nearestLocation.name} (${nearestDistance}m)
+            • Lokasi: ${nearestLocation ? nearestLocation.name : "Area Sekolah"} (${nearestDistance}m)
           `;
           setTimeout(() => {
             window.location.href = role === "tutor" ? "portal-tutor.html" : "portal-siswa.html";
@@ -364,7 +395,10 @@
       } catch (err) {
         resultBox.className = "result-box result-error";
         resultBox.innerHTML = "❌ Terjadi kendala: " + err.message;
-        setTimeout(() => { isSubmitting = false; checkUserLocation(); }, 3000);
+        setTimeout(() => { 
+          isSubmitting = false; 
+          checkUserLocation(); 
+        }, 3500);
       }
     }
 
