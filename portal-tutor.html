@@ -77,6 +77,7 @@
     .btn-action.purple { background: var(--purple); }
     .btn-action.blue { background: var(--blue); }
     .btn-action.teal { background: var(--teal); }
+    .btn-action.red { background: #b91c1c; }
 
     /* MODAL POPUP */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; display: none; align-items: center; justify-content: center; padding: 16px; }
@@ -88,7 +89,7 @@
     textarea { min-height: 65px; resize: vertical; }
     #reader { width: 100%; max-width: 320px; margin: 12px auto; border-radius: 16px; overflow: hidden; border: 3px solid var(--green); background: #000; }
 
-    /* TABEL MONITORING TTD WALI */
+    /* TABEL MONITORING */
     .table-monitoring { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 12.5px; }
     .table-monitoring th { background: var(--green-soft); color: var(--green-dark); padding: 10px 8px; text-align: left; border: 1px solid var(--line); font-size: 12px; }
     .table-monitoring td { padding: 10px 8px; border: 1px solid var(--line); vertical-align: middle; }
@@ -96,34 +97,20 @@
     .badge-ttd-ok { background: #dcfce7; color: #15803d; padding: 3px 8px; border-radius: 999px; font-weight: 800; font-size: 11.5px; display: inline-block; }
     .badge-ttd-no { background: #fee2e2; color: #b91c1c; padding: 3px 8px; border-radius: 999px; font-weight: 800; font-size: 11.5px; display: inline-block; }
 
-    .btn-wa-remind {
-      background: #25d366; color: #fff; border: 0; padding: 6px 12px; border-radius: 10px;
-      font-weight: 800; font-size: 11.5px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
-    }
+    .btn-wa-remind { background: #25d366; color: #fff; border: 0; padding: 6px 12px; border-radius: 10px; font-weight: 800; font-size: 11.5px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
     .btn-wa-remind:hover { background: #1eb956; }
     
-    .ppi-alert {
-      background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; padding: 12px; border-radius: 12px;
-      font-size: 13px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
-    }
+    .ppi-alert { background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
     
-    /* DESAIN KHUSUS CETAK RAPORT PPI DI DALAM MODAL */
     @media print {
       body * { visibility: hidden; }
       #areaKertasRaport, #areaKertasRaport * { visibility: visible; }
-      #areaKertasRaport { 
-        position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; 
-        box-shadow: none; border: none; 
-      }
+      #areaKertasRaport { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
       .modal-overlay { background: transparent; position: absolute; }
       .modal-box { padding: 0; border: none; width: 100%; max-width: 100%; max-height: none; overflow: visible; }
       .no-print, .modal-close { display: none !important; }
       @page { margin: 1cm; }
     }
-
-    .tabel-raport-ppi { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-    .tabel-raport-ppi th, .tabel-raport-ppi td { border: 1px solid #000; padding: 8px; text-align: left; }
-    .kop-ppi { text-align: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
   </style>
 </head>
 <body>
@@ -181,7 +168,7 @@
           </button>
         </div>
 
-        <!-- FITUR BARU 1: JURNAL KONSELING & ESKALASI -->
+        <!-- JURNAL KONSELING & ESKALASI (INPUT) -->
         <div class="tutor-card" style="border: 2px solid #ea580c; background: #fff7ed;">
           <div>
             <div class="tutor-card-icon" style="background:#ffedd5; color:#c2410c;">📝</div>
@@ -193,7 +180,19 @@
           </button>
         </div>
 
-        <!-- FITUR BARU 2: MANAJEMEN TARGET PPI -->
+        <!-- FITUR BARU: PANTAU KASUS (KHUSUS LEVEL 2-6) -->
+        <div class="tutor-card" id="cardMonitoringKonseling" style="border: 2px solid #b91c1c; background: #fef2f2; display: none;">
+          <div>
+            <div class="tutor-card-icon" style="background:#fee2e2; color:#991b1b;">👁️</div>
+            <h3>Pantau Kasus (Pejabat)</h3>
+            <p>Dashboard monitoring riwayat eskalasi penanganan santri lintas level (Level 2-6).</p>
+          </div>
+          <button type="button" onclick="bukaModalPantauKasus()" class="btn-action red">
+            Buka Pemantauan Kasus
+          </button>
+        </div>
+
+        <!-- MANAJEMEN TARGET PPI -->
         <div class="tutor-card" style="border: 2px solid #0d9488; background: #f0fdfa;">
           <div>
             <div class="tutor-card-icon" style="background:#ccfbf1; color:#0f766e;">🧩</div>
@@ -205,7 +204,7 @@
           </button>
         </div>
 
-        <!-- FITUR MONITORING TTD WALI & PENGINGAT WA -->
+        <!-- MONITORING TTD WALI -->
         <div class="tutor-card" style="border: 2px solid #7c3aed; background: #faf5ff;">
           <div>
             <div class="tutor-card-icon" style="background:#f3e8ff;">📱</div>
@@ -229,18 +228,6 @@
           </a>
         </div>
 
-        <!-- KARTU TUTOR -->
-        <div class="tutor-card">
-          <div>
-            <div class="tutor-card-icon">🪪</div>
-            <h3>Kartu Tanda Tutor</h3>
-            <p>Cetak kartu pengajar resmi standar kartu ATM ISO CR80.</p>
-          </div>
-          <a href="kartu.html?role=tutor" class="btn-action" style="background:#475569;">
-            Cetak Kartu Tutor ↗
-          </a>
-        </div>
-
       </div>
 
       <div style="text-align: right; margin-top:20px;">
@@ -249,13 +236,13 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 1: SCAN ABSEN MAPEL & JURNAL ================= -->
+  <!-- MODAL 1: SCAN ABSEN MAPEL & JURNAL -->
   <div id="modalScanMapel" class="modal-overlay">
     <div class="modal-box">
       <button class="modal-close" onclick="tutupModal('modalScanMapel')">✕</button>
       <h3 style="margin:0 0 4px; color:var(--green-dark);">Presensi Kelas & E-Jurnal Terpadu</h3>
       <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Pilih program pembelajaran, scan kartu santri, dan input evaluasi.</p>
-
+      
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <div>
           <label>Pilih Program Belajar:</label>
@@ -268,42 +255,28 @@
         </div>
         <div>
           <label>Mata Pelajaran / Bidang:</label>
-          <select id="scanMapelSelect">
-            <option value="">Memuat daftar mata pelajaran...</option>
-          </select>
+          <select id="scanMapelSelect"><option value="">Memuat daftar mata pelajaran...</option></select>
         </div>
       </div>
-
       <div id="boxCustomMapel" style="display:none; margin-top:6px;">
         <label style="color:var(--purple);">Ketik Mata Pelajaran / Bidang Lainnya:</label>
         <input type="text" id="inputCustomMapel" placeholder="Contoh: Terapi Sensori Motorik">
       </div>
-
       <div>
         <label>Topik / Pokok Pembahasan Hari Ini:</label>
         <input type="text" id="scanMateriInput" placeholder="Contoh: Latihan Kemandirian Merapikan Alat Belajar">
       </div>
-
       <div id="reader"></div>
-      <div id="scanStatusMsg" style="text-align:center; font-weight:bold; font-size:13px; color:var(--green-dark); margin:6px 0;">
-        📷 Arahkan kamera HP ke QR Code Kartu Santri
-      </div>
+      <div id="scanStatusMsg" style="text-align:center; font-weight:bold; font-size:13px; color:var(--green-dark); margin:6px 0;">📷 Arahkan kamera HP ke QR Code Kartu Santri</div>
 
-      <!-- BOX EVALUASI -->
       <div id="boxEvaluasiSantri" style="display:none; background:#f8fcfa; border:1.5px solid var(--line); border-radius:16px; padding:14px; margin-top:10px;">
         <b style="color:var(--green-dark);" id="evalNamaSantri">Santri Terdeteksi</b>
         <input type="hidden" id="evalNIS">
-
         <div id="boxPpiInfo" style="display:none; margin-top:10px;">
-          <div class="ppi-alert">
-            <span>🧩</span> Anak ini memiliki Target Program Pembelajaran Individual (PPI) yang aktif.
-          </div>
+          <div class="ppi-alert"><span>🧩</span> Anak ini memiliki Target PPI aktif.</div>
           <label style="color:#0f766e;">Kaitkan Jurnal Ini dengan Target PPI (Opsional):</label>
-          <select id="evalTargetPpi">
-            <option value="">-- Jurnal Reguler (Tidak Dikaitkan) --</option>
-          </select>
+          <select id="evalTargetPpi"><option value="">-- Jurnal Reguler (Tidak Dikaitkan) --</option></select>
         </div>
-
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;">
           <div id="boxKonsentrasi">
             <label>Fokus & Ketenangan Belajar:</label>
@@ -313,7 +286,6 @@
               <option value="Perlu Pendampingan">⚠️ Perlu Stimulus / Pendampingan</option>
             </select>
           </div>
-          
           <div id="boxKemandirian" style="display:none;">
             <label style="color:#0f766e;">Tingkat Kemandirian (PPI):</label>
             <select id="evalKemandirian">
@@ -323,7 +295,6 @@
               <option value="Mandiri Penuh">Mandiri Penuh</option>
             </select>
           </div>
-
           <div>
             <label id="labelAdabKarakter">Sikap, Adab & Regulasi Diri:</label>
             <select id="evalAdab">
@@ -334,107 +305,21 @@
             </select>
           </div>
         </div>
-
         <label>Catatan Pembelajaran & Perkembangan Santri:</label>
         <textarea id="evalCatatan" placeholder="Catatan respon santri, pemahaman materi, atau kemajuan kemandirian hari ini..."></textarea>
-
         <label style="color:var(--orange);">Tugas / Pembiasaan di Rumah (Opsional):</label>
         <input type="text" id="evalTugas" placeholder="Contoh: Latihan merapikan tempat tidur / Latihan membaca mandiri">
-
-        <button type="button" id="btnSimpanJurnal" class="btn-action" style="margin-top:14px; width:100%;">
-          💾 Simpan & Kirim ke Raport
-        </button>
+        <button type="button" id="btnSimpanJurnal" class="btn-action" style="margin-top:14px; width:100%;">💾 Simpan & Kirim ke Raport</button>
       </div>
     </div>
   </div>
 
-  <!-- ================= MODAL 2: RANCANG TARGET PPI BARU ================= -->
-  <div id="modalTargetPPI" class="modal-overlay">
-    <div class="modal-box">
-      <button class="modal-close" onclick="tutupModal('modalTargetPPI')">✕</button>
-      <h3 style="margin:0 0 4px; color:var(--teal);">🧩 Rancangan Target PPI Baru</h3>
-      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Buat target evaluasi spesifik untuk santri Inklusi/PDPD.</p>
-
-      <form id="formPpiRencana">
-        <label>NIS Santri:</label>
-        <input type="text" id="ppiNis" placeholder="Masukkan NIS Santri" required>
-        
-        <label>Nama Santri:</label>
-        <input type="text" id="ppiNama" placeholder="Nama Lengkap Anak" required>
-
-        <label>Aspek Fokus Pengembangan:</label>
-        <select id="ppiAspekFokus" required>
-          <option value="Bina Diri & Kemandirian">Bina Diri & Kemandirian</option>
-          <option value="Komunikasi Fungsional">Komunikasi Fungsional</option>
-          <option value="Interaksi Sosial & Regulasi Diri">Interaksi Sosial & Regulasi Diri</option>
-          <option value="Sensorik & Motorik">Sensorik & Motorik</option>
-          <option value="Akademik Adaptif">Akademik Adaptif</option>
-        </select>
-
-        <label>Target Spesifik yang Ingin Dicapai:</label>
-        <input type="text" id="ppiTargetSpesifik" placeholder="Cth: Mampu memakai sepatu mandiri" required>
-
-        <label>Aktivitas Pendukung di Kelas/Rumah:</label>
-        <textarea id="ppiAktivitas" placeholder="Cth: Latihan melepas dan memasang velcro pada sepatu setiap istirahat" required></textarea>
-
-        <label>Target Waktu Evaluasi:</label>
-        <select id="ppiWaktu" required>
-          <option value="1 Bulan">1 Bulan</option>
-          <option value="3 Bulan (Sisipan)">3 Bulan (Raport Sisipan)</option>
-          <option value="1 Semester">1 Semester</option>
-        </select>
-
-        <label>Baseline (Kondisi Awal Anak Saat Ini):</label>
-        <input type="text" id="ppiBaseline" placeholder="Cth: Masih perlu bantuan penuh secara fisik" required>
-
-        <button type="submit" id="btnSimpanPpi" class="btn-action teal" style="margin-top:14px;">
-          💾 Simpan Rencana Target PPI
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ================= MODAL 3: MONITORING TTD WALI ================= -->
-  <div id="modalMonitoring" class="modal-overlay">
-    <div class="modal-box" style="max-width:750px;">
-      <button class="modal-close" onclick="tutupModal('modalMonitoring')">✕</button>
-      <h3 style="margin:0 0 4px; color:var(--purple);">📱 Monitoring Tanda Tangan Raport</h3>
-      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Pantau wali santri yang sudah/belum menandatangani buku penghubung bulanan.</p>
-
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 16px;">
-        <div>
-          <label style="margin:0; font-size:12.5px; color:#5b21b6;">Pilih Periode Bulan:</label>
-          <input type="month" id="filterBulanMon" style="padding:6px 10px; border-radius:10px; border:1px solid #c4b5fd; font-weight:bold; width:auto;">
-        </div>
-        <div id="summaryStatsMon" style="font-size:13px; font-weight:bold; color:#6b21a8;">
-          Memuat status...
-        </div>
-      </div>
-
-      <div style="max-height:360px; overflow-y:auto; margin-top:12px;">
-        <table class="table-monitoring">
-          <thead>
-            <tr>
-              <th>Santri & Kelas</th>
-              <th>Status TTD Wali</th>
-              <th>Tindakan Pengingat</th>
-            </tr>
-          </thead>
-          <tbody id="monitoringTableBody">
-            <tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">⏳ Mengambil data monitoring...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= MODAL 4: JURNAL KONSELING & ESKALASI ================= -->
+  <!-- MODAL 2: JURNAL KONSELING & ESKALASI (INPUT) -->
   <div id="modalKonseling" class="modal-overlay">
     <div class="modal-box">
       <button class="modal-close" onclick="tutupModal('modalKonseling')">✕</button>
       <h3 style="margin:0 0 4px; color:var(--orange);">📝 Jurnal Konseling & Eskalasi</h3>
       <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Catat penanganan masalah santri berdasarkan level akses Anda.</p>
-
       <form id="formKonseling">
         <label>NIS Santri:</label>
         <input type="text" id="konselingNis" placeholder="Masukkan NIS Santri yang bersangkutan" required>
@@ -448,40 +333,105 @@
           <option value="5">Level 5 - Kepala PKBM (Executive Review)</option>
           <option value="6">Level 6 - Psikolog Yayasan (Intervensi Klinis)</option>
         </select>
-
         <label>Status Kasus:</label>
         <select id="konselingStatus" required>
           <option value="Aktif">Aktif (Sedang Berjalan / Proses)</option>
           <option value="Observasi">Observasi (Pemantauan Lanjutan)</option>
           <option value="Selesai">Selesai (Kasus Ditutup / Clear)</option>
         </select>
-
         <label>Catatan Penanganan (Format SOAP / Kronologi):</label>
         <textarea id="konselingSOAP" placeholder="S (Subjective): Keluhan dari santri/wali...&#10;O (Objective): Fakta & observasi guru...&#10;A (Assessment): Analisa awal masalah...&#10;P (Plan): Tindakan yang dilakukan / Rencana eskalasi..." required style="min-height: 140px;"></textarea>
-
-        <button type="submit" id="btnSimpanKonseling" class="btn-action orange" style="margin-top:14px; width:100%;">
-          💾 Simpan & Kirim Catatan Konseling
-        </button>
+        <button type="submit" id="btnSimpanKonseling" class="btn-action orange" style="margin-top:14px; width:100%;">💾 Simpan & Kirim Catatan Konseling</button>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: PANTAU KASUS KONSELING (LEVEL 2-6) -->
+  <div id="modalPantauKasus" class="modal-overlay">
+    <div class="modal-box" style="max-width:850px;">
+      <button class="modal-close" onclick="tutupModal('modalPantauKasus')">✕</button>
+      <h3 style="margin:0 0 4px; color:#991b1b;">👁️ Dashboard Pemantauan Kasus</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Riwayat eskalasi penanganan santri lintas level.</p>
+      
+      <div style="max-height:450px; overflow-y:auto; border: 1px solid var(--line); border-radius: 12px;">
+        <table class="table-monitoring" style="margin-top:0;">
+          <thead style="position: sticky; top: 0; background: #fee2e2; color: #991b1b; z-index: 1;">
+            <tr>
+              <th>Waktu & ID</th>
+              <th>Data Santri</th>
+              <th>Pelapor & Level</th>
+              <th>Catatan Penanganan & Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyPantauKasus">
+            <tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted);">⏳ Menarik data kasus dari server...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: RANCANG TARGET PPI BARU -->
+  <div id="modalTargetPPI" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" onclick="tutupModal('modalTargetPPI')">✕</button>
+      <h3 style="margin:0 0 4px; color:var(--teal);">🧩 Rancangan Target PPI Baru</h3>
+      <form id="formPpiRencana">
+        <!-- Input fields sama seperti sebelumnya -->
+        <label>NIS Santri:</label><input type="text" id="ppiNis" placeholder="Masukkan NIS Santri" required>
+        <label>Nama Santri:</label><input type="text" id="ppiNama" placeholder="Nama Lengkap Anak" required>
+        <label>Aspek Fokus Pengembangan:</label>
+        <select id="ppiAspekFokus" required>
+          <option value="Bina Diri & Kemandirian">Bina Diri & Kemandirian</option>
+          <option value="Komunikasi Fungsional">Komunikasi Fungsional</option>
+          <option value="Interaksi Sosial & Regulasi Diri">Interaksi Sosial & Regulasi Diri</option>
+          <option value="Sensorik & Motorik">Sensorik & Motorik</option>
+          <option value="Akademik Adaptif">Akademik Adaptif</option>
+        </select>
+        <label>Target Spesifik yang Ingin Dicapai:</label><input type="text" id="ppiTargetSpesifik" placeholder="Cth: Mampu memakai sepatu mandiri" required>
+        <label>Aktivitas Pendukung di Kelas/Rumah:</label><textarea id="ppiAktivitas" placeholder="Cth: Latihan melepas dan memasang velcro pada sepatu setiap istirahat" required></textarea>
+        <label>Target Waktu Evaluasi:</label>
+        <select id="ppiWaktu" required>
+          <option value="1 Bulan">1 Bulan</option>
+          <option value="3 Bulan (Sisipan)">3 Bulan (Raport Sisipan)</option>
+          <option value="1 Semester">1 Semester</option>
+        </select>
+        <label>Baseline (Kondisi Awal Anak Saat Ini):</label><input type="text" id="ppiBaseline" placeholder="Cth: Masih perlu bantuan penuh secara fisik" required>
+        <button type="submit" id="btnSimpanPpi" class="btn-action teal" style="margin-top:14px;">💾 Simpan Rencana Target PPI</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 5: MONITORING TTD WALI -->
+  <div id="modalMonitoring" class="modal-overlay">
+    <div class="modal-box" style="max-width:750px;">
+      <button class="modal-close" onclick="tutupModal('modalMonitoring')">✕</button>
+      <h3 style="margin:0 0 4px; color:var(--purple);">📱 Monitoring Tanda Tangan Raport</h3>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 16px;">
+        <div><label style="margin:0; font-size:12.5px; color:#5b21b6;">Pilih Periode Bulan:</label><input type="month" id="filterBulanMon" style="padding:6px 10px; border-radius:10px; border:1px solid #c4b5fd; font-weight:bold; width:auto;"></div>
+        <div id="summaryStatsMon" style="font-size:13px; font-weight:bold; color:#6b21a8;">Memuat status...</div>
+      </div>
+      <div style="max-height:360px; overflow-y:auto; margin-top:12px;">
+        <table class="table-monitoring">
+          <thead><tr><th>Santri & Kelas</th><th>Status TTD Wali</th><th>Tindakan Pengingat</th></tr></thead>
+          <tbody id="monitoringTableBody"><tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">⏳ Mengambil data monitoring...</td></tr></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
   <!-- MODAL IFRAME RAPORT PPI -->
   <div id="modalIframeRaport" class="modal-overlay">
     <div class="modal-box" style="max-width: 900px; padding: 0; height: 90vh; display: flex; flex-direction: column;">
-      <!-- Header Modal -->
       <div style="padding: 15px 20px; background: #fff; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; border-radius: 26px 26px 0 0;">
         <h3 style="margin: 0; color: #2563eb;">🖨️ Menu Cetak Raport PPI</h3>
         <button onclick="document.getElementById('modalIframeRaport').style.display = 'none'" style="background: #fee2e2; color: #b91c1c; border: 0; width: 32px; height: 32px; border-radius: 50%; font-weight: 900; cursor: pointer;">✕</button>
       </div>
-      
-      <!-- Iframe yang memanggil raport-ppi.html -->
       <iframe src="raport-ppi.html" style="width: 100%; flex-grow: 1; border: none; border-radius: 0 0 26px 26px;"></iframe>
     </div>
   </div>
 
   <script>
-    // URL GOOGLE APPS SCRIPT ANDA
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
     const MAPEL_DEFAULT = {
@@ -499,28 +449,29 @@
         document.getElementById("loginGate").style.display = "none";
         document.getElementById("tutorDashboard").style.display = "block";
         document.getElementById("userBadge").textContent = `👨‍🏫 ${activeTutor.nama || "Tutor"} (Tutor PKBM)`;
+        
+        // ================= LOGIKA RBAC (Sembunyikan Menu Pemantauan Jika Role Hanya Tutor) =================
+        const userRole = (activeTutor.role || "tutor").toLowerCase();
+        if (userRole !== "tutor" && userRole !== "") {
+          // Tampilkan kartu untuk Wali Kelas, Kesiswaan, Kepala, Psikolog, Admin
+          document.getElementById("cardMonitoringKonseling").style.display = "flex";
+        }
       } catch(e) {}
     }
 
-    // MAPEL DROPDOWN LOGIC
     function updateMapelDropdown() {
       const jenjang = document.getElementById("selectJenjangProgram").value;
       const selectMapel = document.getElementById("scanMapelSelect");
       selectMapel.innerHTML = "";
-      (MAPEL_DEFAULT[jenjang] || MAPEL_DEFAULT["Paket A"]).forEach(m => {
-        selectMapel.appendChild(new Option(m, m));
-      });
+      (MAPEL_DEFAULT[jenjang] || MAPEL_DEFAULT["Paket A"]).forEach(m => { selectMapel.appendChild(new Option(m, m)); });
       selectMapel.appendChild(new Option("➕ [ Ketik Mata Pelajaran Lainnya... ]", "CUSTOM_OTHER"));
       toggleCustomMapelInput();
     }
     document.getElementById("selectJenjangProgram").addEventListener("change", updateMapelDropdown);
     document.getElementById("scanMapelSelect").addEventListener("change", toggleCustomMapelInput);
-    function toggleCustomMapelInput() {
-      document.getElementById("boxCustomMapel").style.display = (document.getElementById("scanMapelSelect").value === "CUSTOM_OTHER") ? "block" : "none";
-    }
+    function toggleCustomMapelInput() { document.getElementById("boxCustomMapel").style.display = (document.getElementById("scanMapelSelect").value === "CUSTOM_OTHER") ? "block" : "none"; }
     updateMapelDropdown();
 
-    // LOGIN & LOGOUT
     document.getElementById("tutorLoginForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       const u = document.getElementById("usernameInput").value.trim();
@@ -530,34 +481,65 @@
       if(json.success) { localStorage.setItem("tutorAuth", JSON.stringify(json)); location.reload(); }
       else alert("Login gagal: " + json.message);
     });
-    document.getElementById("btnLogoutTutor").addEventListener("click", () => {
-      localStorage.removeItem("tutorAuth"); location.reload();
-    });
+    document.getElementById("btnLogoutTutor").addEventListener("click", () => { localStorage.removeItem("tutorAuth"); location.reload(); });
 
-    // MODAL HANDLERS
     function bukaModalScanMapel() { document.getElementById("modalScanMapel").style.display = "flex"; startScanner(); }
     function bukaModalPPI() { document.getElementById("modalTargetPPI").style.display = "flex"; }
-    function bukaModalKonseling() { document.getElementById("modalKonseling").style.display = "flex"; } // Fungsi buka konseling
-    
-    function bukaModalMonitoring() { 
-      document.getElementById("modalMonitoring").style.display = "flex";
-      const now = new Date();
-      const yr = now.getFullYear();
-      const mo = String(now.getMonth() + 1).padStart(2, "0");
-      document.getElementById("filterBulanMon").value = `${yr}-${mo}`;
-      loadMonitoringData(`${yr}-${mo}`);
-    }
+    function bukaModalKonseling() { document.getElementById("modalKonseling").style.display = "flex"; }
     function tutupModal(id) {
       document.getElementById(id).style.display = "none";
       if(id === 'modalScanMapel' && html5QrCode && isScanning) { html5QrCode.stop().then(() => { isScanning = false; }).catch(()=>{}); }
     }
 
-    // ================= FITUR: SUBMIT KONSELING & ESKALASI =================
+    // ================= ENGINE PANTAU KASUS (LEVEL 2-6) =================
+    function bukaModalPantauKasus() { 
+      document.getElementById("modalPantauKasus").style.display = "flex"; 
+      loadDataPemantauan();
+    }
+
+    async function loadDataPemantauan() {
+      const tbody = document.getElementById("tbodyPantauKasus");
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted);">⏳ Sedang menarik data dari database...</td></tr>';
+      
+      try {
+        const res = await fetch(`${API_URL}?action=get_kasus_konseling`);
+        const json = await res.json();
+        
+        if (json.success && json.data.length > 0) {
+          let rows = "";
+          json.data.forEach(k => {
+            // Styling Badge Status
+            let statusBadge = `<span style="background:#dcfce7; color:#15803d; padding:3px 8px; border-radius:99px; font-size:11px; font-weight:bold;">${k.status}</span>`;
+            if(k.status === 'Aktif') statusBadge = `<span style="background:#fee2e2; color:#b91c1c; padding:3px 8px; border-radius:99px; font-size:11px; font-weight:bold;">${k.status}</span>`;
+            if(k.status === 'Observasi') statusBadge = `<span style="background:#fef3c7; color:#b45309; padding:3px 8px; border-radius:99px; font-size:11px; font-weight:bold;">${k.status}</span>`;
+
+            // Tanggal dipotong agar rapi
+            let tglRapi = String(k.tanggal).substring(0, 16);
+
+            rows += `<tr>
+              <td style="vertical-align:top;"><small style="color:var(--muted);">${tglRapi}</small><br><b>${k.idKasus}</b></td>
+              <td style="vertical-align:top;"><b>${k.namaSantri}</b><br><small>NIS: ${k.nis}</small></td>
+              <td style="vertical-align:top;"><b>Level ${k.level}</b><br><small>${k.pelapor}</small></td>
+              <td style="vertical-align:top;">
+                <div style="max-height:80px; overflow-y:auto; font-size:12px; margin-bottom:8px; white-space:pre-wrap; background:#f9fafb; padding:8px; border-radius:8px; border:1px solid #e5e7eb;">${k.catatan}</div>
+                ${statusBadge}
+              </td>
+            </tr>`;
+          });
+          tbody.innerHTML = rows;
+        } else {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px;">Belum ada kasus yang tercatat di sistem.</td></tr>';
+        }
+      } catch(err) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:red;">Gagal memuat data: ${err.message}</td></tr>`;
+      }
+    }
+
+    // ================= SUBMIT KONSELING & ESKALASI =================
     document.getElementById("formKonseling").addEventListener("submit", async function(e) {
       e.preventDefault();
       const btn = document.getElementById("btnSimpanKonseling");
       btn.disabled = true; btn.textContent = "⏳ Menyimpan Catatan...";
-
       const payload = {
         action: "simpan_eskalasi_konseling",
         nis: document.getElementById("konselingNis").value.trim(),
@@ -566,206 +548,112 @@
         statusKasus: document.getElementById("konselingStatus").value,
         catatanSOAP: document.getElementById("konselingSOAP").value.trim()
       };
-
       try {
         const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
         const json = await res.json();
-        
         if (json.success) {
           alert(`✅ Catatan konseling berhasil disimpan!\nID: ${json.idKasus}`);
-          document.getElementById("formKonseling").reset();
-          tutupModal('modalKonseling');
-        } else {
-          alert("Gagal: " + json.message);
-        }
-      } catch(err) {
-        alert("Error: " + err.message);
-      } finally {
-        btn.disabled = false; btn.textContent = "💾 Simpan & Kirim Catatan Konseling";
-      }
+          document.getElementById("formKonseling").reset(); tutupModal('modalKonseling');
+        } else { alert("Gagal: " + json.message); }
+      } catch(err) { alert("Error: " + err.message); } finally { btn.disabled = false; btn.textContent = "💾 Simpan & Kirim Catatan Konseling"; }
     });
 
-    // ================= FITUR BARU 1: SUBMIT RENCANA PPI =================
+    // ================= SISA KODE (PPI & SCAN MAPEL) TETAP SAMA =================
     document.getElementById("formPpiRencana").addEventListener("submit", async function(e) {
       e.preventDefault();
       const btn = document.getElementById("btnSimpanPpi");
       btn.disabled = true; btn.textContent = "⏳ Menyimpan Target PPI...";
-
       const payload = {
-        action: "simpan_target_ppi",
-        nis: document.getElementById("ppiNis").value.trim(),
-        nama: document.getElementById("ppiNama").value.trim(),
-        aspekFokus: document.getElementById("ppiAspekFokus").value,
-        targetSpesifik: document.getElementById("ppiTargetSpesifik").value.trim(),
-        aktivitasPendukung: document.getElementById("ppiAktivitas").value.trim(),
-        targetWaktu: document.getElementById("ppiWaktu").value,
-        baselineAwal: document.getElementById("ppiBaseline").value.trim(),
-        tutorPj: activeTutor ? activeTutor.nama : "Tutor"
+        action: "simpan_target_ppi", nis: document.getElementById("ppiNis").value.trim(), nama: document.getElementById("ppiNama").value.trim(),
+        aspekFokus: document.getElementById("ppiAspekFokus").value, targetSpesifik: document.getElementById("ppiTargetSpesifik").value.trim(),
+        aktivitasPendukung: document.getElementById("ppiAktivitas").value.trim(), targetWaktu: document.getElementById("ppiWaktu").value,
+        baselineAwal: document.getElementById("ppiBaseline").value.trim(), tutorPj: activeTutor ? activeTutor.nama : "Tutor"
       };
-
       try {
         const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
         const json = await res.json();
-        if (json.success) {
-          alert("✅ Target PPI berhasil didaftarkan dengan ID: " + json.idPpi);
-          document.getElementById("formPpiRencana").reset();
-          tutupModal('modalTargetPPI');
-        } else {
-          alert("Gagal: " + json.message);
-        }
-      } catch(err) { alert("Error: " + err.message); }
-      finally { btn.disabled = false; btn.textContent = "💾 Simpan Rencana Target PPI"; }
+        if (json.success) { alert("✅ Target PPI berhasil didaftarkan dengan ID: " + json.idPpi); document.getElementById("formPpiRencana").reset(); tutupModal('modalTargetPPI'); } 
+        else { alert("Gagal: " + json.message); }
+      } catch(err) { alert("Error: " + err.message); } finally { btn.disabled = false; btn.textContent = "💾 Simpan Rencana Target PPI"; }
     });
 
-    // ================= SCANNER & INTEGRASI JURNAL PPI =================
-    let html5QrCode = null;
-    let isScanning = false;
-    let isProcessing = false;
-
+    let html5QrCode = null; let isScanning = false; let isProcessing = false;
     function startScanner() {
-      if(isScanning) return;
-      html5QrCode = new Html5Qrcode("reader");
-      html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 220 }, onScanSuccess)
-        .then(() => { isScanning = true; }).catch(()=>{});
+      if(isScanning) return; html5QrCode = new Html5Qrcode("reader");
+      html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 220 }, onScanSuccess).then(() => { isScanning = true; }).catch(()=>{});
     }
-
     async function onScanSuccess(decodedText) {
-      if(isProcessing) return;
-      isProcessing = true;
-      const nis = decodedText.trim();
-      document.getElementById("evalNIS").value = nis;
+      if(isProcessing) return; isProcessing = true;
+      const nis = decodedText.trim(); document.getElementById("evalNIS").value = nis;
       document.getElementById("evalNamaSantri").textContent = `Santri Terdeteksi (NIS: ${nis})`;
       document.getElementById("scanStatusMsg").innerHTML = `✅ Kartu <b>${nis}</b> Terpindai! Memeriksa status PPI...`;
-      
       try {
-        // Cek apakah santri punya target PPI yang aktif
         const res = await fetch(`${API_URL}?action=get_target_ppi_santri&nis=${encodeURIComponent(nis)}`);
         const json = await res.json();
-
         const ppiSelect = document.getElementById("evalTargetPpi");
         ppiSelect.innerHTML = '<option value="">-- Jurnal Reguler (Tidak Dikaitkan PPI) --</option>';
-
         if (json.success && json.data && json.data.length > 0) {
           document.getElementById("boxPpiInfo").style.display = "block";
-          json.data.forEach(p => {
-            ppiSelect.appendChild(new Option(`[${p.aspek}] ${p.target}`, p.idPpi));
-          });
-        } else {
-          document.getElementById("boxPpiInfo").style.display = "none";
-        }
-      } catch(e) {
-        document.getElementById("boxPpiInfo").style.display = "none";
-      }
-
+          json.data.forEach(p => { ppiSelect.appendChild(new Option(`[${p.aspek}] ${p.target}`, p.idPpi)); });
+        } else { document.getElementById("boxPpiInfo").style.display = "none"; }
+      } catch(e) { document.getElementById("boxPpiInfo").style.display = "none"; }
       document.getElementById("boxEvaluasiSantri").style.display = "block";
       document.getElementById("scanStatusMsg").innerHTML = `📝 Silakan lengkapi catatan evaluasi hari ini.`;
       if(html5QrCode && isScanning) { html5QrCode.stop().then(()=>{isScanning=false;}).catch(()=>{}); }
     }
-
-    // Toggle tampilan evaluasi Kemandirian jika terhubung PPI
     document.getElementById("evalTargetPpi").addEventListener("change", function() {
       if (this.value !== "") {
-        document.getElementById("boxKemandirian").style.display = "block";
-        document.getElementById("boxKonsentrasi").style.display = "none";
-        document.getElementById("labelAdabKarakter").innerHTML = "Sikap & Regulasi (PPI Skor 1-4):";
+        document.getElementById("boxKemandirian").style.display = "block"; document.getElementById("boxKonsentrasi").style.display = "none"; document.getElementById("labelAdabKarakter").innerHTML = "Sikap & Regulasi (PPI Skor 1-4):";
       } else {
-        document.getElementById("boxKemandirian").style.display = "none";
-        document.getElementById("boxKonsentrasi").style.display = "block";
-        document.getElementById("labelAdabKarakter").innerHTML = "Sikap, Adab & Regulasi Diri:";
+        document.getElementById("boxKemandirian").style.display = "none"; document.getElementById("boxKonsentrasi").style.display = "block"; document.getElementById("labelAdabKarakter").innerHTML = "Sikap, Adab & Regulasi Diri:";
       }
     });
-
-    // SUBMIT JURNAL / PRESENSI
     document.getElementById("btnSimpanJurnal").addEventListener("click", async function() {
-      const btn = this;
-      btn.disabled = true; btn.textContent = "Menyimpan ke Raport...";
-
+      const btn = this; btn.disabled = true; btn.textContent = "Menyimpan ke Raport...";
       let finalMapel = document.getElementById("scanMapelSelect").value;
       if (finalMapel === "CUSTOM_OTHER") finalMapel = document.getElementById("inputCustomMapel").value.trim() || "Pengembangan Mandiri";
-
-      const idPpi = document.getElementById("evalTargetPpi").value;
-      const isPpi = (idPpi !== "");
-
-      // Jika Jurnal PPI, gunakan endpoint simpan_jurnal_ppi, jika reguler pakai simpan_absen_mapel
-      const payload = {
-        action: isPpi ? "simpan_jurnal_ppi" : "simpan_absen_mapel",
-        nis: document.getElementById("evalNIS").value,
-        tutor: activeTutor ? activeTutor.nama : "Tutor",
-        tugasRumah: document.getElementById("evalTugas").value.trim() || "-",
-      };
-
+      const idPpi = document.getElementById("evalTargetPpi").value; const isPpi = (idPpi !== "");
+      const payload = { action: isPpi ? "simpan_jurnal_ppi" : "simpan_absen_mapel", nis: document.getElementById("evalNIS").value, tutor: activeTutor ? activeTutor.nama : "Tutor", tugasRumah: document.getElementById("evalTugas").value.trim() || "-" };
       if (isPpi) {
-        payload.idPpi = idPpi;
-        payload.aktivitasRill = document.getElementById("scanMateriInput").value.trim() || finalMapel;
-        payload.tingkatKemandirian = document.getElementById("evalKemandirian").value;
-        payload.skorKarakter = document.getElementById("evalAdab").value; // Skor 1-4
-        payload.catatanDinamika = document.getElementById("evalCatatan").value.trim() || "-";
+        payload.idPpi = idPpi; payload.aktivitasRill = document.getElementById("scanMateriInput").value.trim() || finalMapel;
+        payload.tingkatKemandirian = document.getElementById("evalKemandirian").value; payload.skorKarakter = document.getElementById("evalAdab").value; payload.catatanDinamika = document.getElementById("evalCatatan").value.trim() || "-";
       } else {
-        payload.jenjang = document.getElementById("selectJenjangProgram").value;
-        payload.mapel = finalMapel;
-        payload.materi = document.getElementById("scanMateriInput").value.trim() || "-";
-        payload.konsentrasi = document.getElementById("evalKonsentrasi").value;
-        payload.adab = document.getElementById("evalAdab").options[document.getElementById("evalAdab").selectedIndex].text; // Ambil teksnya
-        payload.catatan = document.getElementById("evalCatatan").value.trim() || "-";
-        payload.tugas = payload.tugasRumah;
+        payload.jenjang = document.getElementById("selectJenjangProgram").value; payload.mapel = finalMapel;
+        payload.materi = document.getElementById("scanMateriInput").value.trim() || "-"; payload.konsentrasi = document.getElementById("evalKonsentrasi").value;
+        payload.adab = document.getElementById("evalAdab").options[document.getElementById("evalAdab").selectedIndex].text; payload.catatan = document.getElementById("evalCatatan").value.trim() || "-"; payload.tugas = payload.tugasRumah;
       }
-
       try {
         const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
         const result = await res.json();
-        if(result.success) {
-          alert(`✅ Raport/Jurnal Berhasil Disimpan!`);
-          document.getElementById("boxEvaluasiSantri").style.display = "none";
-          document.getElementById("evalCatatan").value = "";
-          document.getElementById("evalTugas").value = "";
-          document.getElementById("scanStatusMsg").innerHTML = "📷 Ketuk tutup atau siap scan kartu berikutnya...";
-          isProcessing = false;
-        } else {
-          alert("Gagal: " + result.message);
-        }
-      } catch(err) {
-        alert("Error: " + err.message);
-      } finally {
-        btn.disabled = false; btn.textContent = "💾 Simpan & Kirim ke Raport";
-      }
+        if(result.success) { alert(`✅ Raport/Jurnal Berhasil Disimpan!`); document.getElementById("boxEvaluasiSantri").style.display = "none"; document.getElementById("evalCatatan").value = ""; document.getElementById("evalTugas").value = ""; document.getElementById("scanStatusMsg").innerHTML = "📷 Ketuk tutup atau siap scan kartu berikutnya..."; isProcessing = false; } 
+        else { alert("Gagal: " + result.message); }
+      } catch(err) { alert("Error: " + err.message); } finally { btn.disabled = false; btn.textContent = "💾 Simpan & Kirim ke Raport"; }
     });
 
-    // ================= ENGINE MONITORING TTD =================
+    function bukaModalMonitoring() { 
+      document.getElementById("modalMonitoring").style.display = "flex";
+      const now = new Date(); const yr = now.getFullYear(); const mo = String(now.getMonth() + 1).padStart(2, "0");
+      document.getElementById("filterBulanMon").value = `${yr}-${mo}`; loadMonitoringData(`${yr}-${mo}`);
+    }
     document.getElementById("filterBulanMon").addEventListener("change", (e) => loadMonitoringData(e.target.value));
-
     async function loadMonitoringData(bulanKey) {
-      const tbody = document.getElementById("monitoringTableBody");
-      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">⏳ Mengambil data monitoring...</td></tr>';
+      const tbody = document.getElementById("monitoringTableBody"); tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">⏳ Mengambil data monitoring...</td></tr>';
       try {
-        const res = await fetch(`${API_URL}?action=get_monitoring_wali&bulanKey=${encodeURIComponent(bulanKey)}`);
-        const json = await res.json();
+        const res = await fetch(`${API_URL}?action=get_monitoring_wali&bulanKey=${encodeURIComponent(bulanKey)}`); const json = await res.json();
         if (json.success && json.data.length > 0) {
           let total = json.data.length, countSudah = 0, countBelum = 0, rows = "";
-          const pParts = bulanKey.split("-");
-          const namaBulanStr = new Date(pParts[0], pParts[1]-1, 1).toLocaleDateString("id-ID", { month: "long", year: "numeric" });
-
+          const pParts = bulanKey.split("-"); const namaBulanStr = new Date(pParts[0], pParts[1]-1, 1).toLocaleDateString("id-ID", { month: "long", year: "numeric" });
           json.data.forEach(s => {
-            if (s.sudahTtd) {
-              countSudah++;
-              rows += `<tr><td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td>
-                       <td><span class="badge-ttd-ok">✅ Sudah TTD</span><br><small style="color:#059669;">Oleh: ${s.namaWaliTtd}</small></td>
-                       <td><small style="color:#059669; font-weight:bold;">Selesai</small></td></tr>`;
-            } else {
-              countBelum++;
-              let cleanHp = String(s.hpWali || "").replace(/[^0-9]/g, "");
-              if (cleanHp.startsWith("0")) cleanHp = "62" + cleanHp.slice(1);
-              const pesanWA = `Assalamu'alaikum. Kepada Yth. Ayah/Bunda dari ananda *${s.nama}*.\n\nBuku Raport Perkembangan periode *${namaBulanStr}* telah diperbarui oleh Tutor PKBM Pelita Aushaf. Mohon berkenan memeriksa kemajuan belajar dan membubuhkan tanda tangan digital di portal siswa:\n👉 https://pkbmpelitaaushafindonesia.sch.id/portal-siswa.html\n\nTerima kasih. 🙏`;
+            if (s.sudahTtd) { countSudah++; rows += `<tr><td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td><td><span class="badge-ttd-ok">✅ Sudah TTD</span><br><small style="color:#059669;">Oleh: ${s.namaWaliTtd}</small></td><td><small style="color:#059669; font-weight:bold;">Selesai</small></td></tr>`; } 
+            else {
+              countBelum++; let cleanHp = String(s.hpWali || "").replace(/[^0-9]/g, ""); if (cleanHp.startsWith("0")) cleanHp = "62" + cleanHp.slice(1);
+              const pesanWA = `Assalamu'alaikum. Kepada Yth. Ayah/Bunda dari ananda *${s.nama}*.\n\nBuku Raport Perkembangan periode *${namaBulanStr}* telah diperbarui oleh Tutor. Mohon berkenan memeriksa kemajuan belajar dan menandatangani di portal siswa:\n👉 https://pkbmpelitaaushafindonesia.sch.id/portal-siswa.html\n\nTerima kasih. 🙏`;
               const waLink = cleanHp ? `https://wa.me/${cleanHp}?text=${encodeURIComponent(pesanWA)}` : `#`;
-              rows += `<tr><td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td>
-                       <td><span class="badge-ttd-no">⚠️ Belum TTD</span></td>
-                       <td><a href="${waLink}" target="_blank" class="btn-wa-remind">📲 Ingatkan via WA</a></td></tr>`;
+              rows += `<tr><td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td><td><span class="badge-ttd-no">⚠️ Belum TTD</span></td><td><a href="${waLink}" target="_blank" class="btn-wa-remind">📲 Ingatkan via WA</a></td></tr>`;
             }
           });
-          document.getElementById("summaryStatsMon").innerHTML = `Total: <b>${total}</b> | <span style="color:#059669;">✅ Sudah: ${countSudah}</span> | <span style="color:#dc2626;">⚠️ Belum: ${countBelum}</span>`;
-          tbody.innerHTML = rows;
-        } else {
-          tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">Tidak ada data santri pada periode ini.</td></tr>';
-        }
+          document.getElementById("summaryStatsMon").innerHTML = `Total: <b>${total}</b> | <span style="color:#059669;">✅ Sudah: ${countSudah}</span> | <span style="color:#dc2626;">⚠️ Belum: ${countBelum}</span>`; tbody.innerHTML = rows;
+        } else { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">Tidak ada data santri pada periode ini.</td></tr>'; }
       } catch(err) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--danger);">Gagal memuat.</td></tr>`; }
     }
   </script>
