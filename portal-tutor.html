@@ -216,6 +216,18 @@
           </button>
         </div>
 
+        <!-- PROFIL UTUH SANTRI (BARU) -->
+        <div class="tutor-card" id="cardProfilUtuh" style="border: 2px solid #475569; background: #f8fafc; display: none;">
+          <div>
+            <div class="tutor-card-icon" style="background:#e2e8f0; color:#334155;">👤</div>
+            <h3>Profil Utuh Santri</h3>
+            <p>Lihat rekap 360° santri: Biodata, Jurnal Akademik/PPI, dan Riwayat Konseling dalam satu layar.</p>
+          </div>
+          <button type="button" onclick="bukaModalProfilUtuh()" class="btn-action" style="background:#475569;">
+            🔍 Cari Profil Santri
+          </button>
+        </div>
+
         <!-- ABSEN MANDIRI TUTOR GPS -->
         <div class="tutor-card" style="border: 2px solid #f59e0b; background: #fffbeb;">
           <div>
@@ -420,6 +432,26 @@
     </div>
   </div>
 
+  <!-- MODAL 6: PROFIL UTUH SANTRI (BARU) -->
+  <div id="modalProfilUtuh" class="modal-overlay">
+    <div class="modal-box" style="max-width:800px;">
+      <button class="modal-close" onclick="tutupModal('modalProfilUtuh')">✕</button>
+      <h3 style="margin:0 0 4px; color:#334155;">👤 Pencarian Profil Utuh</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Tarik gabungan data akademik, inklusi (PPI), dan catatan kasus.</p>
+      
+      <div style="display:flex; gap:10px; margin-bottom:16px;">
+        <input type="text" id="inputCariNis" placeholder="Ketik NIS Santri (Contoh: 12345)..." style="flex-grow:1; font-weight:bold;">
+        <button onclick="eksekusiCariProfil()" class="btn-action" style="background:#475569; width:auto; margin:0;">Cari Data</button>
+      </div>
+
+      <!-- Area Hasil Profil -->
+      <div id="areaHasilProfilUtuh" style="display:none; max-height:450px; overflow-y:auto; border:1px solid var(--line); border-radius:12px; padding:16px; background:#fff;">
+        <div id="loadingProfil" style="text-align:center; color:var(--muted);">⏳ Menggali data dari database...</div>
+        <div id="kontenProfilUtuh" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL IFRAME RAPORT PPI -->
   <div id="modalIframeRaport" class="modal-overlay">
     <div class="modal-box" style="max-width: 900px; padding: 0; height: 90vh; display: flex; flex-direction: column;">
@@ -450,11 +482,12 @@
         document.getElementById("tutorDashboard").style.display = "block";
         document.getElementById("userBadge").textContent = `👨‍🏫 ${activeTutor.nama || "Tutor"} (Tutor PKBM)`;
         
-        // ================= LOGIKA RBAC (Sembunyikan Menu Pemantauan Jika Role Hanya Tutor) =================
+        // ================= LOGIKA RBAC (Role-Based Access Control) =================
         const userRole = (activeTutor.role || "tutor").toLowerCase();
         if (userRole !== "tutor" && userRole !== "") {
           // Tampilkan kartu untuk Wali Kelas, Kesiswaan, Kepala, Psikolog, Admin
           document.getElementById("cardMonitoringKonseling").style.display = "flex";
+          document.getElementById("cardProfilUtuh").style.display = "flex";
         }
       } catch(e) {}
     }
@@ -532,6 +565,55 @@
         }
       } catch(err) {
         tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:red;">Gagal memuat data: ${err.message}</td></tr>`;
+      }
+    }
+
+    // ================= FUNGSI PROFIL UTUH SANTRI (BARU) =================
+    function bukaModalProfilUtuh() {
+      document.getElementById("modalProfilUtuh").style.display = "flex";
+      document.getElementById("areaHasilProfilUtuh").style.display = "none";
+      document.getElementById("inputCariNis").value = "";
+    }
+
+    async function eksekusiCariProfil() {
+      const nis = document.getElementById("inputCariNis").value.trim();
+      if (!nis) { alert("Masukkan NIS terlebih dahulu!"); return; }
+
+      document.getElementById("areaHasilProfilUtuh").style.display = "block";
+      document.getElementById("loadingProfil").style.display = "block";
+      document.getElementById("kontenProfilUtuh").style.display = "none";
+
+      try {
+        const res = await fetch(`${API_URL}?action=get_profil_utuh_santri&nis=${encodeURIComponent(nis)}`);
+        const json = await res.json();
+        
+        if (json.success) {
+          let html = `<h4 style="margin:0 0 8px; color:var(--green-dark);">1. Biodata Dasar</h4>
+                      <p style="margin:0 0 14px; font-size:14px;"><b>${json.profil.nama}</b><br>NIS: ${json.profil.nis} | Kelas: ${json.profil.kelas} (${json.profil.jenjang})</p>`;
+          
+          html += `<h4 style="margin:0 0 8px; color:var(--teal);">2. Status Target PPI (Bulan Ini)</h4>
+                  <p style="margin:0 0 14px; font-size:14px;">Aspek: ${json.ppi.aspekFokus}<br>Kemandirian: <b>${json.ppi.persentaseMandiri}</b> | Adab: <b>${json.ppi.skorKarakter}</b><br><small style="color:var(--orange);">${json.ppi.rekomendasiKenaikan}</small></p>`;
+
+          html += `<h4 style="margin:0 0 8px; color:#991b1b;">3. Riwayat Konseling & Eskalasi</h4>`;
+          if (json.konseling && json.konseling.length > 0) {
+            json.konseling.forEach(k => {
+              html += `<div style="background:#fef2f2; border:1px solid #fecaca; padding:10px; border-radius:8px; margin-bottom:8px; font-size:13px;">
+                        <b style="color:#991b1b;">Level ${k.level} (${k.status})</b> - <small>${String(k.tanggal).substring(0,16)}</small><br>
+                        ${k.catatan}
+                      </div>`;
+            });
+          } else {
+            html += `<p style="font-size:13px; color:var(--muted);">Bersih, tidak ada catatan pelanggaran/kasus khusus.</p>`;
+          }
+          
+          document.getElementById("kontenProfilUtuh").innerHTML = html;
+          document.getElementById("loadingProfil").style.display = "none";
+          document.getElementById("kontenProfilUtuh").style.display = "block";
+        } else {
+          document.getElementById("loadingProfil").innerHTML = `<span style="color:red;">❌ Gagal: ${json.message}</span>`;
+        }
+      } catch (err) {
+        document.getElementById("loadingProfil").innerHTML = `<span style="color:red;">❌ Error jaringan: ${err.message}</span>`;
       }
     }
 
