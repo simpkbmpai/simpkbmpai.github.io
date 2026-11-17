@@ -239,132 +239,6 @@
             Absen Datang / Pulang →
           </a>
         </div>
-// ================= ENGINE TRAINING NEED ANALYSIS (TNA) =================
-    let cacheTnaPribadi = null;
-    let cacheTnaSupervisi = null;
-
-    async function bukaModalTnaPribadi() {
-      document.getElementById("modalTnaPribadi").style.display = "flex";
-      document.getElementById("loadingTnaPribadi").style.display = "block";
-      document.getElementById("kontenTnaPribadi").style.display = "none";
-
-      const nip = activeTutor ? activeTutor.username : "";
-      try {
-        const res = await fetch(`${API_URL}?action=get_tna_profil_tutor&nip=${encodeURIComponent(nip)}`);
-        const json = await res.json();
-        if (!json.success) {
-          document.getElementById("loadingTnaPribadi").innerHTML = `<span style="color:red;">❌ ${json.message}</span>`;
-          return;
-        }
-        cacheTnaPribadi = json;
-        document.getElementById("tnaNamaJabatan").textContent = `${json.jabatan.namaJabatan} (${json.tutor.nama})`;
-        document.getElementById("tnaUnitBadge").textContent = `Unit: ${json.tutor.unit}`;
-        document.getElementById("tnaJobDesc").textContent = json.jabatan.jobDesc;
-        document.getElementById("tnaJobSpec").textContent = `${json.jabatan.specPendidikan} | Wajib: ${json.jabatan.specPelatihan}`;
-        document.getElementById("tnaKualifikasiAktual").textContent = `${json.tutor.pendidikan} | Sertifikat: ${json.tutor.sertifikasi}`;
-
-        // Render Form Self-Assessment
-        let htmlKomp = "";
-        if (json.kompetensiWajib.length === 0) {
-          htmlKomp = `<p style="font-size:13px; color:var(--muted);">Belum ada pemetaan kompetensi untuk kode jabatan <b>${json.tutor.kodeJabatan}</b>.</p>`;
-        } else {
-          json.kompetensiWajib.forEach((k, idx) => {
-            htmlKomp += `
-              <div style="background:#f8fcfa; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px;">
-                <b style="color:var(--green-dark); font-size:13.5px;">${idx + 1}. ${k.nama}</b>
-                <span style="float:right; font-size:11.5px; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:99px; font-weight:bold;">Target: Lv.${k.targetLevel}</span>
-                <div style="font-size:12px; color:var(--muted); margin:6px 0;">
-                  • <b>Lv.1:</b> ${k.lv1}<br>
-                  • <b>Lv.2:</b> ${k.lv2}<br>
-                  • <b>Lv.3:</b> ${k.lv3}<br>
-                  • <b>Lv.4:</b> ${k.lv4}
-                </div>
-                <select id="self_komp_${idx}" style="margin-top:4px; font-weight:bold;">
-                  <option value="1">Level 1 - Masih Membutuhkan Bimbingan Dasar</option>
-                  <option value="2">Level 2 - Mampu Melaksanakan dengan Arahan</option>
-                  <option value="3" selected>Level 3 - Mampu Melaksanakan Secara Mandiri & Konsisten</option>
-                  <option value="4">Level 4 - Mahir & Mampu Membimbing Rekan Sejawat</option>
-                </select>
-              </div>
-            `;
-          });
-        }
-        document.getElementById("listKompetensiSelf").innerHTML = htmlKomp;
-
-        // Render Riwayat Hasil TNA jika sudah ada
-        if (json.hasilTna && json.hasilTna.length > 0) {
-          document.getElementById("boxHasilTnaPribadi").style.display = "block";
-          document.getElementById("tbodyHasilTnaPribadi").innerHTML = json.hasilTna.map(h => `
-            <tr>
-              <td><b>${h.namaKompetensi}</b><br><small style="color:var(--muted);">Periode: ${h.periode}</small></td>
-              <td>Target: <b>${h.targetLevel}</b><br>Aktual: <b>${h.skorFinal}</b> (Gap: ${h.gap})</td>
-              <td><span class="badge-ttd-no" style="${h.gap >= 0 ? 'background:#dcfce7;color:#15803d;' : ''}">${h.prioritas}</span><br><small>${h.rekomendasi}</small></td>
-            </tr>
-          `).join("");
-        } else {
-          document.getElementById("boxHasilTnaPribadi").style.display = "none";
-        }
-
-        document.getElementById("loadingTnaPribadi").style.display = "none";
-        document.getElementById("kontenTnaPribadi").style.display = "block";
-      } catch (err) {
-        document.getElementById("loadingTnaPribadi").innerHTML = `<span style="color:red;">❌ Error: ${err.message}</span>`;
-      }
-    }
-
-    async function simpanTnaSelf() {
-      if (!cacheTnaPribadi || cacheTnaPribadi.kompetensiWajib.length === 0) return;
-      const btn = document.getElementById("btnSimpanSelfTna");
-      btn.disabled = true; btn.textContent = "⏳ Menyimpan Self-Assessment...";
-
-      const items = cacheTnaPribadi.kompetensiWajib.map((k, idx) => ({
-        idKomp: k.id,
-        namaKomp: k.nama,
-        targetLevel: k.targetLevel,
-        skor: Number(document.getElementById(`self_komp_${idx}`).value),
-        modulPelatihan: k.modul
-      }));
-
-      const payload = {
-        action: "simpan_asesmen_tna",
-        periode: document.getElementById("tnaPeriodeSelf").value.trim(),
-        nip: cacheTnaPribadi.tutor.nip,
-        nama: cacheTnaPribadi.tutor.nama,
-        unit: cacheTnaPribadi.tutor.unit,
-        kodeJabatan: cacheTnaPribadi.tutor.kodeJabatan,
-        modeInput: "self",
-        items: items
-      };
-
-      try {
-        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
-        const json = await res.json();
-        if (json.success) {
-          alert("✅ " + json.message);
-          bukaModalTnaPribadi(); // Refresh tampilan hasil TNA
-        } else { alert("Gagal: " + json.message); }
-      } catch (err) { alert("Error: " + err.message); }
-      finally { btn.disabled = false; btn.textContent = "💾 Simpan Self-Assessment TNA"; }
-    }
-
-    // ================= ENGINE SUPERVISI & MATRIKS TNA LEMBAGA =================
-    async function bukaModalSupervisiTna() {
-      document.getElementById("modalSupervisiTna").style.display = "flex";
-      document.getElementById("areaFormSupervisiTutor").style.display = "none";
-
-      // Muat daftar semua tutor ke dropdown
-      const sel = document.getElementById("selectTutorSupervisi");
-      sel.innerHTML = '<option value="">⏳ Memuat daftar SDM...</option>';
-      try {
-        const res = await fetch(`${API_URL}?action=get_all_tutor`);
-        const json = await res.json();
-        if (json.success) {
-          sel.innerHTML = '<option value="">-- Pilih SDM / Tutor --</option>' +
-            json.data.map(t => `<option value="${t.nip}">${t.nama} (${t.role})</option>`).join("");
-        }
-      } catch (e) {}
-
-      muatMatriksTnaLembaga();
     }
 
     async function muatFormSupervisiTutor() {
@@ -1282,6 +1156,133 @@
         tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:red;">Gagal memuat matriks TNA.</td></tr>`;
       }
     }
+
+// ================= ENGINE TRAINING NEED ANALYSIS (TNA) =================
+    let cacheTnaPribadi = null;
+    let cacheTnaSupervisi = null;
+
+    async function bukaModalTnaPribadi() {
+      document.getElementById("modalTnaPribadi").style.display = "flex";
+      document.getElementById("loadingTnaPribadi").style.display = "block";
+      document.getElementById("kontenTnaPribadi").style.display = "none";
+
+      const nip = activeTutor ? activeTutor.username : "";
+      try {
+        const res = await fetch(`${API_URL}?action=get_tna_profil_tutor&nip=${encodeURIComponent(nip)}`);
+        const json = await res.json();
+        if (!json.success) {
+          document.getElementById("loadingTnaPribadi").innerHTML = `<span style="color:red;">❌ ${json.message}</span>`;
+          return;
+        }
+        cacheTnaPribadi = json;
+        document.getElementById("tnaNamaJabatan").textContent = `${json.jabatan.namaJabatan} (${json.tutor.nama})`;
+        document.getElementById("tnaUnitBadge").textContent = `Unit: ${json.tutor.unit}`;
+        document.getElementById("tnaJobDesc").textContent = json.jabatan.jobDesc;
+        document.getElementById("tnaJobSpec").textContent = `${json.jabatan.specPendidikan} | Wajib: ${json.jabatan.specPelatihan}`;
+        document.getElementById("tnaKualifikasiAktual").textContent = `${json.tutor.pendidikan} | Sertifikat: ${json.tutor.sertifikasi}`;
+
+        // Render Form Self-Assessment
+        let htmlKomp = "";
+        if (json.kompetensiWajib.length === 0) {
+          htmlKomp = `<p style="font-size:13px; color:var(--muted);">Belum ada pemetaan kompetensi untuk kode jabatan <b>${json.tutor.kodeJabatan}</b>.</p>`;
+        } else {
+          json.kompetensiWajib.forEach((k, idx) => {
+            htmlKomp += `
+              <div style="background:#f8fcfa; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px;">
+                <b style="color:var(--green-dark); font-size:13.5px;">${idx + 1}. ${k.nama}</b>
+                <span style="float:right; font-size:11.5px; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:99px; font-weight:bold;">Target: Lv.${k.targetLevel}</span>
+                <div style="font-size:12px; color:var(--muted); margin:6px 0;">
+                  • <b>Lv.1:</b> ${k.lv1}<br>
+                  • <b>Lv.2:</b> ${k.lv2}<br>
+                  • <b>Lv.3:</b> ${k.lv3}<br>
+                  • <b>Lv.4:</b> ${k.lv4}
+                </div>
+                <select id="self_komp_${idx}" style="margin-top:4px; font-weight:bold;">
+                  <option value="1">Level 1 - Masih Membutuhkan Bimbingan Dasar</option>
+                  <option value="2">Level 2 - Mampu Melaksanakan dengan Arahan</option>
+                  <option value="3" selected>Level 3 - Mampu Melaksanakan Secara Mandiri & Konsisten</option>
+                  <option value="4">Level 4 - Mahir & Mampu Membimbing Rekan Sejawat</option>
+                </select>
+              </div>
+            `;
+          });
+        }
+        document.getElementById("listKompetensiSelf").innerHTML = htmlKomp;
+
+        // Render Riwayat Hasil TNA jika sudah ada
+        if (json.hasilTna && json.hasilTna.length > 0) {
+          document.getElementById("boxHasilTnaPribadi").style.display = "block";
+          document.getElementById("tbodyHasilTnaPribadi").innerHTML = json.hasilTna.map(h => `
+            <tr>
+              <td><b>${h.namaKompetensi}</b><br><small style="color:var(--muted);">Periode: ${h.periode}</small></td>
+              <td>Target: <b>${h.targetLevel}</b><br>Aktual: <b>${h.skorFinal}</b> (Gap: ${h.gap})</td>
+              <td><span class="badge-ttd-no" style="${h.gap >= 0 ? 'background:#dcfce7;color:#15803d;' : ''}">${h.prioritas}</span><br><small>${h.rekomendasi}</small></td>
+            </tr>
+          `).join("");
+        } else {
+          document.getElementById("boxHasilTnaPribadi").style.display = "none";
+        }
+
+        document.getElementById("loadingTnaPribadi").style.display = "none";
+        document.getElementById("kontenTnaPribadi").style.display = "block";
+      } catch (err) {
+        document.getElementById("loadingTnaPribadi").innerHTML = `<span style="color:red;">❌ Error: ${err.message}</span>`;
+      }
+    }
+
+    async function simpanTnaSelf() {
+      if (!cacheTnaPribadi || cacheTnaPribadi.kompetensiWajib.length === 0) return;
+      const btn = document.getElementById("btnSimpanSelfTna");
+      btn.disabled = true; btn.textContent = "⏳ Menyimpan Self-Assessment...";
+
+      const items = cacheTnaPribadi.kompetensiWajib.map((k, idx) => ({
+        idKomp: k.id,
+        namaKomp: k.nama,
+        targetLevel: k.targetLevel,
+        skor: Number(document.getElementById(`self_komp_${idx}`).value),
+        modulPelatihan: k.modul
+      }));
+
+      const payload = {
+        action: "simpan_asesmen_tna",
+        periode: document.getElementById("tnaPeriodeSelf").value.trim(),
+        nip: cacheTnaPribadi.tutor.nip,
+        nama: cacheTnaPribadi.tutor.nama,
+        unit: cacheTnaPribadi.tutor.unit,
+        kodeJabatan: cacheTnaPribadi.tutor.kodeJabatan,
+        modeInput: "self",
+        items: items
+      };
+
+      try {
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+        const json = await res.json();
+        if (json.success) {
+          alert("✅ " + json.message);
+          bukaModalTnaPribadi(); // Refresh tampilan hasil TNA
+        } else { alert("Gagal: " + json.message); }
+      } catch (err) { alert("Error: " + err.message); }
+      finally { btn.disabled = false; btn.textContent = "💾 Simpan Self-Assessment TNA"; }
+    }
+
+    // ================= ENGINE SUPERVISI & MATRIKS TNA LEMBAGA =================
+    async function bukaModalSupervisiTna() {
+      document.getElementById("modalSupervisiTna").style.display = "flex";
+      document.getElementById("areaFormSupervisiTutor").style.display = "none";
+
+      // Muat daftar semua tutor ke dropdown
+      const sel = document.getElementById("selectTutorSupervisi");
+      sel.innerHTML = '<option value="">⏳ Memuat daftar SDM...</option>';
+      try {
+        const res = await fetch(`${API_URL}?action=get_all_tutor`);
+        const json = await res.json();
+        if (json.success) {
+          sel.innerHTML = '<option value="">-- Pilih SDM / Tutor --</option>' +
+            json.data.map(t => `<option value="${t.nip}">${t.nama} (${t.role})</option>`).join("");
+        }
+      } catch (e) {}
+
+      muatMatriksTnaLembaga();
   </script>
 </body>
 </html>
