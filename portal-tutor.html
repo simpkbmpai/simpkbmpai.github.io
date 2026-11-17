@@ -688,7 +688,101 @@
       <iframe src="raport-ppi.html" style="width: 100%; flex-grow: 1; border: none; border-radius: 0 0 26px 26px;"></iframe>
     </div>
   </div>
+<!-- MODAL 7: PROFIL JABATAN & SELF-ASSESSMENT TNA -->
+  <div id="modalTnaPribadi" class="modal-overlay">
+    <div class="modal-box" style="max-width:780px;">
+      <button class="modal-close" onclick="tutupModal('modalTnaPribadi')">✕</button>
+      <h3 style="margin:0 0 4px; color:#0369a1;">📋 Profil Jabatan & Training Need Analysis (TNA)</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Standar tugas berdasarkan unit penempatan dan evaluasi kebutuhan pelatihan Anda.</p>
+      
+      <div id="loadingTnaPribadi" style="text-align:center; padding:20px; color:var(--muted);">⏳ Memuat profil jabatan dan kamus kompetensi...</div>
+      
+      <div id="kontenTnaPribadi" style="display:none;">
+        <div style="background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:16px; padding:16px; margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+            <b style="color:#0369a1; font-size:16px;" id="tnaNamaJabatan">-</b>
+            <span style="background:#0284c7; color:#fff; padding:3px 10px; border-radius:99px; font-size:12px; font-weight:bold;" id="tnaUnitBadge">-</span>
+          </div>
+          <p style="margin:4px 0; font-size:13px;"><b>Job Description Utama:</b> <span id="tnaJobDesc">-</span></p>
+          <p style="margin:4px 0; font-size:13px;"><b>Job Specification (Pendidikan & Pelatihan Wajib):</b> <span id="tnaJobSpec">-</span></p>
+          <p style="margin:4px 0; font-size:13px;"><b>Kualifikasi Anda Saat Ini:</b> <span id="tnaKualifikasiAktual">-</span></p>
+        </div>
 
+        <h4 style="margin:0 0 8px; color:var(--green-dark);">Penilaian Kompetensi Mandiri (Self-Assessment)</h4>
+        <div style="margin-bottom:10px;">
+          <label>Periode TNA:</label>
+          <input type="text" id="tnaPeriodeSelf" value="2026-Ganjil" style="max-width:200px; font-weight:bold;">
+        </div>
+        <div id="listKompetensiSelf"></div>
+        <button type="button" id="btnSimpanSelfTna" onclick="simpanTnaSelf()" class="btn-action" style="background:#0284c7; width:100%; margin-top:14px;">💾 Simpan Self-Assessment TNA</button>
+
+        <div id="boxHasilTnaPribadi" style="margin-top:20px; display:none;">
+          <h4 style="margin:0 0 8px; color:var(--orange);">📌 Hasil Identifikasi Kebutuhan Pelatihan Anda</h4>
+          <div style="overflow-x:auto;">
+            <table class="table-monitoring">
+              <thead>
+                <tr>
+                  <th>Kompetensi</th>
+                  <th>Target / Aktual</th>
+                  <th>Status & Rekomendasi Pelatihan</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyHasilTnaPribadi"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 8: SUPERVISI & MATRIKS TNA LEMBAGA -->
+  <div id="modalSupervisiTna" class="modal-overlay">
+    <div class="modal-box" style="max-width:880px;">
+      <button class="modal-close" onclick="tutupModal('modalSupervisiTna')">✕</button>
+      <h3 style="margin:0 0 4px; color:#4338ca;">📊 Supervisi Kompetensi & Matriks TNA SDM</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Pilih SDM untuk menginput nilai supervisi atau lihat rekap kebutuhan pelatihan seluruh tim.</p>
+
+      <div style="background:#eef2ff; border:1.5px solid #c7d2fe; border-radius:16px; padding:16px; margin-bottom:18px;">
+        <div style="display:grid; grid-template-columns:2fr 1fr auto; gap:10px; align-items:end;">
+          <div>
+            <label style="margin-top:0; color:#3730a3;">Pilih SDM / Tutor yang Disupervisi:</label>
+            <select id="selectTutorSupervisi">
+              <option value="">-- Memuat daftar SDM... --</option>
+            </select>
+          </div>
+          <div>
+            <label style="margin-top:0; color:#3730a3;">Periode:</label>
+            <input type="text" id="tnaPeriodeSup" value="2026-Ganjil">
+          </div>
+          <button type="button" onclick="muatFormSupervisiTutor()" class="btn-action" style="background:#4f46e5; margin:0;">Tarik Kompetensi</button>
+        </div>
+
+        <div id="areaFormSupervisiTutor" style="display:none; margin-top:14px; border-top:1px solid #c7d2fe; padding-top:12px;">
+          <div id="infoJabatanSupervisi" style="font-size:13px; margin-bottom:10px; color:#312e81;"></div>
+          <label style="color:#3730a3;">Catatan Kesesuaian Job Specification (Ijazah/Sertifikat):</label>
+          <input type="text" id="inputGapJobSpec" value="Sesuai Standar Jabatan" style="margin-bottom:10px;">
+          <div id="listKompetensiSupervisi"></div>
+          <button type="button" id="btnSimpanSupTna" onclick="simpanTnaSupervisi()" class="btn-action" style="background:#4f46e5; width:100%; margin-top:12px;">💾 Simpan Hasil Supervisi & Hitung Gap TNA</button>
+        </div>
+      </div>
+
+      <h4 style="margin:0 0 8px; color:#312e81;">📋 Matriks Kebutuhan Pelatihan Lembaga (TNA)</h4>
+      <div style="max-height:340px; overflow-y:auto; border:1px solid var(--line); border-radius:12px;">
+        <table class="table-monitoring" style="margin-top:0;">
+          <thead style="position:sticky; top:0; background:#e0e7ff; color:#3730a3;">
+            <tr>
+              <th>SDM & Unit</th>
+              <th>Kompetensi & Gap</th>
+              <th>Prioritas & Rekomendasi Pelatihan</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyMatriksTnaLembaga">
+            <tr><td colspan="3" style="text-align:center; padding:16px; color:var(--muted);">⏳ Memuat matriks TNA...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
@@ -714,6 +808,7 @@
           // Tampilkan kartu untuk Wali Kelas, Kesiswaan, Kepala, Psikolog, Admin
           document.getElementById("cardMonitoringKonseling").style.display = "flex";
           document.getElementById("cardProfilUtuh").style.display = "flex";
+       document.getElementById("cardSupervisiTna").style.display = "flex";
         }
       } catch(e) {}
     }
