@@ -20,6 +20,7 @@
       --purple: #7c3aed;
       --blue: #2563eb;
       --teal: #0d9488;
+      --indigo: #4f46e5;
     }
     * { box-sizing: border-box; }
     body {
@@ -78,6 +79,7 @@
     .btn-action.blue { background: var(--blue); }
     .btn-action.teal { background: var(--teal); }
     .btn-action.red { background: #b91c1c; }
+    .btn-action.indigo { background: var(--indigo); }
 
     /* MODAL POPUP */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; display: none; align-items: center; justify-content: center; padding: 16px; }
@@ -180,7 +182,7 @@
           </button>
         </div>
 
-        <!-- FITUR BARU: PANTAU KASUS (KHUSUS LEVEL 2-6) -->
+        <!-- PANTAU KASUS (KHUSUS LEVEL 2-6) -->
         <div class="tutor-card" id="cardMonitoringKonseling" style="border: 2px solid #b91c1c; background: #fef2f2; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#fee2e2; color:#991b1b;">👁️</div>
@@ -216,7 +218,7 @@
           </button>
         </div>
 
-        <!-- PROFIL UTUH SANTRI (BARU) -->
+        <!-- PROFIL UTUH SANTRI -->
         <div class="tutor-card" id="cardProfilUtuh" style="border: 2px solid #475569; background: #f8fafc; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#e2e8f0; color:#334155;">👤</div>
@@ -225,6 +227,30 @@
           </div>
           <button type="button" onclick="bukaModalProfilUtuh()" class="btn-action" style="background:#475569;">
             🔍 Cari Profil Santri
+          </button>
+        </div>
+
+        <!-- PROFIL JABATAN & SELF-ASSESSMENT TNA (UNTUK SEMUA TUTOR/SDM) -->
+        <div class="tutor-card" style="border: 2px solid #0284c7; background: #f0f9ff;">
+          <div>
+            <div class="tutor-card-icon" style="background:#e0f2fe; color:#0369a1;">📋</div>
+            <h3>Profil Jabatan & TNA Saya</h3>
+            <p>Lihat standar Job Desc & Job Spec unit Anda, lakukan Self-Assessment kompetensi, dan cek rekomendasi pelatihan.</p>
+          </div>
+          <button type="button" onclick="bukaModalTnaPribadi()" class="btn-action" style="background:#0284c7;">
+            Buka Profil & TNA Saya →
+          </button>
+        </div>
+
+        <!-- SUPERVISI & MATRIKS TNA LEMBAGA (KHUSUS PEJABAT / HRD / KEPALA) -->
+        <div class="tutor-card" id="cardSupervisiTna" style="border: 2px solid #4f46e5; background: #eef2ff; display: none;">
+          <div>
+            <div class="tutor-card-icon" style="background:#e0e7ff; color:#3730a3;">📊</div>
+            <h3>Supervisi & Matriks TNA SDM</h3>
+            <p>Input penilaian supervisi kompetensi tutor/staf dan pantau peta kebutuhan pelatihan lembaga.</p>
+          </div>
+          <button type="button" onclick="bukaModalSupervisiTna()" class="btn-action indigo">
+            Buka Supervisi & Matriks →
           </button>
         </div>
 
@@ -239,107 +265,7 @@
             Absen Datang / Pulang →
           </a>
         </div>
-    }
 
-    async function muatFormSupervisiTutor() {
-      const nip = document.getElementById("selectTutorSupervisi").value;
-      if (!nip) { alert("Pilih SDM/Tutor terlebih dahulu!"); return; }
-
-      const area = document.getElementById("areaFormSupervisiTutor");
-      area.style.display = "block";
-      document.getElementById("listKompetensiSupervisi").innerHTML = "⏳ Menarik standar kompetensi...";
-
-      try {
-        const res = await fetch(`${API_URL}?action=get_tna_profil_tutor&nip=${encodeURIComponent(nip)}`);
-        const json = await res.json();
-        if (!json.success) { alert(json.message); return; }
-
-        cacheTnaSupervisi = json;
-        document.getElementById("infoJabatanSupervisi").innerHTML = `
-          <b>Jabatan:</b> ${json.jabatan.namaJabatan} | <b>Unit:</b> ${json.tutor.unit}<br>
-          <b>Standar Spec:</b> ${json.jabatan.specPendidikan} (${json.jabatan.specPelatihan})<br>
-          <b>Aktual SDM:</b> ${json.tutor.pendidikan} (Sertifikat: ${json.tutor.sertifikasi})
-        `;
-
-        let html = "";
-        json.kompetensiWajib.forEach((k, idx) => {
-          html += `
-            <div style="background:#fff; border:1px solid #c7d2fe; border-radius:10px; padding:10px; margin-bottom:8px;">
-              <b style="font-size:13px; color:#312e81;">${k.nama} (Target: Lv.${k.targetLevel})</b>
-              <select id="sup_komp_${idx}" style="margin-top:6px;">
-                <option value="1">Skor Supervisi: 1 (Perlu Pendampingan Intensif)</option>
-                <option value="2">Skor Supervisi: 2 (Berkembang / Butuh Coaching)</option>
-                <option value="3" selected>Skor Supervisi: 3 (Kompeten / Sesuai Standar)</option>
-                <option value="4">Skor Supervisi: 4 (Sangat Mahir / Layak Jadi Mentor)</option>
-              </select>
-            </div>
-          `;
-        });
-        document.getElementById("listKompetensiSupervisi").innerHTML = html || "<small>Belum ada kompetensi wajib terdaftar pada jabatan ini.</small>";
-      } catch (err) { alert("Error: " + err.message); }
-    }
-
-    async function simpanTnaSupervisi() {
-      if (!cacheTnaSupervisi || cacheTnaSupervisi.kompetensiWajib.length === 0) return;
-      const btn = document.getElementById("btnSimpanSupTna");
-      btn.disabled = true; btn.textContent = "⏳ Menyimpan Supervisi...";
-
-      const items = cacheTnaSupervisi.kompetensiWajib.map((k, idx) => ({
-        idKomp: k.id,
-        namaKomp: k.nama,
-        targetLevel: k.targetLevel,
-        skor: Number(document.getElementById(`sup_komp_${idx}`).value),
-        modulPelatihan: k.modul
-      }));
-
-      const payload = {
-        action: "simpan_asesmen_tna",
-        periode: document.getElementById("tnaPeriodeSup").value.trim(),
-        nip: cacheTnaSupervisi.tutor.nip,
-        nama: cacheTnaSupervisi.tutor.nama,
-        unit: cacheTnaSupervisi.tutor.unit,
-        kodeJabatan: cacheTnaSupervisi.tutor.kodeJabatan,
-        gapJobSpec: document.getElementById("inputGapJobSpec").value.trim(),
-        modeInput: "supervisi",
-        items: items
-      };
-
-      try {
-        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
-        const json = await res.json();
-        if (json.success) {
-          alert("✅ " + json.message);
-          document.getElementById("areaFormSupervisiTutor").style.display = "none";
-          muatMatriksTnaLembaga();
-        } else { alert("Gagal: " + json.message); }
-      } catch (err) { alert("Error: " + err.message); }
-      finally { btn.disabled = false; btn.textContent = "💾 Simpan Hasil Supervisi & Hitung Gap TNA"; }
-    }
-
-    async function muatMatriksTnaLembaga() {
-      const tbody = document.getElementById("tbodyMatriksTnaLembaga");
-      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:16px; color:var(--muted);">⏳ Mengambil matriks TNA lembaga...</td></tr>';
-      try {
-        const res = await fetch(`${API_URL}?action=get_rekap_tna_lembaga`);
-        const json = await res.json();
-        if (json.success && json.data.length > 0) {
-          tbody.innerHTML = json.data.reverse().map(r => {
-            const badgeStyle = r.gap < 0 ? "background:#fee2e2; color:#b91c1c;" : "background:#dcfce7; color:#15803d;";
-            return `
-              <tr>
-                <td><b>${r.nama}</b><br><small style="color:var(--muted);">${r.unit} • ${r.kodeJabatan}</small><br><small style="color:#4f46e5;">Spec: ${r.gapSpec}</small></td>
-                <td><b>${r.namaKomp}</b><br><small>Target: ${r.targetLevel} | Self: ${r.skorSelf} | Sup: ${r.skorSupervisi} | <b>Final: ${r.skorFinal} (Gap: ${r.gap})</b></small></td>
-                <td><span style="${badgeStyle} padding:3px 8px; border-radius:99px; font-size:11px; font-weight:bold; display:inline-block; margin-bottom:4px;">${r.prioritas}</span><br><small><b>Modul:</b> ${r.rekomendasi}</small></td>
-              </tr>
-            `;
-          }).join("");
-        } else {
-          tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:16px; color:var(--muted);">Belum ada data TNA yang masuk.</td></tr>';
-        }
-      } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:red;">Gagal memuat matriks TNA.</td></tr>`;
-      }
-    }
       </div>
 
       <div style="text-align: right; margin-top:20px;">
@@ -489,7 +415,6 @@
       <button class="modal-close" onclick="tutupModal('modalTargetPPI')">✕</button>
       <h3 style="margin:0 0 4px; color:var(--teal);">🧩 Rancangan Target PPI Baru</h3>
       <form id="formPpiRencana">
-        <!-- Input fields sama seperti sebelumnya -->
         <label>NIS Santri:</label><input type="text" id="ppiNis" placeholder="Masukkan NIS Santri" required>
         <label>Nama Santri:</label><input type="text" id="ppiNama" placeholder="Nama Lengkap Anak" required>
         <label>Aspek Fokus Pengembangan:</label>
@@ -532,7 +457,7 @@
     </div>
   </div>
 
-  <!-- MODAL 6: PROFIL UTUH SANTRI (BARU) -->
+  <!-- MODAL 6: PROFIL UTUH SANTRI -->
   <div id="modalProfilUtuh" class="modal-overlay">
     <div class="modal-box" style="max-width:800px;">
       <button class="modal-close" onclick="tutupModal('modalProfilUtuh')">✕</button>
@@ -544,7 +469,6 @@
         <button onclick="eksekusiCariProfil()" class="btn-action" style="background:#475569; width:auto; margin:0;">Cari Data</button>
       </div>
 
-      <!-- Area Hasil Profil -->
       <div id="areaHasilProfilUtuh" style="display:none; max-height:450px; overflow-y:auto; border:1px solid var(--line); border-radius:12px; padding:16px; background:#fff;">
         <div id="loadingProfil" style="text-align:center; color:var(--muted);">⏳ Menggali data dari database...</div>
         <div id="kontenProfilUtuh" style="display:none;"></div>
@@ -562,7 +486,8 @@
       <iframe src="raport-ppi.html" style="width: 100%; flex-grow: 1; border: none; border-radius: 0 0 26px 26px;"></iframe>
     </div>
   </div>
-<!-- MODAL 7: PROFIL JABATAN & SELF-ASSESSMENT TNA -->
+
+  <!-- MODAL 7: PROFIL JABATAN & SELF-ASSESSMENT TNA -->
   <div id="modalTnaPribadi" class="modal-overlay">
     <div class="modal-box" style="max-width:780px;">
       <button class="modal-close" onclick="tutupModal('modalTnaPribadi')">✕</button>
@@ -657,6 +582,7 @@
       </div>
     </div>
   </div>
+
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
@@ -674,15 +600,14 @@
         activeTutor = JSON.parse(savedTutor);
         document.getElementById("loginGate").style.display = "none";
         document.getElementById("tutorDashboard").style.display = "block";
-        document.getElementById("userBadge").textContent = `👨‍🏫 ${activeTutor.nama || "Tutor"} (Tutor PKBM)`;
+        document.getElementById("userBadge").textContent = `👨‍🏫 ${activeTutor.nama || "Tutor"} (${activeTutor.role || "Tutor PKBM"})`;
         
         // ================= LOGIKA RBAC (Role-Based Access Control) =================
         const userRole = (activeTutor.role || "tutor").toLowerCase();
         if (userRole !== "tutor" && userRole !== "") {
-          // Tampilkan kartu untuk Wali Kelas, Kesiswaan, Kepala, Psikolog, Admin
           document.getElementById("cardMonitoringKonseling").style.display = "flex";
           document.getElementById("cardProfilUtuh").style.display = "flex";
-       document.getElementById("cardSupervisiTna").style.display = "flex";
+          document.getElementById("cardSupervisiTna").style.display = "flex";
         }
       } catch(e) {}
     }
@@ -702,12 +627,19 @@
 
     document.getElementById("tutorLoginForm").addEventListener("submit", async function(e) {
       e.preventDefault();
+      const btn = document.getElementById("btnSubmitTutor");
+      btn.disabled = true; btn.textContent = "⏳ Memverifikasi akun...";
       const u = document.getElementById("usernameInput").value.trim();
       const p = document.getElementById("passwordInput").value.trim();
-      const res = await fetch(`${API_URL}?action=login_tutor&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
-      const json = await res.json();
-      if(json.success) { localStorage.setItem("tutorAuth", JSON.stringify(json)); location.reload(); }
-      else alert("Login gagal: " + json.message);
+      try {
+        const res = await fetch(`${API_URL}?action=login_tutor&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
+        const json = await res.json();
+        if(json.success) { localStorage.setItem("tutorAuth", JSON.stringify(json)); location.reload(); }
+        else { alert("Login gagal: " + json.message); btn.disabled = false; btn.textContent = "Masuk ke Ruang Tutor"; }
+      } catch (err) {
+        alert("Gagal terhubung ke server: " + err.message);
+        btn.disabled = false; btn.textContent = "Masuk ke Ruang Tutor";
+      }
     });
     document.getElementById("btnLogoutTutor").addEventListener("click", () => { localStorage.removeItem("tutorAuth"); location.reload(); });
 
@@ -736,12 +668,10 @@
         if (json.success && json.data.length > 0) {
           let rows = "";
           json.data.forEach(k => {
-            // Styling Badge Status
             let statusBadge = `<span style="background:#dcfce7; color:#15803d; padding:3px 8px; border-radius:99px; font-size:11px; font-weight:bold;">${k.status}</span>`;
             if(k.status === 'Aktif') statusBadge = `<span style="background:#fee2e2; color:#b91c1c; padding:3px 8px; border-radius:99px; font-size:11px; font-weight:bold;">${k.status}</span>`;
             if(k.status === 'Observasi') statusBadge = `<span style="background:#fef3c7; color:#b45309; padding:3px 8px; border-radius:99px; font-size:11px; font-weight:bold;">${k.status}</span>`;
 
-            // Tanggal dipotong agar rapi
             let tglRapi = String(k.tanggal).substring(0, 16);
 
             rows += `<tr>
@@ -763,7 +693,7 @@
       }
     }
 
-    // ================= FUNGSI PROFIL UTUH SANTRI (BARU) =================
+    // ================= FUNGSI PROFIL UTUH SANTRI =================
     function bukaModalProfilUtuh() {
       document.getElementById("modalProfilUtuh").style.display = "flex";
       document.getElementById("areaHasilProfilUtuh").style.display = "none";
@@ -835,7 +765,7 @@
       } catch(err) { alert("Error: " + err.message); } finally { btn.disabled = false; btn.textContent = "💾 Simpan & Kirim Catatan Konseling"; }
     });
 
-    // ================= SISA KODE (PPI & SCAN MAPEL) TETAP SAMA =================
+    // ================= PPI & SCAN MAPEL =================
     document.getElementById("formPpiRencana").addEventListener("submit", async function(e) {
       e.preventDefault();
       const btn = document.getElementById("btnSimpanPpi");
@@ -933,6 +863,7 @@
         } else { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--muted);">Tidak ada data santri pada periode ini.</td></tr>'; }
       } catch(err) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--danger);">Gagal memuat.</td></tr>`; }
     }
+
     // ================= ENGINE TRAINING NEED ANALYSIS (TNA) =================
     let cacheTnaPribadi = null;
     let cacheTnaSupervisi = null;
