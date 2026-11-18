@@ -79,6 +79,19 @@
     .stat-val { font-size: 24px; font-weight: 900; color: var(--green-dark); }
     .stat-label { font-size: 12px; color: var(--muted); font-weight: bold; margin-top: 2px; }
 
+    /* BUKU PENGHUBUNG QURAN SANTRI */
+    .quran-card {
+      background: #fff; border: 2px solid #6ee7b7; border-radius: 24px; padding: 24px; margin-bottom: 24px;
+      box-shadow: 0 10px 26px rgba(5,150,105,0.08);
+    }
+    .quran-summary-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;
+    }
+    @media(max-width: 768px) { .quran-summary-grid { grid-template-columns: 1fr; } }
+    .q-box { background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 16px; padding: 14px; }
+    .q-track { width: 100%; height: 10px; background: #d1fae5; border-radius: 99px; overflow: hidden; margin: 8px 0; }
+    .q-fill { height: 100%; background: #059669; transition: width 0.4s ease; }
+
     /* GRAFIK KARAKTER & KEMANDIRIAN */
     .chart-box {
       background: #fff; border: 1.5px solid var(--line); border-radius: 22px; padding: 20px; margin-bottom: 24px;
@@ -194,7 +207,70 @@
         </div>
       </div>
 
-      <!-- 2. GRAFIK CAPAIAN KARAKTER -->
+      <!-- 2. BUKU PENGHUBUNG TAHFIDZ & KEMAJUAN MENGAJI AL-QUR'AN -->
+      <div class="quran-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+          <div>
+            <h3 style="margin:0; color:#065f46;">📖 Buku Penghubung Tahfidz & Kemajuan Mengaji</h3>
+            <p style="margin:2px 0 0; font-size:13px; color:var(--muted);">Pantau capaian target bulanan, grafik pertumbuhan, & catatan ustadz/ustadzah.</p>
+          </div>
+          <div>
+            <label style="font-size:12px; font-weight:bold; color:#065f46; display:block;">Bulan Laporan:</label>
+            <input type="month" id="siswaQuranBulan" onchange="loadProgressQuranSiswa()" style="padding:7px 12px; border-radius:10px; border:1.5px solid #6ee7b7; font-weight:bold;">
+          </div>
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px 14px; font-size:13px; margin-bottom:14px;">
+          🎯 <b>Target Bulan Ini:</b> <span id="siswaQuranTargetKet">-</span>
+        </div>
+
+        <div class="quran-summary-grid">
+          <div class="q-box">
+            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; color:#065f46;">
+              <span>Progres Hafalan (Tahfidz)</span>
+              <span id="siswaQuranAyatTxt">0 / 30 Ayat (0%)</span>
+            </div>
+            <div class="q-track"><div id="siswaQuranAyatBar" class="q-fill" style="width:0%;"></div></div>
+            <small style="color:#374151;">Capaian Terakhir: <b id="siswaQuranPosHafalan">-</b></small>
+          </div>
+
+          <div class="q-box" style="background:#eff6ff; border-color:#bfdbfe;">
+            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; color:#1e40af;">
+              <span>Kemajuan Mengaji (Iqro / Tilawah)</span>
+              <span id="siswaQuranHalTxt">0 / 20 Hal (0%)</span>
+            </div>
+            <div class="q-track" style="background:#dbeafe;"><div id="siswaQuranHalBar" class="q-fill" style="width:0%; background:#2563eb;"></div></div>
+            <small style="color:#374151;">Capaian Terakhir: <b id="siswaQuranPosMengaji">-</b></small>
+          </div>
+        </div>
+
+        <div style="border:1px solid #e2e8f0; border-radius:16px; padding:14px; margin-bottom:16px;">
+          <b style="font-size:13.5px; color:#065f46; display:block; margin-bottom:8px;">📈 Grafik Pertumbuhan Hafalan & Mengaji Ananda</b>
+          <div style="height:210px; width:100%;">
+            <canvas id="siswaQuranChart"></canvas>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="jurnal-table">
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Kategori</th>
+                <th>Surah / Jilid</th>
+                <th>Ayat / Hal</th>
+                <th>Nilai & Kelancaran</th>
+                <th>Catatan Ustadz/Ustadzah</th>
+              </tr>
+            </thead>
+            <tbody id="siswaQuranTableBody">
+              <tr><td colspan="6" style="text-align:center; padding:14px; color:var(--muted);">Memuat catatan mengaji...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. GRAFIK CAPAIAN KARAKTER -->
       <div class="chart-box">
         <div>
           <h3 style="margin:0 0 6px; color:var(--green-dark);">📊 Capaian Karakter & Pembiasaan</h3>
@@ -209,7 +285,7 @@
         </div>
       </div>
 
-      <!-- 3. KOTAK DAFTAR TUGAS PEMBIASAAN -->
+      <!-- 4. KOTAK DAFTAR TUGAS PEMBIASAAN -->
       <div class="tugas-container">
         <h3 style="margin:0 0 12px; color:var(--orange);">📌 Tugas & Pembiasaan Mandiri di Rumah</h3>
         <div id="tugasListContainer">
@@ -217,7 +293,7 @@
         </div>
       </div>
 
-      <!-- 4. TABEL JURNAL & RAPORT DETAIL -->
+      <!-- 5. TABEL JURNAL & RAPORT DETAIL -->
       <div class="raport-card">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
           <div>
@@ -243,7 +319,7 @@
           </table>
         </div>
 
-        <!-- 5. TANDA TANGAN DIGITAL & DIALOG WALI SANTRI -->
+        <!-- 6. TANDA TANGAN DIGITAL & DIALOG WALI SANTRI -->
         <div class="signature-card" id="boxTtdWali">
           <h3 style="margin:0 0 4px; color:var(--green-dark);">✍️ Konfirmasi & Tanda Tangan Orang Tua / Wali</h3>
           <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Sebagai wujud kemitraan antara sekolah dan orang tua, mohon bubuhkan tanda tangan serta catatan perkembangan ananda di rumah.</p>
@@ -275,7 +351,7 @@
 
       </div>
 
-      <!-- 6. LAYANAN & FASILITAS LAINNYA -->
+      <!-- 7. LAYANAN & FASILITAS LAINNYA -->
       <div class="dashboard-grid">
         <div class="action-card">
           <div>
@@ -311,6 +387,7 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
     let chartInstance = null;
+    let quranChartSiswaInstance = null;
     let currentSantri = null;
     let currentBulanKey = "all";
     let allRiwayat = [];
@@ -355,10 +432,90 @@
 
       document.getElementById("userBadge").textContent = `👤 Ananda: ${data.nama} (${jStr} • ${kStr})`;
 
+      const now = new Date();
+      document.getElementById("siswaQuranBulan").value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+      loadProgressQuranSiswa();
       loadDataRaport(data.nis);
       
-      // Tunggu layout ter-render, baru inisialisasi ukuran canvas tanda tangan
       setTimeout(initCanvasSignature, 150);
+    }
+
+    async function loadProgressQuranSiswa() {
+      if (!currentSantri) return;
+      const bulan = document.getElementById("siswaQuranBulan").value;
+      const tbody = document.getElementById("siswaQuranTableBody");
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:14px; color:var(--muted);">⏳ Memuat data tahfidz & mengaji...</td></tr>';
+
+      try {
+        const res = await fetch(`${API_URL}?action=get_progress_quran&nis=${encodeURIComponent(currentSantri.nis)}&bulan=${encodeURIComponent(bulan)}`);
+        const json = await res.json();
+        if (!json.success) return;
+
+        document.getElementById("siswaQuranTargetKet").textContent = json.target.keterangan;
+
+        const pAyat = Math.min(100, Math.round((json.capaian.totalAyat / (json.target.ayat || 1)) * 100));
+        const pHal = Math.min(100, Math.round((json.capaian.totalHalaman / (json.target.halaman || 1)) * 100));
+
+        document.getElementById("siswaQuranAyatTxt").textContent = `${json.capaian.totalAyat} / ${json.target.ayat} Ayat (${pAyat}%)`;
+        document.getElementById("siswaQuranAyatBar").style.width = `${pAyat}%`;
+        document.getElementById("siswaQuranPosHafalan").textContent = json.capaian.posisiHafalan;
+
+        document.getElementById("siswaQuranHalTxt").textContent = `${json.capaian.totalHalaman} / ${json.target.halaman} Hal (${pHal}%)`;
+        document.getElementById("siswaQuranHalBar").style.width = `${pHal}%`;
+        document.getElementById("siswaQuranPosMengaji").textContent = json.capaian.posisiMengaji;
+
+        if (json.riwayat.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:14px; color:var(--muted);">Belum ada catatan setoran mengaji/hafalan pada bulan ini.</td></tr>';
+        } else {
+          tbody.innerHTML = [...json.riwayat].reverse().map(r => `
+            <tr>
+              <td style="white-space:nowrap;">${r.tanggal}</td>
+              <td><b style="color:${r.kategori === 'Hafalan' ? '#059669' : '#2563eb'};">${r.kategori}</b></td>
+              <td><b>${r.materi}</b></td>
+              <td>${r.detail} <small style="color:var(--muted);">(+${r.jumlah})</small></td>
+              <td><b>${r.kelancaran}</b><br><small style="color:var(--muted);">${r.tajwid}</small></td>
+              <td>${r.catatan}<br><small style="color:var(--muted);">Pembimbing: <b>${r.tutor}</b></small></td>
+            </tr>
+          `).join("");
+        }
+
+        // Render Grafik Pertumbuhan
+        const ctx = document.getElementById("siswaQuranChart").getContext("2d");
+        if (quranChartSiswaInstance) quranChartSiswaInstance.destroy();
+
+        const labels = [];
+        const kumAyat = [];
+        const kumHal = [];
+        let sumA = 0, sumH = 0;
+
+        json.riwayat.forEach(r => {
+          labels.push(r.tanggal.slice(8, 10) + "/" + r.tanggal.slice(5, 7));
+          if (r.kategori === "Hafalan") sumA += r.jumlah;
+          else sumH += r.jumlah;
+          kumAyat.push(sumA);
+          kumHal.push(sumH);
+        });
+
+        quranChartSiswaInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels.length ? labels : ['Belum ada data'],
+            datasets: [
+              { label: 'Total Ayat Hafalan', data: kumAyat.length ? kumAyat : [0], borderColor: '#059669', backgroundColor: 'rgba(5,150,105,0.1)', fill: true, tension: 0.3 },
+              { label: 'Total Halaman Mengaji', data: kumHal.length ? kumHal : [0], borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)', fill: true, tension: 0.3 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+          }
+        });
+
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Gagal memuat data mengaji.</td></tr>`;
+      }
     }
 
     async function loadDataRaport(nis) {
@@ -368,9 +525,9 @@
       if(json.success) {
         allRiwayat = json.riwayat || [];
         document.getElementById("statHadir").textContent = json.stats.totalHadir;
-        document.getElementById("statTerlambat").textContent = json.stats.totalTerlambat;
-        document.getElementById("statIzin").textContent = json.stats.totalIzin;
-        document.getElementById("statAlpa").textContent = json.stats.totalAlpa;
+        document.getElementById("statTerlambat").textContent = json.stats.totalTerlambat || 0;
+        document.getElementById("statIzin").textContent = json.stats.totalIzin || 0;
+        document.getElementById("statAlpa").textContent = json.stats.totalAlpa || 0;
 
         document.getElementById("valFokusPersen").textContent = `${json.stats.skorFokusPersen}%`;
         document.getElementById("valAdabPersen").textContent = `${json.stats.skorAdabPersen}%`;
@@ -480,7 +637,7 @@
       tbody.innerHTML = html;
     }
 
-    // ================= UNIFIED CANVAS SIGNATURE ENGINE (HP TOUCH & LAPTOP MOUSE) =================
+    // ================= UNIFIED CANVAS SIGNATURE ENGINE =================
     let canvas, ctx, isDrawing = false, hasSigned = false;
 
     function initCanvasSignature() {
@@ -518,10 +675,7 @@
           clientY = e.changedTouches[0].clientY;
         }
 
-        return {
-          x: clientX - rect.left,
-          y: clientY - rect.top
-        };
+        return { x: clientX - rect.left, y: clientY - rect.top };
       }
 
       function startDrawing(e) {
@@ -549,7 +703,6 @@
         }
       }
 
-      // Pointer Events Modern API (Satu mekanisme untuk sentuhan jari HP, stylus pen, & mouse laptop)
       if (window.PointerEvent) {
         canvas.onpointerdown = (e) => {
           try { canvas.setPointerCapture(e.pointerId); } catch(err){}
@@ -563,7 +716,6 @@
         canvas.onpointercancel = stopDrawing;
         canvas.onpointerleave = stopDrawing;
       } else {
-        // Fallback klasik Mouse & Touch
         canvas.onmousedown = startDrawing;
         canvas.onmousemove = draw;
         canvas.onmouseup = stopDrawing;
