@@ -35,7 +35,7 @@
     .btn-print { background: var(--green); color: #fff; border-color: var(--green) !important; }
     .btn-back { background: #fff; color: var(--green); }
 
-    /* AREA PREVIEW KARTU (STANDAR ISO CR80: 85.6mm x 54mm -> Skala Layar 460px x 290px) */
+    /* AREA PREVIEW KARTU (STANDAR ISO CR80: 85.6mm x 54mm -> Skala Layar 460px x 292px) */
     .cards-wrapper {
       max-width: 980px; margin: 24px auto; display: flex; flex-wrap: wrap;
       justify-content: center; gap: 28px; padding: 10px;
@@ -123,8 +123,8 @@
       min-width: 0;
     }
     .bio-nama {
-      margin: 0 0 6px;
-      font-size: 17px;
+      margin: 0 0 8px;
+      font-size: 17.5px;
       font-weight: 900;
       color: var(--green);
       line-height: 1.2;
@@ -133,14 +133,14 @@
     .bio-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12px;
+      font-size: 12.5px;
     }
     .bio-table td {
-      padding: 2px 0;
+      padding: 2.5px 0;
       vertical-align: top;
     }
     .bio-label {
-      width: 78px;
+      width: 82px;
       color: var(--muted);
       font-weight: 700;
     }
@@ -243,9 +243,9 @@
       .card-header-center .header-text p { font-size: 7.5px; }
       .card-body { padding: 8px 12px; gap: 10px; }
       .photo-box { width: 74px; height: 96px; }
-      .bio-nama { font-size: 12.5px; margin-bottom: 3px; }
-      .bio-table { font-size: 9px; }
-      .bio-label { width: 58px; }
+      .bio-nama { font-size: 13px; margin-bottom: 4px; }
+      .bio-table { font-size: 9.5px; }
+      .bio-label { width: 62px; }
       .card-footer { padding: 4px 12px; }
       .badge-kartu { font-size: 8px; padding: 2px 8px; }
       .footer-loc { font-size: 8.5px; }
@@ -275,7 +275,7 @@
 
   <div class="cards-wrapper">
     
-    <!-- SISI DEPAN KARTU -->
+    <!-- SISI DEPAN KARTU (TANPA PASSWORD) -->
     <div class="id-card" id="kartuDepan">
       <div class="card-header-center">
         <img src="logo-pkbm.png" alt="Logo PKBM">
@@ -293,7 +293,6 @@
           <h3 class="bio-nama" id="cardNamaLengkap">-</h3>
           <table class="bio-table" id="cardBioTable">
             <tr><td class="bio-label">User / NIS</td><td class="bio-val" id="cardUser">: -</td></tr>
-            <tr><td class="bio-label">Password</td><td class="bio-val" id="cardPass">: -</td></tr>
             <tr><td class="bio-label">Program</td><td class="bio-val" id="cardProgram">: -</td></tr>
             <tr><td class="bio-label">Tingkat</td><td class="bio-val" id="cardTingkat">: -</td></tr>
             <tr><td class="bio-label">Status</td><td class="bio-val val-aktif" id="cardStatus">: Terdaftar Aktif</td></tr>
@@ -390,7 +389,6 @@
         document.getElementById("backRoleText").textContent = "santri";
         bioTable.innerHTML = `
           <tr><td class="bio-label">User / NIS</td><td class="bio-val">: ${item.nis}</td></tr>
-          <tr><td class="bio-label">Password</td><td class="bio-val">: ${item.password || "-"}</td></tr>
           <tr><td class="bio-label">Program</td><td class="bio-val">: ${item.jenjang || "-"}</td></tr>
           <tr><td class="bio-label">Tingkat</td><td class="bio-val">: ${item.kelas || "-"}</td></tr>
           <tr><td class="bio-label">Status</td><td class="bio-val val-aktif">: Terdaftar Aktif</td></tr>
@@ -419,7 +417,6 @@
       });
     }
 
-    // Jika dibuka dari Portal Siswa (otomatis pilih santri yang sedang login)
     const savedSiswa = localStorage.getItem("siswaAuth");
     muatDaftarPengguna().then(() => {
       if (savedSiswa) {
