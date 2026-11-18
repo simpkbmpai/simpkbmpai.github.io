@@ -190,18 +190,6 @@
           </button>
         </div>
 
-        <!-- KARTU CETAK RAPORT PPI (VIA IFRAME) -->
-        <div class="tutor-card" style="border: 2px solid #2563eb; background: #eff6ff;">
-          <div>
-            <div class="tutor-card-icon" style="background:#dbeafe;">🖨️</div>
-            <h3>Cetak Raport Bulanan</h3>
-            <p>Tarik rekap data jurnal bulanan dan cetak raport Program Pembelajaran Individual (PPI).</p>
-          </div>
-          <button type="button" onclick="document.getElementById('modalIframeRaport').style.display = 'flex'" class="btn-action blue">
-            Buka Menu Cetak →
-          </button>
-        </div>
-        
         <!-- PRESENSI MAPEL & INPUT JURNAL -->
         <div class="tutor-card" style="border: 2px solid #10b981; background: #f0fdf4;">
           <div>
@@ -211,6 +199,30 @@
           </div>
           <button type="button" onclick="bukaModalScanMapel()" class="btn-action">
             Mulai Presensi Kelas →
+          </button>
+        </div>
+
+        <!-- KARTU BARU: CATAT KETIDAKHADIRAN (SAKIT / IZIN / TERLAMBAT / ALPA) -->
+        <div class="tutor-card" style="border: 2px solid #e11d48; background: #fff1f2;">
+          <div>
+            <div class="tutor-card-icon" style="background:#ffe4e6; color:#be123c;">🗓️</div>
+            <h3>Absensi Tidak Masuk / Terlambat</h3>
+            <p>Catat jika santri Sakit, Izin, Terlambat, atau Tanpa Keterangan agar terhitung otomatis di Buku Penghubung Orang Tua.</p>
+          </div>
+          <button type="button" onclick="bukaModalAbsenStatus()" class="btn-action" style="background:#e11d48;">
+            + Input Sakit / Izin / Alpa
+          </button>
+        </div>
+
+        <!-- KARTU CETAK RAPORT PPI (VIA IFRAME) -->
+        <div class="tutor-card" style="border: 2px solid #2563eb; background: #eff6ff;">
+          <div>
+            <div class="tutor-card-icon" style="background:#dbeafe;">🖨️</div>
+            <h3>Cetak Raport Bulanan</h3>
+            <p>Tarik rekap data jurnal bulanan dan cetak raport Program Pembelajaran Individual (PPI).</p>
+          </div>
+          <button type="button" onclick="document.getElementById('modalIframeRaport').style.display = 'flex'" class="btn-action blue">
+            Buka Menu Cetak →
           </button>
         </div>
 
@@ -315,6 +327,40 @@
       <div style="text-align: right; margin-top:20px;">
         <button id="btnLogoutTutor" style="color:var(--danger); background:none; border:0; font-weight:800; cursor:pointer; text-decoration:underline;">🔒 Keluar dari Ruang Tutor</button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL BARU: INPUT KEHADIRAN TIDAK MASUK (SAKIT / IZIN / TERLAMBAT / ALPA) -->
+  <div id="modalAbsenStatus" class="modal-overlay">
+    <div class="modal-box" style="max-width: 520px;">
+      <button class="modal-close" onclick="tutupModal('modalAbsenStatus')">✕</button>
+      <h3 style="margin:0 0 4px; color:#be123c;">🗓️ Catat Ketidakhadiran / Terlambat Santri</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Data ini otomatis muncul di ringkasan kehadiran pada Buku Penghubung Orang Tua.</p>
+      
+      <form id="formAbsenStatus">
+        <label>Pilih Nama Santri:</label>
+        <select id="absenStatusSantri" required>
+          <option value="">⏳ Memuat daftar santri...</option>
+        </select>
+
+        <label>Tanggal:</label>
+        <input type="date" id="absenStatusTanggal" required>
+
+        <label>Status Kehadiran:</label>
+        <select id="absenStatusPilihan" required>
+          <option value="Sakit">🤒 Sakit (Ada Surat / Pemberitahuan Wali)</option>
+          <option value="Izin">✉️ Izin (Keperluan Keluarga / Lainnya)</option>
+          <option value="Terlambat">⏰ Terlambat Masuk Kelas</option>
+          <option value="Alpa">❗ Tanpa Keterangan (Alpa)</option>
+        </select>
+
+        <label>Keterangan / Alasan:</label>
+        <textarea id="absenStatusKet" placeholder="Contoh: Demam, orang tua sudah konfirmasi via WA" required></textarea>
+
+        <button type="submit" id="btnSimpanAbsenStatus" class="btn-action" style="background:#e11d48; width:100%; margin-top:14px;">
+          💾 Simpan Status Kehadiran
+        </button>
+      </form>
     </div>
   </div>
 
@@ -817,10 +863,6 @@
         document.getElementById("tutorDashboard").style.display = "block";
         document.getElementById("userBadge").textContent = `👨‍🏫 ${activeTutor.nama || "Tutor"} (${activeTutor.role || "Tutor PKBM"})`;
         
-        // ================= LOGIKA RBAC (HIERARKI PKBM PELITA AUSHAF) =================
-        // Level Basic: tutor, pengajar, staff, pengasuh (Bukan pejabat)
-        // Level Keuangan: keuangan (Hanya ditambah menu pemasukan santri)
-        // Level Pejabat: kurikulum, kaur (paket a/b/c), kesiswaan, hrd, kepala pkbm, yayasan
         const userRole = (activeTutor.role || "tutor").trim().toLowerCase();
         const basicRoles = ["", "tutor", "pengajar", "staff", "staf", "pengasuh", "keuangan"];
         const isPejabat = !basicRoles.includes(userRole);
@@ -884,6 +926,56 @@
       document.getElementById(id).style.display = "none";
       if(id === 'modalScanMapel' && html5QrCode && isScanning) { html5QrCode.stop().then(() => { isScanning = false; }).catch(()=>{}); }
     }
+
+    // ================= ENGINE ABSENSI NON-HADIR (SAKIT / IZIN / TERLAMBAT / ALPA) =================
+    async function bukaModalAbsenStatus() {
+      document.getElementById("modalAbsenStatus").style.display = "flex";
+      document.getElementById("absenStatusTanggal").valueAsDate = new Date();
+      const sel = document.getElementById("absenStatusSantri");
+      if (sel.options.length <= 1) {
+        try {
+          const res = await fetch(`${API_URL}?action=get_all_santri`);
+          const json = await res.json();
+          if (json.success && json.data.length > 0) {
+            sel.innerHTML = '<option value="">-- Pilih Santri --</option>' +
+              json.data.map(s => `<option value="${s.nis}">${s.nama} (${s.jenjang} - ${s.kelas})</option>`).join("");
+          } else {
+            sel.innerHTML = '<option value="">Data santri kosong</option>';
+          }
+        } catch (e) {
+          sel.innerHTML = '<option value="">Gagal memuat santri</option>';
+        }
+      }
+    }
+
+    document.getElementById("formAbsenStatus").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const nis = document.getElementById("absenStatusSantri").value;
+      if (!nis) { alert("Pilih santri terlebih dahulu!"); return; }
+
+      const btn = document.getElementById("btnSimpanAbsenStatus");
+      btn.disabled = true; btn.textContent = "⏳ Menyimpan Status...";
+
+      const payload = {
+        action: "simpan_absensi_status",
+        nis: nis,
+        tanggal: document.getElementById("absenStatusTanggal").value,
+        status: document.getElementById("absenStatusPilihan").value,
+        keterangan: document.getElementById("absenStatusKet").value.trim(),
+        tutor: activeTutor ? activeTutor.nama : "Tutor"
+      };
+
+      try {
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+        const json = await res.json();
+        if (json.success) {
+          alert("✅ " + json.message);
+          document.getElementById("absenStatusKet").value = "";
+          tutupModal("modalAbsenStatus");
+        } else { alert("Gagal: " + json.message); }
+      } catch (err) { alert("Error: " + err.message); }
+      finally { btn.disabled = false; btn.textContent = "💾 Simpan Status Kehadiran"; }
+    });
 
     // ================= ENGINE BUKU PENGHUBUNG & RAPORT AL-QUR'AN =================
     let chartQuranTutorInstance = null;
