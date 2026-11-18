@@ -156,16 +156,17 @@
         
         <!-- KARTU KEUANGAN SANTRI (KHUSUS ROLE: KEUANGAN & YAYASAN) -->
         <div class="tutor-card" id="cardKeuanganYayasan" style="border: 2px solid #0f172a; background: #f8fafc; display: none;">
-        <div>
-        <div class="tutor-card-icon" style="background:#e2e8f0; color:#0f172a;">💰</div>
-        <h3>Database Keuangan Santri</h3>
-        <p>Akses terbatas Keuangan & Yayasan: Pencatatan Uang Pendaftaran, SPP, Sarpras, Kegiatan 1 Tahun, & Rekening Bank.</p>
-      </div>
-      <a href="keuangan.html" class="btn-action" style="background:#0f172a;">
-      Buka Modul Keuangan →
-    </a>
-    </div>
-        <!-- KARTU BARU: BUKU PENGHUBUNG TAHFIDZ & MENGAJI AL-QUR'AN -->
+          <div>
+            <div class="tutor-card-icon" style="background:#e2e8f0; color:#0f172a;">💰</div>
+            <h3>Database Keuangan Santri</h3>
+            <p>Akses terbatas Keuangan & Yayasan: Pencatatan Uang Pendaftaran, SPP, Sarpras, Kegiatan 1 Tahun, & Rekening Bank.</p>
+          </div>
+          <a href="keuangan.html" class="btn-action" style="background:#0f172a;">
+            Buka Modul Keuangan →
+          </a>
+        </div>
+
+        <!-- KARTU BUKU PENGHUBUNG TAHFIDZ & MENGAJI AL-QUR'AN -->
         <div class="tutor-card" style="border: 2px solid #059669; background: #ecfdf5;">
           <div>
             <div class="tutor-card-icon" style="background:#d1fae5; color:#047857;">📖</div>
@@ -305,7 +306,7 @@
     </div>
   </div>
 
-  <!-- MODAL BARU: BUKU PENGHUBUNG & RAPORT TAHFIDZ / MENGAJI AL-QUR'AN -->
+  <!-- MODAL: BUKU PENGHUBUNG & RAPORT TAHFIDZ / MENGAJI AL-QUR'AN -->
   <div id="modalQuran" class="modal-overlay">
     <div class="modal-box" style="max-width: 920px;">
       <button class="modal-close no-print" onclick="tutupModal('modalQuran')">✕</button>
@@ -313,7 +314,6 @@
         <h3 style="margin:0 0 4px; color:#047857;">📖 Buku Penghubung & Raport Tahfidz / Mengaji</h3>
         <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Kelola target bulanan, catat perkembangan hafalan & tilawah santri, serta cetak raport.</p>
 
-        <!-- PILIH SANTRI & BULAN -->
         <div style="display:grid; grid-template-columns: 2fr 1fr auto; gap:10px; background:#ecfdf5; padding:14px; border-radius:16px; border:1px solid #a7f3d0; margin-bottom:16px; align-items:end;">
           <div>
             <label style="margin-top:0;">Pilih Santri:</label>
@@ -330,9 +330,7 @@
           </button>
         </div>
 
-        <!-- FORM SETTING TARGET & FORM INPUT SETORAN -->
         <div class="quran-grid-2" style="margin-bottom:18px;">
-          <!-- Kiri: Setting Target Bulanan -->
           <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:16px; padding:16px;">
             <h4 style="margin:0 0 8px; color:#0f172a;">🎯 1. Atur Target Bulanan Santri</h4>
             <div class="quran-grid-2">
@@ -352,7 +350,6 @@
             </button>
           </div>
 
-          <!-- Kanan: Input Setoran Harian -->
           <div style="background:#f0fdf4; border:1.5px solid #bbf7d0; border-radius:16px; padding:16px;">
             <h4 style="margin:0 0 8px; color:#065f46;">✍️ 2. Input Setoran Mengaji / Hafalan</h4>
             <div class="quran-grid-2">
@@ -407,7 +404,6 @@
         </div>
       </div>
 
-      <!-- AREA RAPORT & GRAFIK (YANG IKUT TERCETAK SAAT PRINT) -->
       <div id="areaPrintQuran" style="border: 2px solid #d1fae5; border-radius: 18px; padding: 20px; background: #fff;">
         <div style="text-align:center; border-bottom: 2px solid #059669; padding-bottom: 12px; margin-bottom: 16px;">
           <h2 style="margin:0; color:#065f46; font-size:20px;">RAPORT & BUKU PENGHUBUNG TAHFIDZ AL-QUR'AN</h2>
@@ -425,7 +421,6 @@
           </div>
         </div>
 
-        <!-- Ringkasan Progres Target -->
         <div class="quran-grid-2" style="margin-bottom:16px;">
           <div class="stat-pill-box">
             <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; color:#065f46;">
@@ -445,7 +440,6 @@
           </div>
         </div>
 
-        <!-- Grafik Pertumbuhan -->
         <div style="margin-bottom:18px; border:1px solid #e2e8f0; border-radius:14px; padding:12px;">
           <b style="font-size:13px; color:#065f46; display:block; margin-bottom:8px;">📈 Grafik Pertumbuhan Hafalan & Mengaji (Kumulatif Bulanan)</b>
           <div style="height:200px; width:100%;">
@@ -453,7 +447,6 @@
           </div>
         </div>
 
-        <!-- Tabel Riwayat Setoran -->
         <table class="table-monitoring">
           <thead>
             <tr>
@@ -470,7 +463,6 @@
           </tbody>
         </table>
 
-        <!-- Kolom Tanda Tangan Raport Cetak -->
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:28px; text-align:center; font-size:13px;">
           <div>
             <p style="margin-bottom:50px;">Mengetahui,<br><b>Orang Tua / Wali Santri</b></p>
@@ -819,6 +811,9 @@
           document.getElementById("cardProfilUtuh").style.display = "flex";
           document.getElementById("cardSupervisiTna").style.display = "flex";
         }
+        if (userRole === "keuangan" || userRole === "yayasan") {
+          document.getElementById("cardKeuanganYayasan").style.display = "flex";
+        }
       } catch(e) {}
     }
 
@@ -851,7 +846,7 @@
         btn.disabled = false; btn.textContent = "Masuk ke Ruang Tutor";
       }
     });
-    document.getElementById("btnLogoutTutor").addEventListener("click", () => { localStorage.removeItem("tutorAuth"); location.reload(); });
+    document.getElementById("btnLogoutTutor").addEventListener("click", () => { localStorage.removeItem("tutorAuth"); sessionStorage.removeItem("keuanganAuth"); location.reload(); });
 
     function bukaModalScanMapel() { document.getElementById("modalScanMapel").style.display = "flex"; startScanner(); }
     function bukaModalPPI() { document.getElementById("modalTargetPPI").style.display = "flex"; }
@@ -907,19 +902,16 @@
         const json = await res.json();
         if (!json.success) return;
 
-        // Isi Form Target sesuai database
         document.getElementById("quranTargetAyat").value = json.target.ayat;
         document.getElementById("quranTargetHal").value = json.target.halaman;
         document.getElementById("quranTargetKet").value = json.target.keterangan !== "-" ? json.target.keterangan : "";
 
-        // Update Kop Raport
         document.getElementById("raportQuranNama").textContent = json.profil.nama;
         document.getElementById("raportQuranInfo").textContent = `${json.profil.nis} / ${json.profil.jenjang} (${json.profil.kelas})`;
         const bParts = bulan.split("-");
         document.getElementById("raportQuranBulan").textContent = new Date(bParts[0], bParts[1]-1, 1).toLocaleDateString("id-ID", { month: "long", year: "numeric" });
         document.getElementById("raportQuranKetTarget").textContent = json.target.keterangan;
 
-        // Update Progress Bar
         const pAyat = Math.min(100, Math.round((json.capaian.totalAyat / (json.target.ayat || 1)) * 100));
         const pHal = Math.min(100, Math.round((json.capaian.totalHalaman / (json.target.halaman || 1)) * 100));
 
@@ -931,7 +923,6 @@
         document.getElementById("barCapaiHal").style.width = `${pHal}%`;
         document.getElementById("posAkhirMengaji").textContent = json.capaian.posisiMengaji;
 
-        // Render Tabel Riwayat
         if (json.riwayat.length === 0) {
           tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:16px; color:var(--muted);">Belum ada catatan setoran pada bulan ini.</td></tr>';
         } else {
@@ -947,7 +938,6 @@
           `).join("");
         }
 
-        // Render Grafik Pertumbuhan
         renderGrafikQuranTutor(json.riwayat);
       } catch (err) {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Gagal memuat data: ${err.message}</td></tr>`;
