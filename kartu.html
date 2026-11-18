@@ -3,380 +3,436 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cetak Kartu Tanda Santri & Tutor - PKBM Pelita Aushaf</title>
+  <title>Cetak Kartu Santri & Tutor - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
     :root {
-      --green: #0d7a5f;
-      --green-dark: #074e3d;
-      --green-soft: #eef8f4;
-      --line: #d6eee5;
-      --text: #1f2937;
+      --green: #0a5c48;
+      --green-light: #0d7a5f;
+      --gold: #eab308;
+      --text: #1e293b;
+      --muted: #64748b;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: 20px;
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #f0fdf4;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #eef8f4;
       color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
+    .toolbar {
+      max-width: 980px; margin: 20px auto; background: #fff; padding: 18px 22px;
+      border-radius: 20px; border: 1.5px solid #cbd5e1; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .toolbar select, .toolbar button, .toolbar a {
+      padding: 10px 16px; border-radius: 12px; font-weight: 800; font-size: 13.5px;
+      border: 1.5px solid #cbd5e1; text-decoration: none; cursor: pointer;
+    }
+    .btn-print { background: var(--green); color: #fff; border-color: var(--green) !important; }
+    .btn-back { background: #fff; color: var(--green); }
 
-    .no-print {
-      width: 100%;
-      max-width: 920px;
-      background: #fff;
-      padding: 16px 20px;
-      border-radius: 18px;
-      border: 1.5px solid var(--line);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-weight: 800;
-      font-size: 13.5px;
-      cursor: pointer;
-      text-decoration: none;
-      border: 0;
-    }
-    .btn-print { background: var(--green); color: #fff; box-shadow: 0 6px 18px rgba(13,122,95,0.25); }
-    .btn-back { background: #fff; color: var(--green-dark); border: 1.5px solid var(--line); }
-    select { padding: 8px 12px; border-radius: 12px; border: 1.5px solid var(--line); outline: none; font-size: 13px; font-weight: bold; }
-
-    /* WADAH KARTU ATM (85.6mm x 54mm) */
+    /* AREA PREVIEW KARTU (STANDAR ISO CR80: 85.6mm x 54mm -> Skala Layar 460px x 290px) */
     .cards-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    .pair-container {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-      page-break-inside: avoid;
+      max-width: 980px; margin: 24px auto; display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 28px; padding: 10px;
     }
 
     .id-card {
-      width: 85.6mm;
-      height: 54mm;
-      border-radius: 12px;
-      position: relative;
+      width: 460px;
+      height: 292px;
+      background: #ffffff;
+      border-radius: 18px;
       overflow: hidden;
-      background: #fff;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.10);
-      border: 1px solid #cbd5e1;
+      box-shadow: 0 14px 34px rgba(10, 92, 72, 0.14);
+      border: 1.5px solid #cbd5e1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      position: relative;
+      page-break-inside: avoid;
     }
 
-    /* FRONT */
-    .card-front { background: linear-gradient(145deg, #ffffff 60%, #e6f7f0); }
-    .front-header {
-      background: linear-gradient(135deg, var(--green), var(--green-dark));
-      color: #fff;
-      padding: 6px 10px;
+    /* HEADER DEPAN: LOGO & TULISAN DI TENGAH */
+    .card-header-center {
+      background: var(--green);
+      color: #ffffff;
+      padding: 10px 14px;
+      border-bottom: 3.5px solid var(--gold);
       display: flex;
       align-items: center;
-      gap: 8px;
-      border-bottom: 2px solid #fbbf24;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
     }
-    .front-header img { width: 30px; height: 30px; border-radius: 50%; background: #fff; padding: 2px; }
-    .header-text h3 { margin: 0; font-size: 9.5pt; font-weight: 900; line-height: 1.1; }
-    .header-text p { margin: 0; font-size: 5.5pt; color: #d1fae5; text-transform: uppercase; }
+    .card-header-center img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 50%;
+      padding: 2px;
+      flex-shrink: 0;
+    }
+    .card-header-center .header-text h2 {
+      margin: 0;
+      font-size: 15.5px;
+      letter-spacing: 0.4px;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+    .card-header-center .header-text p {
+      margin: 2px 0 0;
+      font-size: 9.5px;
+      letter-spacing: 0.6px;
+      color: #d1fae5;
+      font-weight: 700;
+    }
 
-    .front-body { display: flex; padding: 7px 10px 4px; gap: 10px; align-items: center; flex: 1; }
-    .photo-frame {
-      width: 25mm; height: 32mm; border-radius: 8px; border: 2px solid var(--green);
-      overflow: hidden; background: #e5e7eb; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    /* BODY DEPAN */
+    .card-body {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 20px;
+      flex-grow: 1;
     }
-    .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-box {
+      width: 102px;
+      height: 132px;
+      border-radius: 14px;
+      border: 2.5px solid var(--green);
+      overflow: hidden;
+      background: #bae6fd;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-    .info-table { font-size: 6.5pt; line-height: 1.35; color: #1f2937; flex: 1; }
-    .info-table b.nama { font-size: 8.5pt; color: var(--green-dark); display: block; margin-bottom: 3px; line-height: 1.15; }
-    .info-row { display: grid; grid-template-columns: 24mm 1fr; margin-bottom: 2px; }
-    .info-label { color: #6b7280; font-weight: 600; }
-    .info-val { font-weight: 800; color: #111827; }
+    .bio-box {
+      flex-grow: 1;
+      min-width: 0;
+    }
+    .bio-nama {
+      margin: 0 0 6px;
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1.2;
+      word-wrap: break-word;
+    }
+    .bio-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .bio-table td {
+      padding: 2px 0;
+      vertical-align: top;
+    }
+    .bio-label {
+      width: 78px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .bio-val {
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .val-aktif {
+      color: #059669;
+    }
 
-    .front-footer {
-      background: #f8fafc; padding: 3px 10px; display: flex; justify-content: space-between;
-      align-items: center; border-top: 1px solid #e5e7eb; font-size: 5.5pt; color: #64748b; font-weight: bold;
+    /* FOOTER DEPAN */
+    .card-footer {
+      padding: 7px 18px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
     }
-    .badge-card-type {
-      background: #fef3c7; color: #92400e; padding: 1.5px 6px; border-radius: 999px; font-size: 5.5pt; font-weight: 900; border: 1px solid #fde68a;
+    .badge-kartu {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+      padding: 3px 12px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+    }
+    .footer-loc {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 700;
     }
 
-    /* BACK */
-    .card-back { background: #ffffff; padding: 8px 10px; text-align: center; }
-    .back-title {
-      font-size: 7pt; font-weight: 900; color: var(--green-dark); text-transform: uppercase;
-      border-bottom: 1.5px solid var(--line); padding-bottom: 3px; margin-bottom: 6px;
+    /* SISI BELAKANG KARTU (QR CODE & ALAMAT SEKRETARIAT) */
+    .back-header {
+      text-align: center;
+      padding: 12px 16px 8px;
+      border-bottom: 1.5px solid #cbd5e1;
+      margin: 0 16px;
     }
-    .back-content { display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; }
-    .qr-box {
-      width: 25mm; height: 25mm; border: 1.5px solid #10b981; border-radius: 8px; padding: 2px; background: #fff; flex-shrink: 0;
+    .back-header h3 {
+      margin: 0;
+      font-size: 14px;
+      color: var(--green);
+      font-weight: 900;
+      letter-spacing: 0.4px;
     }
-    .qr-box img { width: 100%; height: 100%; object-fit: contain; }
-    .rules-list { font-size: 5.2pt; color: #374151; line-height: 1.35; padding-left: 12px; margin: 0; }
-    .rules-list li { margin-bottom: 2px; }
+    .back-body {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 20px;
+      flex-grow: 1;
+    }
+    .qr-frame {
+      padding: 7px;
+      border: 2.5px solid #10b981;
+      border-radius: 14px;
+      background: #fff;
+      flex-shrink: 0;
+    }
+    .rules-list {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 11.2px;
+      color: #334155;
+      line-height: 1.48;
+    }
+    .rules-list li { margin-bottom: 3px; }
+
     .back-footer {
-      margin-top: 6px; border-top: 1px dashed #cbd5e1; padding-top: 4px; font-size: 4.8pt; color: #64748b; line-height: 1.25; text-align: center;
+      border-top: 1px dashed #cbd5e1;
+      margin: 0 16px;
+      padding: 7px 4px 10px;
+      text-align: center;
+      font-size: 10.2px;
+      color: #475569;
+      line-height: 1.35;
     }
+    .back-footer b { color: var(--green); }
 
     @media print {
-      body { background: #fff; padding: 0; }
+      body { background: #fff; }
       .no-print { display: none !important; }
-      .cards-wrapper { gap: 10mm; }
-      .pair-container { gap: 10mm; margin-bottom: 10mm; }
-      .id-card { box-shadow: none; border: 1px solid #9ca3af; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cards-wrapper { margin: 0; padding: 0; gap: 14px; }
+      .id-card {
+        width: 85.6mm;
+        height: 54mm;
+        box-shadow: none;
+        border: 1px solid #94a3b8;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .card-header-center { padding: 6px 10px; }
+      .card-header-center img { width: 28px; height: 28px; }
+      .card-header-center .header-text h2 { font-size: 11.5px; }
+      .card-header-center .header-text p { font-size: 7.5px; }
+      .card-body { padding: 8px 12px; gap: 10px; }
+      .photo-box { width: 74px; height: 96px; }
+      .bio-nama { font-size: 12.5px; margin-bottom: 3px; }
+      .bio-table { font-size: 9px; }
+      .bio-label { width: 58px; }
+      .card-footer { padding: 4px 12px; }
+      .badge-kartu { font-size: 8px; padding: 2px 8px; }
+      .footer-loc { font-size: 8.5px; }
+      .back-header { padding: 8px 10px 5px; }
+      .back-header h3 { font-size: 10.5px; }
+      .back-body { padding: 6px 12px; gap: 10px; }
+      .rules-list { font-size: 8.5px; }
+      .back-footer { font-size: 7.8px; padding: 5px 2px 6px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="no-print">
-    <a href="admin.html" class="btn btn-back">← Dashboard Admin</a>
-    <div style="display:flex; gap:10px; align-items:center;">
-      <select id="selectKategori">
-        <option value="santri">🎓 Cetak Kartu Santri</option>
-        <option value="tutor">👨‍🏫 Cetak Kartu Tutor / Guru</option>
+  <div class="toolbar no-print">
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <a href="admin.html" class="btn-back">← Kembali</a>
+      <select id="jenisKartu" onchange="muatDaftarPengguna()">
+        <option value="santri">🎓 Kartu Tanda Santri</option>
+        <option value="tutor">👨‍🏫 Kartu Tanda Tutor / SDM</option>
       </select>
-      <select id="selectOrang">
-        <option value="all">-- Cetak Semua Sekaligus --</option>
+      <select id="selectPengguna" onchange="renderKartu()">
+        <option value="">⏳ Memuat data...</option>
       </select>
     </div>
-    <button onclick="window.print()" class="btn btn-print">🖨️ Cetak Kartu (PDF)</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Cetak Kartu (Depan & Belakang)</button>
   </div>
 
-  <div class="cards-wrapper" id="cardsContainer">
-    <div style="padding:40px; text-align:center; color:var(--text);" id="loadingText">⏳ Memuat data kartu dari database...</div>
+  <div class="cards-wrapper">
+    
+    <!-- SISI DEPAN KARTU -->
+    <div class="id-card" id="kartuDepan">
+      <div class="card-header-center">
+        <img src="logo-pkbm.png" alt="Logo PKBM">
+        <div class="header-text">
+          <h2>PKBM PELITA AUSHAF INDONESIA</h2>
+          <p>HOMESCHOOLING & PENDIDIKAN KESETARAAN</p>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="photo-box">
+          <img id="cardFoto" src="logo-pkbm.png" alt="Foto">
+        </div>
+        <div class="bio-box">
+          <h3 class="bio-nama" id="cardNamaLengkap">-</h3>
+          <table class="bio-table" id="cardBioTable">
+            <tr><td class="bio-label">User / NIS</td><td class="bio-val" id="cardUser">: -</td></tr>
+            <tr><td class="bio-label">Password</td><td class="bio-val" id="cardPass">: -</td></tr>
+            <tr><td class="bio-label">Program</td><td class="bio-val" id="cardProgram">: -</td></tr>
+            <tr><td class="bio-label">Tingkat</td><td class="bio-val" id="cardTingkat">: -</td></tr>
+            <tr><td class="bio-label">Status</td><td class="bio-val val-aktif" id="cardStatus">: Terdaftar Aktif</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span class="badge-kartu" id="cardBadgeJenis">KARTU TANDA SANTRI</span>
+        <span class="footer-loc">Sidoarjo, Jawa Timur</span>
+      </div>
+    </div>
+
+    <!-- SISI BELAKANG KARTU (QR CODE & ALAMAT SEKRETARIAT) -->
+    <div class="id-card" id="kartuBelakang">
+      <div class="back-header">
+        <h3>KARTU ABSENSI RESMI PKBM PELITA AUSHAF</h3>
+      </div>
+
+      <div class="back-body">
+        <div class="qr-frame">
+          <div id="qrcodeBox"></div>
+        </div>
+        <ol class="rules-list">
+          <li>Kartu tanda pengenal resmi <span id="backRoleText">santri</span> PKBM Pelita Aushaf Indonesia.</li>
+          <li>Tunjukkan <b>QR Code</b> pada guru saat absensi kelas.</li>
+          <li>Dilarang memindahtangankan kartu kepada orang lain.</li>
+          <li>Jika menemukan kartu ini, harap hubungi kantor sekretariat.</li>
+        </ol>
+      </div>
+
+      <div class="back-footer">
+        <b>Alamat Sekretariat:</b> Perumahan Griya Permata Gedangan Blok G2 / 29, Gedangan, Sidoarjo<br>
+        <b>No. Telp / WA:</b> 087751325199 • Website: pkbmpelitaaushafindonesia.sch.id
+      </div>
+    </div>
+
   </div>
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
-    
-    let listSantri = [];
-    let listTutor = [];
-    let activeCategory = "santri";
 
-    // FUNGSI KONVERSI LINK GOOGLE DRIVE JADI DIRECT IMAGE URL
-    function formatDrivePhoto(url) {
-      if (!url || typeof url !== "string" || url.trim().length < 10) {
-        return "logo-pkbm.png"; // Cadangan jika belum upload foto
-      }
-      url = url.trim();
-      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    let listData = [];
+
+    function konversiFotoDrive(url) {
+      if (!url) return "logo-pkbm.png";
+      const str = String(url).trim();
+      const match = str.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (match && match[1]) {
-        return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w500`;
+        return `https://lh3.googleusercontent.com/d/${match[1]}=s400`;
       }
-      return url;
+      return str;
     }
 
-    async function loadAllData() {
+    async function muatDaftarPengguna() {
+      const jenis = document.getElementById("jenisKartu").value;
+      const sel = document.getElementById("selectPengguna");
+      sel.innerHTML = '<option value="">⏳ Mengambil data...</option>';
+
+      const action = (jenis === "santri") ? "get_all_santri" : "get_all_tutor";
       try {
-        const [resS, resT] = await Promise.all([
-          fetch(`${API_URL}?action=get_all_santri`),
-          fetch(`${API_URL}?action=get_all_tutor`)
-        ]);
-        const jsonS = await resS.json();
-        const jsonT = await resT.json();
-
-        if (jsonS.success) listSantri = jsonS.data;
-        if (jsonT.success) listTutor = jsonT.data;
-
-        renderDropdownOrang();
-        renderCards();
-      } catch (err) {
-        document.getElementById("loadingText").textContent = "Gagal memuat data: " + err.message;
-      }
-    }
-
-    function renderDropdownOrang() {
-      const sel = document.getElementById("selectOrang");
-      sel.innerHTML = '<option value="all">-- Cetak Semua Sekaligus --</option>';
-
-      if (activeCategory === "santri") {
-        listSantri.forEach((s, idx) => {
-          const opt = document.createElement("option");
-          opt.value = idx;
-          opt.textContent = `${s.nis} - ${s.nama} (${s.kelas})`;
-          sel.appendChild(opt);
-        });
-      } else {
-        listTutor.forEach((t, idx) => {
-          const opt = document.createElement("option");
-          opt.value = idx;
-          opt.textContent = `${t.nip} - ${t.nama} (${t.role})`;
-          sel.appendChild(opt);
-        });
-      }
-    }
-
-    document.getElementById("selectKategori").addEventListener("change", (e) => {
-      activeCategory = e.target.value;
-      renderDropdownOrang();
-      renderCards();
-    });
-
-    document.getElementById("selectOrang").addEventListener("change", () => {
-      renderCards();
-    });
-
-    function renderCards() {
-      const container = document.getElementById("cardsContainer");
-      container.innerHTML = "";
-      const selectedIdx = document.getElementById("selectOrang").value;
-
-      if (activeCategory === "santri") {
-        const dataArr = selectedIdx === "all" ? listSantri : [listSantri[selectedIdx]];
-        if (dataArr.length === 0 || !dataArr[0]) {
-          container.innerHTML = '<div style="padding:40px; text-align:center;">Tidak ada data santri.</div>';
-          return;
+        const res = await fetch(`${API_URL}?action=${action}`);
+        const json = await res.json();
+        if (json.success && json.data.length > 0) {
+          listData = json.data;
+          sel.innerHTML = listData.map((item, idx) => {
+            const idVal = jenis === "santri" ? item.nis : item.nip;
+            return `<option value="${idx}">${item.nama} (${idVal})</option>`;
+          }).join("");
+          renderKartu();
+        } else {
+          sel.innerHTML = '<option value="">Data kosong</option>';
         }
+      } catch (e) {
+        sel.innerHTML = '<option value="">Gagal memuat data</option>';
+      }
+    }
 
-        dataArr.forEach(s => {
-          const fotoImg = formatDrivePhoto(s.foto);
-          const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(s.nis)}&margin=2`;
-          
-          let jenjangText = s.jenjang || "Paket A";
-          if (jenjangText.toUpperCase().includes("PAT") || jenjangText.toUpperCase().includes("PDPD")) {
-            jenjangText = "Program Kesetaraan";
+    function renderKartu() {
+      const jenis = document.getElementById("jenisKartu").value;
+      const idx = document.getElementById("selectPengguna").value;
+      const item = listData[idx];
+      if (!item) return;
+
+      document.getElementById("cardFoto").src = konversiFotoDrive(item.foto);
+      document.getElementById("cardNamaLengkap").textContent = item.nama || "-";
+
+      const bioTable = document.getElementById("cardBioTable");
+      let qrText = "";
+
+      if (jenis === "santri") {
+        qrText = item.nis;
+        document.getElementById("cardBadgeJenis").textContent = "KARTU TANDA SANTRI";
+        document.getElementById("backRoleText").textContent = "santri";
+        bioTable.innerHTML = `
+          <tr><td class="bio-label">User / NIS</td><td class="bio-val">: ${item.nis}</td></tr>
+          <tr><td class="bio-label">Password</td><td class="bio-val">: ${item.password || "-"}</td></tr>
+          <tr><td class="bio-label">Program</td><td class="bio-val">: ${item.jenjang || "-"}</td></tr>
+          <tr><td class="bio-label">Tingkat</td><td class="bio-val">: ${item.kelas || "-"}</td></tr>
+          <tr><td class="bio-label">Status</td><td class="bio-val val-aktif">: Terdaftar Aktif</td></tr>
+        `;
+      } else {
+        qrText = item.nip;
+        document.getElementById("cardBadgeJenis").textContent = "KARTU TANDA TUTOR / SDM";
+        document.getElementById("backRoleText").textContent = "tutor / fasilitator";
+        bioTable.innerHTML = `
+          <tr><td class="bio-label">NIP / User</td><td class="bio-val">: ${item.nip}</td></tr>
+          <tr><td class="bio-label">Jabatan</td><td class="bio-val">: ${item.role || "Tutor"}</td></tr>
+          <tr><td class="bio-label">Lembaga</td><td class="bio-val">: PKBM Pelita Aushaf</td></tr>
+          <tr><td class="bio-label">Status</td><td class="bio-val val-aktif">: Aktif Bertugas</td></tr>
+        `;
+      }
+
+      const qrContainer = document.getElementById("qrcodeBox");
+      qrContainer.innerHTML = "";
+      new QRCode(qrContainer, {
+        text: String(qrText).trim(),
+        width: 112,
+        height: 112,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    // Jika dibuka dari Portal Siswa (otomatis pilih santri yang sedang login)
+    const savedSiswa = localStorage.getItem("siswaAuth");
+    muatDaftarPengguna().then(() => {
+      if (savedSiswa) {
+        try {
+          const s = JSON.parse(savedSiswa);
+          const foundIdx = listData.findIndex(x => String(x.nis).toLowerCase() === String(s.nis).toLowerCase());
+          if (foundIdx >= 0) {
+            document.getElementById("selectPengguna").value = foundIdx;
+            renderKartu();
           }
-
-          container.innerHTML += `
-            <div class="pair-container">
-              <!-- FRONT SANTRI -->
-              <div class="id-card card-front">
-                <div class="front-header">
-                  <img src="logo-pkbm.png" alt="Logo">
-                  <div class="header-text">
-                    <h3>PKBM PELITA AUSHAF</h3>
-                    <p>Homeschooling & Pendidikan Kesetaraan</p>
-                  </div>
-                </div>
-                <div class="front-body">
-                  <div class="photo-frame">
-                    <img src="${fotoImg}" alt="Foto Santri" onerror="this.src='logo-pkbm.png'">
-                  </div>
-                  <div class="info-table">
-                    <b class="nama">${s.nama}</b>
-                    <div class="info-row"><span class="info-label">NIS</span><span class="info-val">: ${s.nis}</span></div>
-                    <div class="info-row"><span class="info-label">Program</span><span class="info-val">: ${jenjangText}</span></div>
-                    <div class="info-row"><span class="info-label">Tingkat</span><span class="info-val">: ${s.kelas}</span></div>
-                    <div class="info-row"><span class="info-label">Status</span><span class="info-val" style="color:#059669;">: Terdaftar Aktif</span></div>
-                  </div>
-                </div>
-                <div class="front-footer">
-                  <span class="badge-card-type">KARTU TANDA SANTRI</span>
-                  <span>Sidoarjo, Jawa Timur</span>
-                </div>
-              </div>
-
-              <!-- BACK SANTRI -->
-              <div class="id-card card-back">
-                <div class="back-title">KARTU ABSENSI RESMI PKBM PELITA AUSHAF</div>
-                <div class="back-content">
-                  <div class="qr-box">
-                    <img src="${qrUrl}" alt="QR Code">
-                  </div>
-                  <ol class="rules-list">
-                    <li>Kartu tanda pengenal resmi santri PKBM Pelita Aushaf.</li>
-                    <li>Tunjukkan <b>QR Code</b> pada guru saat absensi kelas.</li>
-                    <li>Dilarang memindahtangankan kartu kepada orang lain.</li>
-                    <li>Jika menemukan kartu ini, harap hubungi kantor sekolah.</li>
-                  </ol>
-                </div>
-                <div class="back-footer">
-                  <b>Kampus I:</b> Gedung G2 • <b>Kampus II:</b> Gedung I5<br>
-                  Website: pkbmpelitaaushafindonesia.sch.id
-                </div>
-              </div>
-            </div>
-          `;
-        });
-
-      } else {
-        // KARTU TUTOR
-        const dataArr = selectedIdx === "all" ? listTutor : [listTutor[selectedIdx]];
-        if (dataArr.length === 0 || !dataArr[0]) {
-          container.innerHTML = '<div style="padding:40px; text-align:center;">Tidak ada data tutor.</div>';
-          return;
-        }
-
-        dataArr.forEach(t => {
-          const fotoImg = formatDrivePhoto(t.foto);
-          const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(t.nip)}&margin=2`;
-
-          container.innerHTML += `
-            <div class="pair-container">
-              <!-- FRONT TUTOR -->
-              <div class="id-card card-front">
-                <div class="front-header" style="background: linear-gradient(135deg, #065f46, #022c22);">
-                  <img src="logo-pkbm.png" alt="Logo">
-                  <div class="header-text">
-                    <h3>PKBM PELITA AUSHAF</h3>
-                    <p>Homeschooling & Pendidikan Kesetaraan</p>
-                  </div>
-                </div>
-                <div class="front-body">
-                  <div class="photo-frame" style="border-color:#065f46;">
-                    <img src="${fotoImg}" alt="Foto Tutor" onerror="this.src='logo-pkbm.png'">
-                  </div>
-                  <div class="info-table">
-                    <b class="nama">${t.nama}</b>
-                    <div class="info-row"><span class="info-label">NIP / User</span><span class="info-val">: ${t.nip}</span></div>
-                    <div class="info-row"><span class="info-label">Jabatan</span><span class="info-val">: ${t.role}</span></div>
-                    <div class="info-row"><span class="info-label">Divisi</span><span class="info-val">: Akademik PKBM</span></div>
-                    <div class="info-row"><span class="info-label">Status</span><span class="info-val" style="color:#059669;">: Pengajar Aktif</span></div>
-                  </div>
-                </div>
-                <div class="front-footer">
-                  <span class="badge-card-type" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">KARTU TANDA TUTOR</span>
-                  <span>Sidoarjo, Jawa Timur</span>
-                </div>
-              </div>
-
-              <!-- BACK TUTOR -->
-              <div class="id-card card-back">
-                <div class="back-title">KARTU IDENTITAS RESMI TENAGA PENDIDIK</div>
-                <div class="back-content">
-                  <div class="qr-box" style="border-color:#065f46;">
-                    <img src="${qrUrl}" alt="QR Code">
-                  </div>
-                  <ol class="rules-list">
-                    <li>Kartu resmi tenaga pendidik & fasilitator PKBM Pelita Aushaf.</li>
-                    <li>Gunakan untuk verifikasi kehadiran dan administrasi kelas.</li>
-                    <li>Dilarang memindahtangankan kartu kepada pihak lain.</li>
-                    <li>Jika menemukan kartu ini, harap hubungi kantor yayasan.</li>
-                  </ol>
-                </div>
-                <div class="back-footer">
-                  <b>Kampus I:</b> Gedung G2 • <b>Kampus II:</b> Gedung I5<br>
-                  Website: pkbmpelitaaushafindonesia.sch.id
-                </div>
-              </div>
-            </div>
-          `;
-        });
+        } catch(e) {}
       }
-    }
-
-    loadAllData();
+    });
   </script>
 </body>
 </html>
