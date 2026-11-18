@@ -190,6 +190,30 @@
           </button>
         </div>
 
+        <!-- KARTU BUKU PENGHUBUNG HARIAN DAYCARE & PAUD -->
+        <div class="tutor-card" style="border: 2px solid #d97706; background: #fffbeb;">
+          <div>
+            <div class="tutor-card-icon" style="background:#fef3c7; color:#b45309;">🧸</div>
+            <h3 style="color:#92400e;">Buku Penghubung Daycare & PAUD</h3>
+            <p>Input cepat (60 detik) laporan harian makan, tidur, BAK/BAB, stimulasi adab/belajar, & mood anak untuk orang tua.</p>
+          </div>
+          <button type="button" onclick="bukaModalBukuPenghubung()" class="btn-action" style="background:#d97706;">
+            Buka Buku Penghubung →
+          </button>
+        </div>
+
+        <!-- KARTU ANALISA & EARLY WARNING DAYCARE/PAUD (KHUSUS PEJABAT & PSIKOLOG) -->
+        <div class="tutor-card" id="cardAnalisaPaud" style="border: 2px solid #9333ea; background: #faf5ff; display: none;">
+          <div>
+            <div class="tutor-card-icon" style="background:#f3e8ff; color:#7e22ce;">🧠</div>
+            <h3 style="color:#6b21a8;">Analisa & Deteksi Dini PAUD</h3>
+            <p>Dashboard Well-Being Index, peringatan dini hambatan emosi/makan, & draf narasi raport bulanan Daycare/PAUD.</p>
+          </div>
+          <button type="button" onclick="bukaModalAnalisaPaud()" class="btn-action" style="background:#9333ea;">
+            Buka Analisa Tumbuh Kembang →
+          </button>
+        </div>
+
         <!-- PRESENSI MAPEL & INPUT JURNAL -->
         <div class="tutor-card" style="border: 2px solid #10b981; background: #f0fdf4;">
           <div>
@@ -844,6 +868,174 @@
     </div>
   </div>
 
+  <!-- MODAL 9: BUKU PENGHUBUNG HARIAN DAYCARE & PAUD -->
+  <div id="modalBukuPenghubung" class="modal-overlay">
+    <div class="modal-box" style="max-width: 820px;">
+      <button class="modal-close" onclick="tutupModal('modalBukuPenghubung')">✕</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px; padding-right:34px;">
+        <h3 style="margin:0; color:#92400e;">🧸 Buku Penghubung Harian Daycare & PAUD</h3>
+        <span id="bpBadgeMode" style="background:#fef3c7; color:#92400e; border:1px solid #fcd34d; padding:3px 12px; border-radius:99px; font-size:12px; font-weight:800;">Mode: Daycare / PAUD</span>
+      </div>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Form observasi cepat berbasis skor tumbuh kembang. Data otomatis teranalisa ke sistem deteksi dini.</p>
+
+      <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px; background:#fffbeb; padding:14px; border-radius:16px; border:1px solid #fde68a; margin-bottom:14px;">
+        <div>
+          <label style="margin-top:0; color:#92400e;">Pilih Ananda (Santri Daycare / PAUD):</label>
+          <select id="bpSelectSantri" onchange="onChangeSantriBp()">
+            <option value="">⏳ Memuat daftar santri...</option>
+          </select>
+        </div>
+        <div>
+          <label style="margin-top:0; color:#92400e;">Tanggal Observasi:</label>
+          <input type="date" id="bpTanggal" onchange="onChangeSantriBp()">
+        </div>
+      </div>
+
+      <!-- Kotak Pesan Pagi dari Orang Tua -->
+      <div id="bpBoxPesanOrtu" style="background:#eff6ff; border:1.5px solid #bfdbfe; color:#1e40af; padding:12px 14px; border-radius:14px; font-size:13px; margin-bottom:14px;">
+        <b>🏡 Catatan Pagi dari Orang Tua:</b> <span id="bpTeksPesanOrtu">Belum ada catatan dari rumah hari ini.</span>
+      </div>
+
+      <form id="formBukuPenghubung">
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;">
+          <div>
+            <label>Kondisi Kedatangan:</label>
+            <select id="bpKondisiDatang">
+              <option value="Sehat & Ceria">😊 Sehat & Ceria</option>
+              <option value="Kurang Fit">🤒 Kurang Fit / Hangat</option>
+              <option value="Mengantuk">😴 Mengantuk / Kurang Tidur</option>
+            </select>
+          </div>
+          <div>
+            <label>Asupan Snack:</label>
+            <select id="bpMakanSnack">
+              <option value="Habis">🍽️ Habis</option>
+              <option value="Sebagian">🥣 Sebagian (1/2 Porsi)</option>
+              <option value="Sedikit">🥄 Sedikit</option>
+              <option value="Menolak">🚫 Menolak / Tidak Mau</option>
+            </select>
+          </div>
+          <div>
+            <label>Makan Siang:</label>
+            <select id="bpMakanSiang">
+              <option value="Habis">🍽️ Habis</option>
+              <option value="Sebagian">🥣 Sebagian (1/2 Porsi)</option>
+              <option value="Sedikit">🥄 Sedikit</option>
+              <option value="Menolak">🚫 Menolak / Tidak Mau</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Bagian Khusus Daycare / Full-Day -->
+        <div id="bpSectionDaycare" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; background:#f8fafc; padding:12px; border-radius:14px; border:1px solid #e2e8f0; margin-top:10px;">
+          <div>
+            <label style="margin-top:0;">Jam Tidur Siang:</label>
+            <input type="text" id="bpTidurSiang" placeholder="Contoh: 12.30 - 14.15 atau Tidak Tidur">
+          </div>
+          <div>
+            <label style="margin-top:0;">BAK / BAB & Toilet Training:</label>
+            <input type="text" id="bpBakBab" placeholder="Contoh: BAK 3x, BAB 1x (Normal) - Mandiri">
+          </div>
+        </div>
+
+        <!-- Indikator Analisa Psikologi & Kemandirian -->
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:6px;">
+          <div>
+            <label>Kemandirian & Fokus:</label>
+            <select id="bpKemandirian">
+              <option value="Antusias & Mandiri">🌟 Antusias & Mandiri</option>
+              <option value="Perlu Sedikit Bantuan">🤝 Perlu Sedikit Bantuan</option>
+              <option value="Perlu Pendampingan Penuh">🤲 Perlu Pendampingan Penuh</option>
+            </select>
+          </div>
+          <div>
+            <label>Mood Dominan Anak:</label>
+            <select id="bpMood">
+              <option value="Ceria/Aktif">😄 Ceria / Aktif</option>
+              <option value="Tenang">😌 Tenang</option>
+              <option value="Sensitif/Rewel">🥺 Sensitif / Mudah Rewel</option>
+              <option value="Menangis/Tantrum">😭 Menangis / Tantrum</option>
+            </select>
+          </div>
+          <div>
+            <label>Interaksi Sosial:</label>
+            <select id="bpSosial">
+              <option value="Bermain Bersama">👫 Bermain Bersama / Berbagi</option>
+              <option value="Paralel/Sendiri">🧱 Bermain Paralel / Sendiri</option>
+              <option value="Menghindar">🙈 Menghindar dari Kelompok</option>
+              <option value="Konflik/Agresif">⚡ Butuh Bantuan Resolusi Konflik</option>
+            </select>
+          </div>
+        </div>
+
+        <label>Kegiatan Stimulasi, Hafalan & Pembiasaan Adab Hari Ini:</label>
+        <input type="text" id="bpKegiatan" placeholder="Contoh: Meronce manik-manik, murojaah QS. Al-Ikhlas, adab antre cuci tangan" required>
+
+        <label>Pengingat Perlengkapan Habis (Centang jika perlu dibawa besok):</label>
+        <div style="display:flex; flex-wrap:wrap; gap:14px; background:#f8fcfa; padding:10px 14px; border-radius:12px; border:1px solid var(--line); font-size:13px;">
+          <label style="display:inline-flex; align-items:center; gap:6px; margin:0; font-weight:normal;"><input type="checkbox" name="bpStok" value="Popok/Diapers" style="width:auto;"> Popok / Diapers</label>
+          <label style="display:inline-flex; align-items:center; gap:6px; margin:0; font-weight:normal;"><input type="checkbox" name="bpStok" value="Baju Ganti" style="width:auto;"> Baju Ganti</label>
+          <label style="display:inline-flex; align-items:center; gap:6px; margin:0; font-weight:normal;"><input type="checkbox" name="bpStok" value="Tisu Basah" style="width:auto;"> Tisu Basah</label>
+          <label style="display:inline-flex; align-items:center; gap:6px; margin:0; font-weight:normal;"><input type="checkbox" name="bpStok" value="Susu" style="width:auto;"> Susu</label>
+          <label style="display:inline-flex; align-items:center; gap:6px; margin:0; font-weight:normal;"><input type="checkbox" name="bpStok" value="Minyak Telon" style="width:auto;"> Minyak Telon</label>
+        </div>
+
+        <label>Catatan Personal Ustadzah untuk Ayah/Bunda:</label>
+        <textarea id="bpCatatanUstadzah" placeholder="Tuliskan pencapaian positif atau hal khusus ananda hari ini..." style="min-height:65px;"></textarea>
+
+        <button type="submit" id="btnSimpanBp" class="btn-action" style="background:#d97706; width:100%; margin-top:14px;">
+          💾 Simpan Buku Penghubung & Jalankan Analisa
+        </button>
+      </form>
+
+      <!-- Riwayat 7 Hari Terakhir & Grafik Mini -->
+      <div style="margin-top:20px; border-top:1.5px solid var(--line); padding-top:14px;">
+        <h4 style="margin:0 0 8px; color:var(--green-dark);">📊 Riwayat Observasi & Indeks Kesejahteraan Terakhir</h4>
+        <div id="bpRingkasanAnalisaBox" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:12px; margin-bottom:10px; font-size:13px;"></div>
+        <div style="max-height:240px; overflow-y:auto; border:1px solid var(--line); border-radius:12px;">
+          <table class="table-monitoring" style="margin-top:0;">
+            <thead style="position:sticky; top:0; background:#fef3c7; color:#92400e;">
+              <tr>
+                <th>Tanggal</th>
+                <th>Fisik & Makan</th>
+                <th>Mood & Sosial</th>
+                <th>Kegiatan & Catatan Ustadzah</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyRiwayatBp">
+              <tr><td colspan="4" style="text-align:center; padding:14px; color:var(--muted);">Pilih santri untuk melihat riwayat.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 10: DASHBOARD ANALISA & EARLY WARNING DAYCARE / PAUD (PSIKOLOG & PEJABAT) -->
+  <div id="modalAnalisaPaud" class="modal-overlay">
+    <div class="modal-box" style="max-width: 900px;">
+      <button class="modal-close" onclick="tutupModal('modalAnalisaPaud')">✕</button>
+      <h3 style="margin:0 0 4px; color:#6b21a8;">🧠 Analisa Tumbuh Kembang & Early Warning (Daycare / PAUD)</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Pemantauan Well-Being Index, deteksi dini hambatan emosi/sosial/fisiologis, dan draf narasi raport bulanan otomatis.</p>
+
+      <div style="max-height:480px; overflow-y:auto; border:1px solid var(--line); border-radius:14px;">
+        <table class="table-monitoring" style="margin-top:0;">
+          <thead style="position:sticky; top:0; background:#f3e8ff; color:#6b21a8; z-index:1;">
+            <tr>
+              <th>Santri & Jenjang</th>
+              <th>Skor Rata-Rata (30 Hari)</th>
+              <th>Well-Being & Status Deteksi Dini</th>
+              <th>Draf Narasi Raport Bulanan</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyAnalisaPaud">
+            <tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted);">⏳ Memuat data analisa perkembangan...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
@@ -871,6 +1063,7 @@
           document.getElementById("cardMonitoringKonseling").style.display = "flex";
           document.getElementById("cardProfilUtuh").style.display = "flex";
           document.getElementById("cardSupervisiTna").style.display = "flex";
+          document.getElementById("cardAnalisaPaud").style.display = "flex";
         }
 
         if (userRole === "yayasan") {
@@ -1276,7 +1469,8 @@
         const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
         const json = await res.json();
         if (json.success) {
-          alert(`✅ Catatan konseling berhasil disimpan!\nID: ${json.idKasus}`);
+          alert(`✅ Catatan konseling berhasil disimpan!
+ID: ${json.idKasus}`);
           document.getElementById("formKonseling").reset(); tutupModal('modalKonseling');
         } else { alert("Gagal: " + json.message); }
       } catch(err) { alert("Error: " + err.message); } finally { btn.disabled = false; btn.textContent = "💾 Simpan & Kirim Catatan Konseling"; }
@@ -1371,7 +1565,12 @@
             if (s.sudahTtd) { countSudah++; rows += `<tr><td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td><td><span class="badge-ttd-ok">✅ Sudah TTD</span><br><small style="color:#059669;">Oleh: ${s.namaWaliTtd}</small></td><td><small style="color:#059669; font-weight:bold;">Selesai</small></td></tr>`; } 
             else {
               countBelum++; let cleanHp = String(s.hpWali || "").replace(/[^0-9]/g, ""); if (cleanHp.startsWith("0")) cleanHp = "62" + cleanHp.slice(1);
-              const pesanWA = `Assalamu'alaikum. Kepada Yth. Ayah/Bunda dari ananda *${s.nama}*.\n\nBuku Raport Perkembangan periode *${namaBulanStr}* telah diperbarui oleh Tutor. Mohon berkenan memeriksa kemajuan belajar dan menandatangani di portal siswa:\n👉 https://pkbmpelitaaushafindonesia.sch.id/portal-siswa.html\n\nTerima kasih. 🙏`;
+              const pesanWA = `Assalamu'alaikum. Kepada Yth. Ayah/Bunda dari ananda *${s.nama}*.
+
+Buku Raport Perkembangan periode *${namaBulanStr}* telah diperbarui oleh Tutor. Mohon berkenan memeriksa kemajuan belajar dan menandatangani di portal siswa:
+👉 https://pkbmpelitaaushafindonesia.sch.id/portal-siswa.html
+
+Terima kasih. 🙏`;
               const waLink = cleanHp ? `https://wa.me/${cleanHp}?text=${encodeURIComponent(pesanWA)}` : `#`;
               rows += `<tr><td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td><td><span class="badge-ttd-no">⚠️ Belum TTD</span></td><td><a href="${waLink}" target="_blank" class="btn-wa-remind">📲 Ingatkan via WA</a></td></tr>`;
             }
@@ -1586,6 +1785,199 @@
         }
       } catch (err) {
         tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:red;">Gagal memuat matriks TNA.</td></tr>`;
+      }
+    }
+
+    // ================= ENGINE BUKU PENGHUBUNG & ANALISA DAYCARE / PAUD =================
+    let cacheSantriBp = [];
+
+    async function bukaModalBukuPenghubung() {
+      document.getElementById("modalBukuPenghubung").style.display = "flex";
+      document.getElementById("bpTanggal").valueAsDate = new Date();
+      const sel = document.getElementById("bpSelectSantri");
+
+      if (sel.options.length <= 1) {
+        try {
+          const res = await fetch(`${API_URL}?action=get_all_santri`);
+          const json = await res.json();
+          if (json.success && json.data.length > 0) {
+            cacheSantriBp = json.data;
+            // Prioritaskan tampilkan Daycare & PAUD di atas, lalu jenjang lain jika ada
+            const sorted = [...json.data].sort((a, b) => {
+              const aIsPaud = /daycare|paud|kb|tk/i.test(a.jenjang) ? 0 : 1;
+              const bIsPaud = /daycare|paud|kb|tk/i.test(b.jenjang) ? 0 : 1;
+              return aIsPaud - bIsPaud;
+            });
+            sel.innerHTML = sorted.map(s => `<option value="${s.nis}" data-jenjang="${s.jenjang}" data-nama="${s.nama}">${s.nama} (${s.jenjang} - ${s.kelas})</option>`).join("");
+            onChangeSantriBp();
+          } else {
+            sel.innerHTML = '<option value="">Data santri kosong</option>';
+          }
+        } catch (err) {
+          sel.innerHTML = '<option value="">Gagal memuat data santri</option>';
+        }
+      } else {
+        onChangeSantriBp();
+      }
+    }
+
+    async function onChangeSantriBp() {
+      const sel = document.getElementById("bpSelectSantri");
+      const opt = sel.options[sel.selectedIndex];
+      if (!opt || !opt.value) return;
+
+      const nis = opt.value;
+      const jenjang = opt.getAttribute("data-jenjang") || "PAUD";
+      const tglDipilih = document.getElementById("bpTanggal").value;
+
+      // Sesuaikan tampilan otomatis: Daycare menampilkan tidur siang & BAK/BAB
+      const isDaycare = /daycare|baby|batita|kb/i.test(jenjang);
+      document.getElementById("bpBadgeMode").textContent = `Jenjang: ${jenjang}`;
+      document.getElementById("bpSectionDaycare").style.display = isDaycare ? "grid" : "grid";
+
+      const tbody = document.getElementById("tbodyRiwayatBp");
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:14px; color:var(--muted);">⏳ Mengambil catatan buku penghubung...</td></tr>';
+
+      try {
+        const res = await fetch(`${API_URL}?action=get_buku_penghubung_santri&nis=${encodeURIComponent(nis)}&role=tutor`);
+        const json = await res.json();
+        if (!json.success) return;
+
+        // Cek apakah ada pesan pagi orang tua pada tanggal yang dipilih
+        const logHariIni = (json.riwayat || []).find(r => r.tanggal === tglDipilih);
+        if (logHariIni && logHariIni.catatanOrtu && logHariIni.catatanOrtu !== "-") {
+          document.getElementById("bpTeksPesanOrtu").textContent = logHariIni.catatanOrtu;
+        } else {
+          document.getElementById("bpTeksPesanOrtu").textContent = "Belum ada catatan dari rumah hari ini.";
+        }
+
+        // Tampilkan ringkasan analisa
+        const boxAn = document.getElementById("bpRingkasanAnalisaBox");
+        if (json.analisa) {
+          boxAn.style.display = "block";
+          const isAlert = json.analisa.statusAlert.includes("Merah") || json.analisa.statusAlert.includes("Kuning");
+          boxAn.style.background = isAlert ? "#fef2f2" : "#f0fdf4";
+          boxAn.style.borderColor = isAlert ? "#fecaca" : "#bbf7d0";
+          boxAn.innerHTML = `
+            <b>Well-Being Index:</b> ${json.analisa.wellBeingIndex} • <b>Status:</b> ${json.analisa.statusAlert}<br>
+            <small style="color:#374151;">${json.analisa.drafNarasi}</small>
+          `;
+        } else {
+          boxAn.style.display = "none";
+        }
+
+        if (!json.riwayat || json.riwayat.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:14px; color:var(--muted);">Belum ada riwayat buku penghubung untuk ananda ini.</td></tr>';
+        } else {
+          tbody.innerHTML = json.riwayat.map(r => `
+            <tr>
+              <td style="white-space:nowrap;"><b>${r.tanggal}</b><br><small style="color:var(--muted);">${r.kondisiDatang || "-"}</small></td>
+              <td>Makan: <b>${r.makanSiang || "-"}</b><br><small>Tidur: ${r.tidurSiang || "-"}<br>${r.bakBab || ""}</small></td>
+              <td>Mood: <b>${r.moodAnak || "-"}</b><br><small>Sosial: ${r.interaksiSosial || "-"}<br>Mandiri: ${r.kemandirianFokus || "-"}</small></td>
+              <td><b>${r.kegiatanBelajar || "-"}</b><br><small>${r.catatanUstadzah || "-"}</small>${r.kebutuhanStok && r.kebutuhanStok !== "-" ? `<br><span style="background:#fee2e2;color:#b91c1c;padding:1px 6px;border-radius:6px;font-size:11px;">Habis: ${r.kebutuhanStok}</span>` : ""}</td>
+            </tr>
+          `).join("");
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">Gagal memuat riwayat: ${err.message}</td></tr>`;
+      }
+    }
+
+    document.getElementById("formBukuPenghubung").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const sel = document.getElementById("bpSelectSantri");
+      const opt = sel.options[sel.selectedIndex];
+      if (!opt || !opt.value) { alert("Pilih santri terlebih dahulu!"); return; }
+
+      const btn = document.getElementById("btnSimpanBp");
+      btn.disabled = true; btn.textContent = "⏳ Menyimpan & Menganalisa...";
+
+      const stokHabis = Array.from(document.querySelectorAll('input[name="bpStok"]:checked')).map(cb => cb.value).join(", ");
+
+      const payload = {
+        action: "simpan_buku_penghubung",
+        nis: opt.value,
+        nama: opt.getAttribute("data-nama") || "",
+        jenjang: opt.getAttribute("data-jenjang") || "PAUD",
+        tanggal: document.getElementById("bpTanggal").value,
+        kondisiDatang: document.getElementById("bpKondisiDatang").value,
+        makanSnack: document.getElementById("bpMakanSnack").value,
+        makanSiang: document.getElementById("bpMakanSiang").value,
+        tidurSiang: document.getElementById("bpTidurSiang").value.trim() || "-",
+        bakBab: document.getElementById("bpBakBab").value.trim() || "-",
+        kegiatanBelajar: document.getElementById("bpKegiatan").value.trim(),
+        kemandirianFokus: document.getElementById("bpKemandirian").value,
+        moodAnak: document.getElementById("bpMood").value,
+        interaksiSosial: document.getElementById("bpSosial").value,
+        kebutuhanStok: stokHabis || "-",
+        catatanUstadzah: document.getElementById("bpCatatanUstadzah").value.trim() || "-",
+        tutor: activeTutor ? activeTutor.nama : "Ustadzah"
+      };
+
+      try {
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+        const json = await res.json();
+        if (json.success) {
+          let infoAlert = "";
+          if (json.analisa && json.analisa.statusAlert) {
+            infoAlert = `
+
+Hasil Analisa Sistem:
+Well-Being Index: ${json.analisa.wellBeingIndex}
+Status: ${json.analisa.statusAlert}`;
+          }
+          alert("✅ " + json.message + infoAlert);
+          document.getElementById("bpCatatanUstadzah").value = "";
+          document.querySelectorAll('input[name="bpStok"]:checked').forEach(cb => cb.checked = false);
+          onChangeSantriBp();
+        } else {
+          alert("Gagal: " + json.message);
+        }
+      } catch (err) {
+        alert("Error jaringan: " + err.message);
+      } finally {
+        btn.disabled = false; btn.textContent = "💾 Simpan Buku Penghubung & Jalankan Analisa";
+      }
+    });
+
+    async function bukaModalAnalisaPaud() {
+      document.getElementById("modalAnalisaPaud").style.display = "flex";
+      const tbody = document.getElementById("tbodyAnalisaPaud");
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted);">⏳ Menarik data analisa perkembangan anak...</td></tr>';
+
+      try {
+        const res = await fetch(`${API_URL}?action=get_monitoring_analisa_paud`);
+        const json = await res.json();
+        if (json.success && json.data.length > 0) {
+          tbody.innerHTML = json.data.map(a => {
+            let badgeColor = "background:#dcfce7; color:#15803d;";
+            if (a.statusAlert.includes("Merah")) badgeColor = "background:#fee2e2; color:#b91c1c;";
+            else if (a.statusAlert.includes("Kuning")) badgeColor = "background:#fef3c7; color:#b45309;";
+
+            return `
+              <tr>
+                <td><b>${a.nama}</b><br><small style="color:var(--muted);">NIS: ${a.nis} • ${a.jenjang}</small><br><small>Observasi: <b>${a.totalHari} hari</b></small></td>
+                <td>
+                  Makan: <b>${a.avgMakan}/3</b><br>
+                  Mandiri: <b>${a.avgMandiri}/3</b><br>
+                  Mood: <b>${a.avgMood}/3</b><br>
+                  Sosial: <b>${a.avgSosial}/3</b>
+                </td>
+                <td>
+                  <div style="font-size:16px; font-weight:900; color:#4c1d95; margin-bottom:4px;">${a.wellBeingIndex}</div>
+                  <span style="${badgeColor} padding:3px 8px; border-radius:99px; font-size:11px; font-weight:bold; display:inline-block;">${a.statusAlert}</span>
+                </td>
+                <td>
+                  <div style="font-size:12px; background:#f8fafc; padding:8px; border-radius:8px; border:1px solid #e2e8f0;">${a.drafNarasi}</div>
+                </td>
+              </tr>
+            `;
+          }).join("");
+        } else {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted);">Belum ada data observasi Buku Penghubung Daycare/PAUD yang masuk.</td></tr>';
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:red;">Gagal memuat analisa: ${err.message}</td></tr>`;
       }
     }
   </script>
