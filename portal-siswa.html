@@ -85,6 +85,22 @@
       background: #fff1f2; border: 1.5px solid #fecdd3; border-radius: 18px; padding: 16px 20px; margin-bottom: 22px; display: none;
     }
 
+    /* BUKU PENGHUBUNG HARIAN DAYCARE & PAUD */
+    .bp-daycare-card {
+      background: #fff; border: 2px solid #fbbf24; border-radius: 24px; padding: 24px; margin-bottom: 24px;
+      box-shadow: 0 10px 26px rgba(217,119,6,0.08);
+    }
+    .bp-checkin-box {
+      background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 16px; padding: 14px; margin-bottom: 16px;
+    }
+    .bp-today-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px;
+    }
+    @media(max-width: 768px) { .bp-today-grid { grid-template-columns: repeat(2, 1fr); } }
+    .bp-mini-stat {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px 12px;
+    }
+
     /* BUKU PENGHUBUNG QURAN SANTRI */
     .quran-card {
       background: #fff; border: 2px solid #6ee7b7; border-radius: 24px; padding: 24px; margin-bottom: 24px;
@@ -159,7 +175,7 @@
       background: #fff; border: 1.5px solid var(--line); border-radius: 20px; padding: 20px;
       display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.04);
     }
-    .action-card h4 { margin: 0 0 6px; color:var(--green-dark); font-size: 16px; }
+    .action-card h4 { margin: 0 0 6px; color: var(--green-dark); font-size: 16px; }
     .action-card p { margin: 0 0 14px; color: var(--muted); font-size: 12.5px; flex-grow: 1; }
     .btn-card {
       display: block; text-align: center; background: var(--green); color: #fff; padding: 10px;
@@ -223,6 +239,82 @@
       <div class="absen-detail-box" id="boxRiwayatAbsenStatus">
         <b style="color:#be123c; font-size:13.5px; display:block; margin-bottom:6px;">🗓️ Catatan Ketidakhadiran / Keterlambatan Santri:</b>
         <div id="listAbsenStatusContent" style="font-size:13px;"></div>
+      </div>
+
+      <!-- 1B. BUKU PENGHUBUNG HARIAN DAYCARE & PAUD (CHECK-IN PAGI & LAPORAN HARIAN) -->
+      <div class="bp-daycare-card" id="cardBukuPenghubungSiswa">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+          <div>
+            <h3 style="margin:0; color:#92400e;">🧸 Buku Penghubung Harian & Tumbuh Kembang</h3>
+            <p style="margin:2px 0 0; font-size:13px; color:var(--muted);">Komunikasi harian orang tua & pengasuh: asupan makan, tidur siang, BAK/BAB, stimulasi, & mood anak.</p>
+          </div>
+          <span id="badgeWellBeingOrtu" style="background:#dcfce7; color:#15803d; padding:5px 14px; border-radius:999px; font-size:12.5px; font-weight:800; display:none;">Well-Being Index: -</span>
+        </div>
+
+        <!-- Form Check-In Pagi dari Rumah -->
+        <div class="bp-checkin-box">
+          <label style="font-size:13px; font-weight:800; color:#92400e; display:block; margin-bottom:6px;">🏡 Pesan Pagi Orang Tua untuk Ustadzah Hari Ini (Opsional):</label>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="text" id="inputPesanOrtuPagi" placeholder="Contoh: Semalam bangun 2x, sudah sarapan roti, mohon ingatkan minum vitamin siang" style="flex-grow:1; min-width:220px; padding:10px 14px; border-radius:12px; border:1.5px solid #fcd34d; font-size:13.5px;">
+            <button type="button" id="btnKirimPesanPagi" onclick="kirimCatatanPagiOrtu()" class="btn-action" style="background:#d97706; white-space:nowrap;">Kirim ke Ustadzah</button>
+          </div>
+        </div>
+
+        <!-- Ringkasan Laporan Hari Terakhir -->
+        <div id="areaLaporanBpTerbaru" style="display:none;">
+          <div style="font-size:13px; font-weight:800; color:#0f766e; margin-bottom:8px;">📋 Laporan Observasi Terakhir (<span id="bpOrtuTglTerakhir">-</span>):</div>
+          <div class="bp-today-grid">
+            <div class="bp-mini-stat">
+              <small style="color:var(--muted); display:block;">Kedatangan & Makan</small>
+              <b style="font-size:13px; color:var(--text);" id="bpOrtuFisik">-</b>
+            </div>
+            <div class="bp-mini-stat">
+              <small style="color:var(--muted); display:block;">Tidur & BAK/BAB</small>
+              <b style="font-size:13px; color:var(--text);" id="bpOrtuTidurBak">-</b>
+            </div>
+            <div class="bp-mini-stat">
+              <small style="color:var(--muted); display:block;">Mood & Sosial</small>
+              <b style="font-size:13px; color:var(--text);" id="bpOrtuMoodSosial">-</b>
+            </div>
+            <div class="bp-mini-stat">
+              <small style="color:var(--muted); display:block;">Kemandirian Belajar</small>
+              <b style="font-size:13px; color:var(--text);" id="bpOrtuMandiri">-</b>
+            </div>
+          </div>
+
+          <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:14px; padding:12px 14px; font-size:13px; margin-bottom:14px;">
+            <div><b>🎨 Kegiatan & Pembiasaan Adab:</b> <span id="bpOrtuKegiatan">-</span></div>
+            <div style="margin-top:4px;"><b>💬 Catatan Ustadzah:</b> <span id="bpOrtuCatatanUstadzah">-</span></div>
+            <div id="bpOrtuAlertStok" style="margin-top:6px; color:#b91c1c; font-weight:bold; display:none;"></div>
+          </div>
+
+          <!-- Grafik Pola 14 Hari -->
+          <div style="border:1px solid #e2e8f0; border-radius:16px; padding:14px; margin-bottom:14px;">
+            <b style="font-size:13.5px; color:#92400e; display:block; margin-bottom:8px;">📈 Grafik Tren Mood, Kemandirian & Asupan Makan (14 Hari Terakhir)</b>
+            <div style="height:200px; width:100%;">
+              <canvas id="siswaBpChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Tabel Riwayat Harian -->
+          <div style="overflow-x:auto;">
+            <table class="jurnal-table">
+              <thead>
+                <tr>
+                  <th style="background:#fef3c7; color:#92400e;">Tanggal</th>
+                  <th style="background:#fef3c7; color:#92400e;">Makan & Istirahat</th>
+                  <th style="background:#fef3c7; color:#92400e;">Mood & Kemandirian</th>
+                  <th style="background:#fef3c7; color:#92400e;">Kegiatan & Catatan</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyBpOrtu"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="emptyBpOrtuMsg" style="text-align:center; padding:12px; color:var(--muted); font-size:13px;">
+          Belum ada catatan buku penghubung harian untuk ananda.
+        </div>
       </div>
 
       <!-- 2. BUKU PENGHUBUNG TAHFIDZ & KEMAJUAN MENGAJI AL-QUR'AN -->
@@ -472,10 +564,123 @@
       const now = new Date();
       document.getElementById("siswaQuranBulan").value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 
+      loadBukuPenghubungSiswa(data.nis);
       loadProgressQuranSiswa();
       loadDataRaport(data.nis);
       
       setTimeout(initCanvasSignature, 150);
+    }
+
+    let bpChartSiswaInstance = null;
+
+    async function loadBukuPenghubungSiswa(nis) {
+      try {
+        const res = await fetch(`${API_URL}?action=get_buku_penghubung_santri&nis=${encodeURIComponent(nis)}&role=santri`);
+        const json = await res.json();
+        if (!json.success) return;
+
+        if (json.analisa && json.analisa.wellBeingIndex) {
+          const badge = document.getElementById("badgeWellBeingOrtu");
+          badge.style.display = "inline-block";
+          badge.textContent = `Well-Being Index: ${json.analisa.wellBeingIndex}`;
+        }
+
+        const riwayat = json.riwayat || [];
+        if (riwayat.length === 0) {
+          document.getElementById("areaLaporanBpTerbaru").style.display = "none";
+          document.getElementById("emptyBpOrtuMsg").style.display = "block";
+          return;
+        }
+
+        document.getElementById("areaLaporanBpTerbaru").style.display = "block";
+        document.getElementById("emptyBpOrtuMsg").style.display = "none";
+
+        const latest = riwayat[0];
+        document.getElementById("bpOrtuTglTerakhir").textContent = latest.tanggal;
+        document.getElementById("bpOrtuFisik").textContent = `${latest.kondisiDatang || "-"} • Makan: ${latest.makanSiang || "-"}`;
+        document.getElementById("bpOrtuTidurBak").textContent = `Tidur: ${latest.tidurSiang || "-"} • ${latest.bakBab || "-"}`;
+        document.getElementById("bpOrtuMoodSosial").textContent = `${latest.moodAnak || "-"} • ${latest.interaksiSosial || "-"}`;
+        document.getElementById("bpOrtuMandiri").textContent = latest.kemandirianFokus || "-";
+        document.getElementById("bpOrtuKegiatan").textContent = latest.kegiatanBelajar || "-";
+        document.getElementById("bpOrtuCatatanUstadzah").textContent = latest.catatanUstadzah || "-";
+
+        const alertStok = document.getElementById("bpOrtuAlertStok");
+        if (latest.kebutuhanStok && latest.kebutuhanStok !== "-") {
+          alertStok.style.display = "block";
+          alertStok.textContent = `⚠️ Pengingat Perlengkapan Habis (Mohon dibawa besok): ${latest.kebutuhanStok}`;
+        } else {
+          alertStok.style.display = "none";
+        }
+
+        document.getElementById("tbodyBpOrtu").innerHTML = riwayat.map(r => `
+          <tr>
+            <td style="white-space:nowrap;"><b>${r.tanggal}</b><br><small style="color:var(--muted);">${r.kondisiDatang || "-"}</small></td>
+            <td>Snack: ${r.makanSnack || "-"} | Siang: <b>${r.makanSiang || "-"}</b><br><small>Tidur: ${r.tidurSiang || "-"} | ${r.bakBab || ""}</small></td>
+            <td>Mood: <b>${r.moodAnak || "-"}</b><br><small>${r.kemandirianFokus || "-"} (${r.interaksiSosial || "-"})</small></td>
+            <td><b>${r.kegiatanBelajar || "-"}</b><br><small>${r.catatanUstadzah || "-"}</small></td>
+          </tr>
+        `).join("");
+
+        // Render Grafik 14 Hari (urutan kronologis)
+        const kronologis = [...riwayat].reverse();
+        const ctx = document.getElementById("siswaBpChart").getContext("2d");
+        if (bpChartSiswaInstance) bpChartSiswaInstance.destroy();
+
+        bpChartSiswaInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: kronologis.map(r => r.tanggal.slice(8, 10) + "/" + r.tanggal.slice(5, 7)),
+            datasets: [
+              { label: 'Skor Mood (0-3)', data: kronologis.map(r => r.skorMood), borderColor: '#d97706', backgroundColor: 'rgba(217,119,6,0.1)', tension: 0.3 },
+              { label: 'Skor Kemandirian (1-3)', data: kronologis.map(r => r.skorMandiri), borderColor: '#0d7a5f', backgroundColor: 'rgba(13,122,95,0.1)', tension: 0.3 },
+              { label: 'Skor Makan (0-3)', data: kronologis.map(r => r.skorMakan), borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)', tension: 0.3 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { min: 0, max: 3, ticks: { stepSize: 1 } } }
+          }
+        });
+      } catch (err) {}
+    }
+
+    async function kirimCatatanPagiOrtu() {
+      if (!currentSantri) return;
+      const pesan = document.getElementById("inputPesanOrtuPagi").value.trim();
+      if (!pesan) { alert("Tuliskan catatan pagi untuk Ustadzah terlebih dahulu."); return; }
+
+      const btn = document.getElementById("btnKirimPesanPagi");
+      btn.disabled = true; btn.textContent = "⏳ Mengirim...";
+
+      const today = new Date();
+      const tglStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+
+      const payload = {
+        action: "simpan_buku_penghubung",
+        mode: "ORTU_PAGI",
+        nis: currentSantri.nis,
+        nama: currentSantri.nama,
+        jenjang: currentSantri.jenjang || "PAUD",
+        tanggal: tglStr,
+        catatanOrtu: pesan
+      };
+
+      try {
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+        const json = await res.json();
+        if (json.success) {
+          alert("✅ " + json.message);
+          document.getElementById("inputPesanOrtuPagi").value = "";
+          loadBukuPenghubungSiswa(currentSantri.nis);
+        } else {
+          alert("Gagal: " + json.message);
+        }
+      } catch (err) {
+        alert("Error jaringan: " + err.message);
+      } finally {
+        btn.disabled = false; btn.textContent = "Kirim ke Ustadzah";
+      }
     }
 
     async function loadProgressQuranSiswa() {
