@@ -21,6 +21,7 @@
       --orange: #ea580c;
       --purple: #7c3aed;
       --blue: #2563eb;
+      --teal: #0d9488;
     }
     * { box-sizing: border-box; }
     body {
@@ -69,7 +70,7 @@
 
     /* STATS SUMMARY KARTU */
     .stats-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px;
     }
     @media(max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
 
@@ -78,6 +79,11 @@
     }
     .stat-val { font-size: 24px; font-weight: 900; color: var(--green-dark); }
     .stat-label { font-size: 12px; color: var(--muted); font-weight: bold; margin-top: 2px; }
+
+    /* RINCIAN KETIDAKHADIRAN */
+    .absen-detail-box {
+      background: #fff1f2; border: 1.5px solid #fecdd3; border-radius: 18px; padding: 16px 20px; margin-bottom: 22px; display: none;
+    }
 
     /* BUKU PENGHUBUNG QURAN SANTRI */
     .quran-card {
@@ -91,6 +97,12 @@
     .q-box { background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 16px; padding: 14px; }
     .q-track { width: 100%; height: 10px; background: #d1fae5; border-radius: 99px; overflow: hidden; margin: 8px 0; }
     .q-fill { height: 100%; background: #059669; transition: width 0.4s ease; }
+
+    /* KARTU PPI INKLUSI SANTRI */
+    .ppi-card {
+      background: #fff; border: 2px solid #5eead4; border-radius: 24px; padding: 24px; margin-bottom: 24px;
+      box-shadow: 0 10px 26px rgba(13,148,136,0.08); display: none;
+    }
 
     /* GRAFIK KARAKTER & KEMANDIRIAN */
     .chart-box {
@@ -147,7 +159,7 @@
       background: #fff; border: 1.5px solid var(--line); border-radius: 20px; padding: 20px;
       display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 20px rgba(0,0,0,0.04);
     }
-    .action-card h4 { margin: 0 0 6px; color: var(--green-dark); font-size: 16px; }
+    .action-card h4 { margin: 0 0 6px; color:var(--green-dark); font-size: 16px; }
     .action-card p { margin: 0 0 14px; color: var(--muted); font-size: 12.5px; flex-grow: 1; }
     .btn-card {
       display: block; text-align: center; background: var(--green); color: #fff; padding: 10px;
@@ -187,11 +199,11 @@
     <!-- 2. DASHBOARD WALI SANTRI -->
     <div id="siswaDashboard">
 
-      <!-- 1. STATS PRESENSI -->
+      <!-- 1. STATS PRESENSI (MASUK VS TIDAK MASUK) -->
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-val" id="statHadir" style="color:#059669;">0</div>
-          <div class="stat-label">Sesi Pembelajaran</div>
+          <div class="stat-label">Sesi Hadir Belajar</div>
         </div>
         <div class="stat-card">
           <div class="stat-val" id="statTerlambat" style="color:#ea580c;">0</div>
@@ -205,6 +217,12 @@
           <div class="stat-val" id="statAlpa" style="color:#dc2626;">0</div>
           <div class="stat-label">Tanpa Keterangan</div>
         </div>
+      </div>
+
+      <!-- RINCIAN TANGGAL KETIDAKHADIRAN / TERLAMBAT (JIKA ADA) -->
+      <div class="absen-detail-box" id="boxRiwayatAbsenStatus">
+        <b style="color:#be123c; font-size:13.5px; display:block; margin-bottom:6px;">🗓️ Catatan Ketidakhadiran / Keterlambatan Santri:</b>
+        <div id="listAbsenStatusContent" style="font-size:13px;"></div>
       </div>
 
       <!-- 2. BUKU PENGHUBUNG TAHFIDZ & KEMAJUAN MENGAJI AL-QUR'AN -->
@@ -270,6 +288,25 @@
         </div>
       </div>
 
+      <!-- 2B. PERKEMBANGAN PROGRAM PEMBELAJARAN INDIVIDUAL (PPI / INKLUSI) - MUNCUL OTOMATIS JIKA ADA -->
+      <div class="ppi-card" id="cardPpiSiswa">
+        <h3 style="margin:0 0 4px; color:#0f766e;">🧩 Perkembangan Program Pembelajaran Individual (PPI)</h3>
+        <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Catatan pendampingan kemandirian, komunikasi, dan target khusus ananda.</p>
+        <div style="overflow-x:auto;">
+          <table class="jurnal-table">
+            <thead>
+              <tr>
+                <th style="background:#ccfbf1; color:#0f766e;">Tanggal & Aspek</th>
+                <th style="background:#ccfbf1; color:#0f766e;">Aktivitas Latihan</th>
+                <th style="background:#ccfbf1; color:#0f766e;">Tingkat Kemandirian</th>
+                <th style="background:#ccfbf1; color:#0f766e;">Catatan Dinamika</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyPpiSiswa"></tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- 3. GRAFIK CAPAIAN KARAKTER -->
       <div class="chart-box">
         <div>
@@ -293,11 +330,11 @@
         </div>
       </div>
 
-      <!-- 5. TABEL JURNAL & RAPORT DETAIL -->
+      <!-- 5. TABEL JURNAL PELAJARAN & RAPORT DETAIL -->
       <div class="raport-card">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
           <div>
-            <label style="font-size:13px; font-weight:bold; color:var(--green-dark);">Pilih Periode Bulan:</label>
+            <label style="font-size:13px; font-weight:bold; color:var(--green-dark);">Buku Penghubung Pelajaran (Pilih Periode Bulan):</label>
             <select id="filterBulanSelect" style="padding:8px 14px; border-radius:12px; border:1.5px solid var(--line); font-weight:bold;">
               <option value="all">-- Semua Riwayat --</option>
             </select>
@@ -480,7 +517,6 @@
           `).join("");
         }
 
-        // Render Grafik Pertumbuhan
         const ctx = document.getElementById("siswaQuranChart").getContext("2d");
         if (quranChartSiswaInstance) quranChartSiswaInstance.destroy();
 
@@ -528,6 +564,29 @@
         document.getElementById("statTerlambat").textContent = json.stats.totalTerlambat || 0;
         document.getElementById("statIzin").textContent = json.stats.totalIzin || 0;
         document.getElementById("statAlpa").textContent = json.stats.totalAlpa || 0;
+
+        // Tampilkan rincian tanggal ketidakhadiran / keterlambatan jika ada
+        if (json.riwayatAbsenStatus && json.riwayatAbsenStatus.length > 0) {
+          document.getElementById("boxRiwayatAbsenStatus").style.display = "block";
+          document.getElementById("listAbsenStatusContent").innerHTML = json.riwayatAbsenStatus.map(a => `
+            <div style="padding:4px 0; border-bottom:1px dashed #fecdd3;">
+              • <b>${a.tanggal}</b> — <span style="color:#be123c; font-weight:bold;">${a.status}</span>: ${a.keterangan} <small style="color:var(--muted);">(Dicatat: ${a.tutor})</small>
+            </div>
+          `).join("");
+        }
+
+        // Tampilkan jurnal PPI jika santri memiliki catatan program PPI
+        if (json.riwayatPpi && json.riwayatPpi.length > 0) {
+          document.getElementById("cardPpiSiswa").style.display = "block";
+          document.getElementById("tbodyPpiSiswa").innerHTML = json.riwayatPpi.map(p => `
+            <tr>
+              <td><b>${p.aspek}</b><br><small style="color:var(--muted);">${p.tanggal}</small></td>
+              <td><b>${p.aktivitas}</b><br><small style="color:#0f766e;">Target: ${p.target}</small></td>
+              <td><span style="background:#ccfbf1; color:#0f766e; padding:3px 8px; border-radius:99px; font-weight:bold; font-size:11.5px;">${p.kemandirian}</span></td>
+              <td>${p.catatan}<br><small style="color:var(--muted);">Pembimbing: ${p.tutor}</small></td>
+            </tr>
+          `).join("");
+        }
 
         document.getElementById("valFokusPersen").textContent = `${json.stats.skorFokusPersen}%`;
         document.getElementById("valAdabPersen").textContent = `${json.stats.skorAdabPersen}%`;
