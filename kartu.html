@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cetak Kartu Santri & Tutor - PKBM Pelita Aushaf Indonesia</title>
+  <title>Cetak Kartu Santri & Tutor (Potret) - PKBM Pelita Aushaf Indonesia</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -13,7 +13,7 @@
       --green-light: #0d7a5f;
       --gold: #eab308;
       --text: #1e293b;
-      --muted: #64748b;
+      --muted: #0f1114;
     }
     * { box-sizing: border-box; }
     body {
@@ -38,24 +38,25 @@
     .btn-print-all:hover { background: #1e40af; }
     .btn-back { background: #fff; color: var(--green); }
 
-    /* CONTAINER PASANGAN KARTU (DEPAN & BELAKANG) */
+    /* CONTAINER PASANGAN KARTU POTRET (DEPAN & BELAKANG) */
     .cards-wrapper {
       max-width: 1020px; margin: 20px auto; padding: 10px;
-      display: flex; flex-direction: column; align-items: center; gap: 26px;
+      display: flex; flex-direction: column; align-items: center; gap: 28px;
     }
 
     .card-pair {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 24px;
+      gap: 28px;
       page-break-inside: avoid;
       break-inside: avoid;
     }
 
+    /* DIMENSI KARTU POTRET (VERTIKAL) */
     .id-card {
-      width: 460px;
-      height: 292px;
+      width: 292px;
+      height: 460px;
       background: #ffffff;
       border-radius: 18px;
       overflow: hidden;
@@ -71,17 +72,18 @@
     .card-header-center {
       background: var(--green);
       color: #ffffff;
-      padding: 10px 14px;
+      padding: 12px 14px 10px;
       border-bottom: 3.5px solid var(--gold);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 6px;
       text-align: center;
     }
     .card-header-center img {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       object-fit: contain;
       background: #fff;
       border-radius: 50%;
@@ -90,30 +92,32 @@
     }
     .card-header-center .header-text h2 {
       margin: 0;
-      font-size: 15.5px;
-      letter-spacing: 0.4px;
+      font-size: 13.5px;
+      letter-spacing: 0.3px;
       font-weight: 900;
-      line-height: 1.15;
+      line-height: 1.2;
     }
     .card-header-center .header-text p {
       margin: 2px 0 0;
-      font-size: 9.5px;
-      letter-spacing: 0.6px;
+      font-size: 8.5px;
+      letter-spacing: 0.5px;
       color: #d1fae5;
       font-weight: 700;
     }
 
-    /* BODY DEPAN */
+    /* BODY DEPAN (VERTIKAL: FOTO ATAS, IDENTITAS BAWAH) */
     .card-body {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 16px;
-      padding: 12px 20px;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 18px;
       flex-grow: 1;
     }
     .photo-box {
-      width: 102px;
-      height: 132px;
+      width: 108px;
+      height: 136px;
       border-radius: 14px;
       border: 2.5px solid var(--green);
       overflow: hidden;
@@ -130,28 +134,36 @@
     }
 
     .bio-box {
-      flex-grow: 1;
+      width: 100%;
       min-width: 0;
     }
     .bio-nama {
       margin: 0 0 8px;
-      font-size: 17.5px;
+      font-size: 16.5px;
       font-weight: 900;
       color: var(--green);
       line-height: 1.2;
+      text-align: center;
       word-wrap: break-word;
     }
     .bio-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12.5px;
+      font-size: 12px;
+      background: #f8fafc;
+      border-radius: 10px;
+      overflow: hidden;
     }
     .bio-table td {
-      padding: 2.5px 0;
+      padding: 3.5px 8px;
       vertical-align: top;
+      border-bottom: 1px solid #eef2f6;
+    }
+    .bio-table tr:last-child td {
+      border-bottom: none;
     }
     .bio-label {
-      width: 82px;
+      width: 84px;
       color: var(--muted);
       font-weight: 700;
     }
@@ -165,52 +177,57 @@
 
     /* FOOTER DEPAN */
     .card-footer {
-      padding: 7px 18px;
+      padding: 8px 14px;
       border-top: 1px solid #e2e8f0;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
+      gap: 3px;
       background: #f8fafc;
+      text-align: center;
     }
     .badge-kartu {
       background: #fef3c7;
       color: #b45309;
       border: 1px solid #fde68a;
-      padding: 3px 12px;
+      padding: 3px 14px;
       border-radius: 999px;
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 900;
       letter-spacing: 0.4px;
     }
     .footer-loc {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--muted);
       font-weight: 700;
     }
 
-    /* SISI BELAKANG KARTU (QR CODE & ALAMAT SEKRETARIAT) */
+    /* SISI BELAKANG KARTU POTRET (QR CODE ATAS, KETENTUAN TENGAH, ALAMAT BAWAH) */
     .back-header {
       text-align: center;
-      padding: 12px 16px 8px;
+      padding: 14px 12px 8px;
       border-bottom: 1.5px solid #cbd5e1;
-      margin: 0 16px;
+      margin: 0 14px;
     }
     .back-header h3 {
       margin: 0;
-      font-size: 14px;
+      font-size: 12.5px;
       color: var(--green);
       font-weight: 900;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
+      line-height: 1.25;
     }
     .back-body {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 16px;
-      padding: 10px 20px;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 16px;
       flex-grow: 1;
     }
     .qr-frame {
-      padding: 7px;
+      padding: 8px;
       border: 2.5px solid #10b981;
       border-radius: 14px;
       background: #fff;
@@ -218,25 +235,26 @@
     }
     .rules-list {
       margin: 0;
-      padding-left: 16px;
-      font-size: 11.2px;
+      padding-left: 18px;
+      font-size: 11px;
       color: #334155;
-      line-height: 1.48;
+      line-height: 1.45;
+      width: 100%;
     }
-    .rules-list li { margin-bottom: 3px; }
+    .rules-list li { margin-bottom: 4px; }
 
     .back-footer {
       border-top: 1px dashed #cbd5e1;
-      margin: 0 16px;
-      padding: 7px 4px 10px;
+      margin: 0 14px;
+      padding: 8px 4px 12px;
       text-align: center;
-      font-size: 10.2px;
+      font-size: 9.8px;
       color: #475569;
-      line-height: 1.35;
+      line-height: 1.38;
     }
     .back-footer b { color: var(--green); }
 
-    /* PENGATURAN CETAK KERTAS A4 / PDF (PAS 1 HALAMAN UNTUK SATU-SATU & RAPI UNTUK MASSAL) */
+    /* PENGATURAN CETAK KERTAS A4 / PDF (UKURAN STANDAR ID CARD POTRET 54mm x 85.6mm) */
     @page {
       size: A4 portrait;
       margin: 8mm;
@@ -248,45 +266,46 @@
         margin: 0;
         padding: 0;
         max-width: 100%;
-        gap: 5mm;
+        gap: 6mm;
       }
       .card-pair {
-        gap: 6mm;
+        gap: 8mm;
         flex-wrap: nowrap;
         width: 100%;
         justify-content: center;
-        margin-bottom: 3mm;
+        margin-bottom: 4mm;
       }
       .id-card {
-        width: 85.6mm;
-        height: 54mm;
+        width: 54mm;
+        height: 85.6mm;
         border-radius: 10px;
         box-shadow: none;
         border: 1px solid #94a3b8;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
-      .card-header-center { padding: 5px 8px; border-bottom-width: 2.5px; }
-      .card-header-center img { width: 26px; height: 26px; }
-      .card-header-center .header-text h2 { font-size: 11px; }
-      .card-header-center .header-text p { font-size: 7px; }
-      .card-body { padding: 6px 10px; gap: 9px; }
-      .photo-box { width: 70px; height: 92px; border-radius: 9px; border-width: 2px; }
-      .bio-nama { font-size: 12.5px; margin-bottom: 3px; }
-      .bio-table { font-size: 9px; }
-      .bio-table td { padding: 1.5px 0; }
-      .bio-label { width: 58px; }
-      .card-footer { padding: 4px 10px; }
-      .badge-kartu { font-size: 7.8px; padding: 2px 8px; }
-      .footer-loc { font-size: 8px; }
-      .back-header { padding: 7px 8px 4px; margin: 0 10px; }
-      .back-header h3 { font-size: 10px; }
-      .back-body { padding: 5px 10px; gap: 9px; }
+      .card-header-center { padding: 6px 8px 5px; border-bottom-width: 2.5px; gap: 3px; }
+      .card-header-center img { width: 24px; height: 24px; }
+      .card-header-center .header-text h2 { font-size: 8.5px; }
+      .card-header-center .header-text p { font-size: 5.5px; }
+      .card-body { padding: 6px 10px; gap: 6px; }
+      .photo-box { width: 66px; height: 84px; border-radius: 9px; border-width: 2px; }
+      .bio-nama { font-size: 10.5px; margin-bottom: 4px; }
+      .bio-table { font-size: 7.6px; }
+      .bio-table td { padding: 2px 4px; }
+      .bio-label { width: 52px; }
+      .card-footer { padding: 5px 8px; gap: 2px; }
+      .badge-kartu { font-size: 6.8px; padding: 2px 8px; }
+      .footer-loc { font-size: 6.8px; }
+
+      .back-header { padding: 7px 6px 5px; margin: 0 8px; }
+      .back-header h3 { font-size: 8px; }
+      .back-body { padding: 6px 10px; gap: 7px; }
       .qr-frame { padding: 4px; border-width: 2px; border-radius: 9px; }
-      .qr-frame img, .qr-frame canvas { width: 74px !important; height: 74px !important; }
-      .rules-list { font-size: 8.2px; padding-left: 13px; line-height: 1.38; }
-      .rules-list li { margin-bottom: 2px; }
-      .back-footer { font-size: 7.4px; margin: 0 10px; padding: 4px 2px 5px; line-height: 1.25; }
+      .qr-frame img, .qr-frame canvas { width: 76px !important; height: 76px !important; }
+      .rules-list { font-size: 7.2px; padding-left: 12px; line-height: 1.35; }
+      .rules-list li { margin-bottom: 2.5px; }
+      .back-footer { font-size: 6.4px; margin: 0 8px; padding: 5px 2px 6px; line-height: 1.28; }
     }
   </style>
 </head>
@@ -389,7 +408,7 @@
       const pairDiv = document.createElement("div");
       pairDiv.className = "card-pair";
       pairDiv.innerHTML = `
-        <!-- SISI DEPAN -->
+        <!-- SISI DEPAN (POTRET) -->
         <div class="id-card">
           <div class="card-header-center">
             <img src="logo-pkbm.png" alt="Logo PKBM">
@@ -413,10 +432,10 @@
           </div>
         </div>
 
-        <!-- SISI BELAKANG -->
+        <!-- SISI BELAKANG (POTRET) -->
         <div class="id-card">
           <div class="back-header">
-            <h3>KARTU ABSENSI RESMI PKBM PELITA AUSHAF</h3>
+            <h3>KARTU ABSENSI RESMI<br>PKBM PELITA AUSHAF</h3>
           </div>
           <div class="back-body">
             <div class="qr-frame">
@@ -452,8 +471,8 @@
 
       new QRCode(document.getElementById(built.qrId), {
         text: built.qrText,
-        width: 112,
-        height: 112,
+        width: 118,
+        height: 118,
         colorDark: "#000000",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.M
@@ -477,15 +496,14 @@
 
         new QRCode(document.getElementById(built.qrId), {
           text: built.qrText,
-          width: 112,
-          height: 112,
+          width: 118,
+          height: 118,
           colorDark: "#000000",
           colorLight: "#ffffff",
           correctLevel: QRCode.CorrectLevel.M
         });
       });
 
-      // Beri jeda sejenak agar seluruh gambar foto & QR Code selesai dirender sebelum dialog print/PDF terbuka
       setTimeout(() => { window.print(); }, 500);
     }
 
