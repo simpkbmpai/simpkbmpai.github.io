@@ -154,15 +154,27 @@
     <div id="tutorDashboard">
       <div class="dashboard-grid">
         
-        <!-- KARTU KEUANGAN SANTRI (KHUSUS ROLE: KEUANGAN & YAYASAN) -->
+        <!-- KARTU EKSEKUTIF YAYASAN: CASH-OUT, NERACA & ANALISA (HANYA ROLE: YAYASAN) -->
+        <div class="tutor-card" id="cardEksekutifYayasan" style="border: 2px solid #d97706; background: #0f172a; color: #fff; display: none;">
+          <div>
+            <div class="tutor-card-icon" style="background:rgba(245,158,11,0.2); color:#fcd34d;">🏛️</div>
+            <h3 style="color:#fcd34d;">Neraca & Cash-Out Yayasan</h3>
+            <p style="color:#cbd5e1;">Eksklusif Yayasan: Input pengeluaran (Cash-Out), Buku Kas Terpadu, Grafik Arus Kas 1 Tahun, & Neraca Rekening.</p>
+          </div>
+          <a href="yayasan-keuangan.html" class="btn-action" style="background:#d97706; color:#fff;">
+            Buka Ruang Yayasan →
+          </a>
+        </div>
+
+        <!-- KARTU KEUANGAN SANTRI / CASH-IN (ROLE: KEUANGAN & YAYASAN) -->
         <div class="tutor-card" id="cardKeuanganYayasan" style="border: 2px solid #0f172a; background: #f8fafc; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#e2e8f0; color:#0f172a;">💰</div>
-            <h3>Database Keuangan Santri</h3>
-            <p>Akses terbatas Keuangan & Yayasan: Pencatatan Uang Pendaftaran, SPP, Sarpras, Kegiatan 1 Tahun, & Rekening Bank.</p>
+            <h3>Pemasukan Santri (Cash-In)</h3>
+            <p>Akses Keuangan & Yayasan: Pencatatan Uang Pendaftaran, SPP, Sarpras, Kegiatan 1 Tahun, & Kwitansi WA.</p>
           </div>
           <a href="keuangan.html" class="btn-action" style="background:#0f172a;">
-            Buka Modul Keuangan →
+            Buka Modul Pemasukan →
           </a>
         </div>
 
@@ -811,6 +823,9 @@
           document.getElementById("cardProfilUtuh").style.display = "flex";
           document.getElementById("cardSupervisiTna").style.display = "flex";
         }
+        if (userRole === "yayasan") {
+          document.getElementById("cardEksekutifYayasan").style.display = "flex";
+        }
         if (userRole === "keuangan" || userRole === "yayasan") {
           document.getElementById("cardKeuanganYayasan").style.display = "flex";
         }
@@ -846,7 +861,12 @@
         btn.disabled = false; btn.textContent = "Masuk ke Ruang Tutor";
       }
     });
-    document.getElementById("btnLogoutTutor").addEventListener("click", () => { localStorage.removeItem("tutorAuth"); sessionStorage.removeItem("keuanganAuth"); location.reload(); });
+    document.getElementById("btnLogoutTutor").addEventListener("click", () => {
+      localStorage.removeItem("tutorAuth");
+      sessionStorage.removeItem("keuanganAuth");
+      sessionStorage.removeItem("yayasanAuth");
+      location.reload();
+    });
 
     function bukaModalScanMapel() { document.getElementById("modalScanMapel").style.display = "flex"; startScanner(); }
     function bukaModalPPI() { document.getElementById("modalTargetPPI").style.display = "flex"; }
