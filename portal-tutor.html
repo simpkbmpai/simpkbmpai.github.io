@@ -166,12 +166,12 @@
           </a>
         </div>
 
-        <!-- KARTU KEUANGAN SANTRI / CASH-IN (ROLE: KEUANGAN & YAYASAN) -->
+        <!-- KARTU KEUANGAN SANTRI / CASH-IN (HANYA ROLE: KEUANGAN & YAYASAN) -->
         <div class="tutor-card" id="cardKeuanganYayasan" style="border: 2px solid #0f172a; background: #f8fafc; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#e2e8f0; color:#0f172a;">💰</div>
             <h3>Pemasukan Santri (Cash-In)</h3>
-            <p>Akses Keuangan & Yayasan: Pencatatan Uang Pendaftaran, SPP, Sarpras, Kegiatan 1 Tahun, & Kwitansi WA.</p>
+            <p>Khusus Staff Keuangan & Yayasan: Pencatatan Uang Pendaftaran, SPP, Sarpras, Kegiatan 1 Tahun, & Kwitansi WA.</p>
           </div>
           <a href="keuangan.html" class="btn-action" style="background:#0f172a;">
             Buka Modul Pemasukan →
@@ -214,7 +214,7 @@
           </button>
         </div>
 
-        <!-- JURNAL KONSELING & ESKALASI (INPUT) -->
+        <!-- JURNAL KONSELING & ESKALASI (INPUT - SEMUA BASIC BISA LAPOR) -->
         <div class="tutor-card" style="border: 2px solid #ea580c; background: #fff7ed;">
           <div>
             <div class="tutor-card-icon" style="background:#ffedd5; color:#c2410c;">📝</div>
@@ -226,12 +226,12 @@
           </button>
         </div>
 
-        <!-- PANTAU KASUS (KHUSUS LEVEL 2-6) -->
+        <!-- PANTAU KASUS (KHUSUS PEJABAT: KURIKULUM, KAUR PAKET A/B/C, KEPALA PKBM, YAYASAN) -->
         <div class="tutor-card" id="cardMonitoringKonseling" style="border: 2px solid #b91c1c; background: #fef2f2; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#fee2e2; color:#991b1b;">👁️</div>
             <h3>Pantau Kasus (Pejabat)</h3>
-            <p>Dashboard monitoring riwayat eskalasi penanganan santri lintas level (Level 2-6).</p>
+            <p>Dashboard monitoring riwayat eskalasi penanganan santri lintas level (Kurikulum, Kaur, Kepala PKBM, Yayasan).</p>
           </div>
           <button type="button" onclick="bukaModalPantauKasus()" class="btn-action red">
             Buka Pemantauan Kasus
@@ -262,7 +262,7 @@
           </button>
         </div>
 
-        <!-- PROFIL UTUH SANTRI -->
+        <!-- PROFIL UTUH SANTRI (KHUSUS PEJABAT: KURIKULUM, KAUR PAKET A/B/C, KEPALA PKBM, YAYASAN) -->
         <div class="tutor-card" id="cardProfilUtuh" style="border: 2px solid #475569; background: #f8fafc; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#e2e8f0; color:#334155;">👤</div>
@@ -286,7 +286,7 @@
           </button>
         </div>
 
-        <!-- SUPERVISI & MATRIKS TNA LEMBAGA (KHUSUS PEJABAT / HRD / KEPALA) -->
+        <!-- SUPERVISI & MATRIKS TNA LEMBAGA (KHUSUS PEJABAT: KURIKULUM, KAUR PAKET A/B/C, KEPALA PKBM, YAYASAN) -->
         <div class="tutor-card" id="cardSupervisiTna" style="border: 2px solid #4f46e5; background: #eef2ff; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#e0e7ff; color:#3730a3;">📊</div>
@@ -579,12 +579,12 @@
         
         <label>Level Penanganan Saat Ini:</label>
         <select id="konselingLevel" required>
-          <option value="1">Level 1 - Guru Kelas (Deteksi Dini)</option>
+          <option value="1">Level 1 - Guru Kelas / Pengasuh (Deteksi Dini)</option>
           <option value="2">Level 2 - Wali Kelas (Pendampingan Akademik Dasar)</option>
-          <option value="3">Level 3 - Kesiswaan (Penanganan Perilaku)</option>
+          <option value="3">Level 3 - Kurikulum / Kesiswaan</option>
           <option value="4">Level 4 - Kepala Urusan (Paket A/B/C/HS)</option>
           <option value="5">Level 5 - Kepala PKBM (Executive Review)</option>
-          <option value="6">Level 6 - Psikolog Yayasan (Intervensi Klinis)</option>
+          <option value="6">Level 6 - Yayasan / Psikolog Yayasan</option>
         </select>
         <label>Status Kasus:</label>
         <select id="konselingStatus" required>
@@ -599,7 +599,7 @@
     </div>
   </div>
 
-  <!-- MODAL 3: PANTAU KASUS KONSELING (LEVEL 2-6) -->
+  <!-- MODAL 3: PANTAU KASUS KONSELING (PEJABAT) -->
   <div id="modalPantauKasus" class="modal-overlay">
     <div class="modal-box" style="max-width:850px;">
       <button class="modal-close" onclick="tutupModal('modalPantauKasus')">✕</button>
@@ -817,15 +817,24 @@
         document.getElementById("tutorDashboard").style.display = "block";
         document.getElementById("userBadge").textContent = `👨‍🏫 ${activeTutor.nama || "Tutor"} (${activeTutor.role || "Tutor PKBM"})`;
         
-        const userRole = (activeTutor.role || "tutor").toLowerCase();
-        if (userRole !== "tutor" && userRole !== "") {
+        // ================= LOGIKA RBAC (HIERARKI PKBM PELITA AUSHAF) =================
+        // Level Basic: tutor, pengajar, staff, pengasuh (Bukan pejabat)
+        // Level Keuangan: keuangan (Hanya ditambah menu pemasukan santri)
+        // Level Pejabat: kurikulum, kaur (paket a/b/c), kesiswaan, hrd, kepala pkbm, yayasan
+        const userRole = (activeTutor.role || "tutor").trim().toLowerCase();
+        const basicRoles = ["", "tutor", "pengajar", "staff", "staf", "pengasuh", "keuangan"];
+        const isPejabat = !basicRoles.includes(userRole);
+
+        if (isPejabat) {
           document.getElementById("cardMonitoringKonseling").style.display = "flex";
           document.getElementById("cardProfilUtuh").style.display = "flex";
           document.getElementById("cardSupervisiTna").style.display = "flex";
         }
+
         if (userRole === "yayasan") {
           document.getElementById("cardEksekutifYayasan").style.display = "flex";
         }
+
         if (userRole === "keuangan" || userRole === "yayasan") {
           document.getElementById("cardKeuanganYayasan").style.display = "flex";
         }
@@ -1067,7 +1076,7 @@
       finally { btn.disabled = false; btn.textContent = "💾 Simpan Setoran & Update Grafik"; }
     }
 
-    // ================= ENGINE PANTAU KASUS (LEVEL 2-6) =================
+    // ================= ENGINE PANTAU KASUS (PEJABAT) =================
     function bukaModalPantauKasus() { 
       document.getElementById("modalPantauKasus").style.display = "flex"; 
       loadDataPemantauan();
