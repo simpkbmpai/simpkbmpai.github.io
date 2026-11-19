@@ -7,6 +7,7 @@
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
   <style>
     :root {
@@ -114,6 +115,13 @@
     .progress-track { width: 100%; height: 10px; background: #e2e8f0; border-radius: 99px; overflow: hidden; margin: 6px 0; }
     .progress-fill { height: 100%; background: #059669; transition: width 0.4s ease; }
 
+    /* CCTV MODULE STYLES */
+    .btn-cam-pill {
+      padding: 8px 14px; border: 1.5px solid #0284c7; background: #fff; color: #0369a1;
+      border-radius: 10px; font-weight: 800; font-size: 12.5px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-cam-pill.active, .btn-cam-pill:hover { background: #0284c7; color: #fff; }
+
     @media print {
       body * { visibility: hidden; }
       #areaPrintQuran, #areaPrintQuran * { visibility: visible; }
@@ -176,6 +184,18 @@
           <a href="keuangan.html" class="btn-action" style="background:#0f172a;">
             Buka Modul Pemasukan →
           </a>
+        </div>
+
+        <!-- KARTU PANTAUAN CCTV RUANG BELAJAR (AREA MEMBER) -->
+        <div class="tutor-card" style="border: 2px solid #0284c7; background: #f0f9ff;">
+          <div>
+            <div class="tutor-card-icon" style="background:#e0f2fe; color:#0369a1;">📹</div>
+            <h3 style="color:#0369a1;">Pantauan CCTV Kelas</h3>
+            <p>Akses langsung kamera ruang belajar (Senin–Jumat 07.30–10.00 WIB; 24 jam khusus Pimpinan/Yayasan).</p>
+          </div>
+          <button type="button" onclick="bukaModalCCTV()" class="btn-action" style="background:#0284c7;">
+            Buka Layar CCTV →
+          </button>
         </div>
 
         <!-- KARTU BUKU PENGHUBUNG TAHFIDZ & MENGAJI AL-QUR'AN -->
@@ -350,6 +370,29 @@
 
       <div style="text-align: right; margin-top:20px;">
         <button id="btnLogoutTutor" style="color:var(--danger); background:none; border:0; font-weight:800; cursor:pointer; text-decoration:underline;">🔒 Keluar dari Ruang Tutor</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL BARU: PANTAUAN CCTV RUANG BELAJAR (EZVIZ C6N HLS PLAYER) -->
+  <div id="modalCctv" class="modal-overlay">
+    <div class="modal-box" style="max-width: 860px;">
+      <button class="modal-close" onclick="tutupModal('modalCctv')">✕</button>
+      <h3 style="margin:0 0 4px; color:#0369a1;">📹 Pantauan Langsung CCTV Ruang Belajar</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">PKBM Pelita Aushaf Indonesia • Kamera EZVIZ C6N (Mode Hemat Kuota)</p>
+
+      <!-- Kotak Status / Jadwal / Peringatan -->
+      <div id="cctvStatusAlert" style="display:none; padding:14px; border-radius:14px; font-size:13px; margin-bottom:14px;"></div>
+
+      <!-- Tombol Pilihan Ruangan -->
+      <div id="cctvRoomButtons" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;"></div>
+
+      <!-- Layar Pemutar Video HLS (.m3u8) -->
+      <div id="cctvVideoContainer" style="display:none; position:relative; width:100%; aspect-ratio:16/9; background:#0f172a; border-radius:16px; overflow:hidden; border:2px solid #bae6fd;">
+        <video id="videoPlayerCctv" controls autoplay muted playsinline style="width:100%; height:100%; object-fit:contain; background:#000;"></video>
+        <div id="cctvRoomCaption" style="position:absolute; top:12px; left:12px; background:rgba(15,23,42,0.75); color:#fff; padding:4px 12px; border-radius:99px; font-size:12px; font-weight:bold;">
+          ● LIVE
+        </div>
       </div>
     </div>
   </div>
@@ -1118,6 +1161,109 @@
     function tutupModal(id) {
       document.getElementById(id).style.display = "none";
       if(id === 'modalScanMapel' && html5QrCode && isScanning) { html5QrCode.stop().then(() => { isScanning = false; }).catch(()=>{}); }
+      if(id === 'modalCctv') { hentikanStreamCctv(); }
+    }
+
+    // ================= ENGINE PANTAUAN CCTV RUANG BELAJAR (HLS.JS) =================
+    let hlsCctvInstance = null;
+
+    async function bukaModalCCTV() {
+      document.getElementById("modalCctv").style.display = "flex";
+      const alertBox = document.getElementById("cctvStatusAlert");
+      const btnContainer = document.getElementById("cctvRoomButtons");
+      const videoContainer = document.getElementById("cctvVideoContainer");
+
+      hentikanStreamCctv();
+      videoContainer.style.display = "none";
+      btnContainer.innerHTML = "";
+      alertBox.style.display = "block";
+      alertBox.style.background = "#e0f2fe";
+      alertBox.style.color = "#0369a1";
+      alertBox.style.border = "1px solid #bae6fd";
+      alertBox.innerHTML = "⏳ Menghubungkan ke server kamera ruang belajar...";
+
+      // Tentukan role akses ke backend: Pejabat & Yayasan dapat melihat semua kamera 24 jam
+      const rawRole = (activeTutor && activeTutor.role) ? activeTutor.role.trim().toLowerCase() : "tutor";
+      const basicRoles = ["", "tutor", "pengajar", "staff", "staf", "pengasuh", "keuangan"];
+      const isPejabat = !basicRoles.includes(rawRole);
+      const roleKirim = isPejabat ? "yayasan" : "tutor";
+
+      try {
+        const res = await fetch(`${API_URL}?action=get_cctv_list&role=${encodeURIComponent(roleKirim)}&jenjang=all`);
+        const json = await res.json();
+
+        if (!json.success || !json.data || json.data.length === 0) {
+          alertBox.style.background = "#fef3c7";
+          alertBox.style.color = "#92400e";
+          alertBox.style.border = "1px solid #fde68a";
+          alertBox.innerHTML = json.pesanJadwal
+            ? `<b>⏰ Di Luar Jam Tayang:</b> ${json.pesanJadwal}<br><small>(Waktu server saat ini: ${json.waktuServer})</small>`
+            : "Saat ini belum ada kamera aktif yang tersedia.";
+          return;
+        }
+
+        alertBox.style.display = "none";
+        videoContainer.style.display = "block";
+
+        json.data.forEach((cam, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "btn-cam-pill" + (idx === 0 ? " active" : "");
+          btn.textContent = `📹 ${cam.namaRuangan} (${cam.jenjangAkses})`;
+          btn.onclick = () => {
+            document.querySelectorAll(".btn-cam-pill").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            putarStreamCctv(cam.urlStream, `${cam.namaRuangan} (${cam.jenjangAkses})`);
+          };
+          btnContainer.appendChild(btn);
+        });
+
+        // Putar kamera pertama secara otomatis
+        putarStreamCctv(json.data[0].urlStream, `${json.data[0].namaRuangan} (${json.data[0].jenjangAkses})`);
+      } catch (err) {
+        alertBox.style.background = "#fee2e2";
+        alertBox.style.color = "#b91c1c";
+        alertBox.style.border = "1px solid #fecaca";
+        alertBox.innerHTML = "❌ Gagal memuat daftar kamera: " + err.message;
+      }
+    }
+
+    function putarStreamCctv(urlM3u8, labelRuangan) {
+      const video = document.getElementById("videoPlayerCctv");
+      document.getElementById("cctvRoomCaption").textContent = `● LIVE • ${labelRuangan}`;
+
+      if (hlsCctvInstance) {
+        hlsCctvInstance.destroy();
+        hlsCctvInstance = null;
+      }
+
+      if (Hls.isSupported()) {
+        hlsCctvInstance = new Hls({ lowLatencyMode: true });
+        hlsCctvInstance.loadSource(urlM3u8);
+        hlsCctvInstance.attachMedia(video);
+        hlsCctvInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.play().catch(() => {});
+        });
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        // Dukungan bawaan Safari (iPhone / iPad)
+        video.src = urlM3u8;
+        video.addEventListener("loadedmetadata", function() {
+          video.play().catch(() => {});
+        });
+      }
+    }
+
+    function hentikanStreamCctv() {
+      const video = document.getElementById("videoPlayerCctv");
+      if (hlsCctvInstance) {
+        hlsCctvInstance.destroy();
+        hlsCctvInstance = null;
+      }
+      if (video) {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+      }
     }
 
     // ================= ENGINE ABSENSI NON-HADIR (SAKIT / IZIN / TERLAMBAT / ALPA) =================
@@ -1469,8 +1615,7 @@
         const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
         const json = await res.json();
         if (json.success) {
-          alert(`✅ Catatan konseling berhasil disimpan!
-ID: ${json.idKasus}`);
+          alert(`✅ Catatan konseling berhasil disimpan!\nID: ${json.idKasus}`);
           document.getElementById("formKonseling").reset(); tutupModal('modalKonseling');
         } else { alert("Gagal: " + json.message); }
       } catch(err) { alert("Error: " + err.message); } finally { btn.disabled = false; btn.textContent = "💾 Simpan & Kirim Catatan Konseling"; }
@@ -1565,12 +1710,7 @@ ID: ${json.idKasus}`);
             if (s.sudahTtd) { countSudah++; rows += `<tr><td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td><td><span class="badge-ttd-ok">✅ Sudah TTD</span><br><small style="color:#059669;">Oleh: ${s.namaWaliTtd}</small></td><td><small style="color:#059669; font-weight:bold;">Selesai</small></td></tr>`; } 
             else {
               countBelum++; let cleanHp = String(s.hpWali || "").replace(/[^0-9]/g, ""); if (cleanHp.startsWith("0")) cleanHp = "62" + cleanHp.slice(1);
-              const pesanWA = `Assalamu'alaikum. Kepada Yth. Ayah/Bunda dari ananda *${s.nama}*.
-
-Buku Raport Perkembangan periode *${namaBulanStr}* telah diperbarui oleh Tutor. Mohon berkenan memeriksa kemajuan belajar dan menandatangani di portal siswa:
-👉 https://pkbmpelitaaushafindonesia.sch.id/portal-siswa.html
-
-Terima kasih. 🙏`;
+              const pesanWA = `Assalamu'alaikum. Kepada Yth. Ayah/Bunda dari ananda *${s.nama}*.\n\nBuku Raport Perkembangan periode *${namaBulanStr}* telah diperbarui oleh Tutor. Mohon berkenan memeriksa kemajuan belajar dan menandatangani di portal siswa:\n👉 https://pkbmpelitaaushafindonesia.sch.id/portal-siswa.html\n\nTerima kasih. 🙏`;
               const waLink = cleanHp ? `https://wa.me/${cleanHp}?text=${encodeURIComponent(pesanWA)}` : `#`;
               rows += `<tr><td><b>${s.nama}</b><br><small style="color:var(--muted);">${s.jenjang} • ${s.kelas}</small></td><td><span class="badge-ttd-no">⚠️ Belum TTD</span></td><td><a href="${waLink}" target="_blank" class="btn-wa-remind">📲 Ingatkan via WA</a></td></tr>`;
             }
@@ -1802,7 +1942,6 @@ Terima kasih. 🙏`;
           const json = await res.json();
           if (json.success && json.data.length > 0) {
             cacheSantriBp = json.data;
-            // Prioritaskan tampilkan Daycare & PAUD di atas, lalu jenjang lain jika ada
             const sorted = [...json.data].sort((a, b) => {
               const aIsPaud = /daycare|paud|kb|tk/i.test(a.jenjang) ? 0 : 1;
               const bIsPaud = /daycare|paud|kb|tk/i.test(b.jenjang) ? 0 : 1;
@@ -1830,7 +1969,6 @@ Terima kasih. 🙏`;
       const jenjang = opt.getAttribute("data-jenjang") || "PAUD";
       const tglDipilih = document.getElementById("bpTanggal").value;
 
-      // Sesuaikan tampilan otomatis: Daycare menampilkan tidur siang & BAK/BAB
       const isDaycare = /daycare|baby|batita|kb/i.test(jenjang);
       document.getElementById("bpBadgeMode").textContent = `Jenjang: ${jenjang}`;
       document.getElementById("bpSectionDaycare").style.display = isDaycare ? "grid" : "grid";
@@ -1843,7 +1981,6 @@ Terima kasih. 🙏`;
         const json = await res.json();
         if (!json.success) return;
 
-        // Cek apakah ada pesan pagi orang tua pada tanggal yang dipilih
         const logHariIni = (json.riwayat || []).find(r => r.tanggal === tglDipilih);
         if (logHariIni && logHariIni.catatanOrtu && logHariIni.catatanOrtu !== "-") {
           document.getElementById("bpTeksPesanOrtu").textContent = logHariIni.catatanOrtu;
@@ -1851,7 +1988,6 @@ Terima kasih. 🙏`;
           document.getElementById("bpTeksPesanOrtu").textContent = "Belum ada catatan dari rumah hari ini.";
         }
 
-        // Tampilkan ringkasan analisa
         const boxAn = document.getElementById("bpRingkasanAnalisaBox");
         if (json.analisa) {
           boxAn.style.display = "block";
@@ -1920,11 +2056,7 @@ Terima kasih. 🙏`;
         if (json.success) {
           let infoAlert = "";
           if (json.analisa && json.analisa.statusAlert) {
-            infoAlert = `
-
-Hasil Analisa Sistem:
-Well-Being Index: ${json.analisa.wellBeingIndex}
-Status: ${json.analisa.statusAlert}`;
+            infoAlert = `\n\nHasil Analisa Sistem:\nWell-Being Index: ${json.analisa.wellBeingIndex}\nStatus: ${json.analisa.statusAlert}`;
           }
           alert("✅ " + json.message + infoAlert);
           document.getElementById("bpCatatanUstadzah").value = "";
