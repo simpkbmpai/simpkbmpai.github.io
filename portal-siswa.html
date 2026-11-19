@@ -6,8 +6,9 @@
   <title>Portal Siswa & Buku Penghubung Wali Santri - PKBM Pelita Aushaf</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
   
-  <!-- Library Grafik Interaktif Chart.js -->
+  <!-- Library Grafik Interaktif Chart.js & Pemutar Video HLS.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
   <style>
     :root {
@@ -84,6 +85,17 @@
     .absen-detail-box {
       background: #fff1f2; border: 1.5px solid #fecdd3; border-radius: 18px; padding: 16px 20px; margin-bottom: 22px; display: none;
     }
+
+    /* KARTU PANTAUAN CCTV RUANG BELAJAR (AREA MEMBER) */
+    .cctv-member-card {
+      background: #fff; border: 2px solid #38bdf8; border-radius: 24px; padding: 24px; margin-bottom: 24px;
+      box-shadow: 0 10px 26px rgba(2,132,199,0.08);
+    }
+    .btn-cam-siswa {
+      padding: 8px 14px; border: 1.5px solid #0284c7; background: #fff; color: #0369a1;
+      border-radius: 10px; font-weight: 800; font-size: 12.5px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-cam-siswa.active, .btn-cam-siswa:hover { background: #0284c7; color: #fff; }
 
     /* BUKU PENGHUBUNG HARIAN DAYCARE & PAUD */
     .bp-daycare-card {
@@ -239,6 +251,46 @@
       <div class="absen-detail-box" id="boxRiwayatAbsenStatus">
         <b style="color:#be123c; font-size:13.5px; display:block; margin-bottom:6px;">🗓️ Catatan Ketidakhadiran / Keterlambatan Santri:</b>
         <div id="listAbsenStatusContent" style="font-size:13px;"></div>
+      </div>
+
+      <!-- 1A. LAYANAN PANTAUAN CCTV RUANG BELAJAR (KHUSUS MEMBER LOGIN) -->
+      <div class="cctv-member-card" id="cardCctvSiswa">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+          <div>
+            <h3 style="margin:0; color:#0369a1;">📹 Pantauan Langsung Kelas (CCTV)</h3>
+            <p style="margin:2px 0 0; font-size:13px; color:var(--muted);">Tersedia khusus Wali Santri pada hari <b>Senin – Jumat pukul 07.30 – 10.00 WIB</b>.</p>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span id="cctvSiswaTimerBadge" style="display:none; background:#fef3c7; color:#92400e; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:800;">
+              Sisa Tayang: <span id="cctvSiswaCountdown">05:00</span>
+            </span>
+            <button type="button" id="btnBukaCctvSiswa" onclick="muatCctvSiswa()" class="btn-action" style="background:#0284c7;">
+              ▶ Lihat Tayangan Kelas
+            </button>
+          </div>
+        </div>
+
+        <!-- Area Informasi / Pesan Jadwal -->
+        <div id="cctvSiswaAlert" style="display:none; padding:12px 14px; border-radius:14px; font-size:13px; margin-bottom:12px;"></div>
+
+        <!-- Pilihan Kamera Sesuai Jenjang Santri -->
+        <div id="cctvSiswaButtons" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;"></div>
+
+        <!-- Pemutar Video HLS (.m3u8) -->
+        <div id="cctvSiswaVideoBox" style="display:none; position:relative; width:100%; max-width:780px; margin:auto; aspect-ratio:16/9; background:#0f172a; border-radius:16px; overflow:hidden; border:2px solid #bae6fd;">
+          <video id="videoPlayerSiswa" controls autoplay muted playsinline style="width:100%; height:100%; object-fit:contain; background:#000;"></video>
+          <div id="cctvSiswaCaption" style="position:absolute; top:12px; left:12px; background:rgba(15,23,42,0.75); color:#fff; padding:4px 12px; border-radius:99px; font-size:12px; font-weight:bold;">
+            ● LIVE
+          </div>
+
+          <!-- Overlay Otomatis Saat Sesi 5 Menit Berakhir -->
+          <div id="cctvSiswaTimeoutOverlay" style="display:none; position:absolute; inset:0; background:rgba(15,23,42,0.92); color:#fff; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px;">
+            <p style="font-size:14.5px; margin:0 0 12px; max-width:420px;">Sesi pemantauan 5 menit telah berakhir untuk menjaga kestabilan jaringan kelas.</p>
+            <button type="button" onclick="muatCctvSiswa()" class="btn-action" style="background:#0284c7;">
+              🔄 Muat Ulang Tayangan
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- 1B. BUKU PENGHUBUNG HARIAN DAYCARE & PAUD (CHECK-IN PAGI & LAPORAN HARIAN) -->
@@ -545,6 +597,7 @@
     });
 
     document.getElementById("btnLogoutSiswa").addEventListener("click", () => {
+      hentikanStreamCctvSiswa();
       localStorage.removeItem("siswaAuth");
       location.reload();
     });
@@ -569,6 +622,142 @@
       loadDataRaport(data.nis);
       
       setTimeout(initCanvasSignature, 150);
+    }
+
+    // ================= ENGINE PANTAUAN CCTV SISWA / WALI MURID =================
+    let hlsSiswaInstance = null;
+    let cctvSiswaTimer = null;
+
+    function petakanJenjangCctv(jenjangRaw) {
+      const j = String(jenjangRaw || "").trim().toLowerCase();
+      if (j.includes("daycare") || j.includes("baby")) return "Daycare";
+      if (j.includes("paud") || j.includes("kb") || j.includes("tk") || j.includes("pg")) return "PAUD";
+      if (j.includes("paket") || j.includes("kesetaraan") || j.includes("pat") || j.includes("pdpd")) return "Kesetaraan";
+      return jenjangRaw || "PAUD";
+    }
+
+    async function muatCctvSiswa() {
+      if (!currentSantri) return;
+      const alertBox = document.getElementById("cctvSiswaAlert");
+      const btnContainer = document.getElementById("cctvSiswaButtons");
+      const videoBox = document.getElementById("cctvSiswaVideoBox");
+      const timeoutOverlay = document.getElementById("cctvSiswaTimeoutOverlay");
+
+      hentikanStreamCctvSiswa();
+      timeoutOverlay.style.display = "none";
+      videoBox.style.display = "none";
+      btnContainer.innerHTML = "";
+
+      alertBox.style.display = "block";
+      alertBox.style.background = "#e0f2fe";
+      alertBox.style.color = "#0369a1";
+      alertBox.style.border = "1px solid #bae6fd";
+      alertBox.innerHTML = "⏳ Menghubungkan ke kamera ruang belajar ananda...";
+
+      const jenjangTarget = petakanJenjangCctv(currentSantri.jenjang);
+
+      try {
+        const res = await fetch(`${API_URL}?action=get_cctv_list&role=santri&jenjang=${encodeURIComponent(jenjangTarget)}`);
+        const json = await res.json();
+
+        if (!json.success || !json.data || json.data.length === 0) {
+          alertBox.style.background = "#fef3c7";
+          alertBox.style.color = "#92400e";
+          alertBox.style.border = "1px solid #fde68a";
+          alertBox.innerHTML = json.pesanJadwal
+            ? `<b>⏰ Di Luar Jam Tayang:</b> ${json.pesanJadwal}<br><small>(Waktu sistem saat ini: ${json.waktuServer})</small>`
+            : `Saat ini belum ada kamera kelas aktif untuk jenjang <b>${jenjangTarget}</b>.`;
+          return;
+        }
+
+        alertBox.style.display = "none";
+        videoBox.style.display = "block";
+
+        json.data.forEach((cam, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "btn-cam-siswa" + (idx === 0 ? " active" : "");
+          btn.textContent = `📹 ${cam.namaRuangan}`;
+          btn.onclick = () => {
+            document.querySelectorAll(".btn-cam-siswa").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            putarStreamCctvSiswa(cam.urlStream, cam.namaRuangan);
+          };
+          btnContainer.appendChild(btn);
+        });
+
+        putarStreamCctvSiswa(json.data[0].urlStream, json.data[0].namaRuangan);
+      } catch (err) {
+        alertBox.style.background = "#fee2e2";
+        alertBox.style.color = "#b91c1c";
+        alertBox.style.border = "1px solid #fecaca";
+        alertBox.innerHTML = "❌ Gagal memuat tayangan kelas: " + err.message;
+      }
+    }
+
+    function putarStreamCctvSiswa(urlM3u8, namaRuangan) {
+      const video = document.getElementById("videoPlayerSiswa");
+      const timeoutOverlay = document.getElementById("cctvSiswaTimeoutOverlay");
+      const timerBadge = document.getElementById("cctvSiswaTimerBadge");
+      const countdownEl = document.getElementById("cctvSiswaCountdown");
+
+      timeoutOverlay.style.display = "none";
+      document.getElementById("cctvSiswaCaption").textContent = `● LIVE • ${namaRuangan}`;
+
+      if (hlsSiswaInstance) {
+        hlsSiswaInstance.destroy();
+        hlsSiswaInstance = null;
+      }
+
+      if (Hls.isSupported()) {
+        hlsSiswaInstance = new Hls({ lowLatencyMode: true });
+        hlsSiswaInstance.loadSource(urlM3u8);
+        hlsSiswaInstance.attachMedia(video);
+        hlsSiswaInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.play().catch(() => {});
+        });
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = urlM3u8;
+        video.addEventListener("loadedmetadata", function() {
+          video.play().catch(() => {});
+        });
+      }
+
+      // Batasi 5 menit (300 detik) per sesi tonton agar hemat kuota & bandwidth kelas
+      if (cctvSiswaTimer) clearInterval(cctvSiswaTimer);
+      timerBadge.style.display = "inline-block";
+      let sisaDetik = 300;
+      countdownEl.textContent = "05:00";
+
+      cctvSiswaTimer = setInterval(() => {
+        sisaDetik--;
+        const m = String(Math.floor(sisaDetik / 60)).padStart(2, "0");
+        const s = String(sisaDetik % 60).padStart(2, "0");
+        countdownEl.textContent = `${m}:${s}`;
+
+        if (sisaDetik <= 0) {
+          hentikanStreamCctvSiswa();
+          timeoutOverlay.style.display = "flex";
+        }
+      }, 1000);
+    }
+
+    function hentikanStreamCctvSiswa() {
+      if (cctvSiswaTimer) {
+        clearInterval(cctvSiswaTimer);
+        cctvSiswaTimer = null;
+      }
+      document.getElementById("cctvSiswaTimerBadge").style.display = "none";
+      const video = document.getElementById("videoPlayerSiswa");
+      if (hlsSiswaInstance) {
+        hlsSiswaInstance.destroy();
+        hlsSiswaInstance = null;
+      }
+      if (video) {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+      }
     }
 
     let bpChartSiswaInstance = null;
