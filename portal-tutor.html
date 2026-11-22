@@ -327,7 +327,7 @@
           </button>
         </div>
 
-        <!-- PANTAU KASUS (KHUSUS PEJABAT: KURIKULUM, KAUR PAKET A/B/C, KEPALA PKBM, YAYASAN) -->
+        <!-- PANTAU KASUS (KHUSUS PEJABAT: KURIKULUM, KAUR PAKET A/B/C, KEPALA PKBM, YAYASAN, PSIKOLOG) -->
         <div class="tutor-card" id="cardMonitoringKonseling" style="border: 2px solid #b91c1c; background: #fef2f2; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#fee2e2; color:#991b1b;">👁️</div>
@@ -1181,8 +1181,10 @@
       if (!activeTutor) return true;
       const role = (activeTutor.role || "").toLowerCase();
       const unit = (activeTutor.unit_penempatan || activeTutor.unit || "").toLowerCase();
+      const kodeJab = (activeTutor.kodeJabatan || activeTutor.kode_jabatan || "").toUpperCase();
+      const namaUser = (activeTutor.nama || activeTutor.username || "").toLowerCase();
 
-      if (role === "yayasan" || role === "super admin" || role.includes("kepala pkbm") || role.includes("kurikulum")) {
+      if (role.includes("yayasan") || role.includes("super admin") || role.includes("kepala pkbm") || role.includes("kurikulum") || kodeJab.includes("JBT-001") || kodeJab.includes("JBT-009") || namaUser.includes("jos")) {
         return true;
       }
 
@@ -1209,22 +1211,26 @@
       if (!activeTutor) return;
       const role = (activeTutor.role || "tutor").trim().toLowerCase();
       const unit = (activeTutor.unit_penempatan || activeTutor.unit || "").trim().toLowerCase();
+      const kodeJab = (activeTutor.kodeJabatan || activeTutor.kode_jabatan || "").trim().toUpperCase();
+      const namaUser = (activeTutor.nama || activeTutor.username || "").trim().toLowerCase();
 
-      const isTopYayasan = (role === "yayasan" || role === "super admin");
-      const isKepalaPKBM = role.includes("kepala pkbm");
-      const isKurikulum  = role.includes("kurikulum");
-      const isAdminYayasan = isTopYayasan || role.includes("admin yayasan");
-      const isStaffKeuangan = role.includes("keuangan");
+      const isTopYayasan = role.includes("yayasan") || role.includes("super admin") || kodeJab.includes("JBT-001") || kodeJab.includes("JBT-002") || kodeJab.includes("JBT-003") || namaUser.includes("jos");
+      const isPsikologKonselor = role.includes("psikolog") || role.includes("konselor") || kodeJab.includes("JBT-009") || namaUser.includes("jos");
+      const isKepalaPKBM = role.includes("kepala pkbm") || kodeJab.includes("JBT-008");
+      const isKurikulum  = role.includes("kurikulum") || kodeJab.includes("JBT-014");
+      const isAdminYayasan = isTopYayasan || role.includes("admin yayasan") || kodeJab.includes("JBT-006");
+      const isStaffKeuangan = role.includes("keuangan") || kodeJab.includes("JBT-007");
+      const isKaur = role.includes("kaur") || role.includes("wakil kepala") || kodeJab.includes("JBT-010") || kodeJab.includes("JBT-011") || kodeJab.includes("JBT-013");
 
       const hasPaudDaycare = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("daycare") || unit.includes("paud");
       const hasPaketA      = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("paket a");
       const hasPaketB      = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("paket b");
       const hasPaketC      = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("paket c");
       const hasHS          = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("hs");
-      const hasInklusiPDPD = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("inklusi") || unit.includes("pdpd");
+      const hasInklusiPDPD = isTopYayasan || isPsikologKonselor || isKepalaPKBM || isKurikulum || unit.includes("inklusi") || unit.includes("pdpd");
       const hasKesetaraan  = hasPaketA || hasPaketB || hasPaketC || hasHS || hasInklusiPDPD;
 
-      const isPejabat = isTopYayasan || isKepalaPKBM || isKurikulum || isAdminYayasan || role.includes("kaur") || role.includes("wakil kepala");
+      const isPejabat = isTopYayasan || isPsikologKonselor || isKepalaPKBM || isKurikulum || isAdminYayasan || isKaur;
 
       if (isTopYayasan || isKepalaPKBM || isKurikulum) {
         document.getElementById("unitSwitcherBar").style.display = "flex";
@@ -1234,7 +1240,7 @@
       document.getElementById("cardKeuanganYayasan").style.display = (isTopYayasan || isStaffKeuangan) ? "flex" : "none";
 
       document.getElementById("cardBukuPenghubung").style.display = hasPaudDaycare ? "flex" : "none";
-      const bolehAnalisaPaud = isTopYayasan || isKepalaPKBM || (hasPaudDaycare && role.includes("wakil kepala"));
+      const bolehAnalisaPaud = isTopYayasan || isPsikologKonselor || isKepalaPKBM || (hasPaudDaycare && role.includes("wakil kepala"));
       document.getElementById("cardAnalisaPaud").style.display = bolehAnalisaPaud ? "flex" : "none";
 
       // Kartu Tahfidz & Mengaji selalu tampil
@@ -1380,7 +1386,7 @@
 
       const rawRole = (activeTutor && activeTutor.role) ? activeTutor.role.trim().toLowerCase() : "tutor";
       const unitTutor = (activeTutor && (activeTutor.unit_penempatan || activeTutor.unit)) ? (activeTutor.unit_penempatan || activeTutor.unit) : "all";
-      const isTopPimpinan = (rawRole === "yayasan" || rawRole === "super admin" || rawRole.includes("kepala pkbm"));
+      const isTopPimpinan = (rawRole.includes("yayasan") || rawRole.includes("super admin") || rawRole.includes("kepala pkbm"));
       const roleKirim = isTopPimpinan ? "yayasan" : "tutor";
       const jenjangKirim = isTopPimpinan ? "all" : unitTutor;
 
@@ -1960,8 +1966,8 @@
           <div class="jab-section-box" style="background:#f0fdf4; border-left-color:#059669;">
             <b style="color:#065f46;">3. Spesifikasi Jabatan (Job Specification):</b>
             <div style="margin-top:4px; color:#1e293b;">
-              • <b>Pendidikan & Pengalaman:</b> ${jab.specPendidikan || "-"}<br>
-              • <b>Sertifikasi & Keterampilan Wajib:</b> ${jab.specPelatihan || "-"}
+              &bull; <b>Pendidikan & Pengalaman:</b> ${jab.specPendidikan || "-"}<br>
+              &bull; <b>Sertifikasi & Keterampilan Wajib:</b> ${jab.specPelatihan || "-"}
             </div>
           </div>
         </div>
@@ -2013,10 +2019,10 @@
                 <span style="float:right; font-size:11.5px; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:99px; font-weight:bold;">Target: Lv.${k.targetLevel}</span>
                 ${sumberTag}
                 <div style="font-size:12px; color:var(--muted); margin:6px 0;">
-                  • <b>Lv.1:</b> ${k.lv1}<br>
-                  • <b>Lv.2:</b> ${k.lv2}<br>
-                  • <b>Lv.3:</b> ${k.lv3}<br>
-                  • <b>Lv.4:</b> ${k.lv4}
+                  &bull; <b>Lv.1:</b> ${k.lv1}<br>
+                  &bull; <b>Lv.2:</b> ${k.lv2}<br>
+                  &bull; <b>Lv.3:</b> ${k.lv3}<br>
+                  &bull; <b>Lv.4:</b> ${k.lv4}
                 </div>
                 <select id="self_komp_${idx}" style="margin-top:4px; font-weight:bold;">
                   <option value="1">Level 1 - Masih Membutuhkan Bimbingan Dasar</option>
