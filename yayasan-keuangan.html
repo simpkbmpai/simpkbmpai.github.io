@@ -132,7 +132,7 @@
       <div style="font-size:40px; margin-bottom:10px;">🏛️</div>
       <h2 style="margin:0 0 6px; color:#0f172a;">Otoritas Khusus Pengurus Yayasan</h2>
       <p style="margin:0 0 18px; font-size:13px; color:var(--muted);">
-        Modul pengeluaran (Cash-Out), Neraca Saldo, dan Analisa Keuangan Tahunan hanya dapat dibuka oleh akun berstatus <b>Yayasan</b>.
+        Modul pengeluaran (Cash-Out), Neraca Saldo, dan Analisa Keuangan Tahunan hanya dapat dibuka oleh akun berstatus <b>Yayasan / Super Admin</b>.
       </p>
       <form id="formLoginYayasan">
         <input type="text" id="yayUser" placeholder="Username / NIP Yayasan" style="margin-bottom:12px;" required>
@@ -327,6 +327,12 @@
     let authYayasan = null;
     let chartTahunanInstance = null;
 
+    function isRoleYayasanValid(roleStr) {
+      const r = String(roleStr || "").trim().toLowerCase();
+      if (r.includes("staff keuangan")) return false;
+      return (r === "yayasan" || r === "super admin" || r.includes("admin yayasan"));
+    }
+
     function cekAksesYayasan() {
       const savedYay = sessionStorage.getItem("yayasanAuth");
       const savedTutor = localStorage.getItem("tutorAuth");
@@ -334,7 +340,7 @@
       if (savedYay) {
         try {
           const p = JSON.parse(savedYay);
-          if (String(p.role || "").toLowerCase() === "yayasan") {
+          if (isRoleYayasanValid(p.role)) {
             bukaDashboardYayasan(p);
             return;
           }
@@ -344,7 +350,7 @@
       if (savedTutor) {
         try {
           const pt = JSON.parse(savedTutor);
-          if (String(pt.role || "").toLowerCase() === "yayasan") {
+          if (isRoleYayasanValid(pt.role)) {
             sessionStorage.setItem("yayasanAuth", JSON.stringify(pt));
             bukaDashboardYayasan(pt);
             return;
@@ -366,11 +372,11 @@
         const json = await res.json();
 
         if (json.success) {
-          if (String(json.role || "").toLowerCase() === "yayasan") {
+          if (isRoleYayasanValid(json.role)) {
             sessionStorage.setItem("yayasanAuth", JSON.stringify(json));
             bukaDashboardYayasan(json);
           } else {
-            alert("⛔ AKSES DITOLAK!\nAkun Anda berstatus '" + json.role + "'. Halaman ini terkunci khusus Pengurus Yayasan.");
+            alert("⛔ AKSES DITOLAK!\nAkun Anda berstatus '" + json.role + "'. Halaman ini terkunci khusus Pengurus Yayasan / Super Admin.");
           }
         } else {
           alert("Login gagal: " + json.message);
@@ -393,7 +399,7 @@
       document.getElementById("dashboardYayasan").style.display = "block";
       document.getElementById("btnLogoutYay").style.display = "inline-flex";
       document.getElementById("btnPrintLap").style.display = "inline-flex";
-      document.getElementById("yayPetugasLabel").textContent = `${user.nama} (YAYASAN)`;
+      document.getElementById("yayPetugasLabel").textContent = `${user.nama} (${user.role.toUpperCase()})`;
 
       const now = new Date();
       document.getElementById("outTanggal").valueAsDate = now;
