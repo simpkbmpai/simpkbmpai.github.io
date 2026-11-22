@@ -122,6 +122,20 @@
     }
     .btn-cam-pill.active, .btn-cam-pill:hover { background: #0284c7; color: #fff; }
 
+    /* HRD JABATAN CARD STYLES */
+    .jab-card-item {
+      background: #fff; border: 1.5px solid #bae6fd; border-radius: 16px; padding: 16px; margin-bottom: 14px;
+      box-shadow: 0 4px 14px rgba(2,132,199,0.06);
+    }
+    .jab-meta-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; margin: 10px 0; font-size: 12.5px;
+    }
+    @media(max-width: 680px) { .jab-meta-grid { grid-template-columns: 1fr; } }
+    .jab-section-box {
+      background: #f0f9ff; border-left: 4px solid #0284c7; padding: 10px 12px; border-radius: 8px; margin-top: 8px; font-size: 13px;
+    }
+
     @media print {
       body * { visibility: hidden; }
       #areaPrintQuran, #areaPrintQuran * { visibility: visible; }
@@ -335,10 +349,22 @@
           <div>
             <div class="tutor-card-icon" style="background:#e0f2fe; color:#0369a1;">📋</div>
             <h3>Profil Jabatan & TNA Saya</h3>
-            <p>Lihat standar Job Desc & Job Spec unit Anda, lakukan Self-Assessment kompetensi, dan cek rekomendasi pelatihan.</p>
+            <p>Lihat Job Analysis, Job Desc, Job Spec & Standar Kompetensi (termasuk rangkap jabatan) serta Self-Assessment TNA.</p>
           </div>
           <button type="button" onclick="bukaModalTnaPribadi()" class="btn-action" style="background:#0284c7;">
             Buka Profil & TNA Saya →
+          </button>
+        </div>
+
+        <!-- DIREKTORI 16 STANDAR JABATAN LEMBAGA (KHUSUS PEJABAT / HRD / YAYASAN) -->
+        <div class="tutor-card" id="cardDirektoriJabatan" style="border: 2px solid #0d7a5f; background: #eef8f4; display: none;">
+          <div>
+            <div class="tutor-card-icon" style="background:#d1fae5; color:#065f46;">🗂️</div>
+            <h3>Direktori Standar Jabatan</h3>
+            <p>Kamus master 16 jabatan Yayasan & PKBM: Job Analysis, Job Desc, Job Spec, dan Target Kompetensi lintas unit.</p>
+          </div>
+          <button type="button" onclick="bukaModalDirektoriJabatan()" class="btn-action">
+            Buka Kamus 16 Jabatan →
           </button>
         </div>
 
@@ -381,13 +407,9 @@
       <h3 style="margin:0 0 4px; color:#0369a1;">📹 Pantauan Langsung CCTV Ruang Belajar</h3>
       <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">PKBM Pelita Aushaf Indonesia • Kamera EZVIZ C6N (Mode Hemat Kuota)</p>
 
-      <!-- Kotak Status / Jadwal / Peringatan -->
       <div id="cctvStatusAlert" style="display:none; padding:14px; border-radius:14px; font-size:13px; margin-bottom:14px;"></div>
-
-      <!-- Tombol Pilihan Ruangan -->
       <div id="cctvRoomButtons" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;"></div>
 
-      <!-- Layar Pemutar Video HLS (.m3u8) -->
       <div id="cctvVideoContainer" style="display:none; position:relative; width:100%; aspect-ratio:16/9; background:#0f172a; border-radius:16px; overflow:hidden; border:2px solid #bae6fd;">
         <video id="videoPlayerCctv" controls autoplay muted playsinline style="width:100%; height:100%; object-fit:contain; background:#000;"></video>
         <div id="cctvRoomCaption" style="position:absolute; top:12px; left:12px; background:rgba(15,23,42,0.75); color:#fff; padding:4px 12px; border-radius:99px; font-size:12px; font-weight:bold;">
@@ -815,27 +837,34 @@
     </div>
   </div>
 
-  <!-- MODAL 7: PROFIL JABATAN & SELF-ASSESSMENT TNA -->
+  <!-- MODAL 7: PROFIL JABATAN (4 KOMPONEN + RANGKAP JABATAN) & SELF-ASSESSMENT TNA -->
   <div id="modalTnaPribadi" class="modal-overlay">
-    <div class="modal-box" style="max-width:780px;">
+    <div class="modal-box" style="max-width:860px;">
       <button class="modal-close" onclick="tutupModal('modalTnaPribadi')">✕</button>
       <h3 style="margin:0 0 4px; color:#0369a1;">📋 Profil Jabatan & Training Need Analysis (TNA)</h3>
-      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Standar tugas berdasarkan unit penempatan dan evaluasi kebutuhan pelatihan Anda.</p>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Standar Job Analysis, Job Description, Job Specification, dan Target Kompetensi berdasarkan amanah jabatan Anda.</p>
       
       <div id="loadingTnaPribadi" style="text-align:center; padding:20px; color:var(--muted);">⏳ Memuat profil jabatan dan kamus kompetensi...</div>
       
       <div id="kontenTnaPribadi" style="display:none;">
-        <div style="background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:16px; padding:16px; margin-bottom:16px;">
-          <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
-            <b style="color:#0369a1; font-size:16px;" id="tnaNamaJabatan">-</b>
-            <span style="background:#0284c7; color:#fff; padding:3px 10px; border-radius:99px; font-size:12px; font-weight:bold;" id="tnaUnitBadge">-</span>
+        <!-- Header Identitas SDM -->
+        <div style="background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:16px; padding:14px 16px; margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div>
+              <b style="color:#0369a1; font-size:16px;" id="tnaNamaSdm">-</b>
+              <div style="font-size:12.5px; color:#334155; margin-top:2px;" id="tnaKualifikasiAktual">-</div>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span id="tnaRangkapBadge" style="display:none; background:#fef3c7; color:#92400e; border:1px solid #fcd34d; padding:3px 10px; border-radius:99px; font-size:11.5px; font-weight:800;">⭐ Rangkap Jabatan</span>
+              <span style="background:#0284c7; color:#fff; padding:3px 10px; border-radius:99px; font-size:12px; font-weight:bold;" id="tnaUnitBadge">-</span>
+            </div>
           </div>
-          <p style="margin:4px 0; font-size:13px;"><b>Job Description Utama:</b> <span id="tnaJobDesc">-</span></p>
-          <p style="margin:4px 0; font-size:13px;"><b>Job Specification (Pendidikan & Pelatihan Wajib):</b> <span id="tnaJobSpec">-</span></p>
-          <p style="margin:4px 0; font-size:13px;"><b>Kualifikasi Anda Saat Ini:</b> <span id="tnaKualifikasiAktual">-</span></p>
         </div>
 
-        <h4 style="margin:0 0 8px; color:var(--green-dark);">Penilaian Kompetensi Mandiri (Self-Assessment)</h4>
+        <!-- Kartu Detail Per Jabatan (Otomatis merender 1 kartu atau multi-kartu jika rangkap jabatan) -->
+        <div id="containerDetailJabatanPribadi"></div>
+
+        <h4 style="margin:18px 0 8px; color:var(--green-dark);">Penilaian Kompetensi Mandiri (Self-Assessment)</h4>
         <div style="margin-bottom:10px;">
           <label>Periode TNA:</label>
           <input type="text" id="tnaPeriodeSelf" value="2026-Ganjil" style="max-width:200px; font-weight:bold;">
@@ -934,7 +963,6 @@
         </div>
       </div>
 
-      <!-- Kotak Pesan Pagi dari Orang Tua -->
       <div id="bpBoxPesanOrtu" style="background:#eff6ff; border:1.5px solid #bfdbfe; color:#1e40af; padding:12px 14px; border-radius:14px; font-size:13px; margin-bottom:14px;">
         <b>🏡 Catatan Pagi dari Orang Tua:</b> <span id="bpTeksPesanOrtu">Belum ada catatan dari rumah hari ini.</span>
       </div>
@@ -969,7 +997,6 @@
           </div>
         </div>
 
-        <!-- Bagian Khusus Daycare / Full-Day -->
         <div id="bpSectionDaycare" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; background:#f8fafc; padding:12px; border-radius:14px; border:1px solid #e2e8f0; margin-top:10px;">
           <div>
             <label style="margin-top:0;">Jam Tidur Siang:</label>
@@ -981,7 +1008,6 @@
           </div>
         </div>
 
-        <!-- Indikator Analisa Psikologi & Kemandirian -->
         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:6px;">
           <div>
             <label>Kemandirian & Fokus:</label>
@@ -1031,7 +1057,6 @@
         </button>
       </form>
 
-      <!-- Riwayat 7 Hari Terakhir & Grafik Mini -->
       <div style="margin-top:20px; border-top:1.5px solid var(--line); padding-top:14px;">
         <h4 style="margin:0 0 8px; color:var(--green-dark);">📊 Riwayat Observasi & Indeks Kesejahteraan Terakhir</h4>
         <div id="bpRingkasanAnalisaBox" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:12px; margin-bottom:10px; font-size:13px;"></div>
@@ -1079,6 +1104,37 @@
     </div>
   </div>
 
+  <!-- MODAL 11: DIREKTORI 16 STANDAR JABATAN LEMBAGA (KHUSUS PEJABAT / HRD / YAYASAN) -->
+  <div id="modalDirektoriJabatan" class="modal-overlay">
+    <div class="modal-box" style="max-width: 940px;">
+      <button class="modal-close" onclick="tutupModal('modalDirektoriJabatan')">✕</button>
+      <h3 style="margin:0 0 4px; color:var(--green-dark);">🗂️ Direktori Standar Jabatan Yayasan & PKBM (16 Posisi)</h3>
+      <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Referensi baku Job Analysis, Job Description, Job Specification, dan Target Kompetensi seluruh unit.</p>
+
+      <div style="display:grid; grid-template-columns: 1fr 2fr; gap:10px; background:var(--green-soft); padding:12px 14px; border-radius:14px; border:1px solid var(--line); margin-bottom:14px;">
+        <div>
+          <label style="margin-top:0;">Filter Unit / Klaster:</label>
+          <select id="filterUnitDirektori" onchange="renderDirektoriJabatan()">
+            <option value="ALL">Semua Unit (16 Jabatan)</option>
+            <option value="Yayasan">Level Yayasan</option>
+            <option value="PKBM">Pimpinan Satuan PKBM</option>
+            <option value="Lintas Program">Konselor / Psikolog & Inklusi</option>
+            <option value="Daycare">Daycare & PAUD NF</option>
+            <option value="Paket">Paket A, B, C & Home Schooling</option>
+          </select>
+        </div>
+        <div>
+          <label style="margin-top:0;">Cari Nama Jabatan / Kata Kunci Tugas:</label>
+          <input type="text" id="searchDirektoriJabatan" oninput="renderDirektoriJabatan()" placeholder="Ketik nama jabatan (misal: Kaur, Kurikulum, Konselor, Pengasuh)...">
+        </div>
+      </div>
+
+      <div id="containerDirektoriJabatan" style="max-height:500px; overflow-y:auto; padding-right:4px;">
+        <div style="text-align:center; padding:20px; color:var(--muted);">⏳ Memuat kamus standar jabatan...</div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzS-yWhEgo1N76pIwPOvonXIyqHCQiOp6v36jjOn4otbE7KpQPIIg84kaIsbM87Wrkh/exec";
 
@@ -1107,6 +1163,7 @@
           document.getElementById("cardProfilUtuh").style.display = "flex";
           document.getElementById("cardSupervisiTna").style.display = "flex";
           document.getElementById("cardAnalisaPaud").style.display = "flex";
+          document.getElementById("cardDirektoriJabatan").style.display = "flex";
         }
 
         if (userRole === "yayasan") {
@@ -1182,7 +1239,6 @@
       alertBox.style.border = "1px solid #bae6fd";
       alertBox.innerHTML = "⏳ Menghubungkan ke server kamera ruang belajar...";
 
-      // Tentukan role akses ke backend: Pejabat & Yayasan dapat melihat semua kamera 24 jam
       const rawRole = (activeTutor && activeTutor.role) ? activeTutor.role.trim().toLowerCase() : "tutor";
       const basicRoles = ["", "tutor", "pengajar", "staff", "staf", "pengasuh", "keuangan"];
       const isPejabat = !basicRoles.includes(rawRole);
@@ -1218,7 +1274,6 @@
           btnContainer.appendChild(btn);
         });
 
-        // Putar kamera pertama secara otomatis
         putarStreamCctv(json.data[0].urlStream, `${json.data[0].namaRuangan} (${json.data[0].jenjangAkses})`);
       } catch (err) {
         alertBox.style.background = "#fee2e2";
@@ -1245,7 +1300,6 @@
           video.play().catch(() => {});
         });
       } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-        // Dukungan bawaan Safari (iPhone / iPad)
         video.src = urlM3u8;
         video.addEventListener("loadedmetadata", function() {
           video.play().catch(() => {});
@@ -1720,9 +1774,40 @@
       } catch(err) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--danger);">Gagal memuat.</td></tr>`; }
     }
 
-    // ================= ENGINE TRAINING NEED ANALYSIS (TNA) =================
+    // ================= ENGINE TRAINING NEED ANALYSIS (TNA) & PROFIL 4 KOMPONEN =================
     let cacheTnaPribadi = null;
     let cacheTnaSupervisi = null;
+
+    function renderKartuDetailJabatan(jab) {
+      return `
+        <div class="jab-card-item">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; border-bottom:1px solid #e0f2fe; padding-bottom:8px;">
+            <b style="color:#0369a1; font-size:15px;">🏛️ ${jab.namaJabatan}</b>
+            <span style="background:#e0f2fe; color:#0369a1; padding:2px 10px; border-radius:99px; font-size:11.5px; font-weight:800;">${jab.kodeJabatan} • ${jab.unitPenempatan}</span>
+          </div>
+
+          <div class="jab-meta-grid">
+            <div><b>1. Fungsi Utama (Job Analysis):</b><br><span style="color:#334155;">${jab.fungsiUtama || "-"}</span></div>
+            <div><b>Lingkungan & Ritme Kerja:</b><br><span style="color:#334155;">${jab.lingkunganKerja || "-"}</span></div>
+            <div><b>Melapor Kepada (Atasan):</b><br><span style="color:#0f766e; font-weight:bold;">${jab.atasan || "-"}</span></div>
+            <div><b>Membawahi / Koordinasi:</b><br><span style="color:#4338ca; font-weight:bold;">${jab.bawahan || "-"}</span></div>
+          </div>
+
+          <div class="jab-section-box">
+            <b style="color:#0369a1;">2. Uraian Tugas Utama (Job Description):</b>
+            <div style="white-space:pre-line; margin-top:4px; color:#1e293b;">${jab.jobDesc || "-"}</div>
+          </div>
+
+          <div class="jab-section-box" style="background:#f0fdf4; border-left-color:#059669;">
+            <b style="color:#065f46;">3. Spesifikasi Jabatan (Job Specification):</b>
+            <div style="margin-top:4px; color:#1e293b;">
+              • <b>Pendidikan & Pengalaman:</b> ${jab.specPendidikan || "-"}<br>
+              • <b>Sertifikasi & Keterampilan Wajib:</b> ${jab.specPelatihan || "-"}
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
     async function bukaModalTnaPribadi() {
       document.getElementById("modalTnaPribadi").style.display = "flex";
@@ -1738,21 +1823,36 @@
           return;
         }
         cacheTnaPribadi = json;
-        document.getElementById("tnaNamaJabatan").textContent = `${json.jabatan.namaJabatan} (${json.tutor.nama})`;
+        document.getElementById("tnaNamaSdm").textContent = `${json.tutor.nama} — ${json.jabatan.namaJabatan}`;
         document.getElementById("tnaUnitBadge").textContent = `Unit: ${json.tutor.unit}`;
-        document.getElementById("tnaJobDesc").textContent = json.jabatan.jobDesc;
-        document.getElementById("tnaJobSpec").textContent = `${json.jabatan.specPendidikan} | Wajib: ${json.jabatan.specPelatihan}`;
-        document.getElementById("tnaKualifikasiAktual").textContent = `${json.tutor.pendidikan} | Sertifikat: ${json.tutor.sertifikasi}`;
+        document.getElementById("tnaKualifikasiAktual").textContent = `Kualifikasi Anda: ${json.tutor.pendidikan} | Sertifikat: ${json.tutor.sertifikasi}`;
+
+        const badgeRangkap = document.getElementById("tnaRangkapBadge");
+        if (json.jabatan.isRangkapJabatan) {
+          badgeRangkap.style.display = "inline-block";
+          badgeRangkap.textContent = `⭐ Rangkap ${json.jabatan.jumlahJabatan} Jabatan`;
+        } else {
+          badgeRangkap.style.display = "none";
+        }
+
+        const containerJab = document.getElementById("containerDetailJabatanPribadi");
+        if (json.jabatan.detailJabatan && json.jabatan.detailJabatan.length > 0) {
+          containerJab.innerHTML = json.jabatan.detailJabatan.map(j => renderKartuDetailJabatan(j)).join("");
+        } else {
+          containerJab.innerHTML = `<p style="font-size:13px; color:var(--muted);">Kode jabatan <b>${json.tutor.kodeJabatan}</b> belum terdaftar di master jabatan.</p>`;
+        }
 
         let htmlKomp = "";
         if (json.kompetensiWajib.length === 0) {
           htmlKomp = `<p style="font-size:13px; color:var(--muted);">Belum ada pemetaan kompetensi untuk kode jabatan <b>${json.tutor.kodeJabatan}</b>.</p>`;
         } else {
           json.kompetensiWajib.forEach((k, idx) => {
+            const sumberTag = k.sumberJabatan ? `<div style="font-size:11px; color:#0369a1; margin-top:2px;">Jabatan: ${k.sumberJabatan}</div>` : "";
             htmlKomp += `
               <div style="background:#f8fcfa; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px;">
-                <b style="color:var(--green-dark); font-size:13.5px;">${idx + 1}. ${k.nama}</b>
+                <b style="color:var(--green-dark); font-size:13.5px;">${idx + 1}. [${k.id}] ${k.nama}</b>
                 <span style="float:right; font-size:11.5px; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:99px; font-weight:bold;">Target: Lv.${k.targetLevel}</span>
+                ${sumberTag}
                 <div style="font-size:12px; color:var(--muted); margin:6px 0;">
                   • <b>Lv.1:</b> ${k.lv1}<br>
                   • <b>Lv.2:</b> ${k.lv2}<br>
@@ -1817,6 +1917,66 @@
       finally { btn.disabled = false; btn.textContent = "💾 Simpan Self-Assessment TNA"; }
     }
 
+    // ================= DIREKTORI 16 STANDAR JABATAN LEMBAGA =================
+    let cacheDirektoriJabatan = [];
+
+    async function bukaModalDirektoriJabatan() {
+      document.getElementById("modalDirektoriJabatan").style.display = "flex";
+      const container = document.getElementById("containerDirektoriJabatan");
+
+      if (cacheDirektoriJabatan.length > 0) {
+        renderDirektoriJabatan();
+        return;
+      }
+
+      container.innerHTML = '<div style="text-align:center; padding:24px; color:var(--muted);">⏳ Menarik 16 standar jabatan dari database...</div>';
+      try {
+        const res = await fetch(`${API_URL}?action=get_all_jabatan`);
+        const json = await res.json();
+        if (json.success && json.data) {
+          cacheDirektoriJabatan = json.data;
+          renderDirektoriJabatan();
+        } else {
+          container.innerHTML = '<div style="text-align:center; padding:20px; color:red;">Gagal memuat direktori jabatan.</div>';
+        }
+      } catch (err) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">Error: ${err.message}</div>`;
+      }
+    }
+
+    function renderDirektoriJabatan() {
+      const container = document.getElementById("containerDirektoriJabatan");
+      const filterUnit = document.getElementById("filterUnitDirektori").value.toLowerCase();
+      const keyword = document.getElementById("searchDirektoriJabatan").value.trim().toLowerCase();
+
+      const filtered = cacheDirektoriJabatan.filter(j => {
+        const matchUnit = (filterUnit === "all") ||
+          j.unitPenempatan.toLowerCase().includes(filterUnit) ||
+          j.namaJabatan.toLowerCase().includes(filterUnit);
+        const matchKey = !keyword ||
+          j.namaJabatan.toLowerCase().includes(keyword) ||
+          j.unitPenempatan.toLowerCase().includes(keyword) ||
+          j.jobDesc.toLowerCase().includes(keyword) ||
+          j.fungsiUtama.toLowerCase().includes(keyword);
+        return matchUnit && matchKey;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:24px; color:var(--muted);">Tidak ada jabatan yang cocok dengan filter pencarian.</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(jab => `
+        ${renderKartuDetailJabatan(jab).replace('</div>\n      ', `
+          <div class="jab-section-box" style="background:#faf5ff; border-left-color:#7c3aed;">
+            <b style="color:#5b21b6;">4. Kode Kompetensi Wajib (Job Competency):</b>
+            <div style="margin-top:4px; font-weight:bold; color:#3b0764;">${jab.daftarKompetensi || "-"}</div>
+          </div>
+        </div>
+        `)}
+      `).join("");
+    }
+
     async function bukaModalSupervisiTna() {
       document.getElementById("modalSupervisiTna").style.display = "flex";
       document.getElementById("areaFormSupervisiTutor").style.display = "none";
@@ -1859,7 +2019,7 @@
         json.kompetensiWajib.forEach((k, idx) => {
           html += `
             <div style="background:#fff; border:1px solid #c7d2fe; border-radius:10px; padding:10px; margin-bottom:8px;">
-              <b style="font-size:13px; color:#312e81;">${k.nama} (Target: Lv.${k.targetLevel})</b>
+              <b style="font-size:13px; color:#312e81;">[${k.id}] ${k.nama} (Target: Lv.${k.targetLevel})</b>
               <select id="sup_komp_${idx}" style="margin-top:6px;">
                 <option value="1">Skor Supervisi: 1 (Perlu Pendampingan Intensif)</option>
                 <option value="2">Skor Supervisi: 2 (Berkembang / Butuh Coaching)</option>
