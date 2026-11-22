@@ -56,7 +56,7 @@
       padding: 4px 14px; border-radius: 999px; font-size: 12px; font-weight: 800; margin-bottom: 8px; margin-left: 6px;
     }
 
-    /* UNIT SWITCHER BAR (KHUSUS YAYASAN / KEPALA PKBM) */
+    /* UNIT SWITCHER BAR (KHUSUS YAYASAN / KEPALA PKBM / KURIKULUM) */
     .unit-switcher-bar {
       display: none; background: #0f172a; color: #fff; border-radius: 18px; padding: 14px 20px;
       margin-bottom: 20px; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
@@ -189,7 +189,7 @@
     <!-- 2. DASHBOARD TUTOR -->
     <div id="tutorDashboard">
 
-      <!-- BAR FILTER UNIT (KHUSUS PEMBINA YAYASAN / PSIKOLOG / KEPALA PKBM) -->
+      <!-- BAR FILTER UNIT (KHUSUS PEMBINA YAYASAN / PSIKOLOG / KEPALA PKBM / KURIKULUM) -->
       <div id="unitSwitcherBar" class="unit-switcher-bar">
         <div>
           <span style="font-size:11.5px; color:#fcd34d; font-weight:800; letter-spacing:0.5px;">🧭 MODE PENGAWASAN LINTAS UNIT</span>
@@ -207,7 +207,7 @@
 
       <div class="dashboard-grid">
         
-        <!-- KARTU EKSEKUTIF YAYASAN: CASH-OUT, NERACA & ANALISA (HANYA ROLE: YAYASAN) -->
+        <!-- 1. KARTU EKSEKUTIF YAYASAN: CASH-OUT, NERACA & ANALISA -->
         <div class="tutor-card" id="cardEksekutifYayasan" style="border: 2px solid #d97706; background: #0f172a; color: #fff; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:rgba(245,158,11,0.2); color:#fcd34d;">🏛️</div>
@@ -219,7 +219,7 @@
           </a>
         </div>
 
-        <!-- KARTU KEUANGAN SANTRI / CASH-IN (HANYA ROLE: STAFF KEUANGAN & YAYASAN) -->
+        <!-- 2. KARTU KEUANGAN SANTRI / CASH-IN -->
         <div class="tutor-card" id="cardKeuanganYayasan" style="border: 2px solid #0f172a; background: #f8fafc; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#e2e8f0; color:#0f172a;">💰</div>
@@ -231,7 +231,7 @@
           </a>
         </div>
 
-        <!-- KARTU PANTAUAN CCTV RUANG BELAJAR (TERISOLASI PER UNIT PENEMPATAN) -->
+        <!-- 3. KARTU PANTAUAN CCTV RUANG BELAJAR (TERISOLASI PER UNIT PENEMPATAN) -->
         <div class="tutor-card" id="cardCctv" style="border: 2px solid #0284c7; background: #f0f9ff;">
           <div>
             <div class="tutor-card-icon" style="background:#e0f2fe; color:#0369a1;">📹</div>
@@ -243,7 +243,7 @@
           </button>
         </div>
 
-        <!-- KARTU BUKU PENGHUBUNG HARIAN DAYCARE & PAUD (KHUSUS UNIT DAYCARE / PAUD / YAYASAN) -->
+        <!-- 4. KARTU BUKU PENGHUBUNG HARIAN DAYCARE & PAUD -->
         <div class="tutor-card" id="cardBukuPenghubung" style="border: 2px solid #d97706; background: #fffbeb;">
           <div>
             <div class="tutor-card-icon" style="background:#fef3c7; color:#b45309;">🧸</div>
@@ -255,7 +255,7 @@
           </button>
         </div>
 
-        <!-- KARTU ANALISA & EARLY WARNING DAYCARE/PAUD (KHUSUS WAKIL KEPALA PAUD, PEJABAT & PSIKOLOG) -->
+        <!-- 5. KARTU ANALISA & EARLY WARNING DAYCARE/PAUD -->
         <div class="tutor-card" id="cardAnalisaPaud" style="border: 2px solid #9333ea; background: #faf5ff; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#f3e8ff; color:#7e22ce;">🧠</div>
@@ -267,7 +267,7 @@
           </button>
         </div>
 
-        <!-- KARTU BUKU PENGHUBUNG TAHFIDZ & MENGAJI AL-QUR'AN -->
+        <!-- 6. KARTU BUKU PENGHUBUNG TAHFIDZ & MENGAJI AL-QUR'AN -->
         <div class="tutor-card" id="cardQuran" style="border: 2px solid #059669; background: #ecfdf5;">
           <div>
             <div class="tutor-card-icon" style="background:#d1fae5; color:#047857;">📖</div>
@@ -279,7 +279,7 @@
           </button>
         </div>
 
-        <!-- PRESENSI MAPEL & INPUT JURNAL (KESETARAAN & HS) -->
+        <!-- 7. PRESENSI MAPEL & INPUT JURNAL -->
         <div class="tutor-card" id="cardScanMapel" style="border: 2px solid #10b981; background: #f0fdf4;">
           <div>
             <div class="tutor-card-icon" style="background:#d1fae5;">📲</div>
@@ -291,7 +291,7 @@
           </button>
         </div>
 
-        <!-- CATAT KETIDAKHADIRAN (SAKIT / IZIN / TERLAMBAT / ALPA) -->
+        <!-- 8. CATAT KETIDAKHADIRAN (SAKIT / IZIN / TERLAMBAT / ALPA) -->
         <div class="tutor-card" id="cardAbsenStatus" style="border: 2px solid #e11d48; background: #fff1f2;">
           <div>
             <div class="tutor-card-icon" style="background:#ffe4e6; color:#be123c;">🗓️</div>
@@ -303,7 +303,7 @@
           </button>
         </div>
 
-        <!-- KARTU CETAK RAPORT (OTOMATIS ADAPTIF PAUD / PAKET A 1-3 / 4-6 / PAKET B / C) -->
+        <!-- 9. KARTU CETAK RAPORT (OTOMATIS ADAPTIF PAUD / PAKET A 1-3 / 4-6 / PAKET B / C) -->
         <div class="tutor-card" id="cardCetakRaport" style="border: 2px solid #2563eb; background: #eff6ff;">
           <div>
             <div class="tutor-card-icon" style="background:#dbeafe;">🖨️</div>
@@ -315,7 +315,7 @@
           </button>
         </div>
 
-        <!-- JURNAL KONSELING & ESKALASI -->
+        <!-- 10. JURNAL KONSELING & ESKALASI -->
         <div class="tutor-card" id="cardKonseling" style="border: 2px solid #ea580c; background: #fff7ed;">
           <div>
             <div class="tutor-card-icon" style="background:#ffedd5; color:#c2410c;">📝</div>
@@ -327,7 +327,7 @@
           </button>
         </div>
 
-        <!-- PANTAU KASUS (KHUSUS PEJABAT: KURIKULUM, KAUR PAKET A/B/C, KEPALA PKBM, YAYASAN, PSIKOLOG) -->
+        <!-- 11. PANTAU KASUS (PEJABAT & PSIKOLOG) -->
         <div class="tutor-card" id="cardMonitoringKonseling" style="border: 2px solid #b91c1c; background: #fef2f2; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#fee2e2; color:#991b1b;">👁️</div>
@@ -339,7 +339,7 @@
           </button>
         </div>
 
-        <!-- MANAJEMEN TARGET PPI (KHUSUS INKLUSI/PDPD, KAUR, KURIKULUM, KEPALA PKBM, PSIKOLOG) -->
+        <!-- 12. MANAJEMEN TARGET PPI (INKLUSI/PDPD & PEJABAT) -->
         <div class="tutor-card" id="cardTargetPpi" style="border: 2px solid #0d9488; background: #f0fdfa;">
           <div>
             <div class="tutor-card-icon" style="background:#ccfbf1; color:#0f766e;">🧩</div>
@@ -351,7 +351,7 @@
           </button>
         </div>
 
-        <!-- MONITORING TTD WALI -->
+        <!-- 13. MONITORING TTD WALI -->
         <div class="tutor-card" id="cardMonitoringWali" style="border: 2px solid #7c3aed; background: #faf5ff;">
           <div>
             <div class="tutor-card-icon" style="background:#f3e8ff;">📱</div>
@@ -363,7 +363,7 @@
           </button>
         </div>
 
-        <!-- PROFIL UTUH SANTRI (KHUSUS PEJABAT: KURIKULUM, KAUR, KEPALA PKBM, YAYASAN) -->
+        <!-- 14. PROFIL UTUH SANTRI (PEJABAT & PSIKOLOG) -->
         <div class="tutor-card" id="cardProfilUtuh" style="border: 2px solid #475569; background: #f8fafc; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#e2e8f0; color:#334155;">👤</div>
@@ -375,7 +375,7 @@
           </button>
         </div>
 
-        <!-- PROFIL JABATAN & SELF-ASSESSMENT TNA (UNTUK SEMUA TUTOR/SDM) -->
+        <!-- 15. PROFIL JABATAN & SELF-ASSESSMENT TNA (UNTUK SEMUA TUTOR/SDM) -->
         <div class="tutor-card" id="cardTnaPribadi" style="border: 2px solid #0284c7; background: #f0f9ff;">
           <div>
             <div class="tutor-card-icon" style="background:#e0f2fe; color:#0369a1;">📋</div>
@@ -387,19 +387,19 @@
           </button>
         </div>
 
-        <!-- DIREKTORI 16 STANDAR JABATAN LEMBAGA (KHUSUS PEJABAT / ADMIN YAYASAN / YAYASAN) -->
+        <!-- 16. DIREKTORI STANDAR JABATAN LEMBAGA -->
         <div class="tutor-card" id="cardDirektoriJabatan" style="border: 2px solid #0d7a5f; background: #eef8f4; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#d1fae5; color:#065f46;">🗂️</div>
             <h3>Direktori Standar Jabatan</h3>
-            <p>Kamus master 16 jabatan Yayasan & PKBM: Job Analysis, Job Desc, Job Spec, dan Target Kompetensi lintas unit.</p>
+            <p>Kamus master jabatan Yayasan & PKBM: Job Analysis, Job Desc, Job Spec, dan Target Kompetensi lintas unit.</p>
           </div>
           <button type="button" onclick="bukaModalDirektoriJabatan()" class="btn-action">
-            Buka Kamus 16 Jabatan →
+            Buka Kamus Standar Jabatan →
           </button>
         </div>
 
-        <!-- SUPERVISI & MATRIKS TNA LEMBAGA (KHUSUS PEJABAT: KURIKULUM, KAUR, KEPALA PKBM, YAYASAN) -->
+        <!-- 17. SUPERVISI & MATRIKS TNA LEMBAGA -->
         <div class="tutor-card" id="cardSupervisiTna" style="border: 2px solid #4f46e5; background: #eef2ff; display: none;">
           <div>
             <div class="tutor-card-icon" style="background:#e0e7ff; color:#3730a3;">📊</div>
@@ -411,7 +411,7 @@
           </button>
         </div>
 
-        <!-- ABSEN MANDIRI TUTOR GPS -->
+        <!-- 18. ABSEN MANDIRI TUTOR GPS -->
         <div class="tutor-card" id="cardAbsenGps" style="border: 2px solid #f59e0b; background: #fffbeb;">
           <div>
             <div class="tutor-card-icon" style="background:#fef3c7;">📍</div>
@@ -1133,18 +1133,18 @@
     </div>
   </div>
 
-  <!-- MODAL 11: DIREKTORI 16 STANDAR JABATAN LEMBAGA (KHUSUS PEJABAT / HRD / YAYASAN) -->
+  <!-- MODAL 11: DIREKTORI STANDAR JABATAN LEMBAGA -->
   <div id="modalDirektoriJabatan" class="modal-overlay">
     <div class="modal-box" style="max-width: 940px;">
       <button class="modal-close" onclick="tutupModal('modalDirektoriJabatan')">✕</button>
-      <h3 style="margin:0 0 4px; color:var(--green-dark);">🗂️ Direktori Standar Jabatan Yayasan & PKBM (16 Posisi)</h3>
+      <h3 style="margin:0 0 4px; color:var(--green-dark);">🗂️ Direktori Standar Jabatan Yayasan & PKBM</h3>
       <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">Referensi baku Job Analysis, Job Description, Job Specification, dan Target Kompetensi seluruh unit.</p>
 
       <div style="display:grid; grid-template-columns: 1fr 2fr; gap:10px; background:var(--green-soft); padding:12px 14px; border-radius:14px; border:1px solid var(--line); margin-bottom:14px;">
         <div>
           <label style="margin-top:0;">Filter Unit / Klaster:</label>
           <select id="filterUnitDirektori" onchange="renderDirektoriJabatan()">
-            <option value="ALL">Semua Unit (16 Jabatan)</option>
+            <option value="ALL">Semua Unit</option>
             <option value="Yayasan">Level Yayasan</option>
             <option value="PKBM">Pimpinan Satuan PKBM</option>
             <option value="Lintas Program">Konselor / Psikolog & Inklusi</option>
@@ -1174,20 +1174,102 @@
       "Pengembangan Mandiri": ["Bina Diri & Kemandirian Hidup", "Komunikasi Fungsional", "Interaksi Sosial & Regulasi", "Literasi & Motorik", "Numerasi & Logika", "Sensorik Motorik Terpadu"]
     };
 
+    // =========================================================================
+    // SINGLE SOURCE OF TRUTH: MATRIKS HAK AKSES BERBASIS KODE JABATAN (JBT-001..017)
+    // =========================================================================
+    const PETA_HAK_JABATAN = {
+      "JBT-001": { yayasanOut: true,  cashIn: true,  paud: true,  analisaPaud: true,  kesetaraan: true,  ppi: true,  pejabat: true,  direktori: true,  switcher: true  }, // Pembina Yayasan
+      "JBT-002": { yayasanOut: true,  cashIn: true,  paud: true,  analisaPaud: true,  kesetaraan: true,  ppi: true,  pejabat: true,  direktori: true,  switcher: true  }, // Ketua Yayasan
+      "JBT-003": { yayasanOut: false, cashIn: false, paud: true,  analisaPaud: true,  kesetaraan: true,  ppi: true,  pejabat: true,  direktori: true,  switcher: true  }, // Kabid Pendidikan Yayasan
+      "JBT-004": { yayasanOut: false, cashIn: false, paud: false, analisaPaud: false, kesetaraan: false, ppi: false, pejabat: true,  direktori: true,  switcher: false }, // Bidang HRD Yayasan
+      "JBT-005": { yayasanOut: false, cashIn: false, paud: false, analisaPaud: false, kesetaraan: true,  ppi: false, pejabat: true,  direktori: true,  switcher: false }, // Bidang Dakwah Yayasan
+      "JBT-006": { yayasanOut: false, cashIn: false, paud: false, analisaPaud: false, kesetaraan: false, ppi: false, pejabat: true,  direktori: true,  switcher: false }, // Staf Admin Yayasan (Non-Keuangan)
+      "JBT-007": { yayasanOut: false, cashIn: true,  paud: false, analisaPaud: false, kesetaraan: false, ppi: false, pejabat: false, direktori: false, switcher: false }, // Staf Keuangan Yayasan (Cash-In Only)
+      "JBT-008": { yayasanOut: false, cashIn: false, paud: true,  analisaPaud: true,  kesetaraan: true,  ppi: true,  pejabat: true,  direktori: true,  switcher: true  }, // Kepala PKBM
+      "JBT-009": { yayasanOut: false, cashIn: false, paud: true,  analisaPaud: true,  kesetaraan: true,  ppi: true,  pejabat: true,  direktori: true,  switcher: true  }, // Konselor / Psikolog Sekolah
+      "JBT-010": { yayasanOut: false, cashIn: false, paud: true,  analisaPaud: true,  kesetaraan: false, ppi: false, pejabat: true,  direktori: true,  switcher: false }, // Kaur Daycare & PAUD NF
+      "JBT-011": { yayasanOut: false, cashIn: false, paud: true,  analisaPaud: true,  kesetaraan: false, ppi: false, pejabat: true,  direktori: false, switcher: false }, // Wakil Kaur Daycare & PAUD NF
+      "JBT-012": { yayasanOut: false, cashIn: false, paud: true,  analisaPaud: false, kesetaraan: false, ppi: false, pejabat: false, direktori: false, switcher: false }, // Pengasuh / Tutor Daycare & PAUD NF
+      "JBT-013": { yayasanOut: false, cashIn: false, paud: false, analisaPaud: false, kesetaraan: true,  ppi: true,  pejabat: true,  direktori: true,  switcher: false }, // Kaur Program (Paket A/B/C/HS)
+      "JBT-014": { yayasanOut: false, cashIn: false, paud: false, analisaPaud: false, kesetaraan: true,  ppi: true,  pejabat: true,  direktori: true,  switcher: true  }, // Koordinator Kurikulum Program
+      "JBT-015": { yayasanOut: false, cashIn: false, paud: false, analisaPaud: false, kesetaraan: true,  ppi: false, pejabat: false, direktori: false, switcher: false }, // Tutor Mapel / Kelas
+      "JBT-016": { yayasanOut: false, cashIn: false, paud: false, analisaPaud: false, kesetaraan: true,  ppi: true,  pejabat: false, direktori: false, switcher: false }, // GPK / Shadow Teacher
+      "JBT-017": { yayasanOut: false, cashIn: false, paud: false, analisaPaud: false, kesetaraan: true,  ppi: false, pejabat: false, direktori: false, switcher: false }  // Guru Tahfidz & Tahsin
+    };
+
     let activeTutor = null;
     const savedTutor = localStorage.getItem("tutorAuth") || sessionStorage.getItem("tutorAuth");
 
-    function isSantriSesuaiUnitTutor(jenjangSantri) {
-      if (!activeTutor) return true;
-      const role = (activeTutor.role || "").toLowerCase();
-      const unit = (activeTutor.unit_penempatan || activeTutor.unit || "").toLowerCase();
-      const kodeJab = (activeTutor.kodeJabatan || activeTutor.kode_jabatan || "").toUpperCase();
-      const namaUser = (activeTutor.nama || activeTutor.username || "").toLowerCase();
+    function hitungGabunganHakAkses(user) {
+      const role = (user.role || "").toLowerCase();
+      const unit = (user.unit_penempatan || user.unit || "").toLowerCase();
+      const kodeRaw = (user.kodeJabatan || user.kode_jabatan || "").toUpperCase();
+      const namaUser = (user.nama || user.username || "").toLowerCase();
 
-      if (role.includes("yayasan") || role.includes("super admin") || role.includes("kepala pkbm") || role.includes("kurikulum") || kodeJab.includes("JBT-001") || kodeJab.includes("JBT-009") || namaUser.includes("jos")) {
-        return true;
+      const hak = {
+        yayasanOut: false,
+        cashIn: false,
+        paud: false,
+        analisaPaud: false,
+        kesetaraan: false,
+        ppi: false,
+        pejabat: false,
+        direktori: false,
+        switcher: false
+      };
+
+      // 1. Gabungkan hak akses berdasarkan semua kode jabatan (mendukung rangkap jabatan dipisah koma)
+      const listKode = kodeRaw.split(",").map(k => k.trim()).filter(Boolean);
+      listKode.forEach(kode => {
+        const aturan = PETA_HAK_JABATAN[kode];
+        if (aturan) {
+          Object.keys(hak).forEach(k => {
+            if (aturan[k]) hak[k] = true;
+          });
+        }
+      });
+
+      // 2. Pengaman berbasis kata kunci (jika kode jabatan di db_tutor belum diisi)
+      if (role === "yayasan" || role.includes("super admin") || namaUser.includes("jos")) {
+        Object.keys(hak).forEach(k => hak[k] = true);
+      }
+      if (role.includes("psikolog") || role.includes("konselor")) {
+        hak.paud = true; hak.analisaPaud = true; hak.kesetaraan = true; hak.ppi = true; hak.pejabat = true; hak.direktori = true; hak.switcher = true;
+      }
+      if (role.includes("kepala pkbm")) {
+        hak.paud = true; hak.analisaPaud = true; hak.kesetaraan = true; hak.ppi = true; hak.pejabat = true; hak.direktori = true; hak.switcher = true;
+      }
+      if (role.includes("kurikulum")) {
+        hak.kesetaraan = true; hak.ppi = true; hak.pejabat = true; hak.direktori = true; hak.switcher = true;
+      }
+      if (role.includes("admin yayasan")) {
+        hak.pejabat = true; hak.direktori = true;
+      }
+      if (role.includes("keuangan")) {
+        hak.cashIn = true;
+      }
+      if (role.includes("kaur") || role.includes("wakil kepala")) {
+        hak.pejabat = true;
+      }
+      if (unit.includes("daycare") || unit.includes("paud")) {
+        hak.paud = true;
+      }
+      if (unit.includes("paket") || unit.includes("hs")) {
+        hak.kesetaraan = true;
+      }
+      if (unit.includes("inklusi") || unit.includes("pdpd")) {
+        hak.kesetaraan = true; hak.ppi = true;
       }
 
+      return hak;
+    }
+
+    function isSantriSesuaiUnitTutor(jenjangSantri) {
+      if (!activeTutor) return true;
+      const hak = hitungGabunganHakAkses(activeTutor);
+      if (hak.switcher) return true;
+
+      const unit = (activeTutor.unit_penempatan || activeTutor.unit || "").toLowerCase();
       const jg = String(jenjangSantri || "").toLowerCase();
       const isPaudSantri = /daycare|paud|kb|tk|batita|baby/.test(jg);
       const isPaketA = jg.includes("paket a");
@@ -1195,83 +1277,62 @@
       const isPaketC = jg.includes("paket c");
       const isHS = jg.includes("hs") || jg.includes("home");
 
-      if (unit.includes("daycare") || unit.includes("paud")) {
-        if (isPaudSantri) return true;
-      }
+      if (hak.paud && isPaudSantri) return true;
       if (unit.includes("paket a") && isPaketA) return true;
       if (unit.includes("paket b") && isPaketB) return true;
       if (unit.includes("paket c") && isPaketC) return true;
       if (unit.includes("hs") && isHS) return true;
-      if ((unit.includes("inklusi") || unit.includes("pdpd")) && (isPaketA || isPaketB)) return true;
+      if (hak.ppi && (isPaketA || isPaketB)) return true;
 
-      return false;
+      return !unit;
     }
 
     function terapkanHakAksesPortal() {
       if (!activeTutor) return;
-      const role = (activeTutor.role || "tutor").trim().toLowerCase();
-      const unit = (activeTutor.unit_penempatan || activeTutor.unit || "").trim().toLowerCase();
-      const kodeJab = (activeTutor.kodeJabatan || activeTutor.kode_jabatan || "").trim().toUpperCase();
-      const namaUser = (activeTutor.nama || activeTutor.username || "").trim().toLowerCase();
+      const hak = hitungGabunganHakAkses(activeTutor);
+      const unit = (activeTutor.unit_penempatan || activeTutor.unit || "").toLowerCase();
 
-      const isTopYayasan = role.includes("yayasan") || role.includes("super admin") || kodeJab.includes("JBT-001") || kodeJab.includes("JBT-002") || kodeJab.includes("JBT-003") || namaUser.includes("jos");
-      const isPsikologKonselor = role.includes("psikolog") || role.includes("konselor") || kodeJab.includes("JBT-009") || namaUser.includes("jos");
-      const isKepalaPKBM = role.includes("kepala pkbm") || kodeJab.includes("JBT-008");
-      const isKurikulum  = role.includes("kurikulum") || kodeJab.includes("JBT-014");
-      const isAdminYayasan = isTopYayasan || role.includes("admin yayasan") || kodeJab.includes("JBT-006");
-      const isStaffKeuangan = role.includes("keuangan") || kodeJab.includes("JBT-007");
-      const isKaur = role.includes("kaur") || role.includes("wakil kepala") || kodeJab.includes("JBT-010") || kodeJab.includes("JBT-011") || kodeJab.includes("JBT-013");
+      document.getElementById("unitSwitcherBar").style.display = hak.switcher ? "flex" : "none";
+      document.getElementById("cardEksekutifYayasan").style.display = hak.yayasanOut ? "flex" : "none";
+      document.getElementById("cardKeuanganYayasan").style.display = hak.cashIn ? "flex" : "none";
 
-      const hasPaudDaycare = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("daycare") || unit.includes("paud");
-      const hasPaketA      = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("paket a");
-      const hasPaketB      = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("paket b");
-      const hasPaketC      = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("paket c");
-      const hasHS          = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("hs");
-      const hasInklusiPDPD = isTopYayasan || isPsikologKonselor || isKepalaPKBM || isKurikulum || unit.includes("inklusi") || unit.includes("pdpd");
-      const hasKesetaraan  = hasPaketA || hasPaketB || hasPaketC || hasHS || hasInklusiPDPD;
+      document.getElementById("cardBukuPenghubung").style.display = hak.paud ? "flex" : "none";
+      document.getElementById("cardAnalisaPaud").style.display = hak.analisaPaud ? "flex" : "none";
 
-      const isPejabat = isTopYayasan || isPsikologKonselor || isKepalaPKBM || isKurikulum || isAdminYayasan || isKaur;
-
-      if (isTopYayasan || isKepalaPKBM || isKurikulum) {
-        document.getElementById("unitSwitcherBar").style.display = "flex";
-      }
-
-      document.getElementById("cardEksekutifYayasan").style.display = isTopYayasan ? "flex" : "none";
-      document.getElementById("cardKeuanganYayasan").style.display = (isTopYayasan || isStaffKeuangan) ? "flex" : "none";
-
-      document.getElementById("cardBukuPenghubung").style.display = hasPaudDaycare ? "flex" : "none";
-      const bolehAnalisaPaud = isTopYayasan || isPsikologKonselor || isKepalaPKBM || (hasPaudDaycare && role.includes("wakil kepala"));
-      document.getElementById("cardAnalisaPaud").style.display = bolehAnalisaPaud ? "flex" : "none";
-
-      // Kartu Tahfidz & Mengaji selalu tampil
+      // Kartu umum selalu tampil untuk semua SDM
       document.getElementById("cardQuran").style.display = "flex";
-      document.getElementById("cardScanMapel").style.display = hasKesetaraan ? "flex" : "none";
-      document.getElementById("cardTargetPpi").style.display = hasInklusiPDPD ? "flex" : "none";
+      document.getElementById("cardKonseling").style.display = "flex";
+      document.getElementById("cardMonitoringWali").style.display = "flex";
+      document.getElementById("cardTnaPribadi").style.display = "flex";
+      document.getElementById("cardAbsenGps").style.display = "flex";
 
-      if (hasPaudDaycare && !hasKesetaraan) {
+      document.getElementById("cardScanMapel").style.display = hak.kesetaraan ? "flex" : "none";
+      document.getElementById("cardTargetPpi").style.display = hak.ppi ? "flex" : "none";
+
+      if (hak.paud && !hak.kesetaraan) {
         document.getElementById("titleCetakRaport").textContent = "Cetak Raport Perkembangan PAUD";
         document.getElementById("descCetakRaport").textContent = "Tarik rekap narasi capaian perkembangan harian & bulanan anak Daycare / PAUD NF.";
-      } else if (hasInklusiPDPD) {
+      } else if (hak.ppi) {
         document.getElementById("titleCetakRaport").textContent = "Cetak Raport Kesetaraan & PPI (PDPD)";
-        document.getElementById("descCetakRaport").textContent = "Cetak raport adaptif santri PDPD (Paket A & B) sekaligus raport reguler kelas Paket A.";
+        document.getElementById("descCetakRaport").textContent = "Cetak raport adaptif santri PDPD (Paket A & B) sekaligus raport reguler kelas.";
       } else {
         document.getElementById("titleCetakRaport").textContent = "Cetak Raport Kesetaraan";
         document.getElementById("descCetakRaport").textContent = "Format otomatis menyesuaikan jenjang: Paket A (Kelas 1–3 vs 4–6), Paket B, Paket C, & HS.";
       }
 
-      document.getElementById("cardMonitoringKonseling").style.display = isPejabat ? "flex" : "none";
-      document.getElementById("cardProfilUtuh").style.display = isPejabat ? "flex" : "none";
-      document.getElementById("cardSupervisiTna").style.display = isPejabat ? "flex" : "none";
-      document.getElementById("cardDirektoriJabatan").style.display = (isPejabat || isAdminYayasan) ? "flex" : "none";
+      document.getElementById("cardMonitoringKonseling").style.display = hak.pejabat ? "flex" : "none";
+      document.getElementById("cardProfilUtuh").style.display = hak.pejabat ? "flex" : "none";
+      document.getElementById("cardSupervisiTna").style.display = hak.pejabat ? "flex" : "none";
+      document.getElementById("cardDirektoriJabatan").style.display = hak.direktori ? "flex" : "none";
 
       const selProg = document.getElementById("selectJenjangProgram");
-      if (selProg && !isTopYayasan && !isKepalaPKBM && !isKurikulum) {
+      if (selProg && !hak.switcher) {
         Array.from(selProg.options).forEach(opt => {
           const val = opt.value.toLowerCase();
-          if (val === "paket a") opt.style.display = hasPaketA ? "block" : "none";
-          if (val === "paket b") opt.style.display = (hasPaketB || hasInklusiPDPD) ? "block" : "none";
-          if (val === "paket c") opt.style.display = hasPaketC ? "block" : "none";
-          if (val.includes("mandiri")) opt.style.display = (hasInklusiPDPD || hasHS) ? "block" : "none";
+          if (val === "paket a") opt.style.display = (unit.includes("paket a") || !unit) ? "block" : "none";
+          if (val === "paket b") opt.style.display = (unit.includes("paket b") || hak.ppi || !unit) ? "block" : "none";
+          if (val === "paket c") opt.style.display = (unit.includes("paket c") || !unit) ? "block" : "none";
+          if (val.includes("mandiri")) opt.style.display = (hak.ppi || unit.includes("hs") || !unit) ? "block" : "none";
         });
         const firstVisible = Array.from(selProg.options).find(o => o.style.display !== "none");
         if (firstVisible) {
@@ -1296,22 +1357,49 @@
       document.getElementById("cardTargetPpi").style.display = isInklusi ? "flex" : "none";
     }
 
+    function renderIdentitasHeader() {
+      if (!activeTutor) return;
+      document.getElementById("loginGate").style.display = "none";
+      document.getElementById("tutorDashboard").style.display = "block";
+      document.getElementById("userBadge").textContent = `👨‍🏫 ${activeTutor.nama || "Tutor"} (${activeTutor.role || "Tutor PKBM"})`;
+
+      const unitLabel = activeTutor.unit_penempatan || activeTutor.unit || "";
+      const kodeLabel = activeTutor.kodeJabatan || activeTutor.kode_jabatan || "";
+      if (unitLabel || kodeLabel) {
+        const ub = document.getElementById("unitBadge");
+        ub.style.display = "inline-block";
+        ub.textContent = `📍 ${unitLabel}${kodeLabel ? " • " + kodeLabel : ""}`;
+        document.getElementById("descCctvUnit").textContent = `Akses kamera ruang belajar terisolasi khusus unit: ${unitLabel || "Sesuai Jabatan"}.`;
+      }
+      terapkanHakAksesPortal();
+    }
+
+    // AUTO-SYNC SESI DI LATAR BELAKANG AGAR TIDAK PERNAH NYANGKUT CACHE LAMA
+    async function sinkronkanSesiTutorTerbaru() {
+      if (!activeTutor || !activeTutor.username) return;
+      try {
+        const res = await fetch(`${API_URL}?action=get_all_tutor`);
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          const fresh = json.data.find(t => String(t.nip).trim().toLowerCase() === String(activeTutor.username).trim().toLowerCase());
+          if (fresh) {
+            activeTutor.nama = fresh.nama || activeTutor.nama;
+            activeTutor.role = fresh.role || activeTutor.role;
+            activeTutor.unit = fresh.unit || activeTutor.unit;
+            activeTutor.unit_penempatan = fresh.unit_penempatan || fresh.unit || activeTutor.unit_penempatan;
+            activeTutor.kodeJabatan = fresh.kodeJabatan || activeTutor.kodeJabatan;
+            localStorage.setItem("tutorAuth", JSON.stringify(activeTutor));
+            renderIdentitasHeader();
+          }
+        }
+      } catch (e) {}
+    }
+
     if (savedTutor) {
       try { 
         activeTutor = JSON.parse(savedTutor);
-        document.getElementById("loginGate").style.display = "none";
-        document.getElementById("tutorDashboard").style.display = "block";
-        document.getElementById("userBadge").textContent = `👨‍🏫 ${activeTutor.nama || "Tutor"} (${activeTutor.role || "Tutor PKBM"})`;
-        
-        const unitLabel = activeTutor.unit_penempatan || activeTutor.unit || "";
-        if (unitLabel) {
-          const ub = document.getElementById("unitBadge");
-          ub.style.display = "inline-block";
-          ub.textContent = `📍 Unit: ${unitLabel}`;
-          document.getElementById("descCctvUnit").textContent = `Akses kamera ruang belajar terisolasi khusus unit: ${unitLabel}.`;
-        }
-
-        terapkanHakAksesPortal();
+        renderIdentitasHeader();
+        sinkronkanSesiTutorTerbaru();
       } catch(e) {}
     }
 
@@ -1384,9 +1472,9 @@
       alertBox.style.border = "1px solid #bae6fd";
       alertBox.innerHTML = "⏳ Menghubungkan ke server kamera unit layanan Anda...";
 
-      const rawRole = (activeTutor && activeTutor.role) ? activeTutor.role.trim().toLowerCase() : "tutor";
+      const hak = activeTutor ? hitungGabunganHakAkses(activeTutor) : {};
       const unitTutor = (activeTutor && (activeTutor.unit_penempatan || activeTutor.unit)) ? (activeTutor.unit_penempatan || activeTutor.unit) : "all";
-      const isTopPimpinan = (rawRole.includes("yayasan") || rawRole.includes("super admin") || rawRole.includes("kepala pkbm"));
+      const isTopPimpinan = Boolean(hak.switcher);
       const roleKirim = isTopPimpinan ? "yayasan" : "tutor";
       const jenjangKirim = isTopPimpinan ? "all" : unitTutor;
 
@@ -1397,15 +1485,10 @@
         const daftarKamera = (json.data || []).filter(cam => {
           if (isTopPimpinan) return true;
           const camUnit = String(cam.jenjangAkses || "").toLowerCase();
-          const uLow = unitTutor.toLowerCase();
           if (camUnit === "all" || camUnit === "umum") return true;
-          if (uLow.includes("daycare") || uLow.includes("paud")) {
-            return camUnit.includes("daycare") || camUnit.includes("paud");
-          }
-          if (uLow.includes("paket") || uLow.includes("hs") || uLow.includes("inklusi")) {
-            return camUnit.includes("paket") || camUnit.includes("hs") || camUnit.includes("kesetaraan");
-          }
-          return true;
+          if (hak.paud && (camUnit.includes("daycare") || camUnit.includes("paud"))) return true;
+          if (hak.kesetaraan && (camUnit.includes("paket") || camUnit.includes("hs") || camUnit.includes("kesetaraan"))) return true;
+          return false;
         });
 
         if (!json.success || daftarKamera.length === 0) {
@@ -1491,8 +1574,9 @@
           const json = await res.json();
           if (json.success && json.data.length > 0) {
             const santriUnit = json.data.filter(s => isSantriSesuaiUnitTutor(s.jenjang));
+            const daftarTampil = santriUnit.length > 0 ? santriUnit : json.data;
             sel.innerHTML = '<option value="">-- Pilih Santri --</option>' +
-              santriUnit.map(s => `<option value="${s.nis}">${s.nama} (${s.jenjang} - ${s.kelas})</option>`).join("");
+              daftarTampil.map(s => `<option value="${s.nis}">${s.nama} (${s.jenjang} - ${s.kelas})</option>`).join("");
           } else {
             sel.innerHTML = '<option value="">Data santri kosong</option>';
           }
@@ -2082,7 +2166,7 @@
       finally { btn.disabled = false; btn.textContent = "💾 Simpan Self-Assessment TNA"; }
     }
 
-    // ================= DIREKTORI 16 STANDAR JABATAN LEMBAGA =================
+    // ================= DIREKTORI STANDAR JABATAN LEMBAGA =================
     let cacheDirektoriJabatan = [];
 
     async function bukaModalDirektoriJabatan() {
@@ -2094,7 +2178,7 @@
         return;
       }
 
-      container.innerHTML = '<div style="text-align:center; padding:24px; color:var(--muted);">⏳ Menarik 16 standar jabatan dari database...</div>';
+      container.innerHTML = '<div style="text-align:center; padding:24px; color:var(--muted);">⏳ Menarik standar jabatan dari database...</div>';
       try {
         const res = await fetch(`${API_URL}?action=get_all_jabatan`);
         const json = await res.json();
