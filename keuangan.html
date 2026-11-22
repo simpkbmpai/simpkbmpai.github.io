@@ -26,7 +26,7 @@
       color: var(--text);
       line-height: 1.5;
     }
-    .container { max-width: 1140px; margin: auto; padding: 20px; }
+    .container { max-width: 1180px; margin: auto; padding: 20px; }
 
     /* TOP BAR */
     .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
@@ -39,7 +39,7 @@
     /* HEADER EKSEKUTIF */
     .exec-header {
       background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: #fff; border-radius: 22px; padding: 24px 28px; margin-bottom: 22px;
+      color: #fff; border-radius: 22px; padding: 24px 28px; margin-bottom: 20px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
       box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
     }
@@ -47,6 +47,25 @@
       display: inline-block; background: rgba(245, 158, 11, 0.2); color: #fcd34d;
       border: 1px solid rgba(245, 158, 11, 0.4); padding: 4px 12px; border-radius: 999px;
       font-size: 11.5px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+
+    /* SUB-NAVIGASI TAB KEUANGAN */
+    .keu-tabs {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .keu-tab-btn {
+      background: #fff; color: #334155; border: 1.5px solid #cbd5e1;
+      padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 13px;
+      cursor: pointer; transition: 0.2s;
+    }
+    .keu-tab-btn.active {
+      background: #0f172a; color: #fff; border-color: #0f172a;
+    }
+    .keu-tab-btn.tab-yayasan {
+      border-color: #f59e0b; color: #92400e; background: #fffbeb;
+    }
+    .keu-tab-btn.tab-yayasan.active {
+      background: #b45309; color: #fff; border-color: #b45309;
     }
 
     /* LOCK SCREEN */
@@ -68,6 +87,7 @@
     .btn-primary:hover { background: #1e293b; }
     .btn-emerald { background: var(--green); color: #fff; border: 0; padding: 12px 18px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; width: 100%; }
     .btn-emerald:hover { background: var(--green-dark); }
+    .btn-danger { background: var(--danger); color: #fff; border: 0; padding: 12px 18px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; width: 100%; }
     .btn-wa {
       background: #16a34a; color: #fff; border: 0; padding: 12px 18px; border-radius: 12px;
       font-weight: 800; font-size: 14px; cursor: pointer; width: 100%; text-decoration: none;
@@ -76,7 +96,7 @@
     .btn-wa:hover { background: #15803d; }
 
     /* GRID RINGKASAN SALDO */
-    .summary-section-title { font-size: 14px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px; }
+    .summary-section-title { font-size: 13px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px; }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
     @media(max-width: 900px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
     @media(max-width: 540px) { .grid-4 { grid-template-columns: 1fr; } }
@@ -92,6 +112,26 @@
 
     .kpi-label { font-size: 12px; color: var(--muted); font-weight: 700; }
     .kpi-value { font-size: 20px; font-weight: 900; color: #0f172a; margin-top: 4px; }
+
+    /* GRAFIK BATANG BULANAN */
+    .chart-box {
+      background: #fff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 20px;
+      margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+    .bar-chart-grid {
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; align-items: end;
+      height: 180px; padding-top: 24px; border-bottom: 2px solid #cbd5e1; margin-top: 12px;
+    }
+    @media(max-width: 720px) {
+      .bar-chart-grid { grid-template-columns: repeat(6, 1fr); height: auto; gap: 12px; }
+    }
+    .bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+    .bar-fill {
+      width: 100%; max-width: 36px; background: linear-gradient(180deg, #0d9488, #0f766e);
+      border-radius: 6px 6px 0 0; min-height: 4px; transition: height 0.4s ease;
+    }
+    .bar-val { font-size: 10px; font-weight: 800; color: #0f172a; margin-bottom: 4px; text-align: center; }
+    .bar-lbl { font-size: 11px; font-weight: 700; color: #64748b; margin-top: 6px; }
 
     /* LAYOUT UTAMA: FORM INPUT & TABEL RIWAYAT */
     .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 20px; align-items: start; }
@@ -112,6 +152,7 @@
     .src-bsi { background: #ccfbf1; color: #0f766e; }
     .src-bca { background: #dbeafe; color: #1d4ed8; }
     .src-mandiri { background: #fef9c3; color: #a16207; }
+    .badge-unpaid { background: #fee2e2; color: #b91c1c; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; }
 
     /* MODAL KWITANSI PRINT */
     .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.7); z-index: 999; display: none; align-items: center; justify-content: center; padding: 16px; }
@@ -157,7 +198,7 @@
       
       <div class="exec-header no-print">
         <div>
-          <span class="badge-confidential">🔒 CONFIDENTIAL • KEUANGAN & YAYASAN ONLY</span>
+          <span class="badge-confidential" id="badgeLevelAkses">🔒 CONFIDENTIAL • KEUANGAN & YAYASAN</span>
           <h1 style="margin:0; font-size:23px;">Database Pemasukan & Kas Pendidikan Santri</h1>
           <p style="margin:4px 0 0; font-size:13px; color:#cbd5e1;">PKBM Pelita Aushaf Indonesia • Pencatatan Terintegrasi Rekening Operasional</p>
         </div>
@@ -167,131 +208,212 @@
         </div>
       </div>
 
-      <!-- 1. RINGKASAN PER SUMBER REKENING & TUNAI -->
-      <div class="summary-section-title no-print">🏦 Saldo Pemasukan Berdasarkan Rekening & Kas</div>
-      <div class="grid-4 no-print">
-        <div class="kpi-card bank-cash">
-          <div class="kpi-label">💵 Tunai (Cash)</div>
-          <div class="kpi-value" id="valCash">Rp 0</div>
-        </div>
-        <div class="kpi-card bank-bsi">
-          <div class="kpi-label">🕌 Transfer - BSI Operasional</div>
-          <div class="kpi-value" id="valBsi">Rp 0</div>
-        </div>
-        <div class="kpi-card bank-bca">
-          <div class="kpi-label">💳 Transfer - BCA</div>
-          <div class="kpi-value" id="valBca">Rp 0</div>
-        </div>
-        <div class="kpi-card bank-mandiri">
-          <div class="kpi-label">🏛️ Transfer - Mandiri</div>
-          <div class="kpi-value" id="valMandiri">Rp 0</div>
-        </div>
+      <!-- TAB MENU KEUANGAN (TERPISAH ANTARA STAFF CASH IN VS YAYASAN) -->
+      <div class="keu-tabs no-print">
+        <button type="button" class="keu-tab-btn active" onclick="pindahTabKeu('tabCashIn', this)">💵 Kas Masuk (Cash In) & Rekap Bulanan</button>
+        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabTunggakan', this)">⚠️ Data Belum Bayar SPP & Paywall</button>
+        <button type="button" id="btnTabYayasan" class="keu-tab-btn tab-yayasan" style="display:none;" onclick="pindahTabKeu('tabYayasanOnly', this)">🏛️ Kas Keluar (Cash Out) & Neraca Yayasan</button>
       </div>
 
-      <!-- 2. RINGKASAN PER POS PEMASUKAN PENDIDIKAN -->
-      <div class="summary-section-title no-print">📊 Rincian Pos Pemasukan Pendidikan</div>
-      <div class="grid-4 no-print">
-        <div class="kpi-card">
-          <div class="kpi-label">📝 Uang Pendaftaran</div>
-          <div class="kpi-value" id="valPendaftaran" style="color:#0d7a5f;">Rp 0</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">📅 Uang SPP</div>
-          <div class="kpi-value" id="valSpp" style="color:#2563eb;">Rp 0</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">🏫 Biaya Sarana & Prasarana</div>
-          <div class="kpi-value" id="valSarpras" style="color:#7c3aed;">Rp 0</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">🎒 Uang Kegiatan (1 Tahun)</div>
-          <div class="kpi-value" id="valKegiatan" style="color:#d97706;">Rp 0</div>
-        </div>
-      </div>
-
-      <!-- 3. PANEL INPUT & TABEL TRANSAKSI -->
-      <div class="main-grid no-print">
-        
-        <!-- KIRI: FORM INPUT PEMBAYARAN SANTRI -->
-        <div class="panel-box">
-          <h3 style="margin:0 0 4px; color:#0f172a;">➕ Input Pembayaran Santri</h3>
-          <p style="margin:0 0 14px; font-size:12.5px; color:var(--muted);">Catat uang masuk dan otomatis terbitkan kwitansi resmi.</p>
-
-          <form id="formInputKeuangan">
-            <label>Pilih Santri:</label>
-            <select id="keuSelectSantri" required>
-              <option value="">⏳ Memuat data santri...</option>
-            </select>
-
-            <label>Tanggal Pembayaran:</label>
-            <input type="date" id="keuTanggal" required>
-
-            <label>Pos / Kategori Pemasukan:</label>
-            <select id="keuKategori" onchange="sesuaikanSubKategori()" required>
-              <option value="Uang Pendaftaran">1. Uang Pendaftaran</option>
-              <option value="Uang SPP" selected>2. Uang SPP</option>
-              <option value="Biaya Pendidikan - Sarana & Prasarana">3. Biaya Pendidikan - Sarana & Prasarana</option>
-              <option value="Biaya Pendidikan - Kegiatan 1 Tahun">4. Biaya Pendidikan - Kegiatan 1 Tahun</option>
-            </select>
-
-            <div id="boxSubKategori">
-              <label id="labelSubKategori">Periode Bulan SPP / Keterangan Termin:</label>
-              <input type="text" id="keuSubKategori" placeholder="Contoh: SPP November 2026 / Termin 1">
-            </div>
-
-            <label>Nominal Uang Masuk (Rp):</label>
-            <input type="number" id="keuNominal" placeholder="Contoh: 500000" min="1000" required style="font-weight:bold; font-size:16px;">
-
-            <label>Sumber Dana / Rekening Penerima:</label>
-            <select id="keuSumberRekening" required>
-              <option value="Cash">💵 Cash (Tunai di Kasir)</option>
-              <option value="Transfer - BSI Operasional">🕌 Transfer - BSI Operasional</option>
-              <option value="Transfer - BCA">💳 Transfer - BCA</option>
-              <option value="Transfer - Mandiri">🏛️ Transfer - Mandiri</option>
-            </select>
-
-            <label>Catatan / Berita Transfer (Opsional):</label>
-            <input type="text" id="keuKeterangan" placeholder="Contoh: Transfer a.n. Bunda Ahmad / Lunas">
-
-            <button type="submit" id="btnSimpanTrx" class="btn-emerald" style="margin-top:16px;">
-              💾 Simpan Pemasukan & Buat Kwitansi
-            </button>
-          </form>
+      <!-- =====================================================================
+           TAB 1: CASH IN, REKAP BULANAN & GRAFIK (STAFF KEUANGAN & YAYASAN)
+      ====================================================================== -->
+      <div id="tabCashIn" class="keu-tab-panel">
+        <!-- 1. RINGKASAN PER SUMBER REKENING & TUNAI -->
+        <div class="summary-section-title no-print">🏦 Pemasukan Terfilter Berdasarkan Rekening & Kas</div>
+        <div class="grid-4 no-print">
+          <div class="kpi-card bank-cash">
+            <div class="kpi-label">💵 Tunai (Cash)</div>
+            <div class="kpi-value" id="valCash">Rp 0</div>
+          </div>
+          <div class="kpi-card bank-bsi">
+            <div class="kpi-label">🕌 Transfer - BSI Operasional</div>
+            <div class="kpi-value" id="valBsi">Rp 0</div>
+          </div>
+          <div class="kpi-card bank-bca">
+            <div class="kpi-label">💳 Transfer - BCA</div>
+            <div class="kpi-value" id="valBca">Rp 0</div>
+          </div>
+          <div class="kpi-card bank-mandiri">
+            <div class="kpi-label">🏛️ Transfer - Mandiri</div>
+            <div class="kpi-value" id="valMandiri">Rp 0</div>
+          </div>
         </div>
 
-        <!-- KANAN: BUKU KAS & RIWAYAT TRANSAKSI -->
-        <div class="panel-box">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+        <!-- 2. RINGKASAN PER POS PEMASUKAN PENDIDIKAN -->
+        <div class="summary-section-title no-print">📊 Rincian Pos Pemasukan Pendidikan</div>
+        <div class="grid-4 no-print">
+          <div class="kpi-card">
+            <div class="kpi-label">📝 Uang Pendaftaran</div>
+            <div class="kpi-value" id="valPendaftaran" style="color:#0d7a5f;">Rp 0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">📅 Uang SPP</div>
+            <div class="kpi-value" id="valSpp" style="color:#2563eb;">Rp 0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">🏫 Biaya Sarana & Prasarana</div>
+            <div class="kpi-value" id="valSarpras" style="color:#7c3aed;">Rp 0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">🎒 Uang Kegiatan (1 Tahun)</div>
+            <div class="kpi-value" id="valKegiatan" style="color:#d97706;">Rp 0</div>
+          </div>
+        </div>
+
+        <!-- 3. GRAFIK CASH IN BULANAN (TAHUN BERJALAN) -->
+        <div class="chart-box no-print">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
             <div>
-              <h3 style="margin:0; color:#0f172a;">📑 Buku Kas Pemasukan Santri</h3>
-              <p style="margin:2px 0 0; font-size:12.5px; color:var(--muted);">Total Pemasukan Terfilter: <b id="valTotalSemua" style="color:#0d7a5f; font-size:15px;">Rp 0</b></p>
+              <h3 style="margin:0; font-size:16px; color:#0f172a;">📈 Grafik Pemasukan (Cash In) Bulanan Tahun <span id="labelTahunGrafik">2026</span></h3>
+              <p style="margin:2px 0 0; font-size:12px; color:var(--muted);">Akumulasi seluruh pos pemasukan santri per bulan.</p>
             </div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <input type="month" id="filterKeuBulan" onchange="muatDataKeuangan()" style="width:auto; padding:7px 10px; font-size:13px;" title="Filter Bulan (Kosongkan untuk semua)">
-              <button type="button" onclick="resetFilterKeu()" style="background:#e2e8f0; border:0; padding:7px 12px; border-radius:10px; font-weight:bold; font-size:12px; cursor:pointer;">Semua Waktu</button>
+            <button type="button" onclick="muatGrafikTahunan()" style="background:#f1f5f9; border:1px solid #cbd5e1; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; cursor:pointer;">🔄 Segarkan Grafik</button>
+          </div>
+          <div class="bar-chart-grid" id="wadahGrafikCashIn"></div>
+        </div>
+
+        <!-- 4. PANEL INPUT & TABEL TRANSAKSI -->
+        <div class="main-grid no-print">
+          <!-- KIRI: FORM INPUT PEMBAYARAN SANTRI -->
+          <div class="panel-box">
+            <h3 style="margin:0 0 4px; color:#0f172a;">➕ Input Pembayaran Santri</h3>
+            <p style="margin:0 0 14px; font-size:12.5px; color:var(--muted);">Catat uang masuk dan otomatis terbitkan kwitansi resmi.</p>
+
+            <form id="formInputKeuangan">
+              <label>Pilih Santri:</label>
+              <select id="keuSelectSantri" required>
+                <option value="">⏳ Memuat data santri...</option>
+              </select>
+
+              <label>Tanggal Pembayaran:</label>
+              <input type="date" id="keuTanggal" required>
+
+              <label>Pos / Kategori Pemasukan:</label>
+              <select id="keuKategori" onchange="sesuaikanSubKategori()" required>
+                <option value="Uang Pendaftaran">1. Uang Pendaftaran</option>
+                <option value="Uang SPP" selected>2. Uang SPP</option>
+                <option value="Biaya Pendidikan - Sarana & Prasarana">3. Biaya Pendidikan - Sarana & Prasarana</option>
+                <option value="Biaya Pendidikan - Kegiatan 1 Tahun">4. Biaya Pendidikan - Kegiatan 1 Tahun</option>
+              </select>
+
+              <div id="boxSubKategori">
+                <label id="labelSubKategori">Periode Bulan SPP / Keterangan Termin:</label>
+                <input type="text" id="keuSubKategori" placeholder="Contoh: SPP November 2026 / Termin 1">
+              </div>
+
+              <label>Nominal Uang Masuk (Rp):</label>
+              <input type="number" id="keuNominal" placeholder="Contoh: 500000" min="1000" required style="font-weight:bold; font-size:16px;">
+
+              <label>Sumber Dana / Rekening Penerima:</label>
+              <select id="keuSumberRekening" required>
+                <option value="Cash">💵 Cash (Tunai di Kasir)</option>
+                <option value="Transfer - BSI Operasional">🕌 Transfer - BSI Operasional</option>
+                <option value="Transfer - BCA">💳 Transfer - BCA</option>
+                <option value="Transfer - Mandiri">🏛️ Transfer - Mandiri</option>
+              </select>
+
+              <label>Catatan / Berita Transfer (Opsional):</label>
+              <input type="text" id="keuKeterangan" placeholder="Contoh: Transfer a.n. Bunda Ahmad / Lunas">
+
+              <button type="submit" id="btnSimpanTrx" class="btn-emerald" style="margin-top:16px;">
+                💾 Simpan Pemasukan & Buat Kwitansi
+              </button>
+            </form>
+          </div>
+
+          <!-- KANAN: BUKU KAS & RIWAYAT TRANSAKSI -->
+          <div class="panel-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+              <div>
+                <h3 style="margin:0; color:#0f172a;">📑 Rekap & Buku Kas Pemasukan (Cash In)</h3>
+                <p style="margin:2px 0 0; font-size:12.5px; color:var(--muted);">Total Pemasukan Terfilter: <b id="valTotalSemua" style="color:#0d7a5f; font-size:15px;">Rp 0</b></p>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <input type="month" id="filterKeuBulan" onchange="muatDataKeuangan()" style="width:auto; padding:7px 10px; font-size:13px;" title="Filter Bulan">
+                <button type="button" onclick="resetFilterKeu()" style="background:#e2e8f0; border:0; padding:7px 12px; border-radius:10px; font-weight:bold; font-size:12px; cursor:pointer;">Semua Waktu</button>
+              </div>
+            </div>
+
+            <div style="overflow-x:auto; max-height:540px;">
+              <table class="table-keu">
+                <thead>
+                  <tr>
+                    <th>No. Kwitansi & Tgl</th>
+                    <th>Santri</th>
+                    <th>Pos Pemasukan</th>
+                    <th>Sumber Dana</th>
+                    <th>Nominal</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyKeuangan">
+                  <tr><td colspan="6" style="text-align:center; padding:24px; color:var(--muted);">⏳ Memuat buku kas keuangan...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           TAB 2: DAFTAR SANTRI BELUM BAYAR SPP & PAYWALL (STAFF KEUANGAN & YAYASAN)
+      ====================================================================== -->
+      <div id="tabTunggakan" class="keu-tab-panel" style="display:none;">
+        <div class="panel-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+            <div>
+              <h3 style="margin:0; color:#b91c1c;">⚠️ Rekap Santri Belum Bayar SPP & Monitoring Paywall</h3>
+              <p style="margin:4px 0 0; font-size:13px; color:var(--muted);">
+                Menampilkan daftar santri aktif yang belum tercatat membayar <b>Uang SPP</b> pada bulan terpilih.
+              </p>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <label style="margin:0;">Cek Bulan:</label>
+              <input type="month" id="filterBulanTunggakan" onchange="analisaSantriBelumBayar()" style="width:auto; padding:8px 12px;">
             </div>
           </div>
 
-          <div style="overflow-x:auto; max-height:540px;">
+          <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:12px; padding:12px 16px; margin-bottom:14px; font-size:13px; color:#991b1b;">
+            Total Belum Bayar Bulan Terpilih: <b id="jumlahBelumBayarLabel">0 Santri</b> dari <b id="totalSantriAktifLabel">0 Santri</b> terdaftar.
+          </div>
+
+          <div style="overflow-x:auto; max-height:560px;">
             <table class="table-keu">
               <thead>
                 <tr>
-                  <th>No. Kwitansi & Tgl</th>
-                  <th>Santri</th>
-                  <th>Pos Pemasukan</th>
-                  <th>Sumber Dana</th>
-                  <th>Nominal</th>
-                  <th>Aksi</th>
+                  <th>NIS</th>
+                  <th>Nama Santri</th>
+                  <th>Jenjang / Kelas</th>
+                  <th>Status SPP Bulan Ini</th>
+                  <th>Pengingat Wali Santri</th>
                 </tr>
               </thead>
-              <tbody id="tbodyKeuangan">
-                <tr><td colspan="6" style="text-align:center; padding:24px; color:var(--muted);">⏳ Memuat buku kas keuangan...</td></tr>
+              <tbody id="tbodyBelumBayar">
+                <tr><td colspan="5" style="text-align:center; padding:20px;">⏳ Memuat analisa pembayaran santri...</td></tr>
               </tbody>
             </table>
           </div>
         </div>
-
       </div>
+
+      <!-- =====================================================================
+           TAB 3: KHUSUS YAYASAN (CASH OUT & POSISI KAS BERSIH)
+      ====================================================================== -->
+      <div id="tabYayasanOnly" class="keu-tab-panel" style="display:none;">
+        <div class="panel-box" style="border-color:#f59e0b;">
+          <span class="badge-confidential" style="background:#fef3c7; color:#92400e; border-color:#f59e0b;">🏛️ OTORITAS YAYASAN ONLY • KAS KELUAR (CASH OUT)</span>
+          <h3 style="margin:6px 0 4px; color:#0f172a;">Pengeluaran Operasional & Kontrol Kas Yayasan</h3>
+          <p style="margin:0 0 16px; font-size:13px; color:var(--muted);">
+            Modul ini tertutup bagi Staff Keuangan Cash-In dan hanya dapat diakses oleh Pembina / Pengurus Yayasan.
+          </p>
+          <div style="background:#fffbeb; border:1px dashed #d97706; border-radius:12px; padding:16px; font-size:13.5px; color:#78350f;">
+            <b>Siap Dihubungkan ke Sheet <code>db_cash_out</code>:</b><br>
+            Silakan kirimkan struktur kolom sheet pengeluaran (<code>db_cash_out</code>) dari Apps Script <code>Code.gs</code> jika sudah ada, agar form input pengeluaran dan neraca kas bersih langsung aktif di panel ini.
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -351,13 +473,11 @@
         </div>
       </div>
 
-      <!-- INFO & EDIT NOMOR WA WALI (JIKA DI DATABASE KOSONG) -->
       <div class="no-print" style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:10px 12px; margin-top:16px; font-size:12.5px;">
         <label style="margin:0 0 4px; color:#15803d;">📱 Nomor WhatsApp Wali Santri (Otomatis dari Database):</label>
         <input type="text" id="kwInputWaWali" placeholder="Contoh: 628123456789 (Bisa diedit manual jika belum terdaftar)" style="padding:8px 10px; font-size:13px;">
       </div>
 
-      <!-- TOMBOL AKSI: CETAK KWITANSI & KIRIM WA WALI SANTRI -->
       <div class="no-print kw-actions-grid">
         <button type="button" onclick="window.print()" class="btn-primary">🖨️ Cetak Kwitansi</button>
         <button type="button" onclick="kirimKwitansiKeWa()" class="btn-wa">📲 Kirim ke WA Wali Santri</button>
@@ -371,8 +491,23 @@
 
     let authKeuangan = null;
     let daftarTransaksiCache = [];
+    let daftarSantriCache = [];
     let mapHpWaliSantri = {};
     let kwitansiAktif = null;
+
+    function isYayasanUtama(roleStr) {
+      const r = String(roleStr || "").trim().toLowerCase();
+      return (r === "yayasan" || r === "super admin" || r === "admin pusat");
+    }
+
+    function isStaffKeuangan(roleStr) {
+      const r = String(roleStr || "").trim().toLowerCase();
+      return (r.includes("keuangan"));
+    }
+
+    function isRoleValid(roleStr) {
+      return isYayasanUtama(roleStr) || isStaffKeuangan(roleStr);
+    }
 
     function cekOtoritasAwal() {
       const savedKeu = sessionStorage.getItem("keuanganAuth");
@@ -400,11 +535,6 @@
       }
     }
 
-    function isRoleValid(roleStr) {
-      const r = String(roleStr || "").trim().toLowerCase();
-      return (r === "keuangan" || r === "yayasan");
-    }
-
     document.getElementById("formLoginKeuangan").addEventListener("submit", async function(e) {
       e.preventDefault();
       const btn = document.getElementById("btnLoginKeu");
@@ -422,7 +552,7 @@
             sessionStorage.setItem("keuanganAuth", JSON.stringify(json));
             aktifkanDashboardKeuangan(json);
           } else {
-            alert("⛔ AKSES DITOLAK!\nAkun Anda terdaftar sebagai '" + json.role + "'. Halaman ini hanya dapat dibuka oleh Staff Keuangan atau Pengurus Yayasan.");
+            alert("⛔ AKSES DITOLAK!\nAkun Anda terdaftar sebagai '" + json.role + "'. Halaman ini hanya dapat dibuka oleh Staff Keuangan (Cash-In) atau Pengurus Yayasan.");
           }
         } else {
           alert("Login gagal: " + json.message);
@@ -439,6 +569,17 @@
       location.reload();
     }
 
+    function pindahTabKeu(idTab, btnEl) {
+      document.querySelectorAll(".keu-tab-panel").forEach(el => el.style.display = "none");
+      document.querySelectorAll(".keu-tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.getElementById(idTab).style.display = "block";
+      btnEl.classList.add("active");
+
+      if (idTab === "tabTunggakan") {
+        analisaSantriBelumBayar();
+      }
+    }
+
     async function aktifkanDashboardKeuangan(user) {
       authKeuangan = user;
       document.getElementById("gateKeuangan").style.display = "none";
@@ -446,12 +587,25 @@
       document.getElementById("btnLogoutKeu").style.display = "inline-flex";
       document.getElementById("petugasAktifLabel").textContent = `${user.nama} (${user.role.toUpperCase()})`;
 
+      // Atur hak akses Tab Yayasan (Cash Out) vs Staff Keuangan (Cash In Only)
+      if (isYayasanUtama(user.role)) {
+        document.getElementById("btnTabYayasan").style.display = "inline-block";
+        document.getElementById("badgeLevelAkses").textContent = "🏛️ FULL ACCESS • YAYASAN (CASH IN & CASH OUT)";
+      } else {
+        document.getElementById("btnTabYayasan").style.display = "none";
+        document.getElementById("badgeLevelAkses").textContent = "💵 STAFF KEUANGAN • KHUSUS PEMASUKAN (CASH IN)";
+      }
+
       const now = new Date();
+      const bulanIni = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
       document.getElementById("keuTanggal").valueAsDate = now;
-      document.getElementById("filterKeuBulan").value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+      document.getElementById("filterKeuBulan").value = bulanIni;
+      document.getElementById("filterBulanTunggakan").value = bulanIni;
+      document.getElementById("labelTahunGrafik").textContent = now.getFullYear();
 
       await muatDaftarSantriKeu();
       await muatDataKeuangan();
+      await muatGrafikTahunan();
     }
 
     async function muatDaftarSantriKeu() {
@@ -460,6 +614,7 @@
         const res = await fetch(`${API_URL}?action=get_all_santri`);
         const json = await res.json();
         if (json.success && json.data.length > 0) {
+          daftarSantriCache = json.data;
           mapHpWaliSantri = {};
           json.data.forEach(s => {
             mapHpWaliSantri[String(s.nis).trim().toLowerCase()] = String(s.hpWali || "").trim();
@@ -491,6 +646,13 @@
 
     function formatRupiah(angka) {
       return "Rp " + Number(angka || 0).toLocaleString("id-ID");
+    }
+
+    function formatSingkat(angka) {
+      const n = Number(angka || 0);
+      if (n >= 1000000) return (n / 1000000).toFixed(1).replace(".0", "") + "jt";
+      if (n >= 1000) return Math.round(n / 1000) + "rb";
+      return n;
     }
 
     function resetFilterKeu() {
@@ -561,6 +723,110 @@
       }
     }
 
+    // GRAFIK PEMASUKAN BULANAN (1 TAHUN BERJALAN)
+    async function muatGrafikTahunan() {
+      if (!authKeuangan) return;
+      const wadah = document.getElementById("wadahGrafikCashIn");
+      wadah.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:var(--muted); font-size:13px;">⏳ Menyusun grafik pemasukan bulanan...</div>';
+
+      try {
+        const url = `${API_URL}?action=get_data_keuangan&authNip=${encodeURIComponent(authKeuangan.username)}&bulan=`;
+        const res = await fetch(url);
+        const json = await res.json();
+        if (!json.success) return;
+
+        const tahunIni = String(new Date().getFullYear());
+        const namaBulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+        const totalPerBulan = new Array(12).fill(0);
+
+        (json.transaksi || []).forEach(t => {
+          const tgl = String(t.tanggal || "");
+          if (tgl.startsWith(tahunIni)) {
+            const idxBln = parseInt(tgl.substring(5, 7), 10) - 1;
+            if (idxBln >= 0 && idxBln < 12) {
+              totalPerBulan[idxBln] += Number(t.nominal || 0);
+            }
+          }
+        });
+
+        const maxVal = Math.max(...totalPerBulan, 100000);
+        wadah.innerHTML = totalPerBulan.map((nilai, i) => {
+          const tinggiPersen = Math.max(4, Math.round((nilai / maxVal) * 100));
+          return `
+            <div class="bar-col">
+              <div class="bar-val">${nilai > 0 ? formatSingkat(nilai) : "-"}</div>
+              <div class="bar-fill" style="height:${tinggiPersen}%;" title="${namaBulan[i]}: ${formatRupiah(nilai)}"></div>
+              <div class="bar-lbl">${namaBulan[i]}</div>
+            </div>
+          `;
+        }).join("");
+      } catch (e) {
+        wadah.innerHTML = '<div style="grid-column:1/-1; color:red; font-size:12px;">Gagal memuat grafik bulanan.</div>';
+      }
+    }
+
+    // ANALISA DAFTAR SANTRI BELUM BAYAR SPP PADA BULAN TERPILIH
+    async function analisaSantriBelumBayar() {
+      if (!authKeuangan) return;
+      const bulanCek = document.getElementById("filterBulanTunggakan").value;
+      const tbody = document.getElementById("tbodyBelumBayar");
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">⏳ Membandingkan data santri dengan buku kas SPP...</td></tr>';
+
+      try {
+        const url = `${API_URL}?action=get_data_keuangan&authNip=${encodeURIComponent(authKeuangan.username)}&bulan=${encodeURIComponent(bulanCek)}`;
+        const res = await fetch(url);
+        const json = await res.json();
+        if (!json.success) return;
+
+        const nisSudahBayarSpp = new Set();
+        (json.transaksi || []).forEach(t => {
+          if (String(t.kategori || "").toLowerCase().includes("spp")) {
+            nisSudahBayarSpp.add(String(t.nis).trim().toLowerCase());
+          }
+        });
+
+        const daftarBelumBayar = daftarSantriCache.filter(s => {
+          const nisKey = String(s.nis || "").trim().toLowerCase();
+          return nisKey && !nisSudahBayarSpp.has(nisKey);
+        });
+
+        document.getElementById("totalSantriAktifLabel").textContent = `${daftarSantriCache.length} Santri`;
+        document.getElementById("jumlahBelumBayarLabel").textContent = `${daftarBelumBayar.length} Santri`;
+
+        if (daftarBelumBayar.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:24px; color:#0d7a5f; font-weight:bold;">✅ Alhamdulillah, seluruh santri sudah melunasi SPP bulan ini!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = daftarBelumBayar.map(s => {
+          const hp = String(s.hpWali || "").trim();
+          return `
+            <tr>
+              <td><b>${s.nis}</b></td>
+              <td><b>${s.nama}</b></td>
+              <td>${s.jenjang} ${s.kelas}</td>
+              <td><span class="badge-unpaid">Belum Tercatat SPP (${bulanCek})</span></td>
+              <td>
+                <button type="button" onclick="kirimPengingatSpp('${s.nama.replace(/'/g, "\\'")}', '${hp}', '${bulanCek}')" style="background:#16a34a; color:#fff; border:0; padding:6px 10px; border-radius:8px; font-size:11.5px; font-weight:bold; cursor:pointer;">
+                  📲 Ingatkan Wali
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat daftar tunggakan.</td></tr>';
+      }
+    }
+
+    function kirimPengingatSpp(namaSantri, hpRaw, periode) {
+      let hp = String(hpRaw || "").replace(/[^0-9]/g, "");
+      if (hp.startsWith("0")) hp = "62" + hp.slice(1);
+      const teks = `Assalamu'alaikum Warahmatullahi Wabarakatuh Ayah/Bunda wali dari ananda *${namaSantri}*.\n\nMenginformasikan dengan hormat bahwa administrasi *Uang SPP periode ${periode}* di PKBM Pelita Aushaf Indonesia belum tercatat masuk di sistem keuangan kami.\n\nApabila Ayah/Bunda sudah melakukan transfer, mohon berkenan mengirimkan bukti transfernya agar dapat segera kami terbitkan kwitansi resmi. Jazakumullah khairan katsiran.`;
+      const link = hp ? `https://wa.me/${hp}?text=${encodeURIComponent(teks)}` : `https://wa.me/?text=${encodeURIComponent(teks)}`;
+      window.open(link, "_blank");
+    }
+
     document.getElementById("formInputKeuangan").addEventListener("submit", async function(e) {
       e.preventDefault();
       if (!authKeuangan) return;
@@ -597,11 +863,10 @@
           document.getElementById("keuSubKategori").value = "";
           document.getElementById("keuKeterangan").value = "";
           
-          // Pastikan filter bulan mencakup tanggal transaksi yang baru disimpan agar langsung muncul
           document.getElementById("filterKeuBulan").value = payload.tanggal.substring(0, 7);
           await muatDataKeuangan();
+          await muatGrafikTahunan();
           
-          // Otomatis buka popup Kwitansi lengkap dengan tombol Cetak & Kirim WA
           const idxBaru = daftarTransaksiCache.findIndex(item => item.noKwitansi === json.noKwitansi);
           bukaKwitansi(idxBaru >= 0 ? idxBaru : 0);
         } else {
@@ -631,7 +896,6 @@
       document.getElementById("kwTanggal").textContent = t.tanggal;
       document.getElementById("kwPetugas").textContent = `( ${t.petugas} )`;
 
-      // Ambil nomor WA wali santri otomatis dari db_santri
       const hpDb = mapHpWaliSantri[String(t.nis).trim().toLowerCase()] || "";
       document.getElementById("kwInputWaWali").value = hpDb;
 
@@ -657,11 +921,11 @@ Nama Santri : *${kwitansiAktif.nama}*
 NIS / Kelas : ${kwitansiAktif.nis} (${kwitansiAktif.jenjangKelas})
 
 Rincian Pembayaran:
-• Pos : *${kwitansiAktif.kategori}*
-• Keterangan : ${kwitansiAktif.subKategori}
-• Nominal : *${formatRupiah(kwitansiAktif.nominal)}*
-• Metode / Rek : ${kwitansiAktif.sumber}
-• Catatan : ${kwitansiAktif.keterangan}
+- Pos : *${kwitansiAktif.kategori}*
+- Keterangan : ${kwitansiAktif.subKategori}
+- Nominal : *${formatRupiah(kwitansiAktif.nominal)}*
+- Metode / Rek : ${kwitansiAktif.sumber}
+- Catatan : ${kwitansiAktif.keterangan}
 ----------------------------------------
 Diterima oleh : ${kwitansiAktif.petugas}
 
