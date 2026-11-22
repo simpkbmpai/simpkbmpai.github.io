@@ -267,7 +267,7 @@
           </button>
         </div>
 
-        <!-- KARTU BUKU PENGHUBUNG TAHFIDZ & MENGAJI AL-QUR'AN (KESETARAAN & HS) -->
+        <!-- KARTU BUKU PENGHUBUNG TAHFIDZ & MENGAJI AL-QUR'AN -->
         <div class="tutor-card" id="cardQuran" style="border: 2px solid #059669; background: #ecfdf5;">
           <div>
             <div class="tutor-card-icon" style="background:#d1fae5; color:#047857;">📖</div>
@@ -1177,13 +1177,11 @@
     let activeTutor = null;
     const savedTutor = localStorage.getItem("tutorAuth") || sessionStorage.getItem("tutorAuth");
 
-    // HELPER: CEK KESESUAIAN UNIT SANTRI DENGAN PENEMPATAN TUTOR
     function isSantriSesuaiUnitTutor(jenjangSantri) {
       if (!activeTutor) return true;
       const role = (activeTutor.role || "").toLowerCase();
       const unit = (activeTutor.unit_penempatan || activeTutor.unit || "").toLowerCase();
 
-      // Pimpinan Yayasan, Super Admin, Kepala PKBM, Kurikulum bisa melihat seluruh santri
       if (role === "yayasan" || role === "super admin" || role.includes("kepala pkbm") || role.includes("kurikulum")) {
         return true;
       }
@@ -1207,7 +1205,6 @@
       return false;
     }
 
-    // ENGINE PENGATURAN MENU BERDASARKAN ROLE & UNIT PENEMPATAN
     function terapkanHakAksesPortal() {
       if (!activeTutor) return;
       const role = (activeTutor.role || "tutor").trim().toLowerCase();
@@ -1219,7 +1216,6 @@
       const isAdminYayasan = isTopYayasan || role.includes("admin yayasan");
       const isStaffKeuangan = role.includes("keuangan");
 
-      // Cakupan Unit Layanan
       const hasPaudDaycare = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("daycare") || unit.includes("paud");
       const hasPaketA      = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("paket a");
       const hasPaketB      = isTopYayasan || isKepalaPKBM || isKurikulum || unit.includes("paket b");
@@ -1230,26 +1226,22 @@
 
       const isPejabat = isTopYayasan || isKepalaPKBM || isKurikulum || isAdminYayasan || role.includes("kaur") || role.includes("wakil kepala");
 
-      // 1. Tampilkan Switcher Unit jika Pimpinan Lintas Unit
       if (isTopYayasan || isKepalaPKBM || isKurikulum) {
         document.getElementById("unitSwitcherBar").style.display = "flex";
       }
 
-      // 2. Modul Keuangan (Terpisah antara Yayasan Penuh vs Staff Keuangan Cash-In vs Admin Yayasan Non-Keuangan)
       document.getElementById("cardEksekutifYayasan").style.display = isTopYayasan ? "flex" : "none";
       document.getElementById("cardKeuanganYayasan").style.display = (isTopYayasan || isStaffKeuangan) ? "flex" : "none";
 
-      // 3. Modul Daycare & PAUD NF
       document.getElementById("cardBukuPenghubung").style.display = hasPaudDaycare ? "flex" : "none";
       const bolehAnalisaPaud = isTopYayasan || isKepalaPKBM || (hasPaudDaycare && role.includes("wakil kepala"));
       document.getElementById("cardAnalisaPaud").style.display = bolehAnalisaPaud ? "flex" : "none";
 
-      // 4. Modul Kesetaraan & HS (Sembunyikan dari Pengasuh/Tutor Daycare & PAUD murni)
-      document.getElementById("cardQuran").style.display = hasKesetaraan ? "flex" : "none";
+      // Kartu Tahfidz & Mengaji selalu tampil
+      document.getElementById("cardQuran").style.display = "flex";
       document.getElementById("cardScanMapel").style.display = hasKesetaraan ? "flex" : "none";
       document.getElementById("cardTargetPpi").style.display = hasInklusiPDPD ? "flex" : "none";
 
-      // 5. Sesuaikan Label & Deskripsi Cetak Raport Sesuai Jenjang Tutor
       if (hasPaudDaycare && !hasKesetaraan) {
         document.getElementById("titleCetakRaport").textContent = "Cetak Raport Perkembangan PAUD";
         document.getElementById("descCetakRaport").textContent = "Tarik rekap narasi capaian perkembangan harian & bulanan anak Daycare / PAUD NF.";
@@ -1261,13 +1253,11 @@
         document.getElementById("descCetakRaport").textContent = "Format otomatis menyesuaikan jenjang: Paket A (Kelas 1–3 vs 4–6), Paket B, Paket C, & HS.";
       }
 
-      // 6. Modul Pejabat / Manajerial
       document.getElementById("cardMonitoringKonseling").style.display = isPejabat ? "flex" : "none";
       document.getElementById("cardProfilUtuh").style.display = isPejabat ? "flex" : "none";
       document.getElementById("cardSupervisiTna").style.display = isPejabat ? "flex" : "none";
       document.getElementById("cardDirektoriJabatan").style.display = (isPejabat || isAdminYayasan) ? "flex" : "none";
 
-      // 7. Filter Pilihan Program Belajar di Modal Scan Mapel
       const selProg = document.getElementById("selectJenjangProgram");
       if (selProg && !isTopYayasan && !isKepalaPKBM && !isKurikulum) {
         Array.from(selProg.options).forEach(opt => {
@@ -1285,7 +1275,6 @@
       }
     }
 
-    // SWITCHER TAMPILAN UNIT (KHUSUS PEMBINA YAYASAN / KEPALA PKBM)
     function terapkanFilterTampilanUnit(mode) {
       if (mode === "ALL") {
         terapkanHakAksesPortal();
@@ -1296,7 +1285,7 @@
 
       document.getElementById("cardBukuPenghubung").style.display = isPaud ? "flex" : "none";
       document.getElementById("cardAnalisaPaud").style.display = isPaud ? "flex" : "none";
-      document.getElementById("cardQuran").style.display = !isPaud ? "flex" : "none";
+      document.getElementById("cardQuran").style.display = "flex";
       document.getElementById("cardScanMapel").style.display = !isPaud ? "flex" : "none";
       document.getElementById("cardTargetPpi").style.display = isInklusi ? "flex" : "none";
     }
@@ -1399,7 +1388,6 @@
         const res = await fetch(`${API_URL}?action=get_cctv_list&role=${encodeURIComponent(roleKirim)}&jenjang=${encodeURIComponent(jenjangKirim)}`);
         const json = await res.json();
 
-        // Filter tambahan di sisi klien untuk memastikan isolasi antarunit
         const daftarKamera = (json.data || []).filter(cam => {
           if (isTopPimpinan) return true;
           const camUnit = String(cam.jenjangAkses || "").toLowerCase();
@@ -1558,7 +1546,8 @@
           const json = await res.json();
           if (json.success && json.data.length > 0) {
             const santriUnit = json.data.filter(s => isSantriSesuaiUnitTutor(s.jenjang));
-            sel.innerHTML = santriUnit.map(s => `<option value="${s.nis}">${s.nama} (${s.jenjang} - ${s.kelas})</option>`).join("");
+            const daftarTampil = santriUnit.length > 0 ? santriUnit : json.data;
+            sel.innerHTML = daftarTampil.map(s => `<option value="${s.nis}">${s.nama} (${s.jenjang} - ${s.kelas})</option>`).join("");
             muatDataQuranSantri();
           } else {
             sel.innerHTML = '<option value="">Tidak ada data santri</option>';
