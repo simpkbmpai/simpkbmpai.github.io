@@ -53,6 +53,10 @@
       display: inline-block; background: var(--green-soft); color: var(--green-dark); border: 1px solid var(--line);
       padding: 5px 16px; border-radius: 999px; font-size: 13px; font-weight: 800; margin-bottom: 8px;
     }
+    .badge-fase {
+      display: inline-block; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;
+      padding: 5px 14px; border-radius: 999px; font-size: 12px; font-weight: 800; margin-bottom: 8px; margin-left: 6px;
+    }
 
     /* LOGIN */
     .lock-box {
@@ -194,21 +198,32 @@
       border-radius: 12px; font-weight: 800; font-size: 13px; text-decoration: none;
     }
     .btn-card:hover { background: var(--green-dark); }
+
+    @media print {
+      .no-print, .top-bar, .cctv-member-card, .dashboard-grid, #btnLogoutSiswa, #formTtdArea, .bp-checkin-box {
+        display: none !important;
+      }
+      body { background: #fff; }
+      .container { max-width: 100%; padding: 0; }
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="top-bar">
+    <div class="top-bar no-print">
       <a href="index.html" class="btn-nav">← Beranda Website</a>
       <a href="https://wa.me/6287751325199" target="_blank" class="btn-nav">Admin Sekolah WA</a>
     </div>
 
     <div class="hero">
       <img src="logo-pkbm.png" alt="Logo PKBM">
-      <div><span class="badge-user" id="userBadge">Portal Akademik & Wali Santri</span></div>
-      <h1>Buku Penghubung & Raport Digital Santri</h1>
-      <p>PKBM Pelita Aushaf Indonesia (Homeschooling & Pendidikan Kesetaraan)</p>
+      <div>
+        <span class="badge-user" id="userBadge">Portal Akademik & Wali Santri</span>
+        <span class="badge-fase" id="faseRaportBadge" style="display:none;">Format Rapor: -</span>
+      </div>
+      <h1 id="heroTitleSiswa">Buku Penghubung & Raport Digital Santri</h1>
+      <p>PKBM Pelita Aushaf Indonesia (Daycare, PAUD Non-Formal, Homeschooling & Pendidikan Kesetaraan)</p>
     </div>
 
     <!-- 1. LOGIN -->
@@ -231,7 +246,7 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-val" id="statHadir" style="color:#059669;">0</div>
-          <div class="stat-label">Sesi Hadir Belajar</div>
+          <div class="stat-label" id="lblStatHadir">Sesi Hadir Belajar</div>
         </div>
         <div class="stat-card">
           <div class="stat-val" id="statTerlambat" style="color:#ea580c;">0</div>
@@ -253,37 +268,32 @@
         <div id="listAbsenStatusContent" style="font-size:13px;"></div>
       </div>
 
-      <!-- 1A. LAYANAN PANTAUAN CCTV RUANG BELAJAR (KHUSUS MEMBER LOGIN) -->
-      <div class="cctv-member-card" id="cardCctvSiswa">
+      <!-- 1A. LAYANAN PANTAUAN CCTV RUANG BELAJAR (TERISOLASI PER UNIT ANANDA) -->
+      <div class="cctv-member-card no-print" id="cardCctvSiswa">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
           <div>
-            <h3 style="margin:0; color:#0369a1;">📹 Pantauan Langsung Kelas (CCTV)</h3>
-            <p style="margin:2px 0 0; font-size:13px; color:var(--muted);">Tersedia khusus Wali Santri pada hari <b>Senin – Jumat pukul 07.30 – 10.00 WIB</b>.</p>
+            <h3 style="margin:0; color:#0369a1;" id="titleCctvSiswa">📹 Pantauan Langsung Kelas (CCTV)</h3>
+            <p style="margin:2px 0 0; font-size:13px; color:var(--muted);" id="descCctvSiswa">Tersedia khusus Wali Santri sesuai unit belajar ananda pada jam operasional.</p>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
             <span id="cctvSiswaTimerBadge" style="display:none; background:#fef3c7; color:#92400e; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:800;">
               Sisa Tayang: <span id="cctvSiswaCountdown">05:00</span>
             </span>
             <button type="button" id="btnBukaCctvSiswa" onclick="muatCctvSiswa()" class="btn-action" style="background:#0284c7;">
-              ▶ Lihat Tayangan Kelas
+              ▶ Lihat Tayangan Unit Ananda
             </button>
           </div>
         </div>
 
-        <!-- Area Informasi / Pesan Jadwal -->
         <div id="cctvSiswaAlert" style="display:none; padding:12px 14px; border-radius:14px; font-size:13px; margin-bottom:12px;"></div>
-
-        <!-- Pilihan Kamera Sesuai Jenjang Santri -->
         <div id="cctvSiswaButtons" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;"></div>
 
-        <!-- Pemutar Video HLS (.m3u8) -->
         <div id="cctvSiswaVideoBox" style="display:none; position:relative; width:100%; max-width:780px; margin:auto; aspect-ratio:16/9; background:#0f172a; border-radius:16px; overflow:hidden; border:2px solid #bae6fd;">
           <video id="videoPlayerSiswa" controls autoplay muted playsinline style="width:100%; height:100%; object-fit:contain; background:#000;"></video>
           <div id="cctvSiswaCaption" style="position:absolute; top:12px; left:12px; background:rgba(15,23,42,0.75); color:#fff; padding:4px 12px; border-radius:99px; font-size:12px; font-weight:bold;">
             ● LIVE
           </div>
 
-          <!-- Overlay Otomatis Saat Sesi 5 Menit Berakhir -->
           <div id="cctvSiswaTimeoutOverlay" style="display:none; position:absolute; inset:0; background:rgba(15,23,42,0.92); color:#fff; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px;">
             <p style="font-size:14.5px; margin:0 0 12px; max-width:420px;">Sesi pemantauan 5 menit telah berakhir untuk menjaga kestabilan jaringan kelas.</p>
             <button type="button" onclick="muatCctvSiswa()" class="btn-action" style="background:#0284c7;">
@@ -293,18 +303,20 @@
         </div>
       </div>
 
-      <!-- 1B. BUKU PENGHUBUNG HARIAN DAYCARE & PAUD (CHECK-IN PAGI & LAPORAN HARIAN) -->
+      <!-- 1B. BUKU PENGHUBUNG HARIAN DAYCARE & PAUD (HANYA TAMPIL UNTUK SANTRI DAYCARE / PAUD NF) -->
       <div class="bp-daycare-card" id="cardBukuPenghubungSiswa">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
           <div>
             <h3 style="margin:0; color:#92400e;">🧸 Buku Penghubung Harian & Tumbuh Kembang</h3>
             <p style="margin:2px 0 0; font-size:13px; color:var(--muted);">Komunikasi harian orang tua & pengasuh: asupan makan, tidur siang, BAK/BAB, stimulasi, & mood anak.</p>
           </div>
-          <span id="badgeWellBeingOrtu" style="background:#dcfce7; color:#15803d; padding:5px 14px; border-radius:999px; font-size:12.5px; font-weight:800; display:none;">Well-Being Index: -</span>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span id="badgeWellBeingOrtu" style="background:#dcfce7; color:#15803d; padding:5px 14px; border-radius:999px; font-size:12.5px; font-weight:800; display:none;">Well-Being Index: -</span>
+            <button type="button" onclick="window.print()" class="btn-action no-print" style="background:#92400e;">🖨️ Cetak Raport PAUD</button>
+          </div>
         </div>
 
-        <!-- Form Check-In Pagi dari Rumah -->
-        <div class="bp-checkin-box">
+        <div class="bp-checkin-box no-print">
           <label style="font-size:13px; font-weight:800; color:#92400e; display:block; margin-bottom:6px;">🏡 Pesan Pagi Orang Tua untuk Ustadzah Hari Ini (Opsional):</label>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <input type="text" id="inputPesanOrtuPagi" placeholder="Contoh: Semalam bangun 2x, sudah sarapan roti, mohon ingatkan minum vitamin siang" style="flex-grow:1; min-width:220px; padding:10px 14px; border-radius:12px; border:1.5px solid #fcd34d; font-size:13.5px;">
@@ -312,7 +324,6 @@
           </div>
         </div>
 
-        <!-- Ringkasan Laporan Hari Terakhir -->
         <div id="areaLaporanBpTerbaru" style="display:none;">
           <div style="font-size:13px; font-weight:800; color:#0f766e; margin-bottom:8px;">📋 Laporan Observasi Terakhir (<span id="bpOrtuTglTerakhir">-</span>):</div>
           <div class="bp-today-grid">
@@ -340,7 +351,6 @@
             <div id="bpOrtuAlertStok" style="margin-top:6px; color:#b91c1c; font-weight:bold; display:none;"></div>
           </div>
 
-          <!-- Grafik Pola 14 Hari -->
           <div style="border:1px solid #e2e8f0; border-radius:16px; padding:14px; margin-bottom:14px;">
             <b style="font-size:13.5px; color:#92400e; display:block; margin-bottom:8px;">📈 Grafik Tren Mood, Kemandirian & Asupan Makan (14 Hari Terakhir)</b>
             <div style="height:200px; width:100%;">
@@ -348,7 +358,6 @@
             </div>
           </div>
 
-          <!-- Tabel Riwayat Harian -->
           <div style="overflow-x:auto;">
             <table class="jurnal-table">
               <thead>
@@ -370,13 +379,13 @@
       </div>
 
       <!-- 2. BUKU PENGHUBUNG TAHFIDZ & KEMAJUAN MENGAJI AL-QUR'AN -->
-      <div class="quran-card">
+      <div class="quran-card" id="cardQuranSiswa">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
           <div>
             <h3 style="margin:0; color:#065f46;">📖 Buku Penghubung Tahfidz & Kemajuan Mengaji</h3>
             <p style="margin:2px 0 0; font-size:13px; color:var(--muted);">Pantau capaian target bulanan, grafik pertumbuhan, & catatan ustadz/ustadzah.</p>
           </div>
-          <div>
+          <div class="no-print">
             <label style="font-size:12px; font-weight:bold; color:#065f46; display:block;">Bulan Laporan:</label>
             <input type="month" id="siswaQuranBulan" onchange="loadProgressQuranSiswa()" style="padding:7px 12px; border-radius:10px; border:1.5px solid #6ee7b7; font-weight:bold;">
           </div>
@@ -451,8 +460,8 @@
         </div>
       </div>
 
-      <!-- 3. GRAFIK CAPAIAN KARAKTER -->
-      <div class="chart-box">
+      <!-- 3. GRAFIK CAPAIAN KARAKTER (KHUSUS KESETARAAN & HS) -->
+      <div class="chart-box" id="cardChartKarakterSiswa">
         <div>
           <h3 style="margin:0 0 6px; color:var(--green-dark);">📊 Capaian Karakter & Pembiasaan</h3>
           <p style="margin:0 0 12px; font-size:13px; color:var(--muted);">Evaluasi perkembangan konsentrasi, adab, kemandirian, dan ketertiban belajar santri.</p>
@@ -466,27 +475,32 @@
         </div>
       </div>
 
-      <!-- 4. KOTAK DAFTAR TUGAS PEMBIASAAN -->
-      <div class="tugas-container">
+      <!-- 4. KOTAK DAFTAR TUGAS PEMBIASAAN (KHUSUS KESETARAAN & HS) -->
+      <div class="tugas-container" id="cardTugasSiswa">
         <h3 style="margin:0 0 12px; color:var(--orange);">📌 Tugas & Pembiasaan Mandiri di Rumah</h3>
         <div id="tugasListContainer">
           <div style="color:var(--muted); font-size:13px;">Belum ada tugas/pembiasaan baru dari pengajar.</div>
         </div>
       </div>
 
-      <!-- 5. TABEL JURNAL PELAJARAN & RAPORT DETAIL -->
-      <div class="raport-card">
+      <!-- 5. TABEL JURNAL PELAJARAN & RAPORT DETAIL (ADAPTIF SESUAI JENJANG & KELAS) -->
+      <div class="raport-card" id="cardRaportDetailSiswa">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
           <div>
-            <label style="font-size:13px; font-weight:bold; color:var(--green-dark);">Buku Penghubung Pelajaran (Pilih Periode Bulan):</label>
-            <select id="filterBulanSelect" style="padding:8px 14px; border-radius:12px; border:1.5px solid var(--line); font-weight:bold;">
+            <h3 style="margin:0 0 4px; color:var(--green-dark);" id="judulRaportJenjang">📑 Raport Perkembangan & Buku Penghubung</h3>
+            <label style="font-size:13px; font-weight:bold; color:var(--muted);">Pilih Periode Bulan:</label>
+            <select id="filterBulanSelect" class="no-print" style="padding:8px 14px; border-radius:12px; border:1.5px solid var(--line); font-weight:bold;">
               <option value="all">-- Semua Riwayat --</option>
             </select>
           </div>
-          <button onclick="window.print()" class="btn-action" style="background:#334155;">🖨️ Cetak Raport (PDF)</button>
+          <button onclick="window.print()" class="btn-action no-print" style="background:#334155;">🖨️ Cetak Raport (PDF)</button>
         </div>
 
-        <div style="overflow-x:auto;">
+        <div id="infoFormatRaporBox" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:10px 14px; font-size:12.5px; color:#334155; margin-bottom:12px;">
+          Standar Penilaian: -
+        </div>
+
+        <div style="overflow-x:auto;" id="wrapperTabelMapel">
           <table class="jurnal-table">
             <thead>
               <tr>
@@ -533,15 +547,15 @@
       </div>
 
       <!-- 7. LAYANAN & FASILITAS LAINNYA -->
-      <div class="dashboard-grid">
-        <div class="action-card">
+      <div class="dashboard-grid no-print">
+        <div class="action-card" id="cardCbtSiswa">
           <div>
             <h4>💻 Ruang Ujian Online (CBT)</h4>
-            <p>Evaluasi berkala daring resmi santri sesuai tingkatan.</p>
+            <p>Evaluasi berkala daring resmi santri sesuai tingkatan kesetaraan.</p>
           </div>
           <a href="ujian.html" class="btn-card">Masuk Ujian CBT →</a>
         </div>
-        <div class="action-card">
+        <div class="action-card" id="cardModulSiswa">
           <div>
             <h4>📁 Modul & Materi Belajar</h4>
             <p>Akses arsip materi, modul ajar, dan panduan belajar.</p>
@@ -557,7 +571,7 @@
         </div>
       </div>
 
-      <div style="text-align: right; margin-top:20px;">
+      <div class="no-print" style="text-align: right; margin-top:20px;">
         <button id="btnLogoutSiswa" style="color:var(--danger); background:none; border:0; font-weight:800; cursor:pointer; text-decoration:underline;">🔒 Keluar dari Akun</button>
       </div>
 
@@ -602,38 +616,138 @@
       location.reload();
     });
 
+    // DETEKSI KATEGORI UNIT & FORMAT RAPORT BERDASARKAN JENJANG + KELAS SANTRI
+    function analisaProfilJenjangSantri(data) {
+      const jRaw = String(data.jenjang || "").trim().toLowerCase();
+      const kRaw = String(data.kelas || "").trim().toLowerCase();
+      const angkaKelas = parseInt(kRaw.replace(/[^0-9]/g, ""), 10) || 0;
+
+      const isDaycare = jRaw.includes("daycare") || jRaw.includes("baby") || jRaw.includes("batita");
+      const isPaud = jRaw.includes("paud") || jRaw.includes("kb") || jRaw.includes("tk") || jRaw.includes("pg");
+      const isPaudOrDaycare = isDaycare || isPaud;
+
+      let labelFormat = "Format Rapor Kesetaraan";
+      let keteranganStandar = "";
+
+      if (isDaycare) {
+        labelFormat = "Rapor Perkembangan Daycare (Pengasuhan & Stimulasi Dini)";
+        keteranganStandar = "Penilaian kualitatif & narasi tumbuh kembang harian: Asupan Gizi, Pola Tidur, Toilet Training, Motorik, Bahasa, Sosial-Emosional, dan Pembiasaan Adab.";
+      } else if (isPaud) {
+        labelFormat = "Rapor Capaian Pembelajaran PAUD Non-Formal (Fase Fondasi)";
+        keteranganStandar = "Penilaian narasi capaian 6 aspek perkembangan anak usia dini (Nilai Agama & Budi Pekerti, Jati Diri, Dasar Literasi & STEAM).";
+      } else if (jRaw.includes("paket a")) {
+        if (angkaKelas >= 1 && angkaKelas <= 3) {
+          labelFormat = "Rapor Paket A — Fase A/B (Kelas 1–3)";
+          keteranganStandar = "Kurikulum Merdeka Kesetaraan (Kelas 1–3): Deskripsi kualitatif perkembangan literasi, numerasi dasar, pembiasaan ibadah, & karakter kemandirian.";
+        } else {
+          labelFormat = "Rapor Paket A — Fase B/C (Kelas 4–6)";
+          keteranganStandar = "Kurikulum Merdeka Kesetaraan (Kelas 4–6): Nilai kuantitatif mata pelajaran + deskripsi capaian kompetensi & proyek penguatan profil pelajar.";
+        }
+      } else if (jRaw.includes("paket b")) {
+        labelFormat = "Rapor Kesetaraan Paket B (Setara SMP • Kelas 7–9)";
+        keteranganStandar = "Kurikulum Kesetaraan Menengah Pertama: Nilai mata pelajaran, Satuan Kredit Kompetensi (SKK), Pemberdayaan, & Keterampilan.";
+      } else if (jRaw.includes("paket c")) {
+        labelFormat = "Rapor Kesetaraan Paket C (Setara SMA • Kelas 10–12)";
+        keteranganStandar = "Kurikulum Kesetaraan Menengah Atas: Nilai mata pelajaran wajib & pilihan peminatan, SKK, serta Keterampilan Vokasi.";
+      } else if (jRaw.includes("hs") || jRaw.includes("home")) {
+        labelFormat = "Rapor Home Schooling (Mandiri & Terjadwal)";
+        keteranganStandar = "Laporan capaian belajar terstruktur sesuai jenjang & kurikulum individual Home Schooling PKBM Pelita Aushaf Indonesia.";
+      }
+
+      return { isDaycare, isPaud, isPaudOrDaycare, labelFormat, keteranganStandar };
+    }
+
     async function tampilkanDashboard(data) {
       document.getElementById("loginGate").style.display = "none";
       document.getElementById("siswaDashboard").style.display = "block";
       
       let jStr = data.jenjang || "Paket A";
       if (jStr.toUpperCase().includes("PAT") || jStr.toUpperCase().includes("PDPD")) {
-        jStr = "Program Kesetaraan & Pengembangan";
+        jStr = "Program Kesetaraan & Pengembangan (Inklusi)";
       }
-      let kStr = data.kelas || "Kelas 1";
+      let kStr = data.kelas || "-";
 
       document.getElementById("userBadge").textContent = `👤 Ananda: ${data.nama} (${jStr} • ${kStr})`;
+
+      const profilUnit = analisaProfilJenjangSantri(data);
+      const badgeFase = document.getElementById("faseRaportBadge");
+      badgeFase.style.display = "inline-block";
+      badgeFase.textContent = `📄 ${profilUnit.labelFormat}`;
+      document.getElementById("judulRaportJenjang").textContent = `📑 ${profilUnit.labelFormat}`;
+      document.getElementById("infoFormatRaporBox").innerHTML = `<b>Standar Penilaian Jenjang Ini:</b> ${profilUnit.keteranganStandar}`;
+
+      // Isolasi Tampilan Antara Daycare/PAUD vs Kesetaraan/HS
+      if (profilUnit.isPaudOrDaycare) {
+        document.getElementById("heroTitleSiswa").textContent = "Buku Penghubung Harian & Raport Tumbuh Kembang";
+        document.getElementById("lblStatHadir").textContent = "Hari Hadir";
+        document.getElementById("cardBukuPenghubungSiswa").style.display = "block";
+        document.getElementById("cardQuranSiswa").style.display = "none";
+        document.getElementById("cardChartKarakterSiswa").style.display = "none";
+        document.getElementById("cardTugasSiswa").style.display = "none";
+        document.getElementById("wrapperTabelMapel").style.display = "none";
+        document.getElementById("cardCbtSiswa").style.display = "none";
+        document.getElementById("cardModulSiswa").style.display = "none";
+        document.getElementById("titleCctvSiswa").textContent = "📹 Pantauan CCTV Ruang Daycare & PAUD NF";
+        document.getElementById("descCctvSiswa").textContent = "Khusus Wali Santri Daycare & PAUD NF: memantau aktivitas bermain & belajar ananda di unit PAUD/Daycare.";
+      } else {
+        document.getElementById("cardBukuPenghubungSiswa").style.display = "none";
+        document.getElementById("cardQuranSiswa").style.display = "block";
+        document.getElementById("cardChartKarakterSiswa").style.display = "grid";
+        document.getElementById("cardTugasSiswa").style.display = "block";
+        document.getElementById("wrapperTabelMapel").style.display = "block";
+        document.getElementById("cardCbtSiswa").style.display = "flex";
+        document.getElementById("cardModulSiswa").style.display = "flex";
+        document.getElementById("titleCctvSiswa").textContent = "📹 Pantauan CCTV Ruang Kelas Kesetaraan";
+        document.getElementById("descCctvSiswa").textContent = "Khusus Wali Santri Kesetaraan (Senin – Jumat pukul 07.30 – 10.00 WIB).";
+      }
 
       const now = new Date();
       document.getElementById("siswaQuranBulan").value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 
-      loadBukuPenghubungSiswa(data.nis);
-      loadProgressQuranSiswa();
+      if (profilUnit.isPaudOrDaycare) {
+        loadBukuPenghubungSiswa(data.nis);
+      } else {
+        loadProgressQuranSiswa();
+      }
       loadDataRaport(data.nis);
       
       setTimeout(initCanvasSignature, 150);
     }
 
-    // ================= ENGINE PANTAUAN CCTV SISWA / WALI MURID =================
+    // ================= ENGINE PANTAUAN CCTV SISWA / WALI MURID (TERISOLASI KETAT ANTARUNIT) =================
     let hlsSiswaInstance = null;
     let cctvSiswaTimer = null;
 
     function petakanJenjangCctv(jenjangRaw) {
       const j = String(jenjangRaw || "").trim().toLowerCase();
-      if (j.includes("daycare") || j.includes("baby")) return "Daycare";
+      if (j.includes("daycare") || j.includes("baby") || j.includes("batita")) return "Daycare";
       if (j.includes("paud") || j.includes("kb") || j.includes("tk") || j.includes("pg")) return "PAUD";
+      if (j.includes("paket a")) return "Paket A";
+      if (j.includes("paket b")) return "Paket B";
+      if (j.includes("paket c")) return "Paket C";
+      if (j.includes("hs") || j.includes("home")) return "HS";
       if (j.includes("paket") || j.includes("kesetaraan") || j.includes("pat") || j.includes("pdpd")) return "Kesetaraan";
       return jenjangRaw || "PAUD";
+    }
+
+    function isKameraSesuaiUnitSantri(camJenjangRaw, santriJenjangRaw) {
+      const camU = String(camJenjangRaw || "").toLowerCase();
+      const sU = String(santriJenjangRaw || "").toLowerCase();
+      const santriIsPaud = /daycare|paud|kb|tk|pg|baby|batita/.test(sU);
+      const camIsPaud = /daycare|paud|kb|tk|pg|baby|batita/.test(camU);
+
+      // Isolasi mutlak: Ortu Daycare/PAUD hanya lihat CCTV Daycare/PAUD, Ortu Kesetaraan tidak boleh lihat CCTV Daycare/PAUD
+      if (santriIsPaud) {
+        return camIsPaud;
+      } else {
+        if (camIsPaud) return false;
+        if (camU === "all" || camU === "umum" || camU.includes("kesetaraan")) return true;
+        if (sU.includes("paket a") && camU.includes("paket a")) return true;
+        if (sU.includes("paket b") && camU.includes("paket b")) return true;
+        if (sU.includes("paket c") && camU.includes("paket c")) return true;
+        if ((sU.includes("hs") || sU.includes("home")) && camU.includes("hs")) return true;
+        return false;
+      }
     }
 
     async function muatCctvSiswa() {
@@ -660,20 +774,22 @@
         const res = await fetch(`${API_URL}?action=get_cctv_list&role=santri&jenjang=${encodeURIComponent(jenjangTarget)}`);
         const json = await res.json();
 
-        if (!json.success || !json.data || json.data.length === 0) {
+        const daftarKameraValid = (json.data || []).filter(cam => isKameraSesuaiUnitSantri(cam.jenjangAkses, currentSantri.jenjang));
+
+        if (!json.success || daftarKameraValid.length === 0) {
           alertBox.style.background = "#fef3c7";
           alertBox.style.color = "#92400e";
           alertBox.style.border = "1px solid #fde68a";
           alertBox.innerHTML = json.pesanJadwal
             ? `<b>⏰ Di Luar Jam Tayang:</b> ${json.pesanJadwal}<br><small>(Waktu sistem saat ini: ${json.waktuServer})</small>`
-            : `Saat ini belum ada kamera kelas aktif untuk jenjang <b>${jenjangTarget}</b>.`;
+            : `Saat ini belum ada kamera kelas aktif yang tersedia untuk unit <b>${jenjangTarget}</b>.`;
           return;
         }
 
         alertBox.style.display = "none";
         videoBox.style.display = "block";
 
-        json.data.forEach((cam, idx) => {
+        daftarKameraValid.forEach((cam, idx) => {
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "btn-cam-siswa" + (idx === 0 ? " active" : "");
@@ -686,7 +802,7 @@
           btnContainer.appendChild(btn);
         });
 
-        putarStreamCctvSiswa(json.data[0].urlStream, json.data[0].namaRuangan);
+        putarStreamCctvSiswa(daftarKameraValid[0].urlStream, daftarKameraValid[0].namaRuangan);
       } catch (err) {
         alertBox.style.background = "#fee2e2";
         alertBox.style.color = "#b91c1c";
@@ -723,7 +839,6 @@
         });
       }
 
-      // Batasi 5 menit (300 detik) per sesi tonton agar hemat kuota & bandwidth kelas
       if (cctvSiswaTimer) clearInterval(cctvSiswaTimer);
       timerBadge.style.display = "inline-block";
       let sisaDetik = 300;
@@ -810,7 +925,6 @@
           </tr>
         `).join("");
 
-        // Render Grafik 14 Hari (urutan kronologis)
         const kronologis = [...riwayat].reverse();
         const ctx = document.getElementById("siswaBpChart").getContext("2d");
         if (bpChartSiswaInstance) bpChartSiswaInstance.destroy();
@@ -959,7 +1073,6 @@
         document.getElementById("statIzin").textContent = json.stats.totalIzin || 0;
         document.getElementById("statAlpa").textContent = json.stats.totalAlpa || 0;
 
-        // Tampilkan rincian tanggal ketidakhadiran / keterlambatan jika ada
         if (json.riwayatAbsenStatus && json.riwayatAbsenStatus.length > 0) {
           document.getElementById("boxRiwayatAbsenStatus").style.display = "block";
           document.getElementById("listAbsenStatusContent").innerHTML = json.riwayatAbsenStatus.map(a => `
@@ -969,7 +1082,7 @@
           `).join("");
         }
 
-        // Tampilkan jurnal PPI jika santri memiliki catatan program PPI
+        // Tampilkan jurnal PPI jika santri memiliki catatan program PPI (Santri PDPD/Inklusi)
         if (json.riwayatPpi && json.riwayatPpi.length > 0) {
           document.getElementById("cardPpiSiswa").style.display = "block";
           document.getElementById("tbodyPpiSiswa").innerHTML = json.riwayatPpi.map(p => `
