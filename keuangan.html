@@ -230,7 +230,7 @@
             </select>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; font-size:12.5px;">
               <div style="background:#f8fafc; padding:6px 10px; border-radius:8px; border:1px solid #e2e8f0;">
-                NIS: <b id="posInfoNis">-</b> • Status: <span class="badge-lunas">Aktif</span>
+                NIS / NISN: <b id="posInfoNis">-</b>
               </div>
               <div style="background:#f8fafc; padding:6px 10px; border-radius:8px; border:1px solid #e2e8f0;">
                 Kelas: <b id="posInfoKelas">-</b>
@@ -402,21 +402,29 @@
       </div>
 
       <!-- =====================================================================
-           TAB 2: TAMBAH SANTRI BARU (PPDB OLEH STAFF KEUANGAN)
+           TAB 2: TAMBAH SANTRI BARU (PPDB + NISN)
       ====================================================================== -->
       <div id="tabTambahSantri" class="keu-tab-panel" style="display:none;">
         <div class="main-grid">
           <div class="panel-box" style="border-top:4px solid #0d7a5f;">
             <h3 style="margin:0 0 4px; color:#065f46;">➕ Input Data Santri Baru (PPDB)</h3>
             <p style="margin:0 0 14px; font-size:12.5px; color:var(--muted);">
-              Simpan biodata santri baru ke database <b>db_santri</b>. Setelah tersimpan, santri otomatis muncul di Kasir Pembayaran untuk transaksi Uang Pendaftaran & SPP.
+              Simpan biodata santri baru ke database <b>db_santri</b>. Kolom NISN otomatis tersimpan di kolom I tanpa mengubah struktur database lama.
             </p>
 
             <form id="formTambahSantriBaru">
-              <label>Nomor Induk Santri (NIS):</label>
-              <input type="text" id="ppdbNis" placeholder="Contoh: 2627001" required>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div>
+                  <label>Nomor Induk Santri (NIS) *:</label>
+                  <input type="text" id="ppdbNis" placeholder="Contoh: 2627001" required>
+                </div>
+                <div>
+                  <label>NISN (Opsional):</label>
+                  <input type="text" id="ppdbNisn" placeholder="10 digit NISN (jika ada)">
+                </div>
+              </div>
 
-              <label>Nama Lengkap Santri:</label>
+              <label>Nama Lengkap Santri *:</label>
               <input type="text" id="ppdbNama" placeholder="Nama lengkap sesuai akta/KK" required>
 
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -469,14 +477,14 @@
                 <h3 style="margin:0; color:#0f172a;">📋 Daftar Santri Terdaftar (`db_santri`)</h3>
                 <p style="margin:2px 0 0; font-size:12.5px; color:var(--muted);">Total terdaftar: <b id="lblTotalSantriDb">0 Santri</b></p>
               </div>
-              <input type="text" id="cariSantriDbInput" oninput="renderTabelSantriDb()" placeholder="Cari NIS / Nama Santri..." style="width:220px;">
+              <input type="text" id="cariSantriDbInput" oninput="renderTabelSantriDb()" placeholder="Cari NIS / NISN / Nama Santri..." style="width:230px;">
             </div>
 
             <div style="overflow-x:auto; max-height:460px;">
               <table class="table-keu">
                 <thead>
                   <tr>
-                    <th>NIS</th>
+                    <th>NIS / NISN</th>
                     <th>Nama Lengkap Santri</th>
                     <th>Jenjang</th>
                     <th>Kelas</th>
@@ -961,7 +969,7 @@
           json.data.forEach(s => { mapHpWaliSantri[String(s.nis).trim().toLowerCase()] = String(s.hpWali || "").trim(); });
 
           const optHtml = '<option value="">-- Pilih Nama Santri --</option>' +
-            json.data.map(s => `<option value="${s.nis}">${s.nama} [${s.nis}] — ${s.jenjang} ${s.kelas}</option>`).join("");
+            json.data.map(s => `<option value="${s.nis}">${s.nama} [${s.nis}${s.nisn ? " / NISN: " + s.nisn : ""}] — ${s.jenjang} ${s.kelas}</option>`).join("");
           document.getElementById("posSelectSantri").innerHTML = optHtml;
           document.getElementById("khsSelectSantri").innerHTML = optHtml;
 
@@ -1016,6 +1024,7 @@
       btn.disabled = true; btn.textContent = "⏳ Menyimpan ke db_santri...";
 
       const nis = document.getElementById("ppdbNis").value.trim();
+      const nisn = document.getElementById("ppdbNisn").value.trim();
       const nama = document.getElementById("ppdbNama").value.trim();
       const jenjang = document.getElementById("ppdbJenjang").value;
       const kelas = document.getElementById("ppdbKelas").value;
@@ -1029,7 +1038,7 @@
           body: JSON.stringify({
             action: "tambah_santri_baru",
             authNip: authKeuangan.username,
-            nis: nis, nama: nama, jenjang: jenjang, kelas: kelas, hpWali: hpWali, password: pass
+            nis: nis, nisn: nisn, nama: nama, jenjang: jenjang, kelas: kelas, hpWali: hpWali, password: pass
           })
         });
         const json = await res.json();
@@ -1061,14 +1070,18 @@
       const key = document.getElementById("cariSantriDbInput").value.trim().toLowerCase();
 
       const filtered = daftarSantriCache.filter(s =>
-        !key || s.nama.toLowerCase().includes(key) || String(s.nis).toLowerCase().includes(key) || s.jenjang.toLowerCase().includes(key)
+        !key ||
+        s.nama.toLowerCase().includes(key) ||
+        String(s.nis).toLowerCase().includes(key) ||
+        String(s.nisn || "").toLowerCase().includes(key) ||
+        s.jenjang.toLowerCase().includes(key)
       );
 
       tbody.innerHTML = filtered.length === 0
         ? '<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--muted);">Tidak ada santri yang cocok.</td></tr>'
         : filtered.slice().reverse().map(s => `
           <tr>
-            <td><b>${s.nis}</b></td>
+            <td><b>${s.nis}</b><br><small style="color:var(--muted);">NISN: ${s.nisn || "-"}</small></td>
             <td><b>${s.nama}</b></td>
             <td>${s.jenjang}</td>
             <td>${s.kelas}</td>
@@ -1150,7 +1163,7 @@
         return;
       }
 
-      document.getElementById("posInfoNis").textContent = santri.nis;
+      document.getElementById("posInfoNis").textContent = `${santri.nis} / ${santri.nisn || "-"}`;
       document.getElementById("posInfoKelas").textContent = `[${ta}] ${santri.jenjang} ${santri.kelas}`;
       document.getElementById("posInfoWa").textContent = santri.hpWali || "-";
 
