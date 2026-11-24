@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sistem Keuangan Santri & Yayasan (Terbatas) - PKBM Pelita Aushaf</title>
+  <title>Sistem Keuangan Santri (Cash-In, Angsuran & Kenaikan Kelas) - PKBM Pelita Aushaf</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
 
   <style>
@@ -13,6 +13,7 @@
       --gold-bg: #fef3c7;
       --green: #0d7a5f;
       --green-dark: #0a5c48;
+      --blue: #2563eb;
       --line: #cbd5e1;
       --text: #1e293b;
       --muted: #64748b;
@@ -33,7 +34,7 @@
     .btn-nav {
       display: inline-flex; align-items: center; gap: 6px; color: var(--navy); text-decoration: none;
       font-weight: 800; font-size: 13px; background: #fff; padding: 9px 16px; border-radius: 999px;
-      border: 1.5px solid var(--line);
+      border: 1.5px solid var(--line); cursor: pointer;
     }
 
     /* HEADER EKSEKUTIF */
@@ -61,12 +62,6 @@
     .keu-tab-btn.active {
       background: #0f172a; color: #fff; border-color: #0f172a;
     }
-    .keu-tab-btn.tab-yayasan {
-      border-color: #f59e0b; color: #92400e; background: #fffbeb;
-    }
-    .keu-tab-btn.tab-yayasan.active {
-      background: #b45309; color: #fff; border-color: #b45309;
-    }
 
     /* LOCK SCREEN */
     .lock-screen {
@@ -87,7 +82,8 @@
     .btn-primary:hover { background: #1e293b; }
     .btn-emerald { background: var(--green); color: #fff; border: 0; padding: 12px 18px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; width: 100%; }
     .btn-emerald:hover { background: var(--green-dark); }
-    .btn-danger { background: var(--danger); color: #fff; border: 0; padding: 12px 18px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; width: 100%; }
+    .btn-blue { background: var(--blue); color: #fff; border: 0; padding: 12px 18px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; width: 100%; }
+    .btn-amber { background: #d97706; color: #fff; border: 0; padding: 12px 18px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; }
     .btn-wa {
       background: #16a34a; color: #fff; border: 0; padding: 12px 18px; border-radius: 12px;
       font-weight: 800; font-size: 14px; cursor: pointer; width: 100%; text-decoration: none;
@@ -134,12 +130,12 @@
     .bar-lbl { font-size: 11px; font-weight: 700; color: #64748b; margin-top: 6px; }
 
     /* LAYOUT UTAMA: FORM INPUT & TABEL RIWAYAT */
-    .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 20px; align-items: start; }
+    .main-grid { display: grid; grid-template-columns: 390px 1fr; gap: 20px; align-items: start; }
     @media(max-width: 960px) { .main-grid { grid-template-columns: 1fr; } }
 
     .panel-box {
       background: #fff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 22px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.04); margin-bottom: 20px;
     }
 
     .table-keu { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
@@ -152,7 +148,13 @@
     .src-bsi { background: #ccfbf1; color: #0f766e; }
     .src-bca { background: #dbeafe; color: #1d4ed8; }
     .src-mandiri { background: #fef9c3; color: #a16207; }
-    .badge-unpaid { background: #fee2e2; color: #b91c1c; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; }
+    .badge-lunas { background: #dcfce7; color: #15803d; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; display: inline-block; }
+    .badge-unpaid { background: #fee2e2; color: #b91c1c; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; display: inline-block; }
+    .badge-angsur { background: #fef3c7; color: #b45309; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; display: inline-block; }
+
+    .calc-box {
+      background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 10px 12px; margin-top: 10px; font-size: 12.5px;
+    }
 
     /* MODAL KWITANSI PRINT */
     .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.7); z-index: 999; display: none; align-items: center; justify-content: center; padding: 16px; }
@@ -175,16 +177,19 @@
 
   <div class="container">
     <div class="top-bar no-print">
-      <a href="portal-tutor.html" class="btn-nav">← Kembali ke Portal Utama</a>
-      <button onclick="logoutKeuangan()" id="btnLogoutKeu" class="btn-nav" style="color:var(--danger); border-color:#fca5a5; cursor:pointer; display:none;">🔒 Kunci & Keluar Sesi</button>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <a href="portal-tutor.html" class="btn-nav">← Kembali ke Portal Utama</a>
+        <a href="yayasan-keuangan.html" id="linkMenuYayasan" class="btn-nav" style="display:none; background:#fffbeb; border-color:#f59e0b; color:#92400e;">🏛️ Modul Yayasan (Cash-Out & Neraca)</a>
+      </div>
+      <button onclick="logoutKeuangan()" id="btnLogoutKeu" class="btn-nav" style="color:var(--danger); border-color:#fca5a5; display:none;">🔒 Kunci & Keluar Sesi</button>
     </div>
 
-    <!-- GERBANG OTENTIKASI KHUSUS KEUANGAN & YAYASAN -->
+    <!-- GERBANG OTENTIKASI KHUSUS STAFF KEUANGAN & YAYASAN -->
     <div id="gateKeuangan" class="lock-screen">
       <div style="font-size:40px; margin-bottom:10px;">🔐</div>
-      <h2 style="margin:0 0 6px; color:#0f172a;">Akses Terbatas: Keuangan & Yayasan</h2>
+      <h2 style="margin:0 0 6px; color:#0f172a;">Akses Terbatas: Staff Keuangan</h2>
       <p style="margin:0 0 18px; font-size:13px; color:var(--muted);">
-        Database keuangan santri bersifat rahasia. Hanya akun dengan otoritas <b>Staff Keuangan</b> atau <b>Pengurus Yayasan</b> yang diizinkan masuk.
+        Modul Pemasukan (Cash-In), Status Angsuran, Master Tarif/Diskon, & Kenaikan Kelas Santri.
       </p>
       <form id="formLoginKeuangan">
         <input type="text" id="keuUser" class="input-field" placeholder="Username / NIP Otoritas" style="margin-bottom:12px;" required>
@@ -193,14 +198,14 @@
       </form>
     </div>
 
-    <!-- DASHBOARD UTAMA KEUANGAN -->
+    <!-- DASHBOARD UTAMA STAFF KEUANGAN -->
     <div id="dashboardKeuangan" style="display:none;">
       
       <div class="exec-header no-print">
         <div>
-          <span class="badge-confidential" id="badgeLevelAkses">🔒 CONFIDENTIAL • KEUANGAN & YAYASAN</span>
-          <h1 style="margin:0; font-size:23px;">Database Pemasukan & Kas Pendidikan Santri</h1>
-          <p style="margin:4px 0 0; font-size:13px; color:#cbd5e1;">PKBM Pelita Aushaf Indonesia • Pencatatan Terintegrasi Rekening Operasional</p>
+          <span class="badge-confidential" id="badgeLevelAkses">💵 STAFF KEUANGAN • CASH-IN, ANGSURAN & DATA SANTRI</span>
+          <h1 style="margin:0; font-size:23px;">Pemasukan Santri, Angsuran & Kenaikan Kelas</h1>
+          <p style="margin:4px 0 0; font-size:13px; color:#cbd5e1;">PKBM Pelita Aushaf Indonesia • Pencatatan Cash-In, Tarif Normal/Diskon & Mutasi Kelas</p>
         </div>
         <div style="text-align:right; font-size:13px;">
           <div style="color:#94a3b8;">Petugas Aktif:</div>
@@ -208,15 +213,16 @@
         </div>
       </div>
 
-      <!-- TAB MENU KEUANGAN (TERPISAH ANTARA STAFF CASH IN VS YAYASAN) -->
+      <!-- TAB MENU STAFF KEUANGAN -->
       <div class="keu-tabs no-print">
-        <button type="button" class="keu-tab-btn active" onclick="pindahTabKeu('tabCashIn', this)">💵 Kas Masuk (Cash In) & Rekap Bulanan</button>
-        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabTunggakan', this)">⚠️ Data Belum Bayar SPP & Paywall</button>
-        <button type="button" id="btnTabYayasan" class="keu-tab-btn tab-yayasan" style="display:none;" onclick="pindahTabKeu('tabYayasanOnly', this)">🏛️ Kas Keluar (Cash Out) & Neraca Yayasan</button>
+        <button type="button" class="keu-tab-btn active" onclick="pindahTabKeu('tabCashIn', this)">💵 1. Cash-In & Angsuran (Lunas/Belum)</button>
+        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabTunggakan', this)">⚠️ 2. Data Belum Bayar SPP & Paywall</button>
+        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabTarifDiskon', this)">🏷️ 3. Harga Normal & Diskon Transaksi</button>
+        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabNaikKelas', this)">🎓 4. Kenaikan Kelas Santri (Ceklis)</button>
       </div>
 
       <!-- =====================================================================
-           TAB 1: CASH IN, REKAP BULANAN & GRAFIK (STAFF KEUANGAN & YAYASAN)
+           TAB 1: CASH IN, STATUS ANGSURAN & GRAFIK
       ====================================================================== -->
       <div id="tabCashIn" class="keu-tab-panel">
         <!-- 1. RINGKASAN PER SUMBER REKENING & TUNAI -->
@@ -273,16 +279,16 @@
           <div class="bar-chart-grid" id="wadahGrafikCashIn"></div>
         </div>
 
-        <!-- 4. PANEL INPUT & TABEL TRANSAKSI -->
+        <!-- 4. PANEL INPUT & TABEL TRANSAKSI + STATUS ANGSURAN -->
         <div class="main-grid no-print">
           <!-- KIRI: FORM INPUT PEMBAYARAN SANTRI -->
           <div class="panel-box">
-            <h3 style="margin:0 0 4px; color:#0f172a;">➕ Input Pembayaran Santri</h3>
-            <p style="margin:0 0 14px; font-size:12.5px; color:var(--muted);">Catat uang masuk dan otomatis terbitkan kwitansi resmi.</p>
+            <h3 style="margin:0 0 4px; color:#0f172a;">➕ Input Pembayaran / Angsuran</h3>
+            <p style="margin:0 0 14px; font-size:12.5px; color:var(--muted);">Otomatis menghitung harga normal, diskon, dan status Lunas / Belum Lunas.</p>
 
             <form id="formInputKeuangan">
               <label>Pilih Santri:</label>
-              <select id="keuSelectSantri" required>
+              <select id="keuSelectSantri" onchange="terapkanTarifOtomatis()" required>
                 <option value="">⏳ Memuat data santri...</option>
               </select>
 
@@ -290,7 +296,7 @@
               <input type="date" id="keuTanggal" required>
 
               <label>Pos / Kategori Pemasukan:</label>
-              <select id="keuKategori" onchange="sesuaikanSubKategori()" required>
+              <select id="keuKategori" onchange="sesuaikanSubKategori(); terapkanTarifOtomatis();" required>
                 <option value="Uang Pendaftaran">1. Uang Pendaftaran</option>
                 <option value="Uang SPP" selected>2. Uang SPP</option>
                 <option value="Biaya Pendidikan - Sarana & Prasarana">3. Biaya Pendidikan - Sarana & Prasarana</option>
@@ -299,11 +305,43 @@
 
               <div id="boxSubKategori">
                 <label id="labelSubKategori">Periode Bulan SPP / Keterangan Termin:</label>
-                <input type="text" id="keuSubKategori" placeholder="Contoh: SPP November 2026 / Termin 1">
+                <input type="text" id="keuSubKategori" oninput="hitungPreviewAngsuran()" placeholder="Contoh: SPP Bulan November 2026 / Termin 1">
               </div>
 
-              <label>Nominal Uang Masuk (Rp):</label>
-              <input type="number" id="keuNominal" placeholder="Contoh: 500000" min="1000" required style="font-weight:bold; font-size:16px;">
+              <label>Skema Harga & Diskon:</label>
+              <select id="keuPilihSkemaDiskon" onchange="pilihPresetTarifDiskon()">
+                <option value="">-- Input Manual / Pilih Master Tarif --</option>
+              </select>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div>
+                  <label>Harga Normal (Rp):</label>
+                  <input type="number" id="keuHargaNormal" value="0" min="0" oninput="hitungPreviewAngsuran()">
+                </div>
+                <div>
+                  <label>Potongan Diskon (Rp):</label>
+                  <input type="number" id="keuDiskonNominal" value="0" min="0" oninput="hitungPreviewAngsuran()">
+                </div>
+              </div>
+
+              <div class="calc-box">
+                <div style="display:flex; justify-content:space-between;">
+                  <span>Tagihan Netto (Setelah Diskon):</span>
+                  <b id="lblTagihanNetto" style="color:#0d7a5f;">Rp 0</b>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:3px;">
+                  <span>Sudah Dibayar Sebelumnya:</span>
+                  <b id="lblTerbayarSebelum">Rp 0</b>
+                </div>
+              </div>
+
+              <label>Nominal Uang Masuk Sekarang (Rp):</label>
+              <input type="number" id="keuNominal" placeholder="Contoh: 500000" min="1000" oninput="hitungPreviewAngsuran()" required style="font-weight:bold; font-size:16px;">
+
+              <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:9px 12px; border-radius:10px; border:1px solid var(--line); margin-top:8px; font-size:12.5px;">
+                <span>Sisa Kekurangan: <b id="lblSisaTagihan" style="color:#b91c1c;">Rp 0</b></span>
+                <span id="badgePreviewLunas" class="badge-angsur">BELUM LUNAS</span>
+              </div>
 
               <label>Sumber Dana / Rekening Penerima:</label>
               <select id="keuSumberRekening" required>
@@ -314,7 +352,7 @@
               </select>
 
               <label>Catatan / Berita Transfer (Opsional):</label>
-              <input type="text" id="keuKeterangan" placeholder="Contoh: Transfer a.n. Bunda Ahmad / Lunas">
+              <input type="text" id="keuKeterangan" placeholder="Contoh: Transfer a.n. Bunda Ahmad / Angsuran 1">
 
               <button type="submit" id="btnSimpanTrx" class="btn-emerald" style="margin-top:16px;">
                 💾 Simpan Pemasukan & Buat Kwitansi
@@ -322,42 +360,81 @@
             </form>
           </div>
 
-          <!-- KANAN: BUKU KAS & RIWAYAT TRANSAKSI -->
-          <div class="panel-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-              <div>
-                <h3 style="margin:0; color:#0f172a;">📑 Rekap & Buku Kas Pemasukan (Cash In)</h3>
-                <p style="margin:2px 0 0; font-size:12.5px; color:var(--muted);">Total Pemasukan Terfilter: <b id="valTotalSemua" style="color:#0d7a5f; font-size:15px;">Rp 0</b></p>
+          <!-- KANAN: BUKU KAS & STATUS ANGSURAN SANTRI -->
+          <div>
+            <!-- REKAP STATUS ANGSURAN (LUNAS / BELUM LUNAS) -->
+            <div class="panel-box">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+                <div>
+                  <h3 style="margin:0; color:#0f172a;">📊 Status Angsuran Santri (Lunas vs Belum Lunas)</h3>
+                  <p style="margin:2px 0 0; font-size:12px; color:var(--muted);">Akumulasi cicilan per santri & jenis tagihan.</p>
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <select id="filterStatusAngsuran" onchange="renderTabelAngsuran()" style="width:auto; padding:6px 10px; font-size:12.5px; font-weight:bold;">
+                    <option value="ALL">Semua Status</option>
+                    <option value="BELUM" selected>⚠️ Belum Lunas</option>
+                    <option value="LUNAS">✅ Sudah Lunas</option>
+                  </select>
+                  <input type="text" id="cariSantriAngsuran" oninput="renderTabelAngsuran()" placeholder="Cari santri..." style="width:140px; padding:6px 10px; font-size:12.5px;">
+                </div>
               </div>
-              <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <input type="month" id="filterKeuBulan" onchange="muatDataKeuangan()" style="width:auto; padding:7px 10px; font-size:13px;" title="Filter Bulan">
-                <button type="button" onclick="resetFilterKeu()" style="background:#e2e8f0; border:0; padding:7px 12px; border-radius:10px; font-weight:bold; font-size:12px; cursor:pointer;">Semua Waktu</button>
+
+              <div style="overflow-x:auto; max-height:280px;">
+                <table class="table-keu">
+                  <thead>
+                    <tr>
+                      <th>Santri</th>
+                      <th>Tagihan & Periode</th>
+                      <th style="text-align:right;">Tarif Netto</th>
+                      <th style="text-align:right;">Terbayar</th>
+                      <th style="text-align:right;">Sisa</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbodyAngsuran">
+                    <tr><td colspan="6" style="text-align:center; padding:18px; color:var(--muted);">⏳ Memuat status angsuran...</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
-            <div style="overflow-x:auto; max-height:540px;">
-              <table class="table-keu">
-                <thead>
-                  <tr>
-                    <th>No. Kwitansi & Tgl</th>
-                    <th>Santri</th>
-                    <th>Pos Pemasukan</th>
-                    <th>Sumber Dana</th>
-                    <th>Nominal</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody id="tbodyKeuangan">
-                  <tr><td colspan="6" style="text-align:center; padding:24px; color:var(--muted);">⏳ Memuat buku kas keuangan...</td></tr>
-                </tbody>
-              </table>
+            <!-- RIWAYAT KWITANSI CASH IN -->
+            <div class="panel-box">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                <div>
+                  <h3 style="margin:0; color:#0f172a;">📑 Riwayat Kwitansi Pemasukan (Cash In)</h3>
+                  <p style="margin:2px 0 0; font-size:12.5px; color:var(--muted);">Total Pemasukan Terfilter: <b id="valTotalSemua" style="color:#0d7a5f; font-size:15px;">Rp 0</b></p>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <input type="month" id="filterKeuBulan" onchange="muatDataKeuangan()" style="width:auto; padding:7px 10px; font-size:13px;" title="Filter Bulan">
+                  <button type="button" onclick="resetFilterKeu()" style="background:#e2e8f0; border:0; padding:7px 12px; border-radius:10px; font-weight:bold; font-size:12px; cursor:pointer;">Semua Waktu</button>
+                </div>
+              </div>
+
+              <div style="overflow-x:auto; max-height:360px;">
+                <table class="table-keu">
+                  <thead>
+                    <tr>
+                      <th>No. Kwitansi & Tgl</th>
+                      <th>Santri</th>
+                      <th>Pos Pemasukan</th>
+                      <th>Sumber Dana</th>
+                      <th>Nominal</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbodyKeuangan">
+                    <tr><td colspan="6" style="text-align:center; padding:24px; color:var(--muted);">⏳ Memuat buku kas keuangan...</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- =====================================================================
-           TAB 2: DAFTAR SANTRI BELUM BAYAR SPP & PAYWALL (STAFF KEUANGAN & YAYASAN)
+           TAB 2: DAFTAR SANTRI BELUM BAYAR SPP & PAYWALL
       ====================================================================== -->
       <div id="tabTunggakan" class="keu-tab-panel" style="display:none;">
         <div class="panel-box">
@@ -398,18 +475,150 @@
       </div>
 
       <!-- =====================================================================
-           TAB 3: KHUSUS YAYASAN (CASH OUT & POSISI KAS BERSIH)
+           TAB 3: MASTER HARGA NORMAL & DISKON PER JENIS TRANSAKSI
       ====================================================================== -->
-      <div id="tabYayasanOnly" class="keu-tab-panel" style="display:none;">
-        <div class="panel-box" style="border-color:#f59e0b;">
-          <span class="badge-confidential" style="background:#fef3c7; color:#92400e; border-color:#f59e0b;">🏛️ OTORITAS YAYASAN ONLY • KAS KELUAR (CASH OUT)</span>
-          <h3 style="margin:6px 0 4px; color:#0f172a;">Pengeluaran Operasional & Kontrol Kas Yayasan</h3>
-          <p style="margin:0 0 16px; font-size:13px; color:var(--muted);">
-            Modul ini tertutup bagi Staff Keuangan Cash-In dan hanya dapat diakses oleh Pembina / Pengurus Yayasan.
+      <div id="tabTarifDiskon" class="keu-tab-panel" style="display:none;">
+        <div class="main-grid">
+          <div class="panel-box" style="border-top:4px solid #2563eb;">
+            <h3 style="margin:0 0 4px; color:#1d4ed8;">🏷️ Atur Harga Normal & Diskon</h3>
+            <p style="margin:0 0 14px; font-size:12.5px; color:var(--muted);">Tentukan tarif standar dan potongan diskon per jenis transaksi keuangan.</p>
+
+            <form id="formMasterTarif">
+              <label>Jenis Transaksi Keuangan:</label>
+              <select id="cfgJenisTransaksi" required>
+                <option value="Uang Pendaftaran">1. Uang Pendaftaran</option>
+                <option value="Uang SPP" selected>2. Uang SPP</option>
+                <option value="Biaya Pendidikan - Sarana & Prasarana">3. Biaya Pendidikan - Sarana & Prasarana</option>
+                <option value="Biaya Pendidikan - Kegiatan 1 Tahun">4. Biaya Pendidikan - Kegiatan 1 Tahun</option>
+              </select>
+
+              <label>Berlaku Untuk Jenjang:</label>
+              <select id="cfgJenjang" required>
+                <option value="Semua Jenjang">Semua Jenjang</option>
+                <option value="Daycare & PAUD NF">Daycare & PAUD NF</option>
+                <option value="Paket A">Paket A (Kelas 1–6)</option>
+                <option value="Paket B">Paket B (Kelas 7–9)</option>
+                <option value="Paket C">Paket C (Kelas 10–12)</option>
+                <option value="Home Schooling">Home Schooling (HS)</option>
+              </select>
+
+              <label>Harga Normal (Rp):</label>
+              <input type="number" id="cfgHargaNormal" placeholder="Contoh: 350000" min="0" required>
+
+              <label>Nama Kategori Diskon / Tarif:</label>
+              <input type="text" id="cfgNamaDiskon" placeholder="Contoh: Normal / Diskon Anak Tutor / Beasiswa / Saudara Kandung" value="Harga Normal" required>
+
+              <label>Nominal Potongan Diskon (Rp):</label>
+              <input type="number" id="cfgNominalDiskon" placeholder="Isi 0 jika tanpa diskon" min="0" value="0" required>
+
+              <button type="submit" id="btnSimpanTarif" class="btn-blue" style="margin-top:16px;">
+                💾 Simpan Harga Normal & Diskon
+              </button>
+            </form>
+          </div>
+
+          <div class="panel-box">
+            <h3 style="margin:0 0 4px; color:#0f172a;">📑 Daftar Harga Normal & Skema Diskon</h3>
+            <p style="margin:0 0 12px; font-size:12.5px; color:var(--muted);">Otomatis muncul sebagai pilihan saat Staff Keuangan menginput pembayaran santri.</p>
+
+            <div style="overflow-x:auto;">
+              <table class="table-keu">
+                <thead>
+                  <tr>
+                    <th>Jenis Transaksi</th>
+                    <th>Jenjang</th>
+                    <th>Kategori / Diskon</th>
+                    <th style="text-align:right;">Harga Normal</th>
+                    <th style="text-align:right;">Diskon</th>
+                    <th style="text-align:right;">Tarif Akhir</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyMasterTarif">
+                  <tr><td colspan="6" style="text-align:center; padding:20px; color:var(--muted);">⏳ Memuat master tarif...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           TAB 4: KENAIKAN KELAS MASSAL DB_SANTRI (MODEL CEKLIS)
+      ====================================================================== -->
+      <div id="tabNaikKelas" class="keu-tab-panel" style="display:none;">
+        <div class="panel-box" style="border-top:4px solid #d97706;">
+          <h3 style="margin:0 0 4px; color:#b45309;">🎓 Kenaikan Kelas Massal Santri (`db_santri`)</h3>
+          <p style="margin:0 0 14px; font-size:13px; color:var(--muted);">
+            Pilih kelas asal, centang santri yang naik kelas sekaligus, lalu pilih kelas tujuan tanpa perlu mengetik ulang biodata.
           </p>
-          <div style="background:#fffbeb; border:1px dashed #d97706; border-radius:12px; padding:16px; font-size:13.5px; color:#78350f;">
-            <b>Siap Dihubungkan ke Sheet <code>db_cash_out</code>:</b><br>
-            Silakan kirimkan struktur kolom sheet pengeluaran (<code>db_cash_out</code>) dari Apps Script <code>Code.gs</code> jika sudah ada, agar form input pengeluaran dan neraca kas bersih langsung aktif di panel ini.
+
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; background:#fffbeb; border:1.5px solid #fde68a; border-radius:16px; padding:16px; margin-bottom:14px; align-items:end;">
+            <div>
+              <label style="margin-top:0; color:#92400e;">1. Kelas Asal (Saat Ini):</label>
+              <select id="filterKelasAsal" onchange="renderTabelNaikKelas()">
+                <option value="">-- Pilih Kelas Asal --</option>
+              </select>
+            </div>
+            <div>
+              <label style="margin-top:0; color:#065f46;">2. Jenjang Tujuan (Opsional):</label>
+              <select id="targetJenjangBaru">
+                <option value="">-- Tetap Sesuai Santri --</option>
+                <option value="PAUD NF">PAUD NF</option>
+                <option value="Paket A">Paket A</option>
+                <option value="Paket B">Paket B</option>
+                <option value="Paket C">Paket C</option>
+                <option value="Home Schooling">Home Schooling</option>
+                <option value="Alumni">Alumni / Lulus</option>
+              </select>
+            </div>
+            <div>
+              <label style="margin-top:0; color:#065f46;">3. Kelas Tujuan Baru:</label>
+              <select id="targetKelasBaru">
+                <option value="">-- Pilih Kelas Tujuan --</option>
+                <option value="Kelas 1">Kelas 1</option>
+                <option value="Kelas 2">Kelas 2</option>
+                <option value="Kelas 3">Kelas 3</option>
+                <option value="Kelas 4">Kelas 4</option>
+                <option value="Kelas 5">Kelas 5</option>
+                <option value="Kelas 6">Kelas 6</option>
+                <option value="Kelas 7">Kelas 7</option>
+                <option value="Kelas 8">Kelas 8</option>
+                <option value="Kelas 9">Kelas 9</option>
+                <option value="Kelas 10">Kelas 10</option>
+                <option value="Kelas 11">Kelas 11</option>
+                <option value="Kelas 12">Kelas 12</option>
+                <option value="Lulus / Alumni">Lulus / Alumni</option>
+              </select>
+            </div>
+            <div>
+              <button type="button" id="btnEksekusiNaikKelas" onclick="eksekusiNaikKelasMassal()" class="btn-amber" style="width:100%;">
+                🚀 Naikkan Kelas (<span id="lblJumlahTerpilih">0</span>)
+              </button>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-size:12.5px; color:var(--muted);">Centang kotak di sebelah kiri nama santri yang akan dinaikkan kelasnya:</span>
+            <button type="button" onclick="togglePilihSemuaNaikKelas()" class="btn-nav" style="font-size:12px; padding:6px 12px;">☑️ Pilih / Batal Semua</button>
+          </div>
+
+          <div style="overflow-x:auto; max-height:460px; border:1px solid var(--line); border-radius:12px;">
+            <table class="table-keu" style="margin-top:0;">
+              <thead style="position:sticky; top:0; background:#fef3c7; z-index:1;">
+                <tr>
+                  <th style="width:44px; text-align:center;">
+                    <input type="checkbox" id="chkMasterNaikKelas" onchange="setSemuaCheckboxNaikKelas(this.checked)" style="width:16px; height:16px;">
+                  </th>
+                  <th>NIS</th>
+                  <th>Nama Lengkap Santri</th>
+                  <th>Jenjang Saat Ini</th>
+                  <th>Kelas Saat Ini</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyNaikKelas">
+                <tr><td colspan="5" style="text-align:center; padding:24px; color:var(--muted);">Pilih Kelas Asal di atas untuk memuat daftar santri.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -492,6 +701,8 @@
     let authKeuangan = null;
     let daftarTransaksiCache = [];
     let daftarSantriCache = [];
+    let masterTarifCache = [];
+    let rekapAngsuranCache = [];
     let mapHpWaliSantri = {};
     let kwitansiAktif = null;
 
@@ -552,7 +763,7 @@
             sessionStorage.setItem("keuanganAuth", JSON.stringify(json));
             aktifkanDashboardKeuangan(json);
           } else {
-            alert("⛔ AKSES DITOLAK!\nAkun Anda terdaftar sebagai '" + json.role + "'. Halaman ini hanya dapat dibuka oleh Staff Keuangan (Cash-In) atau Pengurus Yayasan.");
+            alert("⛔ AKSES DITOLAK!\nAkun Anda terdaftar sebagai '" + json.role + "'. Halaman ini hanya dapat dibuka oleh Staff Keuangan atau Pengurus Yayasan.");
           }
         } else {
           alert("Login gagal: " + json.message);
@@ -575,9 +786,8 @@
       document.getElementById(idTab).style.display = "block";
       btnEl.classList.add("active");
 
-      if (idTab === "tabTunggakan") {
-        analisaSantriBelumBayar();
-      }
+      if (idTab === "tabTunggakan") analisaSantriBelumBayar();
+      if (idTab === "tabTarifDiskon") muatMasterTarifDiskon();
     }
 
     async function aktifkanDashboardKeuangan(user) {
@@ -587,13 +797,12 @@
       document.getElementById("btnLogoutKeu").style.display = "inline-flex";
       document.getElementById("petugasAktifLabel").textContent = `${user.nama} (${user.role.toUpperCase()})`;
 
-      // Atur hak akses Tab Yayasan (Cash Out) vs Staff Keuangan (Cash In Only)
       if (isYayasanUtama(user.role)) {
-        document.getElementById("btnTabYayasan").style.display = "inline-block";
-        document.getElementById("badgeLevelAkses").textContent = "🏛️ FULL ACCESS • YAYASAN (CASH IN & CASH OUT)";
+        document.getElementById("linkMenuYayasan").style.display = "inline-flex";
+        document.getElementById("badgeLevelAkses").textContent = "🏛️ FULL ACCESS • YAYASAN & KEUANGAN";
       } else {
-        document.getElementById("btnTabYayasan").style.display = "none";
-        document.getElementById("badgeLevelAkses").textContent = "💵 STAFF KEUANGAN • KHUSUS PEMASUKAN (CASH IN)";
+        document.getElementById("linkMenuYayasan").style.display = "none";
+        document.getElementById("badgeLevelAkses").textContent = "💵 STAFF KEUANGAN • KHUSUS CASH-IN & DATA SANTRI";
       }
 
       const now = new Date();
@@ -604,6 +813,7 @@
       document.getElementById("labelTahunGrafik").textContent = now.getFullYear();
 
       await muatDaftarSantriKeu();
+      await muatMasterTarifDiskon();
       await muatDataKeuangan();
       await muatGrafikTahunan();
     }
@@ -621,7 +831,12 @@
           });
 
           sel.innerHTML = '<option value="">-- Pilih Nama Santri --</option>' +
-            json.data.map(s => `<option value="${s.nis}">${s.nama} (${s.nis} • ${s.jenjang} ${s.kelas})</option>`).join("");
+            json.data.map(s => `<option value="${s.nis}" data-jenjang="${s.jenjang}" data-kelas="${s.kelas}">${s.nama} (${s.nis} • ${s.jenjang} ${s.kelas})</option>`).join("");
+
+          // Isi dropdown kelas asal untuk fitur Kenaikan Kelas Massal
+          const kelasUnik = [...new Set(json.data.map(s => String(s.kelas || "").trim()).filter(Boolean))].sort();
+          document.getElementById("filterKelasAsal").innerHTML = '<option value="">-- Pilih Kelas Asal --</option>' +
+            kelasUnik.map(k => `<option value="${k}">${k}</option>`).join("");
         } else {
           sel.innerHTML = '<option value="">Data santri kosong</option>';
         }
@@ -630,18 +845,155 @@
       }
     }
 
+    // ================= MASTER TARIF NORMAL & DISKON =================
+    async function muatMasterTarifDiskon() {
+      try {
+        const res = await fetch(`${API_URL}?action=get_master_tarif_diskon`);
+        const json = await res.json();
+        if (json.success) {
+          masterTarifCache = json.data || [];
+          renderTabelMasterTarif();
+          terapkanTarifOtomatis();
+        }
+      } catch (e) {}
+    }
+
+    function renderTabelMasterTarif() {
+      const tbody = document.getElementById("tbodyMasterTarif");
+      if (!tbody) return;
+      if (masterTarifCache.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--muted);">Belum ada master harga normal & diskon. Silakan tambahkan di form kiri.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = masterTarifCache.map(t => {
+        const akhir = Math.max(0, Number(t.hargaNormal || 0) - Number(t.nominalDiskon || 0));
+        return `
+          <tr>
+            <td><b>${t.jenisTransaksi}</b></td>
+            <td>${t.jenjang}</td>
+            <td>${t.namaDiskon}</td>
+            <td style="text-align:right;">${formatRupiah(t.hargaNormal)}</td>
+            <td style="text-align:right; color:#b45309;">-${formatRupiah(t.nominalDiskon)}</td>
+            <td style="text-align:right; font-weight:900; color:#0d7a5f;">${formatRupiah(akhir)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    document.getElementById("formMasterTarif").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btnSimpanTarif");
+      btn.disabled = true; btn.textContent = "⏳ Menyimpan Tarif...";
+      const payload = {
+        action: "simpan_master_tarif_diskon",
+        jenisTransaksi: document.getElementById("cfgJenisTransaksi").value,
+        jenjang: document.getElementById("cfgJenjang").value,
+        hargaNormal: Number(document.getElementById("cfgHargaNormal").value),
+        namaDiskon: document.getElementById("cfgNamaDiskon").value.trim(),
+        nominalDiskon: Number(document.getElementById("cfgNominalDiskon").value)
+      };
+      try {
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+        const json = await res.json();
+        if (json.success) {
+          alert("✅ " + json.message);
+          await muatMasterTarifDiskon();
+        } else {
+          alert("Gagal: " + json.message);
+        }
+      } catch (err) {
+        alert("Error jaringan: " + err.message);
+      } finally {
+        btn.disabled = false; btn.textContent = "💾 Simpan Harga Normal & Diskon";
+      }
+    });
+
+    function terapkanTarifOtomatis() {
+      const kat = document.getElementById("keuKategori").value;
+      const selSantri = document.getElementById("keuSelectSantri");
+      const opt = selSantri.options[selSantri.selectedIndex];
+      const jenjangSantri = opt ? (opt.getAttribute("data-jenjang") || "") : "";
+
+      const cocok = masterTarifCache.filter(t =>
+        t.jenisTransaksi === kat &&
+        (t.jenjang === "Semua Jenjang" || jenjangSantri.toLowerCase().includes(t.jenjang.toLowerCase()))
+      );
+
+      const selSkema = document.getElementById("keuPilihSkemaDiskon");
+      if (cocok.length > 0) {
+        selSkema.innerHTML = cocok.map(t =>
+          `<option value="${t.namaDiskon}" data-normal="${t.hargaNormal}" data-diskon="${t.nominalDiskon}">${t.namaDiskon} (Normal ${formatRupiah(t.hargaNormal)} | Diskon ${formatRupiah(t.nominalDiskon)})</option>`
+        ).join("") + '<option value="Manual" data-normal="0" data-diskon="0">-- Input Manual --</option>';
+        document.getElementById("keuHargaNormal").value = cocok[0].hargaNormal;
+        document.getElementById("keuDiskonNominal").value = cocok[0].nominalDiskon;
+      } else {
+        selSkema.innerHTML = '<option value="Manual" data-normal="0" data-diskon="0">-- Input Manual / Belum Ada Master Tarif --</option>';
+      }
+      hitungPreviewAngsuran();
+    }
+
+    function pilihPresetTarifDiskon() {
+      const sel = document.getElementById("keuPilihSkemaDiskon");
+      const opt = sel.options[sel.selectedIndex];
+      if (!opt) return;
+      const norm = Number(opt.getAttribute("data-normal") || 0);
+      const disc = Number(opt.getAttribute("data-diskon") || 0);
+      if (opt.value !== "Manual") {
+        document.getElementById("keuHargaNormal").value = norm;
+        document.getElementById("keuDiskonNominal").value = disc;
+      }
+      hitungPreviewAngsuran();
+    }
+
+    function hitungPreviewAngsuran() {
+      const nis = document.getElementById("keuSelectSantri").value;
+      const kat = document.getElementById("keuKategori").value;
+      const sub = document.getElementById("keuSubKategori").value.trim().toLowerCase();
+
+      const normal = Number(document.getElementById("keuHargaNormal").value || 0);
+      const diskon = Number(document.getElementById("keuDiskonNominal").value || 0);
+      const netto = Math.max(0, normal - diskon);
+
+      // Cek riwayat angsuran sebelumnya untuk santri + kategori + subKategori yang sama
+      let sudahBayar = 0;
+      if (nis) {
+        const match = rekapAngsuranCache.find(r =>
+          String(r.nis) === String(nis) &&
+          r.kategori === kat &&
+          (!sub || String(r.subKategori || "").trim().toLowerCase() === sub)
+        );
+        if (match) {
+          sudahBayar = match.totalTerbayar;
+          if (normal === 0 && match.tarifNetto > 0) {
+            document.getElementById("keuHargaNormal").value = match.tarifNetto;
+          }
+        }
+      }
+
+      const bayarSekarang = Number(document.getElementById("keuNominal").value || 0);
+      const sisa = Math.max(0, netto - (sudahBayar + bayarSekarang));
+
+      document.getElementById("lblTagihanNetto").textContent = formatRupiah(netto);
+      document.getElementById("lblTerbayarSebelum").textContent = formatRupiah(sudahBayar);
+      document.getElementById("lblSisaTagihan").textContent = formatRupiah(sisa);
+
+      const badge = document.getElementById("badgePreviewLunas");
+      if (netto > 0 && sisa === 0) {
+        badge.className = "badge-lunas";
+        badge.textContent = "✅ LUNAS";
+      } else {
+        badge.className = "badge-angsur";
+        badge.textContent = "⚠️ BELUM LUNAS";
+      }
+    }
+
     function sesuaikanSubKategori() {
       const kat = document.getElementById("keuKategori").value;
       const inp = document.getElementById("keuSubKategori");
-      if (kat === "Uang SPP") {
-        inp.placeholder = "Contoh: SPP Bulan November 2026";
-      } else if (kat === "Uang Pendaftaran") {
-        inp.placeholder = "Contoh: Gelombang 1 TA 2026/2027";
-      } else if (kat === "Biaya Pendidikan - Sarana & Prasarana") {
-        inp.placeholder = "Contoh: Sarpras Tahunan / Angsuran 1";
-      } else {
-        inp.placeholder = "Contoh: Kegiatan Outing & Ekstrakurikuler 1 Tahun";
-      }
+      if (kat === "Uang SPP") inp.placeholder = "Contoh: SPP Bulan November 2026";
+      else if (kat === "Uang Pendaftaran") inp.placeholder = "Contoh: Gelombang 1 TA 2026/2027";
+      else if (kat === "Biaya Pendidikan - Sarana & Prasarana") inp.placeholder = "Contoh: Sarpras Tahunan / Angsuran 1";
+      else inp.placeholder = "Contoh: Kegiatan Outing & Ekstrakurikuler 1 Tahun";
     }
 
     function formatRupiah(angka) {
@@ -664,7 +1016,7 @@
       if (!authKeuangan) return;
       const bulan = document.getElementById("filterKeuBulan").value;
       const tbody = document.getElementById("tbodyKeuangan");
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--muted);">⏳ Mengambil data kas terenkripsi...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--muted);">⏳ Mengambil data kas...</td></tr>';
 
       try {
         const url = `${API_URL}?action=get_data_keuangan&authNip=${encodeURIComponent(authKeuangan.username)}&bulan=${encodeURIComponent(bulan)}`;
@@ -690,6 +1042,8 @@
         document.getElementById("valTotalSemua").textContent = formatRupiah(json.summary.totalSemua);
 
         daftarTransaksiCache = json.transaksi || [];
+        rekapAngsuranCache = json.rekapAngsuran || [];
+        renderTabelAngsuran();
 
         if (daftarTransaksiCache.length === 0) {
           tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:var(--muted);">Belum ada transaksi pemasukan pada periode ini.</td></tr>';
@@ -702,11 +1056,15 @@
           else if (t.sumber.includes("BCA")) badgeClass = "src-bca";
           else if (t.sumber.includes("Mandiri")) badgeClass = "src-mandiri";
 
+          const statusTag = t.statusPelunasan === "LUNAS"
+            ? '<span class="badge-lunas">LUNAS</span>'
+            : (t.statusPelunasan ? `<span class="badge-angsur">${t.statusPelunasan}</span>` : '');
+
           return `
             <tr>
               <td><b>${t.noKwitansi}</b><br><small style="color:var(--muted);">${t.tanggal}</small></td>
               <td><b>${t.nama}</b><br><small style="color:var(--muted);">${t.nis} • ${t.jenjangKelas}</small></td>
-              <td><b>${t.kategori}</b><br><small style="color:#475569;">${t.subKategori}</small></td>
+              <td><b>${t.kategori}</b><br><small style="color:#475569;">${t.subKategori}</small> ${statusTag}</td>
               <td><span class="badge-src ${badgeClass}">${t.sumber}</span></td>
               <td style="font-weight:900; color:#0d7a5f; white-space:nowrap;">${formatRupiah(t.nominal)}</td>
               <td>
@@ -721,6 +1079,36 @@
       } catch (err) {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Gagal memuat data: ${err.message}</td></tr>`;
       }
+    }
+
+    function renderTabelAngsuran() {
+      const tbody = document.getElementById("tbodyAngsuran");
+      if (!tbody) return;
+      const filterSt = document.getElementById("filterStatusAngsuran").value;
+      const key = document.getElementById("cariSantriAngsuran").value.trim().toLowerCase();
+
+      const filtered = rekapAngsuranCache.filter(r => {
+        const isLunas = (r.status === "LUNAS");
+        const matchSt = (filterSt === "ALL") || (filterSt === "LUNAS" && isLunas) || (filterSt === "BELUM" && !isLunas);
+        const matchKey = !key || r.nama.toLowerCase().includes(key) || String(r.nis).toLowerCase().includes(key);
+        return matchSt && matchKey;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--muted);">Tidak ada data angsuran pada filter ini.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(r => `
+        <tr>
+          <td><b>${r.nama}</b><br><small style="color:var(--muted);">${r.jenjangKelas}</small></td>
+          <td><b>${r.kategori}</b><br><small style="color:var(--muted);">${r.subKategori}</small></td>
+          <td style="text-align:right;">${formatRupiah(r.tarifNetto)}</td>
+          <td style="text-align:right; color:#0d7a5f; font-weight:bold;">${formatRupiah(r.totalTerbayar)}</td>
+          <td style="text-align:right; color:#b91c1c; font-weight:bold;">${formatRupiah(r.sisaTagihan)}</td>
+          <td>${r.status === "LUNAS" ? '<span class="badge-lunas">✅ LUNAS</span>' : '<span class="badge-angsur">⚠️ BELUM LUNAS</span>'}</td>
+        </tr>
+      `).join("");
     }
 
     // GRAFIK PEMASUKAN BULANAN (1 TAHUN BERJALAN)
@@ -827,6 +1215,99 @@
       window.open(link, "_blank");
     }
 
+    // ================= KENAIKAN KELAS MASSAL DB_SANTRI (CEKLIS) =================
+    function renderTabelNaikKelas() {
+      const kelasAsal = document.getElementById("filterKelasAsal").value;
+      const tbody = document.getElementById("tbodyNaikKelas");
+      document.getElementById("chkMasterNaikKelas").checked = false;
+
+      if (!kelasAsal) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:24px; color:var(--muted);">Pilih Kelas Asal di atas untuk memuat daftar santri.</td></tr>';
+        updateCountNaikKelas();
+        return;
+      }
+
+      const list = daftarSantriCache.filter(s => String(s.kelas || "").trim() === kelasAsal);
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--muted);">Tidak ada santri di kelas ini.</td></tr>';
+        updateCountNaikKelas();
+        return;
+      }
+
+      tbody.innerHTML = list.map(s => `
+        <tr>
+          <td style="text-align:center;">
+            <input type="checkbox" class="chk-naik-kelas" value="${s.nis}" onchange="updateCountNaikKelas()" style="width:16px; height:16px;" checked>
+          </td>
+          <td><b>${s.nis}</b></td>
+          <td><b>${s.nama}</b></td>
+          <td>${s.jenjang}</td>
+          <td><span style="background:#dbeafe; color:#1d4ed8; padding:3px 10px; border-radius:99px; font-weight:800; font-size:11.5px;">${s.kelas}</span></td>
+        </tr>
+      `).join("");
+
+      document.getElementById("chkMasterNaikKelas").checked = true;
+      updateCountNaikKelas();
+    }
+
+    function setSemuaCheckboxNaikKelas(val) {
+      document.querySelectorAll(".chk-naik-kelas").forEach(cb => cb.checked = val);
+      updateCountNaikKelas();
+    }
+
+    function togglePilihSemuaNaikKelas() {
+      const m = document.getElementById("chkMasterNaikKelas");
+      m.checked = !m.checked;
+      setSemuaCheckboxNaikKelas(m.checked);
+    }
+
+    function updateCountNaikKelas() {
+      const jml = document.querySelectorAll(".chk-naik-kelas:checked").length;
+      document.getElementById("lblJumlahTerpilih").textContent = jml;
+    }
+
+    async function eksekusiNaikKelasMassal() {
+      const listNis = Array.from(document.querySelectorAll(".chk-naik-kelas:checked")).map(cb => cb.value);
+      const kelasBaru = document.getElementById("targetKelasBaru").value;
+      const jenjangBaru = document.getElementById("targetJenjangBaru").value;
+
+      if (listNis.length === 0) { alert("Centang minimal 1 santri terlebih dahulu!"); return; }
+      if (!kelasBaru) { alert("Pilih Kelas Tujuan Baru terlebih dahulu!"); return; }
+      if (!confirm(`Yakin ingin menaikkan ${listNis.length} santri terpilih ke ${kelasBaru}${jenjangBaru ? " (" + jenjangBaru + ")" : ""}?`)) return;
+
+      const btn = document.getElementById("btnEksekusiNaikKelas");
+      btn.disabled = true; btn.textContent = "⏳ Memperbarui db_santri...";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({
+            action: "proses_kenaikan_kelas_massal",
+            authNip: authKeuangan.username,
+            petugas: authKeuangan.nama,
+            listNis: listNis,
+            kelasBaru: kelasBaru,
+            jenjangBaru: jenjangBaru
+          })
+        });
+        const json = await res.json();
+        if (json.success) {
+          alert("✅ " + json.message);
+          await muatDaftarSantriKeu();
+          renderTabelNaikKelas();
+        } else {
+          alert("❌ Gagal: " + json.message);
+        }
+      } catch (err) {
+        alert("Error jaringan: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `🚀 Naikkan Kelas (<span id="lblJumlahTerpilih">${listNis.length}</span>)`;
+      }
+    }
+
+    // ================= SIMPAN CASH-IN & KWITANSI =================
     document.getElementById("formInputKeuangan").addEventListener("submit", async function(e) {
       e.preventDefault();
       if (!authKeuangan) return;
@@ -837,6 +1318,10 @@
       const btn = document.getElementById("btnSimpanTrx");
       btn.disabled = true; btn.textContent = "⏳ Menyimpan & Menyiapkan Kwitansi...";
 
+      const hargaNormal = Number(document.getElementById("keuHargaNormal").value || 0);
+      const diskonNominal = Number(document.getElementById("keuDiskonNominal").value || 0);
+      const labelDiskon = document.getElementById("keuPilihSkemaDiskon").value || "Normal";
+
       const payload = {
         action: "simpan_pemasukan_keuangan",
         authNip: authKeuangan.username,
@@ -845,6 +1330,9 @@
         tanggal: document.getElementById("keuTanggal").value,
         kategori: document.getElementById("keuKategori").value,
         subKategori: document.getElementById("keuSubKategori").value.trim() || "-",
+        hargaNormal: hargaNormal,
+        diskonNominal: diskonNominal,
+        labelDiskon: labelDiskon,
         nominal: Number(document.getElementById("keuNominal").value),
         sumberRekening: document.getElementById("keuSumberRekening").value,
         keterangan: document.getElementById("keuKeterangan").value.trim() || "-"
@@ -891,7 +1379,7 @@
       document.getElementById("kwKategori").textContent = t.kategori;
       document.getElementById("kwSubKategori").textContent = t.subKategori;
       document.getElementById("kwSumber").textContent = t.sumber;
-      document.getElementById("kwKeterangan").textContent = t.keterangan;
+      document.getElementById("kwKeterangan").textContent = t.keterangan + (t.statusPelunasan ? ` [${t.statusPelunasan}]` : "");
       document.getElementById("kwNominal").textContent = formatRupiah(t.nominal);
       document.getElementById("kwTanggal").textContent = t.tanggal;
       document.getElementById("kwPetugas").textContent = `( ${t.petugas} )`;
@@ -909,6 +1397,7 @@
         rawHp = "62" + rawHp.slice(1);
       }
 
+      const statusInfo = kwitansiAktif.statusPelunasan ? `\n- Status : *${kwitansiAktif.statusPelunasan}*` : "";
       const pesan = 
 `*KWITANSI PEMBAYARAN RESMI*
 *PKBM PELITA AUSHAF INDONESIA*
@@ -923,7 +1412,7 @@ NIS / Kelas : ${kwitansiAktif.nis} (${kwitansiAktif.jenjangKelas})
 Rincian Pembayaran:
 - Pos : *${kwitansiAktif.kategori}*
 - Keterangan : ${kwitansiAktif.subKategori}
-- Nominal : *${formatRupiah(kwitansiAktif.nominal)}*
+- Nominal : *${formatRupiah(kwitansiAktif.nominal)}*${statusInfo}
 - Metode / Rek : ${kwitansiAktif.sumber}
 - Catatan : ${kwitansiAktif.keterangan}
 ----------------------------------------
