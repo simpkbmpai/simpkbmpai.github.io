@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sistem Keuangan Santri (Kasir Matriks & Diskon Khusus) - PKBM Pelita Aushaf</title>
+  <title>Sistem Keuangan Santri (Kasir Matriks, PPDB & Kenaikan Kelas) - PKBM Pelita Aushaf</title>
   <link rel="icon" type="image/png" href="logo-pkbm.png" />
 
   <style>
@@ -47,7 +47,7 @@
     .keu-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
     .keu-tab-btn {
       background: #fff; color: #334155; border: 1.5px solid #cbd5e1;
-      padding: 9px 16px; border-radius: 12px; font-weight: 800; font-size: 13px;
+      padding: 9px 15px; border-radius: 12px; font-weight: 800; font-size: 12.5px;
       cursor: pointer; transition: 0.2s;
     }
     .keu-tab-btn.active { background: #0f172a; color: #fff; border-color: #0f172a; }
@@ -92,10 +92,10 @@
       border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 8px 14px; margin-bottom: 14px; font-size: 12px; font-weight: 700;
     }
     .leg-pill { padding: 3px 10px; border-radius: 6px; color: #fff; font-size: 11.5px; }
-    .c-unpaid { background: #b91c1c; }   /* Merah */
-    .c-partial { background: #a21caf; }  /* Ungu */
-    .c-paid { background: #15803d; }     /* Hijau */
-    .c-over { background: #1d4ed8; }     /* Biru */
+    .c-unpaid { background: #b91c1c; }
+    .c-partial { background: #a21caf; }
+    .c-paid { background: #15803d; }
+    .c-over { background: #1d4ed8; }
 
     .pos-matrix-grid {
       display: grid; grid-template-columns: 450px 1fr; gap: 14px; margin-bottom: 14px; align-items: start;
@@ -185,7 +185,7 @@
       <div style="font-size:40px; margin-bottom:10px;">🔐</div>
       <h2 style="margin:0 0 6px; color:#0f172a;">Akses Terbatas: Staff Keuangan</h2>
       <p style="margin:0 0 18px; font-size:13px; color:var(--muted);">
-        Kasir Pembayaran Santri, Matriks SPP Bulanan & Non-Bulanan, Diskon Khusus Per Anak, & Kenaikan Kelas.
+        Kasir Pembayaran Santri, Pendaftaran Santri Baru (PPDB), Diskon Khusus Per Anak, & Kenaikan Kelas.
       </p>
       <form id="formLoginKeuangan">
         <input type="text" id="keuUser" class="input-field" placeholder="Username / NIP Otoritas" style="margin-bottom:12px;" required>
@@ -198,9 +198,9 @@
     <div id="dashboardKeuangan" style="display:none;">
       <div class="exec-header no-print">
         <div>
-          <span class="badge-confidential" id="badgeLevelAkses">💵 STAFF KEUANGAN • KASIR MATRIKS & DISKON KHUSUS</span>
-          <h1 style="margin:0; font-size:21px;">Transaksi Pembayaran Santri, Matriks SPP & Kenaikan Kelas</h1>
-          <p style="margin:3px 0 0; font-size:12.5px; color:#cbd5e1;">PKBM Pelita Aushaf Indonesia • Mendukung Tarif Normal Jenjang & Diskon Khusus Per Santri Per Item</p>
+          <span class="badge-confidential" id="badgeLevelAkses">💵 STAFF KEUANGAN • KASIR MATRIKS, PPDB & DISKON KHUSUS</span>
+          <h1 style="margin:0; font-size:21px;">Transaksi Pembayaran Santri, PPDB & Kenaikan Kelas</h1>
+          <p style="margin:3px 0 0; font-size:12.5px; color:#cbd5e1;">PKBM Pelita Aushaf Indonesia • Mendukung Pendaftaran Santri Baru, Tarif Normal & Diskon Khusus Per Anak</p>
         </div>
         <div style="text-align:right; font-size:13px;">
           <div style="color:#94a3b8;">Petugas Aktif:</div>
@@ -208,13 +208,14 @@
         </div>
       </div>
 
-      <!-- TAB MENU -->
+      <!-- TAB MENU (6 TAB LENGKAP) -->
       <div class="keu-tabs no-print">
-        <button type="button" class="keu-tab-btn active" onclick="pindahTabKeu('tabKasirMatriks', this)">🖥️ 1. Kasir Pembayaran Santri (Matriks JUL–JUN)</button>
-        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabRekapKas', this)">📊 2. Rekap Kas, Rekening & Status Angsuran</button>
-        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabTunggakan', this)">⚠️ 3. Data Belum Bayar SPP & Paywall</button>
-        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabTarifDiskon', this)">🏷️ 4. Harga Normal & Diskon Khusus Anak</button>
-        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabNaikKelas', this)">🎓 5. Kenaikan Kelas Santri (Ceklis)</button>
+        <button type="button" id="btnTabKasir" class="keu-tab-btn active" onclick="pindahTabKeu('tabKasirMatriks', this)">🖥️ 1. Kasir Pembayaran Santri (Matriks JUL–JUN)</button>
+        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabTambahSantri', this)">➕ 2. Tambah Santri Baru (PPDB)</button>
+        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabRekapKas', this)">📊 3. Rekap Kas & Status Angsuran</button>
+        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabTunggakan', this)">⚠️ 4. Data Belum Bayar SPP</button>
+        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabTarifDiskon', this)">🏷️ 5. Harga Normal & Diskon Anak</button>
+        <button type="button" class="keu-tab-btn" onclick="pindahTabKeu('tabNaikKelas', this)">🎓 6. Kenaikan Kelas (Ceklis)</button>
       </div>
 
       <!-- =====================================================================
@@ -401,7 +402,99 @@
       </div>
 
       <!-- =====================================================================
-           TAB 2: REKAP KAS, REKENING & STATUS ANGSURAN
+           TAB 2: TAMBAH SANTRI BARU (PPDB OLEH STAFF KEUANGAN)
+      ====================================================================== -->
+      <div id="tabTambahSantri" class="keu-tab-panel" style="display:none;">
+        <div class="main-grid">
+          <div class="panel-box" style="border-top:4px solid #0d7a5f;">
+            <h3 style="margin:0 0 4px; color:#065f46;">➕ Input Data Santri Baru (PPDB)</h3>
+            <p style="margin:0 0 14px; font-size:12.5px; color:var(--muted);">
+              Simpan biodata santri baru ke database <b>db_santri</b>. Setelah tersimpan, santri otomatis muncul di Kasir Pembayaran untuk transaksi Uang Pendaftaran & SPP.
+            </p>
+
+            <form id="formTambahSantriBaru">
+              <label>Nomor Induk Santri (NIS):</label>
+              <input type="text" id="ppdbNis" placeholder="Contoh: 2627001" required>
+
+              <label>Nama Lengkap Santri:</label>
+              <input type="text" id="ppdbNama" placeholder="Nama lengkap sesuai akta/KK" required>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div>
+                  <label>Program / Jenjang:</label>
+                  <select id="ppdbJenjang" onchange="sesuaikanPilihanKelasPpdb()" required>
+                    <option value="Daycare">Daycare</option>
+                    <option value="PAUD NF">PAUD NF (KB / TK)</option>
+                    <option value="Paket A" selected>Paket A (Setara SD)</option>
+                    <option value="Paket B">Paket B (Setara SMP)</option>
+                    <option value="Paket C">Paket C (Setara SMA)</option>
+                    <option value="Home Schooling">Home Schooling (HS)</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Kelas / Kelompok:</label>
+                  <select id="ppdbKelas" required>
+                    <option value="Kelas 1" selected>Kelas 1</option>
+                    <option value="Kelas 2">Kelas 2</option>
+                    <option value="Kelas 3">Kelas 3</option>
+                    <option value="Kelas 4">Kelas 4</option>
+                    <option value="Kelas 5">Kelas 5</option>
+                    <option value="Kelas 6">Kelas 6</option>
+                  </select>
+                </div>
+              </div>
+
+              <label>Nomor WhatsApp Orang Tua / Wali (Untuk Kwitansi & Portal):</label>
+              <input type="text" id="ppdbHpWali" placeholder="Contoh: 081234567890" required>
+
+              <label>Password Awal Portal Siswa (Default sama dengan NIS):</label>
+              <input type="text" id="ppdbPassword" placeholder="Kosongkan jika disamakan dengan NIS">
+
+              <div style="margin-top:12px; background:#ecfdf5; border:1px solid #a7f3d0; padding:10px 12px; border-radius:10px; font-size:12.5px;">
+                <label style="display:inline-flex; align-items:center; gap:8px; margin:0; cursor:pointer;">
+                  <input type="checkbox" id="chkLangsungKeKasir" checked style="width:16px; height:16px;">
+                  <span>Langsung buka Kasir Pembayaran santri ini setelah disimpan</span>
+                </label>
+              </div>
+
+              <button type="submit" id="btnSimpanSantriBaru" class="btn-emerald" style="margin-top:14px;">
+                💾 Simpan Santri Baru ke Database
+              </button>
+            </form>
+          </div>
+
+          <div class="panel-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+              <div>
+                <h3 style="margin:0; color:#0f172a;">📋 Daftar Santri Terdaftar (`db_santri`)</h3>
+                <p style="margin:2px 0 0; font-size:12.5px; color:var(--muted);">Total terdaftar: <b id="lblTotalSantriDb">0 Santri</b></p>
+              </div>
+              <input type="text" id="cariSantriDbInput" oninput="renderTabelSantriDb()" placeholder="Cari NIS / Nama Santri..." style="width:220px;">
+            </div>
+
+            <div style="overflow-x:auto; max-height:460px;">
+              <table class="table-keu">
+                <thead>
+                  <tr>
+                    <th>NIS</th>
+                    <th>Nama Lengkap Santri</th>
+                    <th>Jenjang</th>
+                    <th>Kelas</th>
+                    <th>No. WA Wali</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyDaftarSantriDb">
+                  <tr><td colspan="6" style="text-align:center; padding:20px; color:var(--muted);">⏳ Memuat daftar santri...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           TAB 3: REKAP KAS, REKENING & STATUS ANGSURAN
       ====================================================================== -->
       <div id="tabRekapKas" class="keu-tab-panel" style="display:none;">
         <div class="summary-section-title">🏦 Pemasukan Terfilter Berdasarkan Rekening & Kas</div>
@@ -466,7 +559,7 @@
       </div>
 
       <!-- =====================================================================
-           TAB 3: DAFTAR SANTRI BELUM BAYAR SPP & PAYWALL
+           TAB 4: DAFTAR SANTRI BELUM BAYAR SPP & PAYWALL
       ====================================================================== -->
       <div id="tabTunggakan" class="keu-tab-panel" style="display:none;">
         <div class="panel-box">
@@ -493,11 +586,9 @@
       </div>
 
       <!-- =====================================================================
-           TAB 4: HARGA NORMAL JENJANG & DISKON KHUSUS PER ANAK PER ITEM
+           TAB 5: HARGA NORMAL JENJANG & DISKON KHUSUS PER ANAK PER ITEM
       ====================================================================== -->
       <div id="tabTarifDiskon" class="keu-tab-panel" style="display:none;">
-        
-        <!-- BAGIAN A: DISKON KHUSUS PER SANTRI PER ITEM (PRIORITAS UTAMA) -->
         <div class="main-grid">
           <div class="panel-box" style="border-top:4px solid #7c3aed;">
             <h3 style="margin:0 0 4px; color:#6d28d9;">⭐ Atur Diskon Khusus Per Anak Per Item</h3>
@@ -552,33 +643,26 @@
 
           <div class="panel-box">
             <h3 style="margin:0 0 4px; color:#0f172a;">📋 Daftar Santri Penerima Tarif / Diskon Khusus</h3>
-            <p style="margin:0 0 10px; font-size:12.5px; color:var(--muted);">Santri di daftar ini otomatis mendapatkan tarif khusus pada item terkait di Kasir Matriks.</p>
             <div style="overflow-x:auto; max-height:430px;">
               <table class="table-keu">
                 <thead>
                   <tr>
-                    <th>Santri & TA</th>
-                    <th>Item Transaksi</th>
-                    <th style="text-align:right;">Normal</th>
-                    <th style="text-align:right;">Diskon</th>
-                    <th style="text-align:right;">Tarif Akhir</th>
-                    <th>Keterangan</th>
-                    <th>Hapus</th>
+                    <th>Santri & TA</th><th>Item Transaksi</th><th style="text-align:right;">Normal</th>
+                    <th style="text-align:right;">Diskon</th><th style="text-align:right;">Tarif Akhir</th>
+                    <th>Keterangan</th><th>Hapus</th>
                   </tr>
                 </thead>
                 <tbody id="tbodyTarifKhususAnak">
-                  <tr><td colspan="7" style="text-align:center; padding:20px; color:var(--muted);">⏳ Memuat data tarif khusus...</td></tr>
+                  <tr><td colspan="7" style="text-align:center; padding:20px; color:var(--muted);">⏳ Memuat...</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- BAGIAN B: HARGA NORMAL BAKU PER JENJANG -->
         <div class="main-grid">
           <div class="panel-box" style="border-top:4px solid #2563eb;">
             <h3 style="margin:0 0 4px; color:#1d4ed8;">🏷️ Master Harga Normal Baku Per Jenjang</h3>
-            <p style="margin:0 0 12px; font-size:12.5px; color:var(--muted);">Acuan tarif standar jika santri tidak memiliki pengaturan diskon khusus.</p>
             <form id="formMasterTarif">
               <label>Jenis Transaksi Keuangan:</label>
               <select id="cfgJenisTransaksi" required>
@@ -619,7 +703,7 @@
       </div>
 
       <!-- =====================================================================
-           TAB 5: KENAIKAN KELAS MASSAL DB_SANTRI (MODEL CEKLIS)
+           TAB 6: KENAIKAN KELAS MASSAL DB_SANTRI (MODEL CEKLIS)
       ====================================================================== -->
       <div id="tabNaikKelas" class="keu-tab-panel" style="display:none;">
         <div class="panel-box" style="border-top:4px solid #d97706;">
@@ -813,9 +897,10 @@
       document.querySelectorAll(".keu-tab-panel").forEach(el => el.style.display = "none");
       document.querySelectorAll(".keu-tab-btn").forEach(btn => btn.classList.remove("active"));
       document.getElementById(idTab).style.display = "block";
-      btnEl.classList.add("active");
+      if (btnEl) btnEl.classList.add("active");
       if (idTab === "tabTunggakan") analisaSantriBelumBayar();
       if (idTab === "tabTarifDiskon") { muatMasterTarifDiskon(); muatTarifKhususSantri(); }
+      if (idTab === "tabTambahSantri") renderTabelSantriDb();
     }
 
     function formatRupiah(n) { return "Rp " + Number(n || 0).toLocaleString("id-ID"); }
@@ -859,13 +944,107 @@
           const kelasUnik = [...new Set(json.data.map(s => String(s.kelas || "").trim()).filter(Boolean))].sort();
           document.getElementById("filterKelasAsal").innerHTML = '<option value="">-- Pilih Kelas Asal --</option>' +
             kelasUnik.map(k => `<option value="${k}">${k}</option>`).join("");
+
+          renderTabelSantriDb();
         }
       } catch (e) {}
     }
 
-    // ================= LOGIKA TARIF: PRIORITAS DISKON KHUSUS ANAK PER ITEM =================
+    // ================= TAMBAH SANTRI BARU (PPDB) =================
+    function sesuaikanPilihanKelasPpdb() {
+      const jenjang = document.getElementById("ppdbJenjang").value;
+      const selKelas = document.getElementById("ppdbKelas");
+      let daftarKelas = [];
+      if (jenjang === "Daycare") daftarKelas = ["Baby Class", "Toddler", "Batita"];
+      else if (jenjang === "PAUD NF") daftarKelas = ["KB (Kelompok Bermain)", "TK A", "TK B"];
+      else if (jenjang === "Paket A") daftarKelas = ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"];
+      else if (jenjang === "Paket B") daftarKelas = ["Kelas 7", "Kelas 8", "Kelas 9"];
+      else if (jenjang === "Paket C") daftarKelas = ["Kelas 10", "Kelas 11", "Kelas 12"];
+      else daftarKelas = ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6", "Kelas 7", "Kelas 8", "Kelas 9", "Kelas 10", "Kelas 11", "Kelas 12"];
+
+      selKelas.innerHTML = daftarKelas.map(k => `<option value="${k}">${k}</option>`).join("");
+    }
+
+    document.getElementById("formTambahSantriBaru").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btnSimpanSantriBaru");
+      btn.disabled = true; btn.textContent = "⏳ Menyimpan ke db_santri...";
+
+      const nis = document.getElementById("ppdbNis").value.trim();
+      const nama = document.getElementById("ppdbNama").value.trim();
+      const jenjang = document.getElementById("ppdbJenjang").value;
+      const kelas = document.getElementById("ppdbKelas").value;
+      const hpWali = document.getElementById("ppdbHpWali").value.trim();
+      const pass = document.getElementById("ppdbPassword").value.trim() || nis;
+      const keKasir = document.getElementById("chkLangsungKeKasir").checked;
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST", headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({
+            action: "tambah_santri_baru",
+            authNip: authKeuangan.username,
+            nis: nis, nama: nama, jenjang: jenjang, kelas: kelas, hpWali: hpWali, password: pass
+          })
+        });
+        const json = await res.json();
+        if (json.success) {
+          alert("✅ " + json.message);
+          document.getElementById("formTambahSantriBaru").reset();
+          sesuaikanPilihanKelasPpdb();
+          await muatDaftarSantriKeu();
+
+          if (keKasir) {
+            pindahTabKeu("tabKasirMatriks", document.getElementById("btnTabKasir"));
+            document.getElementById("posSelectSantri").value = nis;
+            muatMatriksSantriTerpilih();
+          }
+        } else {
+          alert("❌ Gagal: " + json.message);
+        }
+      } catch (err) {
+        alert("Error jaringan: " + err.message);
+      } finally {
+        btn.disabled = false; btn.textContent = "💾 Simpan Santri Baru ke Database";
+      }
+    });
+
+    function renderTabelSantriDb() {
+      const tbody = document.getElementById("tbodyDaftarSantriDb");
+      if (!tbody) return;
+      document.getElementById("lblTotalSantriDb").textContent = `${daftarSantriCache.length} Santri`;
+      const key = document.getElementById("cariSantriDbInput").value.trim().toLowerCase();
+
+      const filtered = daftarSantriCache.filter(s =>
+        !key || s.nama.toLowerCase().includes(key) || String(s.nis).toLowerCase().includes(key) || s.jenjang.toLowerCase().includes(key)
+      );
+
+      tbody.innerHTML = filtered.length === 0
+        ? '<tr><td colspan="6" style="text-align:center; padding:18px; color:var(--muted);">Tidak ada santri yang cocok.</td></tr>'
+        : filtered.slice().reverse().map(s => `
+          <tr>
+            <td><b>${s.nis}</b></td>
+            <td><b>${s.nama}</b></td>
+            <td>${s.jenjang}</td>
+            <td>${s.kelas}</td>
+            <td>${s.hpWali || "-"}</td>
+            <td>
+              <button type="button" onclick="pilihSantriKeKasir('${s.nis}')" style="background:#0d7a5f; color:#fff; border:0; padding:5px 10px; border-radius:7px; font-size:11.5px; font-weight:bold; cursor:pointer;">
+                💳 Bayar
+              </button>
+            </td>
+          </tr>
+        `).join("");
+    }
+
+    function pilihSantriKeKasir(nis) {
+      pindahTabKeu("tabKasirMatriks", document.getElementById("btnTabKasir"));
+      document.getElementById("posSelectSantri").value = nis;
+      muatMatriksSantriTerpilih();
+    }
+
+    // ================= LOGIKA TARIF & KASIR MATRIKS =================
     function getTarifItemUntukSantri(nisSantri, jenisTransaksi, jenjangSantri, tahunAjaran) {
-      // 1. Cek apakah santri ini punya aturan khusus per anak per item di tahun ajaran ini
       const khusus = tarifKhususSantriCache.find(k =>
         String(k.nis).trim().toLowerCase() === String(nisSantri).trim().toLowerCase() &&
         String(k.tahunAjaran).trim() === String(tahunAjaran).trim() &&
@@ -882,7 +1061,6 @@
         };
       }
 
-      // 2. Jika tidak ada, gunakan Master Harga Normal Jenjang
       const cocokStandar = masterTarifCache.filter(t =>
         t.jenisTransaksi === jenisTransaksi &&
         (t.jenjang === "Semua Jenjang" || jenjangSantri.toLowerCase().includes(t.jenjang.toLowerCase()))
@@ -900,7 +1078,6 @@
         };
       }
 
-      // 3. Fallback default jika master tarif belum diisi sama sekali
       const defaults = {
         "Uang Pendaftaran": 250000,
         "Biaya Pendidikan - Sarana & Prasarana": 1500000,
@@ -935,7 +1112,6 @@
       const trxSantri = daftarTransaksiCache.filter(t => String(t.nis).trim().toLowerCase() === String(santri.nis).trim().toLowerCase());
       let adaItemKhusus = false;
 
-      // 1. RENDER TABEL NON-BULANAN
       const posNonBulanan = [
         { kategori: "Uang Pendaftaran", label: `Uang Pendaftaran TP ${ta}` },
         { kategori: "Biaya Pendidikan - Sarana & Prasarana", label: `Biaya Sarana & Prasarana TP ${ta}` },
@@ -975,7 +1151,6 @@
         `;
       }).join("");
 
-      // 2. RENDER TABEL MATRIKS BULANAN (SPP JUL - JUN)
       const infoSpp = getTarifItemUntukSantri(santri.nis, "Uang SPP", santri.jenjang, ta);
       if (infoSpp.isKhusus) adaItemKhusus = true;
 
@@ -1034,7 +1209,6 @@
         badgeStatus.textContent = "Tarif Normal Jenjang";
       }
 
-      // 3. RENDER 10 RIWAYAT TRANSAKSI TERAKHIR SANTRI INI
       const riwayat10 = trxSantri.slice(0, 10);
       document.getElementById("tbodyRiwayatSantriPos").innerHTML = riwayat10.length === 0
         ? '<tr><td colspan="5" style="text-align:center; padding:16px; color:var(--muted);">Belum ada riwayat transaksi santri ini.</td></tr>'
@@ -1270,9 +1444,7 @@ _Jazakumullah khairan katsiran atas kepercayaan Ayah/Bunda. Simpan pesan ini seb
         t.jenisTransaksi === jenis &&
         (t.jenjang === "Semua Jenjang" || jenjang.toLowerCase().includes(t.jenjang.toLowerCase()))
       );
-      if (cocok) {
-        document.getElementById("khsHargaNormal").value = cocok.hargaNormal;
-      }
+      if (cocok) document.getElementById("khsHargaNormal").value = cocok.hargaNormal;
       hitungPreviewKhusus();
     }
 
