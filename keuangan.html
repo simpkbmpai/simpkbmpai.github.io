@@ -424,7 +424,7 @@
                   <label>Program / Jenjang:</label>
                   <select id="ppdbJenjang" onchange="sesuaikanPilihanKelasPpdb()" required>
                     <option value="Daycare">Daycare</option>
-                    <option value="PAUD NF">PAUD NF (KB / TK)</option>
+                    <option value="PAUD NF">PAUD NF (KB, PG, TK A, TK B)</option>
                     <option value="Paket A" selected>Paket A (Setara SD)</option>
                     <option value="Paket B">Paket B (Setara SMP)</option>
                     <option value="Paket C">Paket C (Setara SMA)</option>
@@ -719,6 +719,7 @@
               <label style="margin-top:0; color:#065f46;">2. Jenjang Tujuan (Opsional):</label>
               <select id="targetJenjangBaru">
                 <option value="">-- Tetap Sesuai Santri --</option>
+                <option value="Daycare">Daycare</option>
                 <option value="PAUD NF">PAUD NF</option>
                 <option value="Paket A">Paket A</option>
                 <option value="Paket B">Paket B</option>
@@ -731,10 +732,33 @@
               <label style="margin-top:0; color:#065f46;">3. Kelas Tujuan Baru:</label>
               <select id="targetKelasBaru">
                 <option value="">-- Pilih Kelas Tujuan --</option>
-                <option value="Kelas 1">Kelas 1</option><option value="Kelas 2">Kelas 2</option><option value="Kelas 3">Kelas 3</option>
-                <option value="Kelas 4">Kelas 4</option><option value="Kelas 5">Kelas 5</option><option value="Kelas 6">Kelas 6</option>
-                <option value="Kelas 7">Kelas 7</option><option value="Kelas 8">Kelas 8</option><option value="Kelas 9">Kelas 9</option>
-                <option value="Kelas 10">Kelas 10</option><option value="Kelas 11">Kelas 11</option><option value="Kelas 12">Kelas 12</option>
+                <optgroup label="Daycare & PAUD NF">
+                  <option value="Baby Class">Baby Class</option>
+                  <option value="Toddler">Toddler</option>
+                  <option value="Batita">Batita</option>
+                  <option value="KB">KB (Kelompok Bermain)</option>
+                  <option value="PG">PG (Play Group)</option>
+                  <option value="TK A">TK A</option>
+                  <option value="TK B">TK B</option>
+                </optgroup>
+                <optgroup label="Paket A (Setara SD)">
+                  <option value="Kelas 1">Kelas 1</option>
+                  <option value="Kelas 2">Kelas 2</option>
+                  <option value="Kelas 3">Kelas 3</option>
+                  <option value="Kelas 4">Kelas 4</option>
+                  <option value="Kelas 5">Kelas 5</option>
+                  <option value="Kelas 6">Kelas 6</option>
+                </optgroup>
+                <optgroup label="Paket B (Setara SMP)">
+                  <option value="Kelas 7">Kelas 7</option>
+                  <option value="Kelas 8">Kelas 8</option>
+                  <option value="Kelas 9">Kelas 9</option>
+                </optgroup>
+                <optgroup label="Paket C (Setara SMA)">
+                  <option value="Kelas 10">Kelas 10</option>
+                  <option value="Kelas 11">Kelas 11</option>
+                  <option value="Kelas 12">Kelas 12</option>
+                </optgroup>
                 <option value="Lulus / Alumni">Lulus / Alumni</option>
               </select>
             </div>
@@ -950,19 +974,40 @@
       } catch (e) {}
     }
 
-    // ================= TAMBAH SANTRI BARU (PPDB) =================
+    // ================= TAMBAH SANTRI BARU (PPDB: KB, PG, TK A, TK B, PAKET A-C, HS) =================
     function sesuaikanPilihanKelasPpdb() {
       const jenjang = document.getElementById("ppdbJenjang").value;
       const selKelas = document.getElementById("ppdbKelas");
-      let daftarKelas = [];
-      if (jenjang === "Daycare") daftarKelas = ["Baby Class", "Toddler", "Batita"];
-      else if (jenjang === "PAUD NF") daftarKelas = ["KB (Kelompok Bermain)", "TK A", "TK B"];
-      else if (jenjang === "Paket A") daftarKelas = ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"];
-      else if (jenjang === "Paket B") daftarKelas = ["Kelas 7", "Kelas 8", "Kelas 9"];
-      else if (jenjang === "Paket C") daftarKelas = ["Kelas 10", "Kelas 11", "Kelas 12"];
-      else daftarKelas = ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6", "Kelas 7", "Kelas 8", "Kelas 9", "Kelas 10", "Kelas 11", "Kelas 12"];
+      let opsiHtml = "";
 
-      selKelas.innerHTML = daftarKelas.map(k => `<option value="${k}">${k}</option>`).join("");
+      if (jenjang === "Daycare") {
+        opsiHtml = `
+          <option value="Baby Class">Baby Class</option>
+          <option value="Toddler">Toddler</option>
+          <option value="Batita">Batita</option>
+        `;
+      } else if (jenjang === "PAUD NF") {
+        opsiHtml = `
+          <option value="KB">KB (Kelompok Bermain)</option>
+          <option value="PG">PG (Play Group)</option>
+          <option value="TK A">TK A</option>
+          <option value="TK B">TK B</option>
+        `;
+      } else if (jenjang === "Paket A") {
+        opsiHtml = ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"]
+          .map(k => `<option value="${k}">${k}</option>`).join("");
+      } else if (jenjang === "Paket B") {
+        opsiHtml = ["Kelas 7", "Kelas 8", "Kelas 9"]
+          .map(k => `<option value="${k}">${k}</option>`).join("");
+      } else if (jenjang === "Paket C") {
+        opsiHtml = ["Kelas 10", "Kelas 11", "Kelas 12"]
+          .map(k => `<option value="${k}">${k}</option>`).join("");
+      } else {
+        opsiHtml = ["KB", "PG", "TK A", "TK B", "Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6", "Kelas 7", "Kelas 8", "Kelas 9", "Kelas 10", "Kelas 11", "Kelas 12"]
+          .map(k => `<option value="${k}">${k}</option>`).join("");
+      }
+
+      selKelas.innerHTML = opsiHtml;
     }
 
     document.getElementById("formTambahSantriBaru").addEventListener("submit", async function(e) {
